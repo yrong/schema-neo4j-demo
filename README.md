@@ -69,6 +69,7 @@ PATCH /API/cfgItems/{id} //部分或单个字段
 ```
 # 身份认证：
 读取MySQL中的tokens表，有记录即可通过；后期需增加根据用户id做权限判断
+mysql_auth.sql位于项目文件中，包含users和tokens两张表，暂时只需用到tokens
 
 # 建模
 
