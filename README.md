@@ -58,6 +58,19 @@ request:
 ```
 POST /API/cfgItems/
 ```
+request:
+```
+{
+	"token": "xxxxxxxxxxxxxxxxxx",
+	"data":{
+	    "category":"category name", //PhysicalServer, VirtualServer, Firewall, Router, Switch, Storage, Camera
+	    fields:[
+    	    "field1":"field1 text",
+    		"field2":"field2 text"
+	    ]
+	}
+}
+```
 ## 删
 ```
 DELETE /API/cfgItems/{id}
@@ -119,16 +132,16 @@ AbstractServer字段：
 ```
 
 
-第二层
+第二层 - category
 ```
-	物理机：继承ConfigurationItem.AbstractServer, ConfigurationItem.Asset.Hardware
-	虚拟机：继承ConfigurationItem.AbstractServer
-	存储：继承ConfigurationItem.Asset.Hardware
-	网络设备：继承ConfigurationItem.Asset.Hardware
-	– 交换机 
-	– 路由器 
-	– 防火墙
-	摄像头：继承ConfigurationItem.Asset.Hardware
+	PhysicalServer - 物理机：继承ConfigurationItem.AbstractServer, ConfigurationItem.Asset.Hardware
+	VirtualServer - 虚拟机：继承ConfigurationItem.AbstractServer
+	Storage - 存储：继承ConfigurationItem.Asset.Hardware
+	NetworkDevice - 网络设备：继承ConfigurationItem.Asset.Hardware
+	– Switch - 交换机 
+	– Router - 路由器 
+	– Firewall - 防火墙
+	Camera - 摄像头：继承ConfigurationItem.Asset.Hardware
 ```
 字段定义：
 ```
