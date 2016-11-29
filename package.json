@@ -1,26 +1,15 @@
 {
   "name": "CMDB-API",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@git.coding.net:alien11/CMDB-API.git"
-  },
-  "keywords": [
-    "backend",
-    "koa2",
-    "mongoose"
-  ],
+  "author": "Ronyang <yrong1997@gmail.com>",
+  "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "config": "^1.24.0",
-    "dotenv": "^2.0.0",
-    "koa": "^2.0.0-alpha.7",
-    "lodash": "^4.17.2",
-    "mongoose": "^4.7.0",
-    "mongoose-paginate": "^5.0.3"
+    "koa-neo4j": "^0.10.17",
+    "babel-polyfill":"^6.16.0"
   }
 }
