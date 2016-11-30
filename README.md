@@ -66,7 +66,7 @@ request:
 	    "category":"category name", //PhysicalServer, VirtualServer, Firewall, Router, Switch, Storage, Camera
 	    fields:{
     	    "field1":"field1 text",
-    		"field2":"field2 text"
+            "field2":"field2 text"
 	    }
 	}
 }
