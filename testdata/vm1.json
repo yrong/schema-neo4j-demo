@@ -1,8 +1,13 @@
 {
-	"name":"vm1",
-	"it_service":"service1",
-	"ip":"10.10.35.6",
-	"host":"vm-1",
-	"type": "VirtualServer",
-	"os_system": "ubuntu"
+	"token": "12345678",
+	"data":{
+	    "category":"VirtualServer",
+	    "fields":{
+    	    "name":"vm1",
+			"it_service":"service1",
+			"ip":"10.10.35.6",
+			"host":"vm-1",
+			"os_system": "ubuntu"
+	    }
+	}
 }

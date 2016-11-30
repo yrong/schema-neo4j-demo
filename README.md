@@ -10,7 +10,7 @@ GET /API/cfgItems?page={page}&per_page={per_page}
 response: //所有分页的返回结果均为此格式
 ```
 {
-	"status":"ok", //ok, info, warning, error, 
+	"status":"ok", //ok, info, warning, error,
 	"message":{
 		"content":"message text here",
 		"displayAs":"toast" //toast, modal, console, alert
@@ -64,11 +64,32 @@ request:
 	"token": "xxxxxxxxxxxxxxxxxx",
 	"data":{
 	    "category":"category name", //PhysicalServer, VirtualServer, Firewall, Router, Switch, Storage, Camera
-	    fields:[
+	    fields:{
     	    "field1":"field1 text",
-    		"field2":"field2 text"
-	    ]
+            "field2":"field2 text"
+	    }
 	}
+}
+```
+response:
+成功：
+```
+{
+    "status":"info", //ok, info, warning, error,
+    "message":{
+        "content":"添加成功",
+        "displayAs":"toast" //toast, modal, console, alert
+    }
+}
+```
+失败：
+```
+{
+    "status":"error", //ok, info, warning, error,
+    "message":{
+        "content":"添加失败：{原因}",
+        "displayAs":"modal" //toast, modal, console, alert
+    }
 }
 ```
 ## 删

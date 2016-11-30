@@ -1,3 +1,6 @@
+MATCH (n) DETACH
+DELETE n
+
 CREATE (vm1:VirtualServer {
 it_service:'service1',
 ip:'10.10.35.6',
@@ -24,5 +27,7 @@ CREATE (cmdb)-[:DEPENDS_ON]->(neo4j)
 CREATE (neo4j)-[:BELONGS_TO]->(vm1)
 
 CREATE (cmdb)-[:BELONGS_TO]->(vm1)
+
+MATCH (n) RETURN n
 
 

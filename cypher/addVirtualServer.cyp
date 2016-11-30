@@ -1,4 +1,4 @@
-CREATE (node:VirtualServer {
+CREATE (:VirtualServer {
 	name:{name},
 	it_service:{it_service},
 	ip:{ip},
