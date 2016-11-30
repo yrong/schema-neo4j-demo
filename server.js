@@ -53,8 +53,8 @@ app.defineAPI({
     route: '/api/cfgItems',
     preProcess: function (params) {
         var params_new = params.data.fields;
-        // params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
-        params_new.cypher = "hello";
+        params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
+        // params_new.cypher = "hello";
         return params_new;
     },
     postProcess: function (result) {
