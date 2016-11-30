@@ -64,10 +64,10 @@ request:
 	"token": "xxxxxxxxxxxxxxxxxx",
 	"data":{
 	    "category":"category name", //PhysicalServer, VirtualServer, Firewall, Router, Switch, Storage, Camera
-	    fields:[
+	    fields:{
     	    "field1":"field1 text",
     		"field2":"field2 text"
-	    ]
+	    }
 	}
 }
 ```
