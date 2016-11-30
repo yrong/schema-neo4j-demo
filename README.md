@@ -71,6 +71,27 @@ request:
 	}
 }
 ```
+response:
+成功：
+```
+{
+    "status":"info", //ok, info, warning, error, 
+    "message":{
+        "content":"添加成功",
+        "displayAs":"toast" //toast, modal, console, alert
+    }
+}
+```
+失败：
+```
+{
+    "status":"error", //ok, info, warning, error, 
+    "message":{
+        "content":"添加失败：{原因}",
+        "displayAs":"modal" //toast, modal, console, alert
+    }
+}
+```
 ## 删
 ```
 DELETE /API/cfgItems/{id}
