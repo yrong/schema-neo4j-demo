@@ -139,14 +139,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            return _regenerator2.default.awrap(next());
 	
 	                        case 3:
-	                            _context.next = 11;
+	                            _context.next = 10;
 	                            break;
 	
 	                        case 5:
 	                            _context.prev = 5;
 	                            _context.t0 = _context['catch'](0);
-	
-	                            console.log(_context.t0);
 	                            cmdb_error = {
 	                                "status": "error", //ok, info, warning, error,
 	                                "message": {
@@ -159,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            // ctx.body = String(error);
 	                            ctx.status = _context.t0.status;
 	
-	                        case 11:
+	                        case 10:
 	                        case 'end':
 	                            return _context.stop();
 	                    }

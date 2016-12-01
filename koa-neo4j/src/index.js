@@ -52,7 +52,7 @@ class KoaNeo4jApp extends Application {
                 try {
                     await next();
                 } catch (error) {
-                    console.log(error);
+                    //wrap cmdb error message
                     let cmdb_error = {
                         "status":"error", //ok, info, warning, error,
                         "message":{
