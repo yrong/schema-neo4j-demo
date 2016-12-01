@@ -4,6 +4,8 @@ var _ = require('lodash');
 
 var KoaNeo4jApp = require('./koa-neo4j');
 
+var validate = require('./validate')
+
 var app = new KoaNeo4jApp({
     neo4j: {
         boltUrl: 'bolt://localhost',
@@ -35,7 +37,7 @@ app.defineAPI({
     preProcess: function (params) {
         var params_new = {"skip":0,"limit":Number.MAX_VALUE};
         if(params.page&&params.per_page){
-            var skip = (String)(parseInt(params.page) * parseInt(params.per_page));
+            var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
             params_new = {"skip":skip,"limit":params.per_page}
         }
         return params_new;
@@ -44,16 +46,9 @@ app.defineAPI({
 });
 
 app.defineAPI({
-    method: 'GET',
-    route: '/api/cfgItems',
-    cypherQueryFile: './cypher/queryCfgItemsAll.cyp',
-    postProcess: postProcess
-});
-
-
-app.defineAPI({
     method: 'POST',
     route: '/api/cfgItems',
+    check: validate.checkCfgItem,
     preProcess: function (params) {
         var params_new = params.data.fields;
         params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');

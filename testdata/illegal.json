@@ -1,0 +1,12 @@
+{
+  "token": "12345678",
+  "data":{
+    "fields":{
+      "name":"router1",
+      "it_service":"service1",
+      "date_added":"2016-10-11",
+      "sn":"123456",
+      "model":"a10"
+    }
+  }
+}

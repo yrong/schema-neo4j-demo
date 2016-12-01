@@ -30,3 +30,8 @@ node_modules
 .idea
 
 dist
+
+koa-neo4j/*.js
+koa-neo4j/*.js.map
+!koa-neo4j/src/**/*.js
+!webpack.config.js
