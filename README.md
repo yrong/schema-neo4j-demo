@@ -122,47 +122,47 @@ ConfigurationItem
 
 ```
 ConfigurationItem字段
-	IT Service//IT_Service
-	Monitored//bool
-	Responsibility//User
-	Technical Support Info//string
-	Date Added//date
-	Last Updated//date
-	Updated By//User
+	IT Service//IT_Service, 为了不影响进度，初期为可选字段，待IT Service相关接口完善，此字段改为必填。从现有IT Service列表中选择，关系：(ConfigurationItem)-[:SUPPORT:]-> (IT Service)
+	Monitored//bool, required, default: false
+	Responsibility//User, 系统中的User对象，初期为可选字段，待User相关接口完善，此字段改为必填，关系：(User)-[:RESPONSIBLE FOR:]-> (ConfigurationItem)
+	Technical Support Info//string, optional
+	Date Added//date, 自动生成，虽然名字是date但请保存具体时间，时间戳格式
+	Last Updated//date，自动生成，虽然名字是date但请保存具体时间，时间戳格式
+	Updated By//User，自动生成，保存用户id
 Asset字段
-	Asset ID
-	SN//string
-	GEO Location//string
-	Asset location//位置信息，上架或未上架
+	Asset ID//待定，暂时为空
+	SN//string, optional
+	GEO Location//string, required
+	Asset location//位置信息，上架或未上架。可能有必要建立Cabinet（机柜对象），然后让(Asset)-[:BELONGS TO:]-> (Cabinet)，希望您给些建议
 		上架：
-			Cabinet//string
-			U//int
-			Date Mounted//date
+			Cabinet//string, required 
+			U//int, required
+			Date Mounted//date, required, 时间戳
 		未上架：
 			Position//string
-	Model//string
-	Product Date //date
-	Warranty Expiration Date //date
-	Date of Retirement //date
+	Model//string, required
+	Product Date //date, required, 时间戳
+	Warranty Expiration Date //date, required, 时间戳
+	Date of Retirement //date, optional, 时间戳
 AbstractServer字段：
-	IP Address //array: valid IPv4 addresses
-	Virtual Machine //bool
-	Operating System //string
-	Hardware Info //string
-	Storage Info //string
+	IP Address //array: valid IPv4 addresses, required
+	Virtual Machine //bool, required
+	Operating System //string, required
+	Hardware Info //string, optional
+	Storage Info //string, required if ("Virtual Machine"==true)
 ```
 
 
 第二层 - category
 ```
-	PhysicalServer - 物理机：继承ConfigurationItem.AbstractServer, ConfigurationItem.Asset.Hardware
-	VirtualServer - 虚拟机：继承ConfigurationItem.AbstractServer
-	Storage - 存储：继承ConfigurationItem.Asset.Hardware
-	NetworkDevice - 网络设备：继承ConfigurationItem.Asset.Hardware
-	– Switch - 交换机 
-	– Router - 路由器 
-	– Firewall - 防火墙
-	Camera - 摄像头：继承ConfigurationItem.Asset.Hardware
+PhysicalServer - 物理机：继承ConfigurationItem.AbstractServer, ConfigurationItem.Asset.Hardware
+VirtualServer - 虚拟机：继承ConfigurationItem.AbstractServer
+Storage - 存储：继承ConfigurationItem.Asset.Hardware
+NetworkDevice - 网络设备：继承ConfigurationItem.Asset.Hardware
+– Switch - 交换机 
+– Router - 路由器 
+– Firewall - 防火墙
+Camera - 摄像头：继承ConfigurationItem.Asset.Hardware
 ```
 字段定义：
 ```
