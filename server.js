@@ -30,11 +30,14 @@ var postProcess = function (result) {
 
 app.defineAPI({
     method: 'GET',
-    route: '/api/cfgItems/pagination',
+    route: '/api/cfgItems',
     cypherQueryFile: './cypher/queryCfgItems.cyp',
     preProcess: function (params) {
-        var skip = (String)(parseInt(params.page) * parseInt(params.per_page));
-        var params_new = {"skip":skip,"limit":params.per_page}
+        var params_new = {"skip":0,"limit":Number.MAX_VALUE};
+        if(params.page&&params.per_page){
+            var skip = (String)(parseInt(params.page) * parseInt(params.per_page));
+            params_new = {"skip":skip,"limit":params.per_page}
+        }
         return params_new;
     },
     postProcess: postProcess
@@ -53,8 +56,8 @@ app.defineAPI({
     route: '/api/cfgItems',
     preProcess: function (params) {
         var params_new = params.data.fields;
-        // params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
-        params_new.cypher = "hello";
+        params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
+        //params_new.cypher = "hello";
         return params_new;
     },
     postProcess: function (result) {
