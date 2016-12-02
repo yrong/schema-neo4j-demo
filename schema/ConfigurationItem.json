@@ -1,0 +1,26 @@
+{
+  "id": "/ConfigurationItem",
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "string"
+    },
+    "monitored": {
+      "type": "boolean",
+      "default": false
+    },
+    "responsibility": {
+      "type": "string"
+    },
+    "tech_support": {
+      "type": "string"
+    },
+    "storage_info":{
+      "type": "string"
+    },
+    "hardware":{
+      "type": "string"
+    }
+  },
+  "required": ["monitored"]
+}

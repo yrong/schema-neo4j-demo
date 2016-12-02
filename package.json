@@ -10,7 +10,9 @@
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "koa-neo4j": "^0.10.17"
+    "ajv": "^4.9.0",
+    "koa-neo4j": "^0.10.17",
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "babel": "^6.5.2",

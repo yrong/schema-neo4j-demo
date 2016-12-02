@@ -3,11 +3,11 @@
 	"data":{
 	    "category":"VirtualServer",
 	    "fields":{
-    	    "name":"vm1",
-			"it_service":"service1",
-			"ip":"10.10.35.6",
+			"service":"service1",
+			"ips":["10.10.35.63"],
 			"host":"vm-1",
-			"os_system": "ubuntu"
+			"os": "ubuntu",
+			"storage": "hp-disk1"
 	    }
 	}
 }

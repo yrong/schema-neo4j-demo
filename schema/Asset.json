@@ -1,0 +1,28 @@
+{
+  "id": "/Asset",
+  "allOf":
+  [
+    {"$ref": "/ConfigurationItem"},
+    {"properties":
+      {
+        "assetId": {
+          "type": "string"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "geo_loc": {
+          "type": "string"
+        },
+        "model":{
+          "type": "string"
+        },
+        "product_date":{
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  ],
+  "required": ["model", "product_date"]
+}

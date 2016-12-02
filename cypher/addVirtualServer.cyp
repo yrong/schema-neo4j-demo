@@ -1,7 +1,4 @@
-CREATE (:VirtualServer {
-	name:{name},
-	it_service:{it_service},
-	ip:{ip},
-	host:{host},
-	os_system: {os_system}
-})
+MERGE (server:VirtualServer:AbstractServer:ConfigurationItem {uuid: {fields}.uuid})
+ON CREATE SET server = {fields},server.created = timestamp()
+ON MATCH SET server = {fields},server.lastUpated = timestamp()
+RETURN server

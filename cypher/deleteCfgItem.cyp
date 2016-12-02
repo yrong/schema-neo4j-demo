@@ -1,3 +1,3 @@
 MATCH (s)
-WHERE ID(s) = {id}
+WHERE s.uuid = {uuid}
 DELETE s

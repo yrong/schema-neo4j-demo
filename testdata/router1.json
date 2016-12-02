@@ -3,11 +3,11 @@
   "data":{
     "category":"Router",
     "fields":{
-      "name":"router1",
-      "it_service":"service1",
-      "date_added":"2016-10-11",
+      "service":"service1",
+      "responsibility":"zhang.san",
       "sn":"123456",
-      "model":"a10"
+      "model":"a10",
+      "product_date":"2016-10-11"
     }
   }
 }

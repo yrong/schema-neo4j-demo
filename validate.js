@@ -1,22 +1,24 @@
-var cfgItemChecker = {};
+var Ajv = require('ajv');
 
-cfgItemChecker['VirtualServer'] = function(params) {
-    return true;
-}
+var _ = require('lodash');
 
-cfgItemChecker['Router'] = function(params) {
-    return true;
-}
+var ajv = new Ajv({ useDefaults: true });
+
+var abstractTypes = ['ConfigurationItem','AbstractServer','Asset','Hardware'];
+
+_.forEach(abstractTypes,function(type){
+    ajv.addSchema(require('./schema/'+ type + '.json'));
+});
 
 var checkCfgItem = function (params) {
     if(!params.data||!params.data.category){
         throw new Error("cfgItem does not contain category field!");
     }
-    var check_func = cfgItemChecker[params.data.category];
-    if(check_func){
-        check_func(params);
+    var valid = ajv.validate(require('./schema/'+ params.data.category + '.json'),params.data.fields);
+    if(!valid){
+        throw new Error(ajv.errorsText());
     }
-    return true;
+    return valid;
 };
 
 module.exports.checkCfgItem = checkCfgItem;

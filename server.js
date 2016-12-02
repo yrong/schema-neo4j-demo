@@ -2,6 +2,8 @@ var fs = require('file-system');
 
 var _ = require('lodash');
 
+var uuid = require('node-uuid');
+
 var KoaNeo4jApp = require('./koa-neo4j');
 
 var validate = require('./validate')
@@ -23,19 +25,27 @@ var postProcess = function (result) {
                 "displayAs":"toast" //toast, modal, console, alert
             },
             "data":{
-                "count":result.length,//所有结果总数
-                "results": result
+                "count":0,
+                "results": []
             }
         };
+    if(result[0]){
+        var results = result[0].nodes
+        results = _.map(results, function(value) {
+            return _.omit(value,'id');
+        });
+        result_new.data.count = result[0].cnt;
+        result_new.data.results = results;
+    }
     return result_new;
 };
-
+var MAXNUM = 1000;
 app.defineAPI({
     method: 'GET',
     route: '/api/cfgItems',
     cypherQueryFile: './cypher/queryCfgItems.cyp',
     preProcess: function (params) {
-        var params_new = {"skip":0,"limit":Number.MAX_VALUE};
+        var params_new = {"skip":0,"limit":MAXNUM};
         if(params.page&&params.per_page){
             var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
             params_new = {"skip":skip,"limit":params.per_page}
@@ -50,7 +60,10 @@ app.defineAPI({
     route: '/api/cfgItems',
     check: validate.checkCfgItem,
     preProcess: function (params) {
-        var params_new = params.data.fields;
+        var params_new = {"fields":params.data.fields};
+        if(!params_new.fields.uuid){
+            params_new.fields.uuid = uuid.v1();
+        }
         params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
         //params_new.cypher = "hello";
         return params_new;
@@ -69,7 +82,7 @@ app.defineAPI({
 
 app.defineAPI({
     method: 'DEL',
-    route: '/api/cfgItems/:id',
+    route: '/api/cfgItems/:uuid',
     cypherQueryFile: './cypher/deleteCfgItem.cyp',
     postProcess: function (result) {
         var result_new = {
