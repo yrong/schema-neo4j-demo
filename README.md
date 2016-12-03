@@ -133,12 +133,12 @@ Asset字段
 	Asset ID//待定，暂时为空
 	SN//string, optional
 	GEO Location//string, required
-	Asset location//位置信息，上架或未上架。可能有必要建立Cabinet（机柜对象），然后让(Asset)-[:BELONGS TO:]-> (Cabinet)，希望您给些建议
-		上架：
+	Asset location//位置信息，上架或未上架。
+		上架：//(Asset)-[:IS LOCATED:{status:'mounted',U:42,'Date Mounted':'time stamp'}]-> (Cabinet)
 			Cabinet//string, required 
 			U//int, required
 			Date Mounted//date, required, 时间戳
-		未上架：
+		未上架：//(Asset)-[:IS LOCATED:{status:'unmounted'}]-> (Location)
 			Position//string
 	Model//string, required
 	Product Date //date, required, 时间戳
@@ -170,6 +170,16 @@ PhysicalServer //物理机：
 	Management IP //array: valid IPv4 addresses
 VirtualServer //虚拟机：
 	Host Server //PhysicalServer
+```
+
+其他类的字段：
+```
+Cabinet
+    Name //string, required
+    Description //string
+Location
+    Name //string, required
+    Description //string
 ```
 
 # 测试集用postman保存；
