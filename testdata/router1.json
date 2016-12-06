@@ -4,10 +4,11 @@
     "category":"Router",
     "fields":{
       "service":"service1",
-      "responsibility":"zhang.san",
+      "userid":1,
       "sn":"123456",
       "model":"a10",
-      "product_date":"2016-10-11"
+      "product_date":"2016-10-11",
+      "asset_loc": {"status":"mounted","u":42,"date_mounted":"2016-06-28","cabinet":{"name":"1","desc":"1"}}
     }
   }
 }

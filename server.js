@@ -8,11 +8,15 @@ var KoaNeo4jApp = require('./koa-neo4j');
 
 var validate = require('./validate')
 
+var config = require('config');
+
+var neo4jConfig = config.get('config.neo4j');
+
 var app = new KoaNeo4jApp({
     neo4j: {
-        boltUrl: 'bolt://localhost',
-        user: 'neo4j',
-        password: 'neo4j'
+        boltUrl: 'bolt://'+ neo4jConfig.host,
+        user: neo4jConfig.user,
+        password: neo4jConfig.password
     }
 });
 
@@ -64,8 +68,9 @@ app.defineAPI({
         if(!params_new.fields.uuid){
             params_new.fields.uuid = uuid.v1();
         }
+        params_new.loc = params_new.fields.asset_loc;
+        params_new.fields = _.omit(params_new.fields,'asset_loc');
         params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
-        //params_new.cypher = "hello";
         return params_new;
     },
     postProcess: function (result) {

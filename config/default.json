@@ -1,0 +1,15 @@
+{
+  "config": {
+    "neo4j": {
+      "host": "localhost",
+      "user": "neo4j",
+      "password": "neo4j"
+    },
+    "mysql": {
+      "host": "localhost",
+      "user": "root",
+      "password": "root",
+      "database": "test"
+    }
+  }
+}

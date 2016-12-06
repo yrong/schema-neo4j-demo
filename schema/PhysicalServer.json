@@ -1,0 +1,16 @@
+{
+  "id": "/PhysicalServer",
+  "allOf": [
+    {"$ref": "/AbstractServer"},
+    {"$ref": "/Hardware"},
+    {"properties": {
+      "manageIP":{
+        "type": "array",
+        "items": {"type": "string","format":"ipv4"},
+        "minItems": 1
+      }
+    }
+    }
+  ],
+  "required": ["manageIP"]
+}

@@ -14,6 +14,37 @@
         "geo_loc": {
           "type": "string"
         },
+        "asset_loc":{
+          "type":"object",
+          "oneOf":[
+            {"properties" :
+              {
+                "status" : {
+                  "type" : "string"
+                },
+                "cabinet":{"type":"object","properties":{"name":{"type":"string"},"desc":{"type":"string"}},"required":["name"]},
+                "date_mounted" : {
+                  "type" : "string",
+                  "format": "date"
+                },
+                "u" : {
+                  "type" : "integer"
+                }
+              },
+              "required":["status","u","date_mounted"]
+            },
+            {"properties" :
+              {
+                "status" : {
+                  "type" : "string"
+                },
+                "loc":{"type":"object","properties":{"name":{"type":"string"},"desc":{"type":"string"}},"required":["name"]}
+
+              },
+              "required":["status","loc"]
+            }
+          ]
+        },
         "model":{
           "type": "string"
         },
