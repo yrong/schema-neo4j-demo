@@ -2,23 +2,17 @@
   "id": "/ConfigurationItem",
   "type": "object",
   "properties": {
-    "service": {
+    "it_service": {
       "type": "string"
     },
     "monitored": {
       "type": "boolean",
       "default": false
     },
-    "responsibility": {
+    "userid": {
       "type": "string"
     },
-    "tech_support": {
-      "type": "string"
-    },
-    "storage_info":{
-      "type": "string"
-    },
-    "hardware":{
+    "technical_support_info": {
       "type": "string"
     }
   },

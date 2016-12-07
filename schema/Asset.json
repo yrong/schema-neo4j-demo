@@ -5,16 +5,16 @@
     {"$ref": "/ConfigurationItem"},
     {"properties":
       {
-        "assetId": {
+        "asset_id": {
           "type": "string"
         },
         "sn": {
           "type": "string"
         },
-        "geo_loc": {
+        "geo_location": {
           "type": "string"
         },
-        "asset_loc":{
+        "asset_location":{
           "type":"object",
           "oneOf":[
             {"properties" :
@@ -22,7 +22,7 @@
                 "status" : {
                   "type" : "string"
                 },
-                "cabinet":{"type":"object","properties":{"name":{"type":"string"},"desc":{"type":"string"}},"required":["name"]},
+                "cabinet":{"type":"string"},
                 "date_mounted" : {
                   "type" : "string",
                   "format": "date"
@@ -38,10 +38,10 @@
                 "status" : {
                   "type" : "string"
                 },
-                "loc":{"type":"object","properties":{"name":{"type":"string"},"desc":{"type":"string"}},"required":["name"]}
+                "location":{"type":"string"}
 
               },
-              "required":["status","loc"]
+              "required":["status","location"]
             }
           ]
         },
@@ -51,9 +51,17 @@
         "product_date":{
           "type": "string",
           "format": "date"
+        },
+        "warranty_expiration_date":{
+          "type": "string",
+          "format": "date"
+        },
+        "retirement_date":{
+          "type": "string",
+          "format": "date"
         }
       }
     }
   ],
-  "required": ["model", "product_date"]
+  "required": ["model", "product_date","warranty_expiration_date"]
 }

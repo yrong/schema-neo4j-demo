@@ -20,7 +20,16 @@ var app = new KoaNeo4jApp({
     }
 });
 
-var postProcess = function (result) {
+var paginationQuery_preProcess = function (params) {
+    var params_new = {"skip":0,"limit":MAXNUM};
+    if(params.page&&params.per_page){
+        var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
+        params_new = {"skip":skip,"limit":params.per_page}
+    }
+    return _.assign(params,params_new);
+};
+
+var paginationQuery_postProcess = function (result) {
     var result_new =
         {
             "status":"ok", //ok, info, warning, error,
@@ -43,46 +52,70 @@ var postProcess = function (result) {
     }
     return result_new;
 };
+
 var MAXNUM = 1000;
+
 app.defineAPI({
     method: 'GET',
     route: '/api/cfgItems',
     cypherQueryFile: './cypher/queryCfgItems.cyp',
-    preProcess: function (params) {
-        var params_new = {"skip":0,"limit":MAXNUM};
-        if(params.page&&params.per_page){
-            var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
-            params_new = {"skip":skip,"limit":params.per_page}
-        }
-        return params_new;
-    },
-    postProcess: postProcess
+    preProcess: paginationQuery_preProcess,
+    postProcess: paginationQuery_postProcess
 });
+
+var addItem_preProcess = function (params) {
+    var params_new = {"fields":params.data.fields};
+    if(!params_new.fields.uuid){
+        params_new.fields.uuid = uuid.v1();
+    }
+    params_new.asset_location = params_new.fields.asset_location?params_new.fields.asset_location:null;
+    params_new.fields = _.omit(params_new.fields,'asset_location');
+
+    params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
+    params_new.fields.updated_by = 1//user.userid
+    return params_new;
+};
+
+var addItem_postProcess = function (result) {
+    return {
+        "status":"info", //ok, info, warning, error,
+        "message":{
+            "content":"add success",
+            "displayAs":"toast" //toast, modal, console, alert
+        }
+    };
+}
 
 app.defineAPI({
     method: 'POST',
     route: '/api/cfgItems',
     check: validate.checkCfgItem,
-    preProcess: function (params) {
-        var params_new = {"fields":params.data.fields};
-        if(!params_new.fields.uuid){
-            params_new.fields.uuid = uuid.v1();
-        }
-        params_new.loc = params_new.fields.asset_loc;
-        params_new.fields = _.omit(params_new.fields,'asset_loc');
-        params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
-        return params_new;
-    },
-    postProcess: function (result) {
-        var result_new = {
-            "status":"info", //ok, info, warning, error,
-            "message":{
-                "content":"add success",
-                "displayAs":"toast" //toast, modal, console, alert
-            }
-        };
-        return result_new;
-    }
+    preProcess: addItem_preProcess,
+    postProcess: addItem_postProcess
+});
+
+app.defineAPI({
+    method: 'POST',
+    route: '/api/cabinets',
+    check: validate.checkCfgItem,
+    preProcess: addItem_preProcess,
+    postProcess: addItem_postProcess
+});
+
+app.defineAPI({
+    method: 'POST',
+    route: '/api/locations',
+    check: validate.checkCfgItem,
+    preProcess: addItem_preProcess,
+    postProcess: addItem_postProcess
+});
+
+app.defineAPI({
+    method: 'POST',
+    route: '/api/it_services',
+    check: validate.checkCfgItem,
+    preProcess: addItem_preProcess,
+    postProcess: addItem_postProcess
 });
 
 app.defineAPI({
@@ -100,6 +133,24 @@ app.defineAPI({
         return result_new;
     }
 });
+
+app.defineAPI({
+    method: 'GET',
+    route: '/api/users',
+    cypherQueryFile: './cypher/queryUsers.cyp',
+    preProcess: function (params) {
+        params = paginationQuery_preProcess(params);
+        if(params.keyword){
+            params.alias = '(?i).*' +params.keyword + '.*';
+            params.cypher = fs.readFileSync('./cypher/queryUsersByAlias.cyp', 'utf8');
+        }else{
+            params.cypher = fs.readFileSync('./cypher/queryUsers.cyp', 'utf8');
+        }
+        return params;
+    },
+    postProcess: paginationQuery_postProcess
+});
+
 
 app.listen(3000, function () {
     console.log('App listening on port 3000.');

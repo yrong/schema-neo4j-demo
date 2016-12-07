@@ -3,22 +3,22 @@
   "allOf": [
     {"$ref": "/ConfigurationItem"},
     {"properties": {
-        "ips": {
+        "ip_address": {
           "type": "array",
           "items": {"type": "string","format":"ipv4"},
           "minItems": 1
         },
-        "os": {
+        "operating_system": {
           "type": "string"
         },
-        "storage":{
+        "storage_info":{
           "type": "string"
         },
-        "hardware":{
+        "hardware_info":{
           "type": "string"
         }
       }
     }
   ],
-  "required": ["ips", "os","storage"]
+  "required": ["ip_address", "operating_system"]
 }

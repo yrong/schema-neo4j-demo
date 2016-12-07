@@ -1,4 +1,8 @@
-MERGE (server:VirtualServer:AbstractServer:ConfigurationItem {uuid: {fields}.uuid})
-ON CREATE SET server = {fields},server.created = timestamp()
-ON MATCH SET server = {fields},server.lastUpated = timestamp()
-RETURN server
+MERGE (n:VirtualServer:AbstractServer:ConfigurationItem {uuid: {fields}.uuid})
+ON CREATE SET n = {fields},n.created = timestamp()
+ON MATCH SET n = {fields},n.lastUpated = timestamp()
+
+FOREACH ( i in (CASE WHEN {fields}.userid IS NOT NULL THEN [1] ELSE [] END) |
+    MERGE (owner:User {userid:{fields}.userid})
+    MERGE (owner)-[:RESPONSIBLE_FOR]->(n)
+)

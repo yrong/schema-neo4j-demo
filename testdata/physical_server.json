@@ -1,0 +1,17 @@
+{
+  "token": "12345678",
+  "data":{
+    "category":"PhysicalServer",
+    "fields":{
+      "it_service":"service1",
+      "ip_address":["10.10.35.63"],
+      "technical_support_info":"010-123456",
+      "operating_system": "ubuntu",
+      "storage_info": "hp-disk1",
+      "model":"a10",
+      "product_date":"2016-10-11",
+      "warranty_expiration_date":"2016-11-11",
+      "management_ip":["10.10.35.64"]
+    }
+  }
+}

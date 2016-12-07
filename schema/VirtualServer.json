@@ -3,11 +3,11 @@
   "allOf": [
     {"$ref": "/AbstractServer"},
     {"properties": {
-      "host":{
+      "host_server":{
         "type": "string"
       }
     }
     }
   ],
-  "required": ["host"]
+  "required": ["host_server","storage_info"]
 }
