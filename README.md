@@ -186,9 +186,36 @@ Location
 
 # 项目阶段：
 - 配置项目增删改查、搜索、身份认证
+-- Users查询、与配置项关联
+-- Location, Cabinet增删改查、与配置项关联
 -- 配置项签入、签出
 - IT_Services增删改查、与配置项关联
 - 变更记录的保存和查询、搜索
 - 权限管理
 
 
+# 补充：与配置项相关联的对象
+## 用户
+### 查、搜
+> 搜索Users，将keyword作为条件匹配alias字段，若keyword为空则返回所有：//只返回公开信息：userid, alias, lang, name, surname；系统权限功能启用之后，针对admin用户，此API返回passwd之外的用户的所有字段
+```
+GET /API/users?keyword={keyword}&page={page}&per_page={per_page}
+```
+> 返回指定User的详细信息：//要求同上
+```
+GET /API/users/{id}
+```
+## Cabinet
+### 查、搜
+> 搜索Cabinets，将keyword作为条件匹配==所有==字段，若keyword为空则返回所有：
+```
+GET /API/cabinets?keyword={keyword}&page={page}&per_page={per_page}
+```
+> 返回指定User的详细信息：//要求同上
+```
+GET /API/cabinets/{id}
+```
+### 增删改：格式和cfgItems相同，略
+以下格式和Cabinet相同，所以仅注明URI
+## Location:  /API/locations
+## IT Service:  /API/IT_Services
