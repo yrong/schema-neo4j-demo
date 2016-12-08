@@ -1,4 +1,4 @@
-MERGE (n:PhysicalServer:AbstractServer:ConfigurationItem:Hardware:Asset {uuid: {fields}.uuid})
+MERGE (n:PhysicalServer:AbstractServer:ConfigurationItem:Hardware:Asset {uuid: {uuid}})
 ON CREATE SET n = {fields},n.created = timestamp()
 ON MATCH SET n = {fields},n.lastUpated = timestamp()
 

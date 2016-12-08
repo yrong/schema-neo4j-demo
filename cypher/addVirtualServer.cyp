@@ -1,4 +1,4 @@
-MERGE (n:VirtualServer:AbstractServer:ConfigurationItem {uuid: {fields}.uuid})
+MERGE (n:VirtualServer:AbstractServer:ConfigurationItem {uuid: {uuid}})
 ON CREATE SET n = {fields},n.created = timestamp()
 ON MATCH SET n = {fields},n.lastUpated = timestamp()
 

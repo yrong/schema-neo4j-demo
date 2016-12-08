@@ -8,6 +8,8 @@ var KoaNeo4jApp = require('./koa-neo4j');
 
 var validate = require('./validate')
 
+var queryString = require('query-string');
+
 var config = require('config');
 
 var neo4jConfig = config.get('config.neo4j');
@@ -65,12 +67,10 @@ app.defineAPI({
 
 var addItem_preProcess = function (params) {
     var params_new = {"fields":params.data.fields};
-    if(!params_new.fields.uuid){
-        params_new.fields.uuid = uuid.v1();
-    }
-    params_new.asset_location = params_new.fields.asset_location?params_new.fields.asset_location:null;
-    params_new.fields = _.omit(params_new.fields,'asset_location');
-
+    params_new.uuid = params.uuid?params.uuid:uuid.v1();
+    params_new.asset_location = params.data.fields.asset_location?params.data.fields.asset_location:null;
+    params_new.userid = params.data.fields.userid?params.data.fields.userid:null;
+    params_new.fields = _.omit(params.data.fields,'asset_location');
     params_new.cypher = fs.readFileSync('./cypher/add' + params.data.category + '.cyp', 'utf8');
     params_new.fields.updated_by = 1//user.userid
     return params_new;
@@ -151,6 +151,15 @@ app.defineAPI({
     postProcess: paginationQuery_postProcess
 });
 
+
+app.router.get('/api/schema', function (ctx, next) {
+    if (ctx.url.indexOf('?') >= 0) {
+        params = `?${ctx.url.split('?')[1]}`;
+        params = queryString.parse(params);
+    }
+    ctx.body = JSON.stringify(validate.getSchema('/'+params.id),null,3);
+    return next();
+});
 
 app.listen(3000, function () {
     console.log('App listening on port 3000.');

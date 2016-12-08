@@ -3,13 +3,13 @@
   "data":{
     "category":"Router",
     "fields":{
-      "it_service":"service1",
+      "it_service":"0f27c5a0-bceb-11e6-822a-15c86217fcb0",
       "userid":1,
       "sn":"123456",
       "model":"a10",
       "product_date":"2016-10-11",
       "warranty_expiration_date":"2016-11-11",
-      "asset_location": {"status":"mounted","u":42,"date_mounted":"2016-06-28","cabinet":"4d52d2b0-bc83-11e6-a6b5-87f1bd05ab6d"}
+      "asset_location": {"status":"mounted","u":42,"date_mounted":"2016-06-28","cabinet":"f638e490-bcf2-11e6-a809-c9bb17ebbc6b"}
     }
   }
 }

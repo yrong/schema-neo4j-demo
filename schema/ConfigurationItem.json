@@ -10,7 +10,7 @@
       "default": false
     },
     "userid": {
-      "type": "string"
+      "type": "integer"
     },
     "technical_support_info": {
       "type": "string"
