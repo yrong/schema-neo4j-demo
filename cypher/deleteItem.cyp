@@ -1,3 +1,4 @@
-MATCH (s:ConfigurationItem)
+MATCH (s)
 WHERE s.uuid = {uuid}
+DETACH
 DELETE s

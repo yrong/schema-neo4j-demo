@@ -54,6 +54,41 @@ class Neo4jConnection {
         })
             .then(parser.parse);
     }
+
+    executeCyphers(cyphers,params) {
+
+        let that = this;
+
+        let runCyphers = function (array, fn) {
+            let index = 0;
+            const session = that.driver.session();
+            return new Promise(function(resolve, reject) {
+                function next() {
+                    if (index < array.length) {
+                        fn(session,array[index++]).then(next, reject);
+                    } else {
+                        resolve();
+                        session.close();
+                    }
+                }
+                next();
+            })
+        }
+
+
+        let runCypher= function(session,cypher){
+            return session.run(cypher, params);
+        }
+
+        return new Promise((resolve, reject) => {
+            runCyphers(cyphers,runCypher).then(function() {
+                resolve();
+            }, function(error) {
+                error = error.fields ? JSON.stringify(error.fields[0]) : String(error);
+                reject(`error while executing Cypher: ${error}`);
+            });
+        })
+    }
 }
 
 class Hook {
@@ -137,6 +172,11 @@ const createProcedure = (neo4jConnection, procedure) => {
         else if (params.cypher || cypherQueryFile) {
             result = neo4jConnection.executeCypher(params.cypher || cypherQueryFile,
                 params, params.cypher);
+            paramsCypher = true;
+        }
+        else if (params.cyphers) {
+            result = neo4jConnection.executeCyphers(params.cyphers,
+                params);
             paramsCypher = true;
         }
         else

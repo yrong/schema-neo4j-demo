@@ -19,9 +19,6 @@
           "oneOf":[
             {"properties" :
               {
-                "status" : {
-                  "type" : "string"
-                },
                 "cabinet":{"type":"string"},
                 "date_mounted" : {
                   "type" : "string",
@@ -31,17 +28,13 @@
                   "type" : "integer"
                 }
               },
-              "required":["status","u","date_mounted"]
+              "required":["u","date_mounted"]
             },
             {"properties" :
               {
-                "status" : {
-                  "type" : "string"
-                },
                 "location":{"type":"string"}
-
               },
-              "required":["status","location"]
+              "required":["location"]
             }
           ]
         },

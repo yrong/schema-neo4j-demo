@@ -1,7 +1,7 @@
 {
   "token": "12345678",
   "data":{
-    "category":"PhysicalServer",
+    "category":"Storage",
     "fields":{
       "it_service":"7d837ec0-bdec-11e6-a497-8387b4d4669d",
       "ip_address":["10.10.35.63"],

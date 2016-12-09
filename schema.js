@@ -4,13 +4,15 @@ var _ = require('lodash');
 
 var ajv = new Ajv({ useDefaults: true });
 
-var cmdbTypes = ['ConfigurationItem','AbstractServer','Asset','Hardware','Cabinet','ITService','Location','PhysicalServer','Router','VirtualServer'];
+var cmdbTypes = ['PhysicalServer','Router','VirtualServer','Camera','Storage','Cabinet','ITService','Location','User'];
 
-_.forEach(cmdbTypes,function(type){
+var cmdbTypesAll = ['ConfigurationItem','AbstractServer','Asset','Hardware','NetworkDevice','PhysicalServer','Router','VirtualServer','Camera','Storage','Cabinet','ITService','Location','User'];
+
+_.forEach(cmdbTypesAll,function(type){
     ajv.addSchema(require('./schema/'+ type + '.json'));
 });
 
-var checkCfgItem = function (params) {
+var checkSchema = function (params) {
     if(!params.data||!params.data.category){
         throw new Error("cfgItem does not contain category field!");
     }
@@ -47,6 +49,10 @@ var extendSchema = function(schema) {
 
 
 
-module.exports.checkCfgItem = checkCfgItem;
+module.exports.checkSchema = checkSchema;
 
 module.exports.getSchema = getSchema;
+
+module.exports.cmdbTypes = cmdbTypes;
+
+module.exports.cmdbTypesAll = cmdbTypesAll;

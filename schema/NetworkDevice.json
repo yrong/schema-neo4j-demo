@@ -1,0 +1,6 @@
+{
+  "id": "/NetworkDevice",
+  "allOf": [
+    {"$ref": "/Hardware"}
+  ]
+}

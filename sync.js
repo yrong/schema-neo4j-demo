@@ -26,7 +26,7 @@ mysql.query("SELECT * FROM users", function (err, rows, fields) {
     var promises = [];
     console.log("user count:" + rows.length)
     rows.forEach(function (row) {
-        var cypher = "MERGE (u:User{userid:" + row.userid + "}) ON CREATE SET u = {row} ON MATCH SET u = {row}";
+        var cypher = "MERGE (u:User{userid:" + row.userid + "}) ON CREATE SET u = {row},u.uuid={row}.userid ON MATCH SET u = {row},u.uuid={row}.userid";
         promises.push(session.run(cypher,{'row':row}));
     });
     Promise.all(promises).then(function(){

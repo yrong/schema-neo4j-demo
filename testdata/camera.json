@@ -1,10 +1,10 @@
 {
   "token": "12345678",
   "data":{
-    "category":"Router",
+    "category":"Camera",
     "fields":{
       "it_service":"7d837ec0-bdec-11e6-a497-8387b4d4669d",
-      "userid":1,
+      "userid":2,
       "sn":"123456",
       "model":"a10",
       "product_date":"2016-10-11",
