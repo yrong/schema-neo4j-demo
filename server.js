@@ -125,7 +125,7 @@ app.defineAPI({
 
 /*Schema*/
 app.router.get('/api/schema/:id', function (ctx, next) {
-    ctx.body = JSON.stringify(schema.getSchema('/'+ctx.params.id),null,3);
+    ctx.body = schema.getSchema('/'+ctx.params.id);
     return next();
 });
 
