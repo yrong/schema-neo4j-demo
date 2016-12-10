@@ -9,7 +9,7 @@
       "model":"a10",
       "product_date":"2016-10-11",
       "warranty_expiration_date":"2016-11-11",
-      "asset_location": {"u":42,"date_mounted":"2016-06-28","cabinet":"f638e490-bcf2-11e6-a809-c9bb17ebbc6b"}
+      "asset_location": {"status":"mounted","u":42,"date_mounted":"2016-06-28","cabinet":"f638e490-bcf2-11e6-a809-c9bb17ebbc6b"}
     }
   }
 }
