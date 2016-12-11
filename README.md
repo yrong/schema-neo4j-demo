@@ -219,3 +219,55 @@ GET /API/cabinets/{id}
 以下格式和Cabinet相同，所以仅注明URI
 ## Location:  /API/locations
 ## IT Service:  /API/IT_Services
+关系：
+(sg1:ITServiceGroup)<-[:BelongsTo]-(service1:ITService)-[:ParentOf]->(service2:ITService)-[:DependsOn]->(service3:ITService)
+字段定义：
+IT Service：
+	ID //uuid
+    Name //string, required
+    Description //string
+IT Service Group:
+	ID //uuid
+    Name //string, required
+    Description //string
+
+全部服务列表查询：列出所有的分组和服务、子服务；
+```
+{
+	"status":"ok", //ok, info, warning, error,
+	"message":{
+		"content":"message text here",
+		"displayAs":"toast" //toast, modal, console, alert
+	},
+	"data":{
+		"results":[ //所有成员的ID, Name, Description: group->service->subservice
+		]
+	}
+}
+```
+
+查看某IT Service, IT Service Group:
+/API/IT_Services/service/{IT Service uuid}
+/API/IT_Services/group/{IT Service Group uuid}
+以下数组中的服务对象，只需包含Name, Description, uuid
+```
+{
+	"status":"ok", //ok, info, warning, error,
+	"message":{
+		"content":"message text here",
+		"displayAs":"toast" //toast, modal, console, alert
+	},
+	"data":{
+		"Type":"IT Service(Group) uuid"
+		"ID":"IT Service(Group) uuid",
+		"Name":"IT Service(Group) Name",
+		"Description":"IT Service Desc",
+		"Services":[ITService1, ITService2], // n/a for IT Service
+		"Group":"ITServiceGroup Name",// n/a for IT Service Group
+		"Sub IT Services":[ITService1, ITService2],// n/a for IT Service Group
+		"Parent":"IT Service Name",// n/a for IT Service Group
+		"Dependencies":[],// n/a for IT Service Group
+		"Dependendents":[] // n/a for IT Service Group
+	}
+}
+```
