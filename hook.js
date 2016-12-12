@@ -42,7 +42,7 @@ var paginationQueryItems_postProcess = function (result) {
                 "results": []
             }
         };
-    if(result[0]){
+    if(result&&result[0]){
         var results = result[0].nodes
         results = _.map(results, function(value) {
             return _.omit(value,'id');
@@ -118,11 +118,28 @@ var keyWordPaginationQueryItems_preProcess = function (params,ctx) {
     return params;
 }
 
+var queryITServiceRel_postProcess = function (result) {
+    var result_new =
+        {
+            "status":"ok", //ok, info, warning, error,
+            "message":{
+                "content":"query success",
+                "displayAs":"toast" //toast, modal, console, alert
+            },
+            "data": []
+        };
+    if(result&&result[0]){
+        result_new.data = result[0]
+    }
+    return result_new;
+};
+
 module.exports = {
     'paginationQueryItems_preProcess':paginationQueryItems_preProcess,
     'paginationQueryItems_postProcess':paginationQueryItems_postProcess,
     'addItem_preProcess':addItem_preProcess,
     'crudItem_postProcess':crudItem_postProcess,
-    'keyWordPaginationQueryItems_preProcess':keyWordPaginationQueryItems_preProcess
+    'keyWordPaginationQueryItems_preProcess':keyWordPaginationQueryItems_preProcess,
+    'queryITServiceRel_postProcess':queryITServiceRel_postProcess
 }
 

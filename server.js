@@ -128,6 +128,13 @@ app.defineAPI({
     postProcess: hook.paginationQueryItems_postProcess
 });
 
+app.defineAPI({
+    method: 'GET',
+    route: '/api/it_services/service/:uuid',
+    cypherQueryFile: './cypher/queryITServiceRel.cyp',
+    postProcess: hook.queryITServiceRel_postProcess
+});
+
 /*ITServiceGroup*/
 
 app.defineAPI({
