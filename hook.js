@@ -96,8 +96,11 @@ var getTypeFromUrl = function (url) {
     var type = _.find(schema.cmdbTypesAll,function(type){
         return url.includes(type.toLowerCase());
     })
-    if(url.includes('it_services')){
+    if(url.includes('it_services/service')){
         type = 'ITService';
+    }
+    if(url.includes('it_services/group')){
+        type = 'ITServiceGroup';
     }
     return type;
 }

@@ -4,9 +4,11 @@ var _ = require('lodash');
 
 var ajv = new Ajv({ useDefaults: true });
 
-var cmdbTypes = ['PhysicalServer','Router','VirtualServer','Camera','Storage','Cabinet','ITService','Location','User'];
+// Cmdb Real Types
+var cmdbTypes = ['PhysicalServer','Router','VirtualServer','Camera','Storage','Cabinet','ITService','Location','User','ITServiceGroup'];
 
-var cmdbTypesAll = ['ConfigurationItem','AbstractServer','Asset','Hardware','NetworkDevice','PhysicalServer','Router','VirtualServer','Camera','Storage','Cabinet','ITService','Location','User'];
+//Cmdb Types including abstract ones
+var cmdbTypesAll = ['ConfigurationItem','AbstractServer','Asset','Hardware','NetworkDevice'].concat(cmdbTypes);
 
 _.forEach(cmdbTypesAll,function(type){
     ajv.addSchema(require('./schema/'+ type + '.json'));

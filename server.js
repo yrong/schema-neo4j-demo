@@ -40,38 +40,13 @@ app.defineAPI({
     postProcess: hook.crudItem_postProcess
 });
 
-
-/*ITService*/
-
-app.defineAPI({
-    method: 'POST',
-    route: '/api/it_services',
-    check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
-    postProcess: hook.crudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/it_services/:uuid',
-    cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.crudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/it_services',
-    cypherQueryFile: './cypher/queryITServices.cyp',
-    preProcess: hook.keyWordPaginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
-});
-
 /*Cabinet*/
 app.defineAPI({
     method: 'POST',
     route: '/api/cabinets',
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
+    cypherQueryFile: './cypher/addCabinet.cyp',
     postProcess: hook.crudItem_postProcess
 });
 
@@ -85,7 +60,6 @@ app.defineAPI({
 app.defineAPI({
     method: 'GET',
     route: '/api/cabinets',
-    cypherQueryFile: './cypher/queryCabinets.cyp',
     preProcess: hook.keyWordPaginationQueryItems_preProcess,
     postProcess: hook.paginationQueryItems_postProcess
 });
@@ -96,6 +70,7 @@ app.defineAPI({
     route: '/api/locations',
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
+    cypherQueryFile: './cypher/addLocation.cyp',
     postProcess: hook.crudItem_postProcess
 });
 
@@ -109,7 +84,6 @@ app.defineAPI({
 app.defineAPI({
     method: 'GET',
     route: '/api/locations',
-    cypherQueryFile: './cypher/queryLocations.cyp',
     preProcess: hook.keyWordPaginationQueryItems_preProcess,
     postProcess: hook.paginationQueryItems_postProcess
 });
@@ -127,6 +101,56 @@ app.defineAPI({
 app.router.get('/api/schema/:id', function (ctx, next) {
     ctx.body = schema.getSchema('/'+ctx.params.id);
     return next();
+});
+
+/*ITService*/
+
+app.defineAPI({
+    method: 'POST',
+    route: '/api/it_services/service',
+    check: schema.checkSchema,
+    preProcess: hook.addItem_preProcess,
+    cypherQueryFile: './cypher/addITService.cyp',
+    postProcess: hook.crudItem_postProcess
+});
+
+app.defineAPI({
+    method: 'DEL',
+    route: '/api/it_services/service/:uuid',
+    cypherQueryFile: './cypher/deleteItem.cyp',
+    postProcess: hook.crudItem_postProcess
+});
+
+app.defineAPI({
+    method: 'GET',
+    route: '/api/it_services/service',
+    preProcess: hook.keyWordPaginationQueryItems_preProcess,
+    postProcess: hook.paginationQueryItems_postProcess
+});
+
+/*ITServiceGroup*/
+
+app.defineAPI({
+    method: 'POST',
+    route: '/api/it_services/group',
+    check: schema.checkSchema,
+    preProcess: hook.addItem_preProcess,
+    cypherQueryFile: './cypher/addITServiceGroup.cyp',
+    postProcess: hook.crudItem_postProcess
+});
+
+app.defineAPI({
+    method: 'DEL',
+    route: '/api/it_services/group/:uuid',
+    cypherQueryFile: './cypher/deleteItem.cyp',
+    postProcess: hook.crudItem_postProcess
+});
+
+app.defineAPI({
+    method: 'GET',
+    route: '/api/it_services/group',
+    preProcess: hook.keyWordPaginationQueryItems_preProcess,
+    postProcess: hook.paginationQueryItems_postProcess
 });
 
 app.listen(3000, function () {
