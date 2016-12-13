@@ -1,0 +1,3 @@
+MATCH (s:ITService{uuid:{uuid}})
+MATCH (s1:ITService {uuid:{parent}})
+CREATE (s)<-[:ParentOf]-(s1)

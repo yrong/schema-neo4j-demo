@@ -1,0 +1,15 @@
+{
+  "token": "12345678",
+  "data":{
+    "category":"ITService",
+    "fields":{
+      "name":"name",
+      "desc":"desc",
+      "group":null,
+      "parent":null,
+      "children":null,
+      "dependencies":null,
+      "dependendents":null
+    }
+  }
+}

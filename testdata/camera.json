@@ -3,13 +3,13 @@
   "data":{
     "category":"Camera",
     "fields":{
-      "it_service":"7d837ec0-bdec-11e6-a497-8387b4d4669d",
-      "userid":2,
+      "it_service":null,
+      "userid":1,
       "sn":"123456",
       "model":"a10",
       "product_date":"2016-10-11",
       "warranty_expiration_date":"2016-11-11",
-      "asset_location": {"status":"mounted","u":42,"date_mounted":"2016-06-28","cabinet":"f638e490-bcf2-11e6-a809-c9bb17ebbc6b"}
+      "asset_location": {"status":"mounted","u":42,"date_mounted":"2016-06-28","cabinet":null}
     }
   }
 }

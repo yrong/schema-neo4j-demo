@@ -40,6 +40,13 @@ app.defineAPI({
     postProcess: hook.crudItem_postProcess
 });
 
+app.defineAPI({
+    method: 'DEL',
+    route: '/api/items',
+    cypherQueryFile: './cypher/deleteItems.cyp',
+    postProcess: hook.crudItem_postProcess
+});
+
 /*Cabinet*/
 app.defineAPI({
     method: 'POST',
@@ -110,7 +117,6 @@ app.defineAPI({
     route: '/api/it_services/service',
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
-    cypherQueryFile: './cypher/addITService.cyp',
     postProcess: hook.crudItem_postProcess
 });
 

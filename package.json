@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "webpack": "./node_modules/.bin/webpack && ./node_modules/.bin/webpack --config webpack.config.js",
-    "sync": "node sync.js"
+    "sync": "node sync.js",
+    "test:integration": "node --harmony test.js"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
@@ -49,6 +50,7 @@
     "jasmine": "^2.5.0",
     "jasmine-given": "^2.6.4",
     "jasmine-spec-reporter": "^2.7.0",
+    "request-promise": "^4.1.1",
     "webpack": "^1.12.14"
   }
 }

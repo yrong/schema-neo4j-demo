@@ -18,8 +18,6 @@ var neo4j = neo4jDriver.driver("bolt://"+neo4jConfig.host, neo4jDriver.auth.basi
 
 var session = neo4j.session();
 
-var cypherStatements = [];
-
 console.time("migrationConsuming")
 mysql.query("SELECT * FROM users", function (err, rows, fields) {
     if (err) throw err;
@@ -32,7 +30,9 @@ mysql.query("SELECT * FROM users", function (err, rows, fields) {
     Promise.all(promises).then(function(){
         session.close();
         console.timeEnd("migrationConsuming");
-        process.exit();
+        if (require.main === module) {
+            process.exit();
+        }
     }).catch(function(error){
         console.log(error);
     })

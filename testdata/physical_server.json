@@ -3,7 +3,7 @@
   "data":{
     "category":"PhysicalServer",
     "fields":{
-      "it_service":"7d837ec0-bdec-11e6-a497-8387b4d4669d",
+      "it_service":null,
       "ip_address":["10.10.35.63"],
       "technical_support_info":"010-123456",
       "operating_system": "ubuntu",
@@ -11,7 +11,7 @@
       "model":"a10",
       "product_date":"2016-10-11",
       "warranty_expiration_date":"2016-11-11",
-      "asset_location": {"status":"unmounted","location":"57fd04f0-bdec-11e6-a497-8387b4d4669d"},
+      "asset_location": {"status":"unmounted","location":null},
       "management_ip":["10.10.35.64"]
     }
   }
