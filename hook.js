@@ -33,13 +33,12 @@ var paginationQueryItems_preProcess = function (params) {
 };
 
 var removeIdProperty = function(val) {
-    if(_.isObject(val)){
-        val = _.omit(val,'id')
-    }
-    else if(_.isArray(val)){
+    if(_.isArray(val)){
         val = _.map(val, function(val) {
             return _.omit(val,'id');
         });
+    }else{
+        val = _.omit(val,'id')
     }
     return val;
 }
