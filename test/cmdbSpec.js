@@ -1,5 +1,7 @@
 let rp = require('request-promise');
 
+let syncPromise = require('../sync');
+
 let base_uri = 'http://localhost:3000/api',userid=1,result,options,cabinet_id,location_id,
     service_1_id,service_2_id,service_3_id,service_4_id,service_group_id,service_id
 
@@ -15,96 +17,124 @@ let virtual_server = require('./testdata/virtual_server.json');
 
 let camera = require('./testdata/camera.json');
 
+describe("CMDB Integration test suite", function() {
 
-(async function() {
-    try {
-        //clear all items in db
+    it("clear all items in db", function(done) {
         options = {
             method: 'DELETE',
             uri: base_uri+'/items'
         };
-        result = await rp(options);
-        console.log(result);
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+        })
+    });
 
-        //sync user from mysql
-        require('./sync');
+    it("sync user from mysql", function(done) {
+        syncPromise().then(function(){
+            done();
+        })
+    });
 
-        //add Cabinet
+    it("add Cabinet", function(done) {
         options = {
             method: 'POST',
             uri: base_uri+'/cabinets',
             body: require('./testdata/cabinet.json'),
             json: true
         };
-        result = await rp(options);
-        console.log(result);
-        cabinet_id = result.uuid;
+        rp(options).then(function(result){
+            console.log(result);
+            cabinet_id = result.uuid;
+            done();
+        });
+    });
 
-        //add Location
+    it("add Location", function(done) {
         options = {
             method: 'POST',
             uri: base_uri+'/locations',
             body: require('./testdata/location.json'),
             json: true
         };
-        result = await rp(options);
-        console.log(result);
-        location_id = result.uuid;
+        rp(options).then(function(result){
+            console.log(result);
+            location_id = result.uuid;
+            done();
+        });
+    });
 
-
-        //add ServiceGroup
+    it("add ServiceGroup", function(done) {
         options = {
             method: 'POST',
             uri: base_uri+'/it_services/group',
             body: require('./testdata/it_service_group.json'),
             json: true
         };
-        result = await rp(options);
-        console.log(result);
-        service_group_id = result.uuid;
+        rp(options).then(function(result){
+            console.log(result);
+            service_group_id = result.uuid;
+            done();
+        });
+    });
 
-        //add Service1
+    it("add Service-1", function(done) {
         options = {
             method: 'POST',
             uri: base_uri+'/it_services/service',
             body: require('./testdata/it_service.json'),
             json: true
         };
-        result = await rp(options);
-        console.log(result);
-        service_1_id = result.uuid;
-        //add Service2
-        options = {
-            method: 'POST',
-            uri: base_uri+'/it_services/service',
-            body: require('./testdata/it_service.json'),
-            json: true
-        };
-        result = await rp(options);
-        console.log(result);
-        service_2_id = result.uuid;
-        //add Service3
-        options = {
-            method: 'POST',
-            uri: base_uri+'/it_services/service',
-            body: require('./testdata/it_service.json'),
-            json: true
-        };
-        result = await rp(options);
-        console.log(result);
-        service_3_id = result.uuid;
-        //add Service4
-        options = {
-            method: 'POST',
-            uri: base_uri+'/it_services/service',
-            body: require('./testdata/it_service.json'),
-            json: true
-        };
-        result = await rp(options);
-        console.log(result);
-        service_4_id = result.uuid;
+        rp(options).then(function(result){
+            console.log(result);
+            service_1_id = result.uuid;
+            done();
+        });
+    });
 
-        //add center it_service which related to others
+    it("add Service-2", function(done) {
+        options = {
+            method: 'POST',
+            uri: base_uri+'/it_services/service',
+            body: require('./testdata/it_service.json'),
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            service_2_id = result.uuid;
+            done();
+        });
+    });
+
+    it("add Service-3", function(done) {
+        options = {
+            method: 'POST',
+            uri: base_uri+'/it_services/service',
+            body: require('./testdata/it_service.json'),
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            service_3_id = result.uuid;
+            done();
+        });
+    });
+
+    it("add Service-4", function(done) {
+        options = {
+            method: 'POST',
+            uri: base_uri+'/it_services/service',
+            body: require('./testdata/it_service.json'),
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            service_4_id = result.uuid;
+            done();
+        });
+    });
+
+    it("add center it_service which has relationship to others", function(done) {
         it_service.data.fields.group = service_group_id;
         it_service.data.fields.parent = service_1_id;
         it_service.data.fields.children = [service_2_id];
@@ -116,11 +146,14 @@ let camera = require('./testdata/camera.json');
             body: it_service,
             json: true
         };
-        result = await rp(options);
-        console.log(result);
-        service_id = result.uuid;
+        rp(options).then(function(result){
+            console.log(result);
+            service_id = result.uuid;
+            done();
+        });
+    });
 
-        //add camera
+    it("add camera", function(done) {
         camera.data.fields.it_service = service_id;
         camera.data.fields.asset_location.cabinet = cabinet_id;
 
@@ -130,26 +163,11 @@ let camera = require('./testdata/camera.json');
             body: camera,
             json: true
         };
-        result = await rp(options);
-        console.log(result);
-
-        //query cases
-        process.exit(0);
-
-
-
-    } catch (e) {
-        console.log(e);
-        process.exit(-1);
-    }
-})();
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+        });
+    });
 
 
-
-
-options = {
-    method: 'POST',
-    uri: 'http://localhost:3000/api/cabinets',
-    body: require('./testdata/cabinet.json'),
-    json: true // Automatically parses the JSON string in the response
-};
+});
