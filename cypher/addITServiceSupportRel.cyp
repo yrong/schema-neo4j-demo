@@ -1,3 +1,4 @@
 MATCH (s:ITService{uuid:{it_service}})
 MATCH (n:ConfigurationItem {uuid:{uuid}})
-CREATE (n)-[:SUPPORT]->(s)
+CREATE (n)-[r:SUPPORT]->(s)
+RETURN r

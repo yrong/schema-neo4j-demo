@@ -22,7 +22,7 @@ app.defineAPI({
     route: '/api/cfgItems',
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
@@ -37,14 +37,14 @@ app.defineAPI({
     method: 'DEL',
     route: '/api/cfgItems/:uuid',
     cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/items',
     cypherQueryFile: './cypher/deleteItems.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 /*Cabinet*/
@@ -54,14 +54,14 @@ app.defineAPI({
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
     cypherQueryFile: './cypher/addCabinet.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/cabinets/:uuid',
     cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
@@ -78,14 +78,14 @@ app.defineAPI({
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
     cypherQueryFile: './cypher/addLocation.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/locations/:uuid',
     cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
@@ -117,14 +117,14 @@ app.defineAPI({
     route: '/api/it_services/service',
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/it_services/service/:uuid',
     cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
@@ -149,14 +149,14 @@ app.defineAPI({
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
     cypherQueryFile: './cypher/addITServiceGroup.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/it_services/group/:uuid',
     cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.crudItem_postProcess
+    postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({

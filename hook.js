@@ -103,6 +103,7 @@ var generateITServiceCyphersTodo = function (params) {
 
 var addItem_preProcess = function (params) {
     var params_new = {"fields":params.data.fields};
+    params_new.method = params.method;
     params_new.category = params.data.category;
     params_new.uuid = params.uuid?params.uuid:uuid.v1();
     if(_.indexOf(schema.cmdbTypes,params_new.category)>-1){
@@ -126,15 +127,22 @@ var addItem_preProcess = function (params) {
     return params_new;
 };
 
-var crudItem_postProcess = function (result,params,ctx) {
-    result = {
+var cudItem_postProcess = function (result,params,ctx) {
+    var result_new = {
         "status":"info",
         "content": 'Operation Success!',
         "displayAs":"toast"
     }
+    if(params.method == 'DEL' && params.uuid && result.length != 1){
+        result_new = {
+            "status":"WARN",
+            "content": 'no record found!',
+            "displayAs":"toast"
+        }
+    }
     if(params.uuid)
-        result.uuid = params.uuid;
-    return　result;
+        result_new.uuid = params.uuid;
+    return　result_new;
 };
 
 var getTypeFromUrl = function (url) {
@@ -184,7 +192,7 @@ module.exports = {
     'paginationQueryItems_preProcess':paginationQueryItems_preProcess,
     'paginationQueryItems_postProcess':paginationQueryItems_postProcess,
     'addItem_preProcess':addItem_preProcess,
-    'crudItem_postProcess':crudItem_postProcess,
+    'cudItem_postProcess':cudItem_postProcess,
     'keyWordPaginationQueryItems_preProcess':keyWordPaginationQueryItems_preProcess,
     'queryITServiceRel_postProcess':queryITServiceRel_postProcess
 }

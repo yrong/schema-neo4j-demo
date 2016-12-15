@@ -4,7 +4,7 @@ let assert = require('chai').assert;
 
 let syncPromise = require('../sync');
 
-let base_uri = 'http://localhost:3000/api',userid=1,result,options,cabinet_id,location_id,
+let base_uri = 'http://localhost:3000/api',NOT_EXIST_ID = 'abcd',result,options,cabinet_id,location_id,
     service_1_id,service_2_id,service_3_id,service_4_id,service_group_id,service_id,camera_id,user_id,user_alias
 
 let it_service = require('./testdata/it_service_with_rel.json');
@@ -368,6 +368,19 @@ describe("CMDB Integration test suite", function() {
             assert.equal(result.allOf[0].allOf[0].id,'/Hardware');
             assert.equal(result.allOf[0].allOf[0].allOf[0].id,'/Asset');
             assert.equal(result.allOf[0].allOf[0].allOf[0].allOf[0].id,'/ConfigurationItem');
+        });
+    });
+
+    it("delete cfgItem by uuid which does not exist", function(done) {
+        options = {
+            method: 'DELETE',
+            uri: base_uri+'/cfgItems/'+ NOT_EXIST_ID,
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.status,'WARN');
         });
     });
 

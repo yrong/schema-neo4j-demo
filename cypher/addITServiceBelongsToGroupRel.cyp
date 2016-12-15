@@ -1,3 +1,4 @@
 MATCH (s:ITService{uuid:{uuid}})
 MATCH (sg:ITServiceGroup {uuid:{group}})
-CREATE (s)-[:BelongsTo]->(sg)
+CREATE (s)-[r:BelongsTo]->(sg)
+RETURN r

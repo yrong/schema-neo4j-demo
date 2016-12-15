@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js&",
-    "webpack": "./node_modules/.bin/webpack && ./node_modules/.bin/webpack --config webpack.config.js",
+    "webpack": "./node_modules/.bin/webpack",
     "sync": "node sync.js",
     "test": "npm start && ./node_modules/mocha/bin/mocha"
   },
@@ -52,6 +52,7 @@
     "jasmine-given": "^2.6.4",
     "jasmine-spec-reporter": "^2.7.0",
     "mocha": "^3.2.0",
+    "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "webpack": "^1.12.14"
   }

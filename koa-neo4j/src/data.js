@@ -59,6 +59,8 @@ class Neo4jConnection {
 
         let that = this;
 
+        let results = [];
+
         let runCyphers = function (array, fn) {
             let index = 0;
             const session = that.driver.session();
@@ -77,17 +79,25 @@ class Neo4jConnection {
 
 
         let runCypher= function(session,cypher){
-            return session.run(cypher, params);
+            return session.run(cypher, params).then(result => {
+                results.push(result);
+            })
         }
 
         return new Promise((resolve, reject) => {
             runCyphers(cyphers,runCypher).then(function() {
-                resolve();
+                resolve(results);
             }, function(error) {
                 error = error.fields ? JSON.stringify(error.fields[0]) : String(error);
                 reject(`error while executing Cypher: ${error}`);
             });
-        })
+        }).then(function(results){
+            let results_parsed = [];
+            for (let result of results) {
+                results_parsed.push(parser.parse(result));
+            }
+            return results_parsed;
+        });
     }
 }
 
