@@ -4,7 +4,7 @@
     "category":"Router",
     "fields":{
       "it_service":null,
-      "userid":1,
+      "userid":null,
       "sn":"123456",
       "model":"a10",
       "product_date":"2016-10-11",

@@ -5,7 +5,7 @@ let assert = require('chai').assert;
 let syncPromise = require('../sync');
 
 let base_uri = 'http://localhost:3000/api',userid=1,result,options,cabinet_id,location_id,
-    service_1_id,service_2_id,service_3_id,service_4_id,service_group_id,service_id,camera_id
+    service_1_id,service_2_id,service_3_id,service_4_id,service_group_id,service_id,camera_id,user_id,user_alias
 
 let it_service = require('./testdata/it_service_with_rel.json');
 
@@ -19,7 +19,7 @@ let virtual_server = require('./testdata/virtual_server.json');
 
 let camera = require('./testdata/camera.json');
 
-let cmdb_count = 5
+let cmdbs = [physical_server,router,storage,virtual_server,camera];
 
 describe("CMDB Integration test suite", function() {
 
@@ -35,7 +35,9 @@ describe("CMDB Integration test suite", function() {
     });
 
     it("sync user from mysql", function(done) {
-        syncPromise().then(function(){
+        syncPromise().then(function(result){
+            user_id = result[0].userid;
+            user_alias = result[0].alias;
             done();
         })
     });
@@ -165,6 +167,7 @@ describe("CMDB Integration test suite", function() {
     it("add Camera instance with relationship to ITservice instance and Cabinet instance and User instance", function(done) {
         camera.data.fields.it_service = service_id;
         camera.data.fields.asset_location.cabinet = cabinet_id;
+        camera.data.fields.userid = user_id;
 
         options = {
             method: 'POST',
@@ -183,6 +186,7 @@ describe("CMDB Integration test suite", function() {
     it("add Router instance with relationship to ITservice instance and Cabinet instance and User instance", function(done) {
         router.data.fields.it_service = service_id;
         router.data.fields.asset_location.cabinet = cabinet_id;
+        router.data.fields.userid = user_id;
 
         options = {
             method: 'POST',
@@ -252,7 +256,7 @@ describe("CMDB Integration test suite", function() {
         rp(options).then(function(result){
             console.log(result);
             done();
-            assert.equal(result.data.count,cmdb_count);
+            assert.equal(result.data.count,cmdbs.length);
         });
     });
 
@@ -291,11 +295,81 @@ describe("CMDB Integration test suite", function() {
         rp(options).then(function(result){
             console.log(result);
             done();
-            assert.equal(result.data.count,cmdb_count--);
+            assert.equal(result.data.count,cmdbs.length-1);
         });
     });
 
+    it("query user by alias", function(done) {
+        options = {
+            method: 'GET',
+            uri: base_uri+'/users?keyword=' + user_alias　+ '&page=1&per_page=10',
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.data.results[0].alias,user_alias);
+        });
+    });
 
+    it("query itservice by name", function(done) {
+        options = {
+            method: 'GET',
+            uri: base_uri+'/it_services/service?keyword=' + it_service.data.fields.name　+ '&page=1&per_page=10',
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.data.results[0].name,it_service.data.fields.name);
+        });
+    });
+
+    it("query itservice by description", function(done) {
+        options = {
+            method: 'GET',
+            uri: base_uri+'/it_services/service?keyword=' + it_service.data.fields.desc　+ '&page=1&per_page=10',
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.data.results[0].desc,it_service.data.fields.desc);
+        });
+    });
+
+    it("query itservice and it's relationship by uuid", function(done) {
+        options = {
+            method: 'GET',
+            uri: base_uri+'/it_services/service/'+ service_id,
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.data.parent.uuid,service_1_id);
+            assert.equal(result.data.children[0].uuid,service_2_id);
+            assert.equal(result.data.dependencies[0].uuid,service_3_id);
+            assert.equal(result.data.dependendents[0].uuid,service_4_id);
+        });
+    });
+
+    it("query schema for Router and all it's inheritance", function(done) {
+        options = {
+            method: 'GET',
+            uri: base_uri+'/schema/Router/',
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.id,'/Router');
+            assert.equal(result.allOf[0].id,'/NetworkDevice');
+            assert.equal(result.allOf[0].allOf[0].id,'/Hardware');
+            assert.equal(result.allOf[0].allOf[0].allOf[0].id,'/Asset');
+            assert.equal(result.allOf[0].allOf[0].allOf[0].allOf[0].id,'/ConfigurationItem');
+        });
+    });
 
 
 });

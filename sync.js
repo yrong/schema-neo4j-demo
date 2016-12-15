@@ -32,7 +32,7 @@ var syncPromise = function() {
             Promise.all(promises).then(function(){
                 session.close();
                 console.timeEnd("migrationConsuming");
-                resolve();
+                resolve(rows);
                 if (require.main === module) {
                     process.exit();
                 }

@@ -3,8 +3,8 @@
   "data":{
     "category":"Cabinet",
     "fields":{
-      "name":"name1",
-      "desc":"desc1"
+      "name":"name",
+      "desc":"desc"
     }
   }
 }
