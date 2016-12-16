@@ -135,7 +135,7 @@ var cudItem_postProcess = function (result,params,ctx) {
     }
     if(params.method == 'DEL' && params.uuid && result.length != 1){
         result_new = {
-            "status":"WARN",
+            "status":"warn",
             "content": 'no record found!',
             "displayAs":"toast"
         }
