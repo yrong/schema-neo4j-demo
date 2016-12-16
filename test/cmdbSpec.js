@@ -338,7 +338,7 @@ describe("CMDB Integration test suite", function() {
         });
     });
 
-    it("query itservice and it's relationship by uuid", function(done) {
+    it("query center itservice which has all kinds of relationship", function(done) {
         options = {
             method: 'GET',
             uri: base_uri+'/it_services/service/'+ service_id,
@@ -351,6 +351,19 @@ describe("CMDB Integration test suite", function() {
             assert.equal(result.data.children[0].uuid,service_2_id);
             assert.equal(result.data.dependencies[0].uuid,service_3_id);
             assert.equal(result.data.dependendents[0].uuid,service_4_id);
+        });
+    });
+
+    it("query itservice-2 which only has a parent relatinship", function(done) {
+        options = {
+            method: 'GET',
+            uri: base_uri+'/it_services/service/'+ service_2_id,
+            json: true
+        };
+        rp(options).then(function(result){
+            console.log(result);
+            done();
+            assert.equal(result.data.parent.uuid,service_id);
         });
     });
 
