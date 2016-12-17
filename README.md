@@ -231,7 +231,8 @@ IT Service Group:
     Name //string, required
     Description //string
 
-全部服务列表查询：列出所有的分组和服务、子服务；
+全部服务列表查询：列出所有的分组和服务、子服务:
+/API/IT_Services
 ```
 {
 	"status":"ok", //ok, info, warning, error,
@@ -270,4 +271,4 @@ IT Service Group:
 		"Dependendents":[] // n/a for IT Service Group
 	}
 }
-```
+```	
