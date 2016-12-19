@@ -1,11 +1,8 @@
 MATCH
     (n:ITServiceGroup)
+OPTIONAL MATCH
+    (s:ITService)
+WHERE s.group=n.uuid
 WITH
-    count(n) AS cnt
-MATCH
-    (n:ITServiceGroup)
-WITH
-    n, cnt
-SKIP {skip} LIMIT {limit}
-RETURN
-    { cnt: cnt, nodes:collect(n) }
+    { group: n, services:collect(s) } as group_services
+return collect(group_services)

@@ -1,13 +1,9 @@
 MATCH
     (n:ITServiceGroup)
 WHERE n.name =~ {keyword} OR n.desc =~ {keyword}
+OPTIONAL MATCH
+    (s:ITService)
+WHERE s.group=n.uuid
 WITH
-    count(n) AS cnt
-MATCH
-    (n:ITServiceGroup)
-WHERE n.name =~ {keyword} OR n.desc =~ {keyword}
-WITH
-     n as n, cnt
-SKIP {skip} LIMIT {limit}
-RETURN
-    { cnt: cnt, nodes:collect(n) }
+    { group: n, services:collect(s) } as group_services
+return collect(group_services)

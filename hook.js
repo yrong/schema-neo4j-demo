@@ -158,8 +158,7 @@ var getTypeFromUrl = function (url) {
     return type;
 }
 
-var keyWordPaginationQueryItems_preProcess = function (params,ctx) {
-    params = paginationQueryItems_preProcess(params);
+var keyWordQueryItems_preProcess = function (params,ctx) {
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = fs.readFileSync('./cypher/query' + getTypeFromUrl(ctx.matched[0].path)
@@ -171,7 +170,13 @@ var keyWordPaginationQueryItems_preProcess = function (params,ctx) {
     return params;
 }
 
-var queryITServiceRel_postProcess = function (result) {
+var keyWordPaginationQueryItems_preProcess = function (params,ctx) {
+    params = paginationQueryItems_preProcess(params);
+    params = keyWordQueryItems_preProcess(params,ctx);
+    return params;
+}
+
+var queryItems_postProcess = function (result) {
     var result_new =
         {
             "status":"ok", //ok, info, warning, error,
@@ -193,7 +198,8 @@ module.exports = {
     'paginationQueryItems_postProcess':paginationQueryItems_postProcess,
     'addItem_preProcess':addItem_preProcess,
     'cudItem_postProcess':cudItem_postProcess,
+    'keyWordQueryItems_preProcess':keyWordQueryItems_preProcess,
     'keyWordPaginationQueryItems_preProcess':keyWordPaginationQueryItems_preProcess,
-    'queryITServiceRel_postProcess':queryITServiceRel_postProcess
+    'queryItems_postProcess':queryItems_postProcess
 }
 

@@ -5,9 +5,11 @@ let assert = require('chai').assert;
 let syncPromise = require('../sync');
 
 let base_uri = 'http://localhost:3000/api',NOT_EXIST_ID = 'abcd',result,options,cabinet_id,location_id,
-    service_1_id,service_2_id,service_3_id,service_4_id,service_group_id,service_id,camera_id,user_id,user_alias
+    service_1_id,service_2_id,service_3_id,service_4_id,group_1_id,group_2_id,group_3_id,service_id,camera_id,user_id,user_alias
 
-let it_service = require('./testdata/it_service_with_rel.json');
+let it_service_with_rel = require('./testdata/it_service_with_rel.json');
+
+let it_service = require('./testdata/it_service.json')
 
 let physical_server = require('./testdata/physical_server.json');
 
@@ -78,7 +80,7 @@ describe("CMDB Integration test suite", function() {
             });
         });
 
-        it("add ServiceGroup instance", function (done) {
+        it("add ServiceGroup instance 1", function (done) {
             options = {
                 method: 'POST',
                 uri: base_uri + '/it_services/group',
@@ -87,7 +89,38 @@ describe("CMDB Integration test suite", function() {
             };
             rp(options).then(function (result) {
                 console.log(JSON.stringify(result,null,3));
-                service_group_id = result.uuid;
+                group_1_id = result.uuid;
+                assert.isNotNull(result.uuid);
+                done();
+            });
+        });
+
+        it("add ServiceGroup instance 2", function (done) {
+            options = {
+                method: 'POST',
+                uri: base_uri + '/it_services/group',
+                body: require('./testdata/it_service_group.json'),
+                json: true
+            };
+            rp(options).then(function (result) {
+                console.log(JSON.stringify(result,null,3));
+                group_2_id = result.uuid;
+                it_service.data.fields.group = group_2_id;
+                assert.isNotNull(result.uuid);
+                done();
+            });
+        });
+
+        it("add ServiceGroup instance 3", function (done) {
+            options = {
+                method: 'POST',
+                uri: base_uri + '/it_services/group',
+                body: require('./testdata/it_service_group.json'),
+                json: true
+            };
+            rp(options).then(function (result) {
+                console.log(JSON.stringify(result,null,3));
+                group_3_id = result.uuid;
                 assert.isNotNull(result.uuid);
                 done();
             });
@@ -97,7 +130,7 @@ describe("CMDB Integration test suite", function() {
             options = {
                 method: 'POST',
                 uri: base_uri + '/it_services/service',
-                body: require('./testdata/it_service.json'),
+                body: it_service,
                 json: true
             };
             rp(options).then(function (result) {
@@ -112,7 +145,7 @@ describe("CMDB Integration test suite", function() {
             options = {
                 method: 'POST',
                 uri: base_uri + '/it_services/service',
-                body: require('./testdata/it_service.json'),
+                body: it_service,
                 json: true
             };
             rp(options).then(function (result) {
@@ -126,7 +159,7 @@ describe("CMDB Integration test suite", function() {
             options = {
                 method: 'POST',
                 uri: base_uri + '/it_services/service',
-                body: require('./testdata/it_service.json'),
+                body: it_service,
                 json: true
             };
             rp(options).then(function (result) {
@@ -140,7 +173,7 @@ describe("CMDB Integration test suite", function() {
             options = {
                 method: 'POST',
                 uri: base_uri + '/it_services/service',
-                body: require('./testdata/it_service.json'),
+                body: it_service,
                 json: true
             };
             rp(options).then(function (result) {
@@ -151,15 +184,15 @@ describe("CMDB Integration test suite", function() {
         });
 
         it("add center Service instance which has all kinds of relationship to others", function (done) {
-            it_service.data.fields.group = service_group_id;
-            it_service.data.fields.parent = service_1_id;
-            it_service.data.fields.children = [service_2_id];
-            it_service.data.fields.dependencies = [service_3_id];
-            it_service.data.fields.dependendents = [service_4_id];
+            it_service_with_rel.data.fields.group = group_1_id;
+            it_service_with_rel.data.fields.parent = service_1_id;
+            it_service_with_rel.data.fields.children = [service_2_id];
+            it_service_with_rel.data.fields.dependencies = [service_3_id];
+            it_service_with_rel.data.fields.dependendents = [service_4_id];
             options = {
                 method: 'POST',
                 uri: base_uri + '/it_services/service',
-                body: it_service,
+                body: it_service_with_rel,
                 json: true
             };
             rp(options).then(function (result) {
@@ -299,12 +332,12 @@ describe("CMDB Integration test suite", function() {
         it("query itservice by name", function (done) {
             options = {
                 method: 'GET',
-                uri: base_uri + '/it_services/service?keyword=' + it_service.data.fields.name + '&page=1&per_page=10',
+                uri: base_uri + '/it_services/service?keyword=' + it_service_with_rel.data.fields.name + '&page=1&per_page=10',
                 json: true
             };
             rp(options).then(function (result) {
                 console.log(JSON.stringify(result,null,3));
-                assert.equal(result.data.results[0].name, it_service.data.fields.name);
+                assert.equal(result.data.results[0].name, it_service_with_rel.data.fields.name);
                 done();
             });
         });
@@ -312,12 +345,12 @@ describe("CMDB Integration test suite", function() {
         it("query itservice by description", function (done) {
             options = {
                 method: 'GET',
-                uri: base_uri + '/it_services/service?keyword=' + it_service.data.fields.desc + '&page=1&per_page=10',
+                uri: base_uri + '/it_services/service?keyword=' + it_service_with_rel.data.fields.desc + '&page=1&per_page=10',
                 json: true
             };
             rp(options).then(function (result) {
                 console.log(JSON.stringify(result,null,3));
-                assert.equal(result.data.results[0].desc, it_service.data.fields.desc);
+                assert.equal(result.data.results[0].desc, it_service_with_rel.data.fields.desc);
                 done();
             });
         });
@@ -364,6 +397,28 @@ describe("CMDB Integration test suite", function() {
                 assert.equal(result.allOf[0].allOf[0].id, '/Hardware');
                 assert.equal(result.allOf[0].allOf[0].allOf[0].id, '/Asset');
                 assert.equal(result.allOf[0].allOf[0].allOf[0].allOf[0].id, '/ConfigurationItem');
+                done();
+            });
+        });
+
+        it("query it_service_group with hierarchy", function (done) {
+            options = {
+                method: 'GET',
+                uri: base_uri + '/it_services/group/',
+                json: true
+            };
+            rp(options).then(function (result) {
+                console.log(JSON.stringify(result,null,3));
+                assert.equal(result.data.length,3);
+                result.data.forEach(function(group) {
+                    if(group.group.uuid === group_1_id){ //group-1 has 1 service instance
+                        assert.equal(group.services.length,1);
+                    }else if(group.group.uuid === group_2_id){　//group-2 has 4 service instances
+                        assert.equal(group.services.length,4);
+                    }else if(group.group.uuid === group_3_id){//group-3 has no service instance
+                        assert.equal(group.services.length,0);
+                    }
+                });
                 done();
             });
         });

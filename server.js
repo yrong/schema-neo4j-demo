@@ -138,7 +138,7 @@ app.defineAPI({
     method: 'GET',
     route: '/api/it_services/service/:uuid',
     cypherQueryFile: './cypher/queryITServiceRel.cyp',
-    postProcess: hook.queryITServiceRel_postProcess
+    postProcess: hook.queryItems_postProcess
 });
 
 /*ITServiceGroup*/
@@ -162,9 +162,10 @@ app.defineAPI({
 app.defineAPI({
     method: 'GET',
     route: '/api/it_services/group',
-    preProcess: hook.keyWordPaginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
+    preProcess:hook.keyWordQueryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
 });
+
 
 app.listen(3000, function () {
     console.log('App listening on port 3000.');

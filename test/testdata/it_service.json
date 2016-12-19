@@ -4,7 +4,8 @@
     "category":"ITService",
     "fields":{
       "name":"name",
-      "desc":"desc"
+      "desc":"desc",
+      "group": null
     }
   }
 }
