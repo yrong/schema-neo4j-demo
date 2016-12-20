@@ -8,9 +8,11 @@ var hook = require('./hook');
 
 var schema = require('./schema');
 
+var search = require('./search');
+
 var app = new KoaNeo4jApp({
     neo4j: {
-        boltUrl: 'bolt://'+ neo4jConfig.host,
+        boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
         user: neo4jConfig.user,
         password: neo4jConfig.password
     }
@@ -37,13 +39,6 @@ app.defineAPI({
     method: 'DEL',
     route: '/api/cfgItems/:uuid',
     cypherQueryFile: './cypher/deleteItem.cyp',
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/items',
-    cypherQueryFile: './cypher/deleteItems.cyp',
     postProcess: hook.cudItem_postProcess
 });
 
@@ -164,6 +159,30 @@ app.defineAPI({
     route: '/api/it_services/group',
     preProcess:hook.keyWordQueryItems_preProcess,
     postProcess: hook.queryItems_postProcess
+});
+
+/* ProcessFlow */
+app.defineAPI({
+    method: 'POST',
+    route: '/api/processFlows',
+    check: schema.checkSchema,
+    preProcess: hook.addItem_preProcess,
+    cypherQueryFile: './cypher/addProcessFlow.cyp',
+    postProcess: search.addProcessFlow
+});
+
+app.defineAPI({
+    method: 'GET',
+    route: '/api/processFlows',
+    procedure: search.searchProcessFlows
+});
+
+/* Delete all Items(for test purpose) */
+app.defineAPI({
+    method: 'DEL',
+    route: '/api/items',
+    cypherQueryFile: './cypher/deleteItems.cyp',
+    postProcess: search.delProcessFlows
 });
 
 

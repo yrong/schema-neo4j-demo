@@ -101,28 +101,24 @@ var generateITServiceCyphersTodo = function (params) {
     return cyphers_todo;
 }
 
+
 var addItem_preProcess = function (params) {
     var params_new = {"fields":params.data.fields};
+    params_new = _.assign(params_new,params.data.fields);
     params_new.method = params.method;
     params_new.category = params.data.category;
     params_new.uuid = params.uuid?params.uuid:uuid.v1();
     if(_.indexOf(schema.cmdbTypes,params_new.category)>-1){
-        params_new.userid = params.data.fields.userid?params.data.fields.userid:null;
-        params_new.it_service = params.data.fields.it_service?params.data.fields.it_service:null;
-        params_new.asset_location = params.data.fields.asset_location?params.data.fields.asset_location:null;
         params_new.fields.asset_location = JSON.stringify(params_new.fields.asset_location);
         params_new.fields.updated_by = 1//user.userid
         params_new.cyphers = generateCmdbCyphersTodo(params_new);
     }else if(params_new.category === "ITService"){
-        params_new.group = params.data.fields.group?params.data.fields.group:null;
-        params_new.parent = params.data.fields.parent?params.data.fields.parent:null;
-        params_new.children = params.data.fields.children?params.data.fields.children:null;
         params.data.fields.children = JSON.stringify(params.data.fields.children);
-        params_new.dependencies = params.data.fields.dependencies?params.data.fields.dependencies:null;
         params.data.fields.dependencies = JSON.stringify(params.data.fields.dependencies);
-        params_new.dependendents = params.data.fields.dependendents?params.data.fields.dependendents:null;
         params.data.fields.dependendents = JSON.stringify(params.data.fields.dependendents);
         params_new.cyphers = generateITServiceCyphersTodo(params_new);
+    }else if(params_new.category === "ProcessFlow"){
+        params_new.fields = _.omit(params_new.fields,'desc');
     }
     return params_new;
 };

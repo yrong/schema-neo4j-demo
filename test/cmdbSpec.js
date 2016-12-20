@@ -23,7 +23,9 @@ let camera = require('./testdata/camera.json');
 
 let cmdbs = [physical_server,router,storage,virtual_server,camera];
 
+let process_flow = require('./testdata/process_flow.json')
 
+let process_flow_desc = "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",match_word = 'henry',unmatch_word = 'hary';
 
 
 describe("CMDB Integration test suite", function() {
@@ -286,6 +288,22 @@ describe("CMDB Integration test suite", function() {
             });
         });
 
+        it("add ProcessFlow instance with relationship to ITservice instance", function (done) {
+            process_flow.data.fields.it_service = service_id;
+            process_flow.data.fields.desc = process_flow_desc;
+
+            options = {
+                method: 'POST',
+                uri: base_uri + '/processFlows',
+                body: process_flow,
+                json: true
+            };
+            rp(options).then(function (result) {
+                console.log(JSON.stringify(result,null,3));
+                setTimeout(done, 2000);//wait for es to refresh
+            });
+        });
+
     });
 
     describe("query test cases", function() {
@@ -422,6 +440,33 @@ describe("CMDB Integration test suite", function() {
                 done();
             });
         });
+
+        it("query process_flow by keyword matched", function (done) {
+            options = {
+                method: 'GET',
+                uri: base_uri + '/processFlows?keyword='+match_word,
+                json: true
+            };
+            rp(options).then(function (result) {
+                console.log(JSON.stringify(result,null,3));
+                assert.equal(result.hits.hits.length, 1);
+                done();
+            });
+        });
+
+        it("query process_flow by keyword not matched", function (done) {
+            options = {
+                method: 'GET',
+                uri: base_uri + '/processFlows?keyword='+unmatch_word,
+                json: true
+            };
+            rp(options).then(function (result) {
+                console.log(JSON.stringify(result,null,3));
+                assert.equal(result.hits.hits.length, 0);
+                done();
+            });
+        });
+
     });
 
     describe("delete test cases", function() {

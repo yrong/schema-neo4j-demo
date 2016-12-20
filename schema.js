@@ -8,7 +8,7 @@ var ajv = new Ajv({ useDefaults: true });
 var cmdbTypes = ['PhysicalServer','Router','VirtualServer','Camera','Storage'];
 
 //cmdb auxiliary types
-var cmdbAuxiliaryTypes = ['Cabinet','ITService','Location','User','ITServiceGroup'];
+var cmdbAuxiliaryTypes = ['Cabinet','ITService','Location','User','ITServiceGroup','ProcessFlow'];
 
 //cmdb abstract types
 var cmdbAbstractTypes =  ['ConfigurationItem','AbstractServer','Asset','Hardware','NetworkDevice'];

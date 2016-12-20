@@ -1,0 +1,17 @@
+{
+  "id": "/ProcessFlow",
+  "type": "object",
+  "properties": {
+    "it_service": {
+      "type": "string"
+    },
+    "status":{
+      "type": "string",
+      "enum": ["open", "cancel", "finish"]
+    },
+    "desc": {
+      "type": "string"
+    }
+  },
+  "required": ["it_service"]
+}
