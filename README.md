@@ -67,7 +67,7 @@ UNLOCK TABLES;
 npm install && npm run webpack && npm start
 </code>
 
->	run test cases　with [mocha](https://mochajs.org/)
+>	run test cases with [mocha](https://mochajs.org/)
 
 <code>
 npm test
