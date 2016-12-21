@@ -168,7 +168,7 @@ app.defineAPI({
     check: schema.checkSchema,
     preProcess: hook.addItem_preProcess,
     cypherQueryFile: './cypher/addProcessFlow.cyp',
-    postProcess: search.addProcessFlow
+    postServe: search.addProcessFlow
 });
 
 app.defineAPI({
@@ -182,7 +182,7 @@ app.defineAPI({
     method: 'DEL',
     route: '/api/items',
     cypherQueryFile: './cypher/deleteItems.cyp',
-    postProcess: search.delProcessFlows
+    postServe: search.delProcessFlows
 });
 
 

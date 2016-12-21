@@ -32,13 +32,19 @@ var paginationQueryItems_preProcess = function (params) {
     return _.assign(params,params_pagination);
 };
 
+
 var removeIdProperty = function(val) {
     if(_.isArray(val)){
         val = _.map(val, function(val) {
-            return _.omit(val,'id');
+            return removeIdProperty(val);
         });
     }else{
-        val = _.omit(val,'id')
+        for(prop in val) {
+            if (prop === 'id')
+                delete val[prop];
+            else if (typeof val[prop] === 'object')
+                removeIdProperty(val[prop]);
+        }
     }
     return val;
 }
@@ -184,7 +190,7 @@ var queryItems_postProcess = function (result) {
         };
     if(result&&result[0]){
         result_new.message.content = "query success";
-        result_new.data = result[0]
+        result_new.data = removeIdProperty(result[0]);
     }
     return result_new;
 };
