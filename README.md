@@ -55,17 +55,19 @@ INSERT INTO `users` VALUES (1,'nerds','test','werq','4e4ba04946basdfdfaedfa0d445
 UNLOCK TABLES;
 ```
 
-### prepare [neo4j](http://neo4j.com/docs/operations-manual/current/installation/)
+### Start Server
 
-### prepare [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/_installation.html)
+>	[neo4j installation](http://neo4j.com/docs/operations-manual/current/installation/)
 
-### install npm dependencies and start nbi 
+>	[elasticsearch installation](https://www.elastic.co/guide/en/elasticsearch/reference/master/_installation.html)
+
+>	install npm dependencies and start nbi 
 
 <code>
 npm install && npm run webpack && npm start
 </code>
 
-### run test cases　with [mocha](https://mochajs.org/)
+>	run test cases　with [mocha](https://mochajs.org/)
 
 <code>
 npm test
