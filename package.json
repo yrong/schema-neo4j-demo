@@ -6,7 +6,8 @@
     "start": "node server.js&",
     "webpack": "./node_modules/.bin/webpack",
     "sync": "node sync.js",
-    "test": "npm start && ./node_modules/mocha/bin/mocha"
+    "test": "npm start && ./node_modules/mocha/bin/mocha",
+    "postman": "node ./test/postman.js"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
@@ -53,6 +54,7 @@
     "jasmine-given": "^2.6.4",
     "jasmine-spec-reporter": "^2.7.0",
     "mocha": "^3.2.0",
+    "newman": "^3.3.1",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "webpack": "^1.12.14"
