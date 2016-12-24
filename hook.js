@@ -165,7 +165,12 @@ var keyWordQueryItems_preProcess = function (params,ctx) {
         params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = fs.readFileSync('./cypher/query' + getTypeFromUrl(ctx.matched[0].path)
             + 'ByKeyword.cyp', 'utf8');
-    }else{
+    }else if(params.uuids){
+        params.uuids = params.uuids.split(",");
+        params.cypher = fs.readFileSync('./cypher/query' + getTypeFromUrl(ctx.matched[0].path)
+            + 'ByUuids.cyp', 'utf8');
+    }
+    else{
         params.cypher = fs.readFileSync('./cypher/query' +　getTypeFromUrl(ctx.matched[0].path)
             + '.cyp', 'utf8');
     }
