@@ -16,7 +16,8 @@
 		"62981770-a117-177e-cbb0-32c75c4723c1",
 		"ebc60107-78de-24ad-377a-641fdb3c45db",
 		"4139a6b5-d7df-f2d5-e158-2f3317173b33",
-		"f93ac84f-8f0c-4e32-b7ec-cb8aec6adfba"
+		"f93ac84f-8f0c-4e32-b7ec-cb8aec6adfba",
+		"9be614fb-631a-07a9-fb95-96c4924aaa7a"
 	],
 	"folders": [],
 	"timestamp": 1482399396867,
@@ -175,6 +176,25 @@
 			"responses": []
 		},
 		{
+			"id": "9be614fb-631a-07a9-fb95-96c4924aaa7a",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/it_services/service",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"add ITService Email With Name Conflict\"] = jsonData.status === 'error'",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482760952398,
+			"name": "add ITService Email With Name Conflict",
+			"description": "",
+			"collectionId": "2b6a91f7-8b3d-f122-a959-a42e9b2d925c",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"email\",\n      \"desc\":\"email\",\n      \"group\":\"{{group_messaging_id}}\"\n    }\n  }\n}"
+		},
+		{
 			"id": "9f5a2c64-4b06-44f4-5401-ce98b2b12a15",
 			"headers": "Content-Type: application/json\n",
 			"url": "{{url}}/it_services/group",
@@ -283,7 +303,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"find process flow by matched keyword\"] = jsonData.hits.hits.length === 1;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1482504465268,
+			"time": 1482504887524,
 			"name": "query process flow by keyword matched",
 			"description": "",
 			"collectionId": "2b6a91f7-8b3d-f122-a959-a42e9b2d925c",
