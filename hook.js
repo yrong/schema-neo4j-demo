@@ -169,6 +169,10 @@ var keyWordQueryItems_preProcess = function (params,ctx) {
         params.uuids = params.uuids.split(",");
         params.cypher = fs.readFileSync('./cypher/query' + getTypeFromUrl(ctx.matched[0].path)
             + 'ByUuids.cyp', 'utf8');
+    }else if(params.search){
+        params.search = params.search.split(",");
+        params.cypher = fs.readFileSync('./cypher/search' + getTypeFromUrl(ctx.matched[0].path)
+            + '.cyp', 'utf8');
     }
     else{
         params.cypher = fs.readFileSync('./cypher/query' +　getTypeFromUrl(ctx.matched[0].path)
