@@ -4,16 +4,44 @@ var _ = require('lodash');
 
 var ajv = new Ajv({ useDefaults: true });
 
+const cmdbTypeName = {
+    VirtualServer:'VirtualServer',
+    PhysicalServer:'PhysicalServer',
+    Router:'Router',
+    Camera:'Camera',
+    Storage:'Storage',
+    ConfigurationItem:'ConfigurationItem',
+    AbstractServer:'AbstractServer',
+    Asset:'Asset',
+    Hardware:'Hardware',
+    NetworkDevice:'NetworkDevice',
+    Cabinet:'Cabinet',
+    Location:'Location',
+    User:'User',
+    ITService:'ITService',
+    ITServiceGroup:'ITServiceGroup',
+    ProcessFlow:'ProcessFlow'
+}
+
+const cmdbTypeLabels= {
+    VirtualServer:[cmdbTypeName.VirtualServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem],
+    PhysicalServer: [cmdbTypeName.PhysicalServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem,cmdbTypeName.Hardware,cmdbTypeName.Asset],
+    Router:[cmdbTypeName.Router,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
+    Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
+    Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem]
+}
+
 // cmdb real types
-var cmdbTypes = ['PhysicalServer','Router','VirtualServer','Camera','Storage'];
+const cmdbTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage];
 
 //cmdb auxiliary types
-var cmdbAuxiliaryTypes = ['Cabinet','ITService','Location','User','ITServiceGroup','ProcessFlow'];
+const cmdbAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Location,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ProcessFlow];
 
 //cmdb abstract types
-var cmdbAbstractTypes =  ['ConfigurationItem','AbstractServer','Asset','Hardware','NetworkDevice'];
+const cmdbAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
 
-var cmdbTypesAll = cmdbAbstractTypes.concat(cmdbTypes).concat(cmdbAuxiliaryTypes);
+const cmdbTypesAll = cmdbAbstractTypes.concat(cmdbTypes).concat(cmdbAuxiliaryTypes);
+
 
 _.forEach(cmdbTypesAll,function(type){
     ajv.addSchema(require('./schema/'+ type + '.json'));
@@ -63,3 +91,7 @@ module.exports.getSchema = getSchema;
 module.exports.cmdbTypes = cmdbTypes;
 
 module.exports.cmdbAuxiliaryTypes = cmdbAuxiliaryTypes;
+
+module.exports.cmdbTypeLabels = cmdbTypeLabels;
+
+module.exports.cmdbTypeName = cmdbTypeName;
