@@ -2,6 +2,9 @@
   "id": "/ConfigurationItem",
   "type": "object",
   "properties": {
+    "name": {
+      "type": "string"
+    },
     "it_service": {
       "type": "string"
     },
@@ -16,5 +19,5 @@
       "type": "string"
     }
   },
-  "required": ["monitored"]
+  "required": ["name","monitored"]
 }

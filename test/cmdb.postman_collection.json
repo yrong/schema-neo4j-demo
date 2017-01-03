@@ -26,7 +26,8 @@
 		"9be614fb-631a-07a9-fb95-96c4924aaa7a",
 		"690f8ccc-93bb-c930-3408-f9bf23828294",
 		"25693244-62fc-a268-2e29-d981c8ff1856",
-		"755e6547-0ee7-94b8-76ff-c28eec6deb4f"
+		"755e6547-0ee7-94b8-76ff-c28eec6deb4f",
+		"fe74657c-3bf0-68d0-d372-ce2994fc58b0"
 	],
 	"folders": [],
 	"timestamp": 1482399396867,
@@ -215,12 +216,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1482934445481,
+			"time": 1483450676603,
 			"name": "add router",
 			"description": "",
 			"collectionId": "2b6a91f7-8b3d-f122-a959-a42e9b2d925c",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":\"{{service_dns_id}}\",\n      \"userid\":1,\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":\"{{service_dns_id}}\",\n      \"userid\":1,\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		},
 		{
 			"id": "690f8ccc-93bb-c930-3408-f9bf23828294",
@@ -443,12 +444,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1482934440872,
+			"time": 1483450719031,
 			"name": "add physical server",
 			"description": "",
 			"collectionId": "2b6a91f7-8b3d-f122-a959-a42e9b2d925c",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":\"{{service_email_id}}\",\n      \"ip_address\":[\"10.10.35.63\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"unmounted\",\"location\":\"{{location_id}}\"},\n      \"management_ip\":[\"10.10.35.64\"]\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":\"{{service_email_id}}\",\n      \"ip_address\":[\"10.10.35.63\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"unmounted\",\"location\":\"{{location_id}}\"},\n      \"management_ip\":[\"10.10.35.64\"]\n    }\n  }\n}"
 		},
 		{
 			"id": "f182f238-625e-5bc6-0ae1-2e8befa58ea1",
@@ -484,6 +485,25 @@
 			"helperAttributes": {},
 			"time": 1483362025311,
 			"name": "query it service groups by keyword",
+			"description": "",
+			"collectionId": "2b6a91f7-8b3d-f122-a959-a42e9b2d925c",
+			"responses": []
+		},
+		{
+			"id": "fe74657c-3bf0-68d0-d372-ce2994fc58b0",
+			"headers": "",
+			"url": "{{url}}/cfgItems/categories",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"ConfigurationItem as root\"] = jsonData.data.name === 'ConfigurationItem'",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1483453879584,
+			"name": "query ConfigurationItem Category",
 			"description": "",
 			"collectionId": "2b6a91f7-8b3d-f122-a959-a42e9b2d925c",
 			"responses": []

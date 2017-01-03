@@ -35,6 +35,12 @@ app.defineAPI({
 });
 
 app.defineAPI({
+    method: 'GET',
+    route: '/api/cfgItems/categories',
+    procedure: hook.configurationItemCategoryProcess
+});
+
+app.defineAPI({
     method: 'DEL',
     route: '/api/cfgItems/:uuid',
     preProcess: hook.cudItem_preProcess,
@@ -169,7 +175,6 @@ app.defineAPI({
     cypherQueryFile: './cypher/deleteItems.cyp',
     postProcess: search.delProcessFlows
 });
-
 
 app.listen(3001, function () {
     console.log('App listening on port 3001.');

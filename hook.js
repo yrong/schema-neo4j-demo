@@ -86,27 +86,36 @@ var queryItems_preProcess = function (params,ctx) {
     return params;
 }
 
+var base_query_response = {
+    "status":"ok", //ok, info, warning, error,
+    "message":{
+        "content":"query success",
+        "displayAs":"toast" //toast, modal, console, alert
+    },
+    "data":{}
+};
+
 var queryItems_postProcess = function (result,params) {
-    var result_new =
-        {
-            "status":"ok", //ok, info, warning, error,
-            "message":{
-                "content":"no record found",
-                "displayAs":"toast" //toast, modal, console, alert
-            },
-            "data":{}
-        };
-    if(result&&result[0]){
-        result_new.message.content = "query success";
-        result_new.data = helper.removeIdProperty(result[0]);
+    var result_new = Object.assign({},base_query_response);
+    if(!result||!result[0]){
+        result_new.message.content = "no record found";
     }
+    result_new.data = helper.removeIdProperty(result[0]);
     return result_new;
 };
+
+var configurationItemCategoryProcess = function(params) {
+    var result_new = Object.assign({},base_query_response);
+    result_new.data = schema.cmdbInheritanceRelationship;
+    return result_new;
+}
+
 
 module.exports = {
     'cudItem_preProcess':cudItem_preProcess,
     'cudItem_postProcess':cudItem_postProcess,
     'queryItems_preProcess':queryItems_preProcess,
-    'queryItems_postProcess':queryItems_postProcess
+    'queryItems_postProcess':queryItems_postProcess,
+    'configurationItemCategoryProcess':configurationItemCategoryProcess
 }
 

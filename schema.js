@@ -20,7 +20,33 @@ const cmdbTypeName = {
     User:'User',
     ITService:'ITService',
     ITServiceGroup:'ITServiceGroup',
-    ProcessFlow:'ProcessFlow'
+    ProcessFlow:'ProcessFlow',
+    Switch:'Switch',
+    Firewall:'Firewall'
+}
+
+const cmdbInheritanceRelationship = {
+    name:cmdbTypeName.ConfigurationItem,
+    children: [
+        {
+            name:cmdbTypeName.AbstractServer,
+            children:[
+                {name:cmdbTypeName.PhysicalServer},
+                {name:cmdbTypeName.VirtualServer}]
+        },
+        {
+            name:cmdbTypeName.Asset,
+            children:[
+                {name:cmdbTypeName.Hardware,
+                children:[
+                    {name:cmdbTypeName.Storage},
+                    {name:cmdbTypeName.NetworkDevice,
+                    children:[{name:cmdbTypeName.Router},{name:cmdbTypeName.Switch},{name:cmdbTypeName.Firewall}]},
+                    {name:cmdbTypeName.Camera},
+                    {name:cmdbTypeName.PhysicalServer}
+                    ]
+                }]
+        }]
 }
 
 const cmdbTypeLabels= {
@@ -95,3 +121,5 @@ module.exports.cmdbAuxiliaryTypes = cmdbAuxiliaryTypes;
 module.exports.cmdbTypeLabels = cmdbTypeLabels;
 
 module.exports.cmdbTypeName = cmdbTypeName;
+
+module.exports.cmdbInheritanceRelationship = cmdbInheritanceRelationship
