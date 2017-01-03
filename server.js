@@ -23,22 +23,21 @@ app.defineAPI({
     method: 'POST',
     route: '/api/cfgItems',
     check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'GET',
     route: '/api/cfgItems',
-    cypherQueryFile: './cypher/queryCfgItems.cyp',
-    preProcess: hook.paginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
+    preProcess: hook.queryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/cfgItems/:uuid',
-    cypherQueryFile: './cypher/deleteItem.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
@@ -47,23 +46,22 @@ app.defineAPI({
     method: 'POST',
     route: '/api/cabinets',
     check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
-    cypherQueryFile: './cypher/addCabinet.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/cabinets/:uuid',
-    cypherQueryFile: './cypher/deleteItem.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'GET',
     route: '/api/cabinets',
-    preProcess: hook.keyWordPaginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
+    preProcess: hook.queryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
 });
 
 /*Location*/
@@ -71,32 +69,30 @@ app.defineAPI({
     method: 'POST',
     route: '/api/locations',
     check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
-    cypherQueryFile: './cypher/addLocation.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/locations/:uuid',
-    cypherQueryFile: './cypher/deleteItem.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'GET',
     route: '/api/locations',
-    preProcess: hook.keyWordPaginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
+    preProcess: hook.queryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
 });
 
 /*Users*/
 app.defineAPI({
     method: 'GET',
     route: '/api/users',
-    cypherQueryFile: './cypher/queryUsers.cyp',
-    preProcess: hook.keyWordPaginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
+    preProcess: hook.queryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
 });
 
 /*Schema*/
@@ -106,58 +102,48 @@ app.router.get('/api/schema/:id', function (ctx, next) {
 });
 
 /*ITService*/
-
 app.defineAPI({
     method: 'POST',
     route: '/api/it_services/service',
     check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/it_services/service/:uuid',
-    cypherQueryFile: './cypher/deleteItem.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'GET',
     route: '/api/it_services/service',
-    preProcess: hook.keyWordPaginationQueryItems_preProcess,
-    postProcess: hook.paginationQueryItems_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/it_services/service/:uuid',
-    cypherQueryFile: './cypher/queryITServiceRel.cyp',
+    preProcess: hook.queryItems_preProcess,
     postProcess: hook.queryItems_postProcess
 });
 
 /*ITServiceGroup*/
-
 app.defineAPI({
     method: 'POST',
     route: '/api/it_services/group',
     check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
-    cypherQueryFile: './cypher/addITServiceGroup.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'DEL',
     route: '/api/it_services/group/:uuid',
-    cypherQueryFile: './cypher/deleteItem.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
 
 app.defineAPI({
     method: 'GET',
     route: '/api/it_services/group',
-    preProcess:hook.keyWordQueryItems_preProcess,
+    preProcess:hook.queryItems_preProcess,
     postProcess: hook.queryItems_postProcess
 });
 
@@ -166,8 +152,7 @@ app.defineAPI({
     method: 'POST',
     route: '/api/processFlows',
     check: schema.checkSchema,
-    preProcess: hook.addItem_preProcess,
-    cypherQueryFile: './cypher/addProcessFlow.cyp',
+    preProcess: hook.cudItem_preProcess,
     postProcess: search.addProcessFlow
 });
 
@@ -186,6 +171,6 @@ app.defineAPI({
 });
 
 
-app.listen(3000, function () {
-    console.log('App listening on port 3000.');
+app.listen(3001, function () {
+    console.log('App listening on port 3001.');
 });
