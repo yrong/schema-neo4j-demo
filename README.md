@@ -24,6 +24,26 @@ response: //所有分页的返回结果均为此格式
 	}
 }
 ```
+返回所有资产类别：
+```
+GET /API/cfgItems/categories
+```
+response:
+```
+{
+	"status":"ok", //ok, info, warning, error,
+	"message":{
+		"content":"message text here",
+		"displayAs":"toast" //toast, modal, console, alert
+	},
+	"data":{
+		"results":[ //当前页的所有成员的name, description, id
+			{},
+			{}
+		]
+	}
+}
+```
 
 返回指定配置项的详细信息：
 ```
@@ -122,6 +142,7 @@ ConfigurationItem
 
 ```
 ConfigurationItem字段
+	Name//string, required
 	IT Service//IT_Service, 为了不影响进度，初期为可选字段，待IT Service相关接口完善，此字段改为必填。从现有IT Service列表中选择，关系：(ConfigurationItem)-[:SUPPORT:]-> (IT Service)
 	Monitored//bool, required, default: false
 	Responsibility//User, 系统中的User对象，初期为可选字段，待User相关接口完善，此字段改为必填，关系：(User)-[:RESPONSIBLE FOR:]-> (ConfigurationItem)
@@ -201,6 +222,23 @@ Location
 ```
 GET /API/users?keyword={keyword}&page={page}&per_page={per_page}
 ```
+> 不加参数则直接返回所有用户列表：
+```
+GET /API/users/
+```
+```
+{
+	"status":"ok", //ok, info, warning, error,
+	"message":{
+		"content":"message text here",
+		"displayAs":"toast" //toast, modal, console, alert
+	},
+	"data":{
+		"results":[ //所有user的userid, alias, lang, name, surname
+		]
+	}
+}
+```	
 > 返回指定User的详细信息：//要求同上
 ```
 GET /API/users/{id}
