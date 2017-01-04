@@ -107,6 +107,9 @@ var queryItems_postProcess = function (result,params) {
 var configurationItemCategoryProcess = function(params) {
     var result_new = Object.assign({},base_query_response);
     result_new.data = schema.cmdbInheritanceRelationship;
+    if(params.filter == schema.cmdbTypeName.Asset){
+        result_new.data = schema.cmdbInheritanceRelationship.children[1];
+    }
     return result_new;
 }
 
