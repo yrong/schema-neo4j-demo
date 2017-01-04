@@ -24,9 +24,9 @@ response: //所有分页的返回结果均为此格式
 	}
 }
 ```
-返回所有资产类别：
+返回所有配置项类别：//可以过滤资产
 ```
-GET /API/cfgItems/categories
+GET /API/cfgItems/categories?filter=asset
 ```
 response:
 ```
