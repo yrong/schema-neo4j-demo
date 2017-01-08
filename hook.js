@@ -11,6 +11,7 @@ var cudItem_preProcess = function (params) {
         params_new = _.assign(params_new,params.data.fields);
         params_new.method = params.method;
         params_new.category = params.data.category;
+        params_new.fields.category = params.data.category;
         params_new.fields.uuid = params_new.uuid = params.uuid?params.uuid:uuid.v1();
         if(schema.cmdbConfigurationItemTypes.includes(params_new.category)){
             params_new.fields.asset_location = JSON.stringify(params_new.fields.asset_location);
