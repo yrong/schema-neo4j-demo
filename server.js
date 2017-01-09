@@ -36,6 +36,13 @@ app.defineAPI({
 
 app.defineAPI({
     method: 'GET',
+    route: '/api/cfgItems/:uuid',
+    preProcess: hook.queryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
+});
+
+app.defineAPI({
+    method: 'GET',
     route: '/api/cfgItems/categories',
     procedure: hook.configurationItemCategoryProcess
 });

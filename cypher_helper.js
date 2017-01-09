@@ -29,6 +29,10 @@ const cmdb_delNode_cypher = `MATCH (s)
                             DETACH
                             DELETE s`;
 
+const cmdb_findNode_cypher = `MATCH (n)
+                            WHERE n.uuid = {uuid}
+                            RETURN n`;
+
 const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
             (n:${type})
             WITH
@@ -183,6 +187,9 @@ module.exports = {
             throw new Error('only ITService support query by uuids temporarily')
         }
         return cmdb_advancedSearchITService_cypher;
+    },
+    generateQueryNodeCypher:function(params){
+        return cmdb_findNode_cypher;
     }
 }
 

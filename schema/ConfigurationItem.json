@@ -6,7 +6,10 @@
       "type": "string"
     },
     "it_service": {
-      "type": "string"
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "uniqueItems": true
     },
     "monitored": {
       "type": "boolean",

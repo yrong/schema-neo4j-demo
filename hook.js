@@ -64,18 +64,21 @@ var paginationQueryItems_preProcess = function (params) {
 };
 
 var keyWordQueryItems_preProcess = function (params,ctx) {
+    let url = ctx.matched[0].path;
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
-        params.cypher = helper.generateQueryNodesByKeyWordCypher(ctx.matched[0].path);
+        params.cypher = helper.generateQueryNodesByKeyWordCypher(url);
     }else if(params.uuids){
         params.uuids = params.uuids.split(",");
-        params.cypher = helper.generateQueryITServiceByUuidsCypher(ctx.matched[0].path);
+        params.cypher = helper.generateQueryITServiceByUuidsCypher(url);
     }else if(params.search){
         params.search = params.search.split(",");
-        params.cypher = helper.generateAdvancedSearchITServiceCypher(ctx.matched[0].path);
+        params.cypher = helper.generateAdvancedSearchITServiceCypher(url);
+    }else if(params.uuid){
+        params.cypher = helper.generateQueryNodeCypher(url);
     }
     else{
-        params.cypher = helper.generateQueryNodesCypher(ctx.matched[0].path);
+        params.cypher = helper.generateQueryNodesCypher(url);
     }
     return params;
 }
