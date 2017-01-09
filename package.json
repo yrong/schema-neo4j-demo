@@ -7,7 +7,7 @@
     "webpack": "./node_modules/.bin/webpack",
     "sync": "node sync.js",
     "test": "node ./test/postman.js",
-    "schema": "$NEO4J_HOME/bin/neo4j-shell -file ./cypher/cmdbSchema.cyp"
+    "schema": "sh init.sh"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",

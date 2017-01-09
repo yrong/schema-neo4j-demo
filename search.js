@@ -14,29 +14,6 @@ var es_client = new elasticsearch.Client({
 
 var indexName = 'cmdb',typeName = 'processFlow';
 
-es_client.indices.create({
-    index: indexName,
-    body: {
-        mappings: {
-            processFlow:{
-                properties: {
-                    'uuid': {
-                        'type': 'string',
-                        'index': 'not_analyzed'
-                    },
-                }
-            }
-        }
-    }
-},function(err,resp,status){
-    if (err) {
-        //console.log(err);
-    }
-    else {
-        console.log(resp);
-    }
-});
-
 var addProcessFlow = function(result,params,ctx) {
     return es_client.index({
         index: indexName,

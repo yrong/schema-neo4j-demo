@@ -1,11 +1,20 @@
 #! /bin/bash
 
-npm run sync
+curl -XDELETE 'http://localhost:9200/cmdb/'
 
-curl -X POST --header "Content-Type: application/json" --url "http://localhost:3000/api/it_services" -d @./testdata/it_service.json
+curl -XPUT 'http://localhost:9200/cmdb/' -d'{
+        "mappings" : {
+            "processFlow":{
+                "properties": {
+                    "uuid": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
+            }
+        }
+}'
 
-curl -X POST --header "Content-Type: application/json" --url "http://localhost:3000/api/locations" -d @./testdata/location.json
-
-curl -X POST --header "Content-Type: application/json" --url "http://localhost:3000/api/cabinets" -d @./testdata/cabinet.json
+$NEO4J_HOME/bin/neo4j-shell -file ./cypher/cmdbSchema.cyp
 
 
