@@ -5,25 +5,23 @@ var MAXNUM = 1000;
 var helper = require('./cypher_helper');
 
 var cudItem_preProcess = function (params) {
-    var params_new = params;
+    var params_new = _.assign({},params);
     if(params.method === 'POST' || params.method === 'PUT'){
         params_new = {"fields":params.data.fields};
         params_new = _.assign(params_new,params.data.fields);
         params_new.method = params.method;
         params_new.category = params.data.category;
         params_new.fields.uuid = params_new.uuid = params.uuid?params.uuid:uuid.v1();
-        if(schema.cmdbTypes.includes(params_new.category)){
+        if(schema.cmdbConfigurationItemTypes.includes(params_new.category)){
             params_new.fields.asset_location = JSON.stringify(params_new.fields.asset_location);
-            params_new.fields.updated_by = 1//user.userid
+            //params_new.fields.updated_by = 1
             params_new.cyphers = helper.generateCmdbCyphers(params_new);
         }else if(params_new.category === schema.cmdbTypeName.ITService){
-            params.data.fields.children = JSON.stringify(params.data.fields.children);
-            params.data.fields.dependencies = JSON.stringify(params.data.fields.dependencies);
-            params.data.fields.dependendents = JSON.stringify(params.data.fields.dependendents);
             params_new.cyphers = helper.generateITServiceCyphers(params_new);
-        }else if(params_new.category === schema.cmdbTypeName.ProcessFlow){
-            params_new.fields = _.omit(params_new.fields,'desc');
-            params_new.cypher = helper.generateProcessFlowCypher();
+        }else if(schema.cmdbProcessFlowTypes.includes(params_new.category)){
+            // params_new.fields.it_service
+            params_new.fields = _.omit(params_new.fields,['desc','note','attachment','it_service','reference_process_flow','reference_kb']);
+            params_new.cyphers = helper.generateProcessFlowCypher(params_new);
         }else{
             params_new.cypher = helper.generateAddNodeCypher(params_new);
         }
@@ -64,7 +62,7 @@ var paginationQueryItems_preProcess = function (params) {
 };
 
 var keyWordQueryItems_preProcess = function (params,ctx) {
-    let url = ctx.matched[0].path;
+    let url = ctx.req.url;
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = helper.generateQueryNodesByKeyWordCypher(url);
@@ -100,18 +98,19 @@ var base_query_response = {
 
 var queryItems_postProcess = function (result,params) {
     var result_new = Object.assign({},base_query_response);
-    if(!result||!result[0]){
+    result = _.isArray(result)&&result.length>0?result[0]:result;
+    if(!result||result.total==0||result.count==0||result.length==0){
         result_new.message.content = "no record found";
     }
-    result_new.data = helper.removeIdProperty(result[0]);
+    result_new.data = helper.removeInternalPropertys(result);
     return result_new;
 };
 
 var configurationItemCategoryProcess = function(params) {
     var result_new = Object.assign({},base_query_response);
-    result_new.data = schema.cmdbInheritanceRelationship;
+    result_new.data = schema.cmdbConfigurationItemInheritanceRelationship;
     if(params.filter == schema.cmdbTypeName.Asset){
-        result_new.data = schema.cmdbInheritanceRelationship.children[1];
+        result_new.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
     }
     return result_new;
 }

@@ -175,6 +175,13 @@ app.defineAPI({
     procedure: search.searchProcessFlows
 });
 
+app.defineAPI({
+    method: 'GET',
+    route: '/api/processFlows/:uuid',
+    procedure: search.searchProcessFlows
+});
+
+
 /* Delete all Items(for test purpose) */
 app.defineAPI({
     method: 'DEL',

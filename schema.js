@@ -20,12 +20,13 @@ const cmdbTypeName = {
     User:'User',
     ITService:'ITService',
     ITServiceGroup:'ITServiceGroup',
-    ProcessFlow:'ProcessFlow',
     Switch:'Switch',
-    Firewall:'Firewall'
+    Firewall:'Firewall',
+    ProcessFlow:'ProcessFlow',
+    IncidentFlow:'IncidentFlow'
 }
 
-const cmdbInheritanceRelationship = {
+const cmdbConfigurationItemInheritanceRelationship = {
     name:cmdbTypeName.ConfigurationItem,
     children: [
         {
@@ -54,19 +55,27 @@ const cmdbTypeLabels= {
     PhysicalServer: [cmdbTypeName.PhysicalServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem,cmdbTypeName.Hardware,cmdbTypeName.Asset],
     Router:[cmdbTypeName.Router,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem]
+    Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
+    IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow]
 }
 
-// cmdb real types
-const cmdbTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage];
+//ConfigurationItem real types
+const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage];
 
-//cmdb auxiliary types
-const cmdbAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Location,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ProcessFlow];
+//ConfigurationItem auxiliary types
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Location,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
 
-//cmdb abstract types
-const cmdbAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
+//ConfigurationItem abstract types
+const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
 
-const cmdbTypesAll = cmdbAbstractTypes.concat(cmdbTypes).concat(cmdbAuxiliaryTypes);
+//Processflow real types
+const cmdbProcessFlowTypes = [cmdbTypeName.IncidentFlow];
+
+//Processflow abstract types
+const cmdbProcessFlowAbstractTypes = [cmdbTypeName.ProcessFlow];
+
+//cmdb all types
+const cmdbTypesAll = cmdbConfigurationItemAbstractTypes.concat(cmdbConfigurationItemTypes).concat(cmdbConfigurationItemAuxiliaryTypes).concat(cmdbProcessFlowTypes).concat(cmdbProcessFlowAbstractTypes);
 
 
 _.forEach(cmdbTypesAll,function(type){
@@ -114,12 +123,14 @@ module.exports.checkSchema = checkSchema;
 
 module.exports.getSchema = getSchema;
 
-module.exports.cmdbTypes = cmdbTypes;
+module.exports.cmdbConfigurationItemTypes = cmdbConfigurationItemTypes;
 
-module.exports.cmdbAuxiliaryTypes = cmdbAuxiliaryTypes;
+module.exports.cmdbConfigurationItemAuxiliaryTypes = cmdbConfigurationItemAuxiliaryTypes;
 
 module.exports.cmdbTypeLabels = cmdbTypeLabels;
 
 module.exports.cmdbTypeName = cmdbTypeName;
 
-module.exports.cmdbInheritanceRelationship = cmdbInheritanceRelationship
+module.exports.cmdbConfigurationItemInheritanceRelationship = cmdbConfigurationItemInheritanceRelationship;
+
+module.exports.cmdbProcessFlowTypes = cmdbProcessFlowTypes;
