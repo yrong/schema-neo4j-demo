@@ -2,7 +2,7 @@ var _ = require('lodash');
 var uuid = require('node-uuid');
 var schema = require('./schema');
 var MAXNUM = 1000;
-var helper = require('./cypher_helper');
+var cypher = require('./cypher');
 
 var cudItem_preProcess = function (params) {
     var params_new = _.assign({},params);
@@ -16,33 +16,37 @@ var cudItem_preProcess = function (params) {
         if(schema.cmdbConfigurationItemTypes.includes(params_new.category)){
             params_new.fields.asset_location = JSON.stringify(params_new.fields.asset_location);
             //params_new.fields.updated_by = 1
-            params_new.cyphers = helper.generateCmdbCyphers(params_new);
+            params_new.cyphers = cypher.generateCmdbCyphers(params_new);
         }else if(params_new.category === schema.cmdbTypeName.ITService){
-            params_new.cyphers = helper.generateITServiceCyphers(params_new);
+            params_new.cyphers = cypher.generateITServiceCyphers(params_new);
         }else if(schema.cmdbProcessFlowTypes.includes(params_new.category)){
             // params_new.fields.it_service
             params_new.fields = _.omit(params_new.fields,['desc','note','attachment','it_service','reference_process_flow','reference_kb']);
-            params_new.cyphers = helper.generateProcessFlowCypher(params_new);
+            params_new.cyphers = cypher.generateProcessFlowCypher(params_new);
         }else{
-            params_new.cypher = helper.generateAddNodeCypher(params_new);
+            params_new.cypher = cypher.generateAddNodeCypher(params_new);
         }
     }else if(params.method === 'DEL'){
-        params_new.cypher = helper.generateDelNodeCypher();
+        params_new.cypher = cypher.generateDelNodeCypher(params_new);
     }
     return params_new;
 };
 
+const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
+    CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success'
+    DISPLAY_AS_TOAST='toast';
+
 var cudItem_postProcess = function (result,params,ctx) {
     var result_new = {
-        "status":"info",
-        "content": 'Operation Success!',
-        "displayAs":"toast"
+        "status":STATUS_INFO,
+        "content": CONTENT_OPERATION_SUCESS,
+        "displayAs":DISPLAY_AS_TOAST
     }
     if(params.method == 'DEL' && params.uuid && result.length != 1){
         result_new = {
-            "status":"warn",
-            "content": 'no record found!',
-            "displayAs":"toast"
+            "status":STATUS_WARNING,
+            "content": CONTENT_NO_RECORD,
+            "displayAs":DISPLAY_AS_TOAST
         }
     }
     if(params.uuid)
@@ -64,20 +68,22 @@ var paginationQueryItems_preProcess = function (params) {
 
 var keyWordQueryItems_preProcess = function (params,ctx) {
     let url = ctx.req.url;
+    let type = cypher.getTypeFromUrl(url);
+    params.type = type;
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
-        params.cypher = helper.generateQueryNodesByKeyWordCypher(url);
+        params.cypher = cypher.generateQueryNodesByKeyWordCypher(type);
     }else if(params.uuids){
         params.uuids = params.uuids.split(",");
-        params.cypher = helper.generateQueryITServiceByUuidsCypher(url);
+        params.cypher = cypher.generateQueryITServiceByUuidsCypher(type);
     }else if(params.search){
         params.search = params.search.split(",");
-        params.cypher = helper.generateAdvancedSearchITServiceCypher(url);
+        params.cypher = cypher.generateAdvancedSearchITServiceCypher(type);
     }else if(params.uuid){
-        params.cypher = helper.generateQueryNodeCypher(url);
+        params.cypher = cypher.generateQueryNodeCypher(type);
     }
     else{
-        params.cypher = helper.generateQueryNodesCypher(url);
+        params.cypher = cypher.generateQueryNodesCypher(type);
     }
     return params;
 }
@@ -88,26 +94,36 @@ var queryItems_preProcess = function (params,ctx) {
     return params;
 }
 
-var base_query_response = {
-    "status":"ok", //ok, info, warning, error,
-    "message":{
-        "content":"query success",
-        "displayAs":"toast" //toast, modal, console, alert
-    },
-    "data":{}
-};
-
 var queryItems_postProcess = function (result,params) {
-    var result_new = Object.assign({},base_query_response);
+    let base_query_response = {
+        "status":STATUS_OK, //ok, info, warning, error,
+        "message":{
+            "content":CONTENT_QUERY_SUCESS,
+            "displayAs":DISPLAY_AS_TOAST//toast, modal, console, alert
+        },
+        "data":{}
+    };
+    var result_new = _.assign({},base_query_response);
     result = _.isArray(result)&&result.length>0?result[0]:result;
     if(!result||result.total==0||result.count==0||result.length==0){
-        result_new.message.content = "no record found";
+        result_new.message.content = CONTENT_NO_RECORD;
+        result_new.status = STATUS_WARNING;
     }
-    result_new.data = helper.removeInternalPropertys(result);
+    result = cypher.removeInternalPropertys(result);
+    result = cypher.resultMapping(result,params);
+    result_new.data = result;
     return result_new;
 };
 
 var configurationItemCategoryProcess = function(params) {
+    let base_query_response = {
+        "status":STATUS_OK, //ok, info, warning, error,
+        "message":{
+            "content":CONTENT_QUERY_SUCESS,
+            "displayAs":DISPLAY_AS_TOAST//toast, modal, console, alert
+        },
+        "data":{}
+    };
     var result_new = Object.assign({},base_query_response);
     result_new.data = schema.cmdbConfigurationItemInheritanceRelationship;
     if(params.filter == schema.cmdbTypeName.Asset){

@@ -1,6 +1,6 @@
 var fs = require('file-system');
 var _ = require('lodash');
-var schema = require('./schema')
+var schema = require('./../schema')
 
 /*ConfigurationItem*/
 var cmdb_delRelsExistInConfigurationItem_cypher = fs.readFileSync('./cypher/delRelsExistInConfigurationItem.cyp', 'utf8');
@@ -39,7 +39,8 @@ const cmdb_addNode_Cypher_template = (labels, created,last_updated) => `MERGE (n
 const cmdb_delNode_cypher = `MATCH (s)
                             WHERE s.uuid = {uuid}
                             DETACH
-                            DELETE s`;
+                            DELETE s
+                            RETURN s`;
 
 const cmdb_findNode_cypher = `MATCH (n)
                             WHERE n.uuid = {uuid}
@@ -60,6 +61,12 @@ const keyword_condition = `WHERE n.name =~ {keyword} OR n.desc =~ {keyword}`;
 const user_keyword_condition = `WHERE n.alias =~ {keyword}`;
 const user_attributes = `{userid:n.userid,alias:n.alias,lang:n.lang,name:n.name,surname:n.surname}`;
 const all_attributes = `n`;
+
+const cmdb_findConfigurationItemWithUser_cypher = `MATCH (item:ConfigurationItem)
+                            WHERE item.uuid = {uuid}
+                            OPTIONAL MATCH (n:User) where n.userid = item.userid
+                            WITH ${user_attributes} as n,item as item
+                            return {configurationItem:item,user:n}`
 
 
 const cmdb_findNodesByKeyword_Cypher_template = (type,condition,attributes) => `MATCH
@@ -83,7 +90,7 @@ var removeInternalPropertys = function(val) {
         });
     } else {
         for (prop in val) {
-            if (prop === 'id'||prop === '_index'||prop === '_type'||prop === '_id')
+            if (prop === 'id'||prop === '_index'||prop === '_type'||prop === '_id'||prop === 'passwd')
                 delete val[prop];
             else if (typeof val[prop] === 'object')
                 removeInternalPropertys(val[prop]);
@@ -120,6 +127,17 @@ var generateAddNodeCypher = function(params) {
     labels = labels?labels.join(":"):params.category;
     return cmdb_addNode_Cypher_template(labels,created,last_updated);
 };
+
+var resultMapping = function(result,params){
+    if(params.type === schema.cmdbTypeName.ConfigurationItem){
+        result = _.assign(result,result.configurationItem);
+        result = _.omit(result,['configurationItem']);
+        if(result.user&&!result.user.alias){
+            result = _.omit(result,['user']);
+        }
+    }
+    return result;
+}
 
 module.exports = {
     removeInternalPropertys:removeInternalPropertys,
@@ -160,7 +178,7 @@ module.exports = {
         return cyphers_todo;
     },
     generateProcessFlowCypher:function(params){
-        var cyphers_todo = [generateAddNodeCypher(params)];
+        var cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInProcessFlow_cypher];
         if(params.it_service)
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowITServiceRel_cypher];
         if(params.reference_process_flow)
@@ -171,8 +189,8 @@ module.exports = {
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowExecutedByUserRel_cypher];
         return cyphers_todo;
     },
-    generateQueryNodesCypher:function(url) {
-        var type = getTypeFromUrl(url),cypher,attributes=all_attributes;
+    generateQueryNodesCypher:function(type) {
+        var cypher,attributes=all_attributes;
         if(type === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroup_cypher;
         }else{
@@ -183,8 +201,8 @@ module.exports = {
         }
         return cypher;
     },
-    generateQueryNodesByKeyWordCypher:function(url) {
-        var type = getTypeFromUrl(url),cypher,attributes=all_attributes,condition=keyword_condition;
+    generateQueryNodesByKeyWordCypher:function(type) {
+        var cypher,attributes=all_attributes,condition=keyword_condition;
         if(type === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroupByKeyword_cypher;
         }else{
@@ -196,26 +214,29 @@ module.exports = {
         }
         return cypher;
     },
-    generateQueryITServiceByUuidsCypher:function(url) {
-        var type = getTypeFromUrl(url);
+    generateQueryITServiceByUuidsCypher:function(type) {
         if(type !== schema.cmdbTypeName.ITService){
             throw new Error('only ITService support query by uuids temporarily')
         }
         return cmdb_queryITServiceByUuids_cypher;
     },
-    generateAdvancedSearchITServiceCypher:function(url) {
-        var type = getTypeFromUrl(url);
+    generateAdvancedSearchITServiceCypher:function(type) {
         if(type !== schema.cmdbTypeName.ITService){
-            throw new Error('only ITService support query by uuids temporarily')
+            throw new Error('only ITService support search temporarily')
         }
         return cmdb_advancedSearchITService_cypher;
     },
-    generateQueryNodeCypher:function(params){
+    generateQueryNodeCypher:function(type){
+        if(type == schema.cmdbTypeName.ConfigurationItem){
+            return cmdb_findConfigurationItemWithUser_cypher;
+        }
         return cmdb_findNode_cypher;
     },
     generateDelNodeCypher:function(params){
         return cmdb_delNode_cypher;
-    }
+    },
+    getTypeFromUrl:getTypeFromUrl,
+    resultMapping:resultMapping
 }
 
 

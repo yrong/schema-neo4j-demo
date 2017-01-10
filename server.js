@@ -43,15 +43,8 @@ app.defineAPI({
 
 app.defineAPI({
     method: 'GET',
-    route: '/api/cfgItems/categories',
+    route: '/api/cfgItems/categories/:filter',
     procedure: hook.configurationItemCategoryProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/cfgItems/:uuid',
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
 });
 
 /*Cabinet*/
@@ -59,13 +52,6 @@ app.defineAPI({
     method: 'POST',
     route: '/api/cabinets',
     check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/cabinets/:uuid',
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
@@ -82,13 +68,6 @@ app.defineAPI({
     method: 'POST',
     route: '/api/locations',
     check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/locations/:uuid',
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
@@ -124,13 +103,6 @@ app.defineAPI({
 });
 
 app.defineAPI({
-    method: 'DEL',
-    route: '/api/it_services/service/:uuid',
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
     method: 'GET',
     route: '/api/it_services/service',
     preProcess: hook.queryItems_preProcess,
@@ -142,13 +114,6 @@ app.defineAPI({
     method: 'POST',
     route: '/api/it_services/group',
     check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/it_services/group/:uuid',
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
@@ -179,6 +144,14 @@ app.defineAPI({
     method: 'GET',
     route: '/api/processFlows/:uuid',
     procedure: search.searchProcessFlows
+});
+
+/* Delete any item*/
+app.defineAPI({
+    method: 'DEL',
+    route: '/api/items/:uuid',
+    preProcess: hook.cudItem_preProcess,
+    postProcess: hook.cudItem_postProcess
 });
 
 

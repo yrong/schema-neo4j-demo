@@ -79,7 +79,7 @@ const cmdbTypesAll = cmdbConfigurationItemAbstractTypes.concat(cmdbConfiguration
 
 
 _.forEach(cmdbTypesAll,function(type){
-    ajv.addSchema(require('./schema/'+ type + '.json'));
+    ajv.addSchema(require('./'+ type + '.json'));
 });
 
 var checkSchema = function (params) {
