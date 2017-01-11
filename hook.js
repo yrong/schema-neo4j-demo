@@ -4,32 +4,45 @@ var schema = require('./schema');
 var MAXNUM = 1000;
 var cypher = require('./cypher');
 
-var cudItem_preProcess = function (params) {
-    var params_new = _.assign({},params);
-    if(params.method === 'POST' || params.method === 'PUT'){
-        params_new = {"fields":params.data.fields};
-        params_new = _.assign(params_new,params.data.fields);
-        params_new.method = params.method;
-        params_new.category = params.data.category;
-        params_new.fields.category = params.data.category;
-        params_new.fields.uuid = params_new.uuid = params.uuid?params.uuid:uuid.v1();
-        if(schema.cmdbConfigurationItemTypes.includes(params_new.category)){
-            params_new.fields.asset_location = JSON.stringify(params_new.fields.asset_location);
-            //params_new.fields.updated_by = 1
-            params_new.cyphers = cypher.generateCmdbCyphers(params_new);
-        }else if(params_new.category === schema.cmdbTypeName.ITService){
-            params_new.cyphers = cypher.generateITServiceCyphers(params_new);
-        }else if(schema.cmdbProcessFlowTypes.includes(params_new.category)){
-            // params_new.fields.it_service
-            params_new.fields = _.omit(params_new.fields,['desc','note','attachment','it_service','reference_process_flow','reference_kb']);
-            params_new.cyphers = cypher.generateProcessFlowCypher(params_new);
-        }else{
-            params_new.cypher = cypher.generateAddNodeCypher(params_new);
-        }
-    }else if(params.method === 'DEL'){
-        params_new.cypher = cypher.generateDelNodeCypher(params_new);
+var generateCypher = (params)=>{
+    if(schema.cmdbConfigurationItemTypes.includes(params.category)){
+        params.fields.asset_location = _.isString(params.fields.asset_location)?params.fields.asset_location:JSON.stringify(params.fields.asset_location);
+        params.cyphers = cypher.generateCmdbCyphers(params);
+    }else if(params.category === schema.cmdbTypeName.ITService){
+        params.cyphers = cypher.generateITServiceCyphers(params);
+    }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
+        params.fields = _.omit(params.fields,['desc','note','attachment']);
+        params.cyphers = cypher.generateProcessFlowCypher(params);
+    }else{
+        params.cypher = cypher.generateAddNodeCypher(params);
     }
-    return params_new;
+    return params;
+}
+
+var cudItem_preProcess = function (params,ctx) {
+    params = _.assign({},params);
+    if(params.method === 'POST'){
+        params.fields = params.data.fields;
+        params.fields.category = params.data.category;
+        params.fields.uuid = uuid.v1();
+        params = _.assign(params,params.fields);
+        generateCypher(params);
+    }else if(params.method === 'DEL'){
+        cypher.generateDelNodeCypher(params);
+    }else if(params.method === 'PUT' || params.method === 'PATCH'){
+        return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypher.cmdb_findNode_cypher,params,true).then((result)=>{
+            if(result&&result[0]){
+                params.fields = result[0];
+                params.fields = _.assign(params.fields,params.data.fields);
+                params = _.assign(params,params.fields);
+                generateCypher(params);
+                return params;
+            }else{
+                throw new Error("no record found to patch,uuid is" + params.uuid);
+            }
+        })
+    }
+    return params;
 };
 
 const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
@@ -37,21 +50,21 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     DISPLAY_AS_TOAST='toast';
 
 var cudItem_postProcess = function (result,params,ctx) {
-    var result_new = {
+    var result_wrapped = {
         "status":STATUS_INFO,
         "content": CONTENT_OPERATION_SUCESS,
         "displayAs":DISPLAY_AS_TOAST
     }
     if(params.method == 'DEL' && params.uuid && result.length != 1){
-        result_new = {
+        result_wrapped = {
             "status":STATUS_WARNING,
             "content": CONTENT_NO_RECORD,
             "displayAs":DISPLAY_AS_TOAST
         }
     }
     if(params.uuid)
-        result_new.uuid = params.uuid;
-    return　result_new;
+        result_wrapped.uuid = params.uuid;
+    return　result_wrapped;
 };
 
 var paginationQueryItems_preProcess = function (params) {

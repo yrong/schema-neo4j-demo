@@ -233,10 +233,12 @@ module.exports = {
         return cmdb_findNode_cypher;
     },
     generateDelNodeCypher:function(params){
-        return cmdb_delNode_cypher;
+        params.cypher = cmdb_delNode_cypher;
+        return params;
     },
     getTypeFromUrl:getTypeFromUrl,
-    resultMapping:resultMapping
+    resultMapping:resultMapping,
+    cmdb_findNode_cypher:cmdb_findNode_cypher
 }
 
 

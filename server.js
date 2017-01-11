@@ -28,6 +28,13 @@ app.defineAPI({
 });
 
 app.defineAPI({
+    method: 'PATCH',
+    route: '/api/cfgItems/:uuid',
+    preProcess: hook.cudItem_preProcess,
+    postProcess: hook.cudItem_postProcess
+});
+
+app.defineAPI({
     method: 'GET',
     route: '/api/cfgItems',
     preProcess: hook.queryItems_preProcess,

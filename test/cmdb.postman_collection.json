@@ -35,7 +35,9 @@
 		"279fcb26-3635-d639-78f2-12b00e9381eb",
 		"16ccefd4-839b-4a0d-a044-ef0640a9a38a",
 		"07d6d39d-79a2-3d6c-848a-97e712b3ff1b",
-		"f6285bff-a2c1-c698-9c27-b53a0f1fbef5"
+		"f6285bff-a2c1-c698-9c27-b53a0f1fbef5",
+		"2d9c8e42-dd94-1ae1-0c6d-883d58b034d3",
+		"198ec5dd-5c5d-c54f-eee0-a833c22d2e34"
 	],
 	"folders": [],
 	"timestamp": 0,
@@ -119,6 +121,24 @@
 			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889"
 		},
 		{
+			"id": "198ec5dd-5c5d-c54f-eee0-a833c22d2e34",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/cfgItems/{{router_id}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1484127906398,
+			"name": "patch router for all attributes",
+			"description": "",
+			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889",
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"userid\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+		},
+		{
 			"id": "1bbd2ceb-6dd9-b998-2107-1d701a7936e0",
 			"headers": "",
 			"url": "{{url}}/cfgItems/{{physical_server_id}}",
@@ -172,6 +192,24 @@
 			"helperAttributes": {},
 			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889",
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"userid\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+		},
+		{
+			"id": "2d9c8e42-dd94-1ae1-0c6d-883d58b034d3",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/cfgItems/{{router_id}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1484127726641,
+			"name": "patch router for patial attributes",
+			"description": "",
+			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889",
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router-3\",\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\"\n    }\n  }\n}"
 		},
 		{
 			"id": "30e54a89-912e-56f6-1540-5e314f77a008",
@@ -610,23 +648,22 @@
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"desc\":\"cabinet\"\n    }\n  }\n}"
 		},
 		{
-			"folder": null,
 			"id": "db3015d6-3979-8b33-e39c-12473ea542a3",
-			"name": "add physical server",
-			"dataMode": "raw",
-			"data": [],
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
 			"url": "{{url}}/cfgItems",
 			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
+			"time": 1484101009401,
+			"name": "add physical server",
+			"description": "",
 			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver-2\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"10.10.35.63\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"unmounted\",\"location\":\"{{location_id}}\"},\n      \"management_ip\":[\"10.10.35.64\"]\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver-3\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"10.10.35.63\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"unmounted\",\"location\":\"{{location_id}}\"},\n      \"management_ip\":[\"10.10.35.64\"],\n      \"monitored\":true\n    }\n  }\n}"
 		},
 		{
 			"id": "e1c546e0-d7f1-b8cc-409a-cb667c24605a",
