@@ -249,14 +249,13 @@ GET /API/users/{id}
 ## Cabinet
 ### 查、搜
 > 搜索Cabinets，将keyword作为条件匹配==所有==字段，若keyword为空则返回所有：
-```
-GET /API/cabinets?keyword={keyword}&page={page}&per_page={per_page}
-```
+
+    GET /API/cabinets?keyword={keyword}&page={page}&per_page={per_page}
+
 > 返回指定Cabinet的详细信息：//要求同上
 
-```
-GET /API/cabinets/{id}
-```
+    GET /API/cabinets/{id}
+
 
 ### 增删改：格式和cfgItems相同，略
 以下格式和Cabinet相同，所以仅注明URI
@@ -264,7 +263,7 @@ GET /API/cabinets/{id}
 ## IT Service:  /API/IT_Services
 关系：
 
-```(sg1:ITServiceGroup)<-[:BelongsTo]-(service1:ITService)-[:ParentOf]->(service2:ITService)-[:DependsOn]->(service3:ITService)```
+    (sg1:ITServiceGroup)<-[:BelongsTo]-(service1:ITService)-[:ParentOf]->(service2:ITService)-[:DependsOn]->(service3:ITService)
 
 字段定义：
 
