@@ -14,22 +14,11 @@ var es_client = new elasticsearch.Client({
 
 var indexName = 'cmdb',typeName = 'processFlow';
 
-var wrapResponseInHook = function(promise,params,ctx) {
-    return new Promise(function (resolve, reject) {
-        promise.then(function (response) {
-            var result = hook.cudItem_postProcess(response, params, ctx);
-            resolve(result);
-        }, function (error) {
-            reject(error);
-        });
-    });
-}
-
 var addProcessFlow = function(result,params,ctx) {
     return es_client.index({
         index: indexName,
         type: typeName,
-        body: _.omit(params,'fields'),
+        body: _.omit(params,['fields','cyphers','method']),
         refresh:true
     }).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
@@ -59,13 +48,15 @@ var delProcessFlows = function(result,params,ctx) {
 module.exports.delProcessFlows = delProcessFlows;
 
 var searchProcessFlows = function(params,ctx) {
-    var query =  params.keyword?params.keyword:'*';
+    var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
+    var _source = params._source?params._source.split(','):true;
     return es_client.search({
         index: indexName,
         type: typeName,
-        q: query
+        q: query,
+        _source:_source
     }).then(function (response) {
-        return response;
+        return hook.queryItems_postProcess(response.hits, params, ctx);
     }, function (error) {
         throw error;
     });

@@ -1,0 +1,15 @@
+{
+  "id": "/IncidentFlow",
+  "allOf": [
+    {
+      "$ref": "/ProcessFlow"
+    },
+    {
+      "properties": {
+        "user_affected": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

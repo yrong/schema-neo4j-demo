@@ -33,7 +33,8 @@ class KoaNeo4jApp extends Application {
             'GET': this.router.get,
             'POST': this.router.post,
             'PUT': this.router.put,
-            'DEL': this.router.del
+            'DEL': this.router.del,
+            'PATCH':this.router.patch
         };
 
         this.neo4jConnection = new Neo4jConnection(options.neo4j);

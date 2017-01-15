@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js&",
+    "start": "nohup node server.js&",
     "webpack": "./node_modules/.bin/webpack",
     "sync": "node sync.js",
-    "test": "npm start && ./node_modules/mocha/bin/mocha",
-    "postman": "node ./test/postman.js",
-    "schema": "$NEO4J_HOME/bin/neo4j-shell -file ./cypher/cmdbSchema.cyp"
+    "test": "node ./test/postman.js",
+    "schema": "sh init.sh"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",

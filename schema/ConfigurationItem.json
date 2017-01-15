@@ -2,8 +2,14 @@
   "id": "/ConfigurationItem",
   "type": "object",
   "properties": {
-    "it_service": {
+    "name": {
       "type": "string"
+    },
+    "it_service": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "uniqueItems": true
     },
     "monitored": {
       "type": "boolean",
@@ -16,5 +22,5 @@
       "type": "string"
     }
   },
-  "required": ["monitored"]
+  "required": ["name","monitored"]
 }

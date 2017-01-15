@@ -1,23 +1,35 @@
 var fs = require('file-system');
 var _ = require('lodash');
-var schema = require('./schema')
+var schema = require('./../schema')
 
-var cmdb_delRelsExistInCmdb_cypher = fs.readFileSync('./cypher/delRelsExistInCmdb.cyp', 'utf8');
-var cmdb_addITServiceSupportRel_cypher = fs.readFileSync('./cypher/addITServiceSupportRel.cyp', 'utf8');
-var cmdb_addUserRel_cypher = fs.readFileSync('./cypher/addUserRel.cyp', 'utf8');
-var cmdb_addCabinetRel_cypher = fs.readFileSync('./cypher/addCabinetRel.cyp', 'utf8');
-var cmdb_addLocationRel_cypher = fs.readFileSync('./cypher/addLocationRel.cyp', 'utf8');
-var cmdb_delResExistInITService_cypher = fs.readFileSync('./cypher/delRelsExistInITService.cyp', 'utf8');
+/*ConfigurationItem*/
+var cmdb_delRelsExistInConfigurationItem_cypher = fs.readFileSync('./cypher/delRelsExistInConfigurationItem.cyp', 'utf8');
+var cmdb_addConfigurationItemITServiceRel_cypher = fs.readFileSync('./cypher/addConfigurationItemITServiceRel.cyp', 'utf8');
+var cmdb_addConfigurationItemUserRel_cypher = fs.readFileSync('./cypher/addConfigurationItemUserRel.cyp', 'utf8');
+var cmdb_addConfigurationItemCabinetRel_cypher = fs.readFileSync('./cypher/addConfigurationItemCabinetRel.cyp', 'utf8');
+var cmdb_addConfigurationLocationRel_cypher = fs.readFileSync('./cypher/addConfigurationItemLocationRel.cyp', 'utf8');
+
+/*ITService*/
+var cmdb_delRelsExistInITService_cypher = fs.readFileSync('./cypher/delRelsExistInITService.cyp', 'utf8');
 var cmdb_addITServiceBelongsToGroupRel_cypher = fs.readFileSync('./cypher/addITServiceBelongsToGroupRel.cyp', 'utf8');
 var cmdb_addITServiceParentRel_cypher = fs.readFileSync('./cypher/addITServiceParentRel.cyp', 'utf8');
 var cmdb_addITServiceChildrenRel_cypher = fs.readFileSync('./cypher/addITServiceChildrenRel.cyp', 'utf8');
 var cmdb_addITServiceDependenciesRel_cypher = fs.readFileSync('./cypher/addITServiceDependenciesRel.cyp', 'utf8');
 var cmdb_addITServiceDependendentsRel_cypher = fs.readFileSync('./cypher/addITServiceDependendentsRel.cyp', 'utf8');
-var cmdb_addProcessFlow_cypher = fs.readFileSync('./cypher/addProcessFlow.cyp', 'utf8');
+
 var cmdb_queryITServiceGroup_cypher = fs.readFileSync('./cypher/queryITServiceGroup.cyp', 'utf8');
 var cmdb_queryITServiceGroupByKeyword_cypher = fs.readFileSync('./cypher/queryITServiceGroupByKeyword.cyp', 'utf8');
 var cmdb_queryITServiceByUuids_cypher = fs.readFileSync('./cypher/queryITServiceByUuids.cyp', 'utf8');
 var cmdb_advancedSearchITService_cypher = fs.readFileSync('./cypher/searchITService.cyp', 'utf8');
+
+/*ProcessFlow*/
+//var cmdb_addProcessFlow_cypher = fs.readFileSync('./cypher/addProcessFlow.cyp', 'utf8');
+var cmdb_delRelsExistInProcessFlow_cypher = fs.readFileSync('./cypher/delRelsExistInProcessFlow.cyp', 'utf8');
+var cmdb_addProcessFlowITServiceRel_cypher = fs.readFileSync('./cypher/addProcessFlowITServiceRel.cyp', 'utf8');
+var cmdb_addProcessFlowCommitedByUserRel_cypher = fs.readFileSync('./cypher/addProcessFlowCommitedByUserRel.cyp', 'utf8');
+var cmdb_addProcessFlowExecutedByUserRel_cypher = fs.readFileSync('./cypher/addProcessFlowExecutedByUserRel.cyp', 'utf8');
+var cmdb_addProcessFlowSelfReferencedRel_cypher = fs.readFileSync('./cypher/addProcessFlowSelfReferencedRel.cyp', 'utf8');
+
 
 const cmdb_addNode_Cypher_template = (labels, created,last_updated) => `MERGE (n:${labels} {uuid: {uuid}})
                                     ON CREATE SET n = {fields}${created}
@@ -27,7 +39,12 @@ const cmdb_addNode_Cypher_template = (labels, created,last_updated) => `MERGE (n
 const cmdb_delNode_cypher = `MATCH (s)
                             WHERE s.uuid = {uuid}
                             DETACH
-                            DELETE s`;
+                            DELETE s
+                            RETURN s`;
+
+const cmdb_findNode_cypher = `MATCH (n)
+                            WHERE n.uuid = {uuid}
+                            RETURN n`;
 
 const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
             (n:${type})
@@ -45,6 +62,12 @@ const user_keyword_condition = `WHERE n.alias =~ {keyword}`;
 const user_attributes = `{userid:n.userid,alias:n.alias,lang:n.lang,name:n.name,surname:n.surname}`;
 const all_attributes = `n`;
 
+const cmdb_findConfigurationItemWithUser_cypher = `MATCH (item:ConfigurationItem)
+                            WHERE item.uuid = {uuid}
+                            OPTIONAL MATCH (n:User) where n.userid = item.userid
+                            WITH ${user_attributes} as n,item as item
+                            return {configurationItem:item,user:n}`
+
 
 const cmdb_findNodesByKeyword_Cypher_template = (type,condition,attributes) => `MATCH
             (n:${type})
@@ -59,19 +82,21 @@ const cmdb_findNodesByKeyword_Cypher_template = (type,condition,attributes) => `
             SKIP {skip} LIMIT {limit}
             RETURN { count: cnt, results:collect(n) }`
 
-var removeIdProperty = function(val) {
-    if(_.isArray(val)){
-        val = _.map(val, function(val) {
-            return removeIdProperty(val);
+var removeInternalPropertys = function(val) {
+
+    if (_.isArray(val)) {
+        val = _.map(val, function (val) {
+            return removeInternalPropertys(val);
         });
-    }else{
-        for(prop in val) {
-            if (prop === 'id')
+    } else {
+        for (prop in val) {
+            if (prop === 'id'||prop === '_index'||prop === '_type'||prop === '_id'||prop === 'passwd')
                 delete val[prop];
             else if (typeof val[prop] === 'object')
-                removeIdProperty(val[prop]);
+                removeInternalPropertys(val[prop]);
         }
     }
+
     return val;
 };
 
@@ -82,9 +107,11 @@ var getTypeFromUrl = function (url) {
     } else if (url.includes('/it_services/group')) {
         type =  schema.cmdbTypeName.ITServiceGroup;
     } else if (url.includes('/cfgItems')) {
-        type =  schema.cmdbTypeName.ConfigurationItem
+        type =  schema.cmdbTypeName.ConfigurationItem;
+    } else if (url.includes('/processFlows')) {
+        type =  schema.cmdbTypeName.ProcessFlow;
     } else {
-        type = _.find(schema.cmdbAuxiliaryTypes, function (type) {
+        type = _.find(schema.cmdbConfigurationItemAuxiliaryTypes, function (type) {
             return url.includes(type.toLowerCase());
         });
     }
@@ -93,7 +120,7 @@ var getTypeFromUrl = function (url) {
 
 var generateAddNodeCypher = function(params) {
     labels = schema.cmdbTypeLabels[params.category],created='',last_updated='';
-    if(Array.isArray(labels)&&labels.includes(schema.cmdbTypeName.ConfigurationItem)){
+    if(Array.isArray(labels)&&(labels.includes(schema.cmdbTypeName.ConfigurationItem)||labels.includes(schema.cmdbTypeName.ProcessFlow))){
         created = `,n.created = timestamp()`;
         last_updated = `,n.lastUpated = timestamp()`;
     }
@@ -101,27 +128,38 @@ var generateAddNodeCypher = function(params) {
     return cmdb_addNode_Cypher_template(labels,created,last_updated);
 };
 
+var resultMapping = function(result,params){
+    if(params.type === schema.cmdbTypeName.ConfigurationItem){
+        result = _.assign(result,result.configurationItem);
+        result = _.omit(result,['configurationItem']);
+        if(result.user&&!result.user.alias){
+            result = _.omit(result,['user']);
+        }
+    }
+    return result;
+}
+
 module.exports = {
-    removeIdProperty:removeIdProperty,
+    removeInternalPropertys:removeInternalPropertys,
     generateAddNodeCypher:generateAddNodeCypher,
     generateCmdbCyphers:function (params) {
-        var cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInCmdb_cypher];
+        var cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInConfigurationItem_cypher];
         if(params.it_service){
-            cyphers_todo.push(cmdb_addITServiceSupportRel_cypher);
+            cyphers_todo.push(cmdb_addConfigurationItemITServiceRel_cypher);
         }
         if(params.userid){
-            cyphers_todo.push(cmdb_addUserRel_cypher);
+            cyphers_todo.push(cmdb_addConfigurationItemUserRel_cypher);
         }
         if(params.asset_location&&params.asset_location.cabinet){
-            cyphers_todo.push(cmdb_addCabinetRel_cypher);
+            cyphers_todo.push(cmdb_addConfigurationItemCabinetRel_cypher);
         }
         if(params.asset_location&&params.asset_location.location){
-            cyphers_todo.push(cmdb_addLocationRel_cypher);
+            cyphers_todo.push(cmdb_addConfigurationLocationRel_cypher);
         }
         return cyphers_todo;
     },
     generateITServiceCyphers:function (params) {
-        var cyphers_todo = [generateAddNodeCypher(params),cmdb_delResExistInITService_cypher];
+        var cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInITService_cypher];
         if(params.group){
             cyphers_todo.push(cmdb_addITServiceBelongsToGroupRel_cypher);
         }
@@ -139,14 +177,20 @@ module.exports = {
         }
         return cyphers_todo;
     },
-    generateDelNodeCypher:function(params){
-        return cmdb_delNode_cypher;
-    },
     generateProcessFlowCypher:function(params){
-        return cmdb_addProcessFlow_cypher;
+        var cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInProcessFlow_cypher];
+        if(params.it_service)
+            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowITServiceRel_cypher];
+        if(params.reference_process_flow)
+            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowSelfReferencedRel_cypher];
+        if(params.committer)
+            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowCommitedByUserRel_cypher];
+        if(params.executor)
+            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowExecutedByUserRel_cypher];
+        return cyphers_todo;
     },
-    generateQueryNodesCypher:function(url) {
-        var type = getTypeFromUrl(url),cypher,attributes=all_attributes;
+    generateQueryNodesCypher:function(type) {
+        var cypher,attributes=all_attributes;
         if(type === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroup_cypher;
         }else{
@@ -157,8 +201,8 @@ module.exports = {
         }
         return cypher;
     },
-    generateQueryNodesByKeyWordCypher:function(url) {
-        var type = getTypeFromUrl(url),cypher,attributes=all_attributes,condition=keyword_condition;
+    generateQueryNodesByKeyWordCypher:function(type) {
+        var cypher,attributes=all_attributes,condition=keyword_condition;
         if(type === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroupByKeyword_cypher;
         }else{
@@ -170,20 +214,31 @@ module.exports = {
         }
         return cypher;
     },
-    generateQueryITServiceByUuidsCypher:function(url) {
-        var type = getTypeFromUrl(url);
+    generateQueryITServiceByUuidsCypher:function(type) {
         if(type !== schema.cmdbTypeName.ITService){
             throw new Error('only ITService support query by uuids temporarily')
         }
         return cmdb_queryITServiceByUuids_cypher;
     },
-    generateAdvancedSearchITServiceCypher:function(url) {
-        var type = getTypeFromUrl(url);
+    generateAdvancedSearchITServiceCypher:function(type) {
         if(type !== schema.cmdbTypeName.ITService){
-            throw new Error('only ITService support query by uuids temporarily')
+            throw new Error('only ITService support search temporarily')
         }
         return cmdb_advancedSearchITService_cypher;
-    }
+    },
+    generateQueryNodeCypher:function(type){
+        if(type == schema.cmdbTypeName.ConfigurationItem){
+            return cmdb_findConfigurationItemWithUser_cypher;
+        }
+        return cmdb_findNode_cypher;
+    },
+    generateDelNodeCypher:function(params){
+        params.cypher = cmdb_delNode_cypher;
+        return params;
+    },
+    getTypeFromUrl:getTypeFromUrl,
+    resultMapping:resultMapping,
+    cmdb_findNode_cypher:cmdb_findNode_cypher
 }
 
 

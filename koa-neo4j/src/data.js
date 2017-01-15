@@ -33,14 +33,15 @@ class Neo4jConnection {
     }
 
     executeCypher(cypherQueryFilePath, queryParams, pathIsQuery = false) {
+        var that = this;
         return new Promise((resolve, reject) => {
-            if (!pathIsQuery && !this.queries[cypherQueryFilePath])
-                this.addCypherQueryFile(cypherQueryFilePath);
+            if (!pathIsQuery && !that.queries[cypherQueryFilePath])
+                that.addCypherQueryFile(cypherQueryFilePath);
 
             let query = cypherQueryFilePath;
             if (!pathIsQuery)
-                query = this.queries[cypherQueryFilePath];
-            const session = this.driver.session();
+                query = that.queries[cypherQueryFilePath];
+            const session = that.driver.session();
 
             session.run(query, queryParams)
                 .then(result => {

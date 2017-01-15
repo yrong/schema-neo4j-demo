@@ -28,6 +28,13 @@ app.defineAPI({
 });
 
 app.defineAPI({
+    method: 'PATCH',
+    route: '/api/cfgItems/:uuid',
+    preProcess: hook.cudItem_preProcess,
+    postProcess: hook.cudItem_postProcess
+});
+
+app.defineAPI({
     method: 'GET',
     route: '/api/cfgItems',
     preProcess: hook.queryItems_preProcess,
@@ -35,10 +42,16 @@ app.defineAPI({
 });
 
 app.defineAPI({
-    method: 'DEL',
+    method: 'GET',
     route: '/api/cfgItems/:uuid',
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
+    preProcess: hook.queryItems_preProcess,
+    postProcess: hook.queryItems_postProcess
+});
+
+app.defineAPI({
+    method: 'GET',
+    route: '/api/cfgItems/categories/:filter',
+    procedure: hook.configurationItemCategoryProcess
 });
 
 /*Cabinet*/
@@ -46,13 +59,6 @@ app.defineAPI({
     method: 'POST',
     route: '/api/cabinets',
     check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/cabinets/:uuid',
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
@@ -69,13 +75,6 @@ app.defineAPI({
     method: 'POST',
     route: '/api/locations',
     check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/locations/:uuid',
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
@@ -111,13 +110,6 @@ app.defineAPI({
 });
 
 app.defineAPI({
-    method: 'DEL',
-    route: '/api/it_services/service/:uuid',
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
     method: 'GET',
     route: '/api/it_services/service',
     preProcess: hook.queryItems_preProcess,
@@ -129,13 +121,6 @@ app.defineAPI({
     method: 'POST',
     route: '/api/it_services/group',
     check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/it_services/group/:uuid',
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
 });
@@ -162,6 +147,21 @@ app.defineAPI({
     procedure: search.searchProcessFlows
 });
 
+app.defineAPI({
+    method: 'GET',
+    route: '/api/processFlows/:uuid',
+    procedure: search.searchProcessFlows
+});
+
+/* Delete any item*/
+app.defineAPI({
+    method: 'DEL',
+    route: '/api/items/:uuid',
+    preProcess: hook.cudItem_preProcess,
+    postProcess: hook.cudItem_postProcess
+});
+
+
 /* Delete all Items(for test purpose) */
 app.defineAPI({
     method: 'DEL',
@@ -169,7 +169,6 @@ app.defineAPI({
     cypherQueryFile: './cypher/deleteItems.cyp',
     postProcess: search.delProcessFlows
 });
-
 
 app.listen(3001, function () {
     console.log('App listening on port 3001.');

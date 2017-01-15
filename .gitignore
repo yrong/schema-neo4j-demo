@@ -35,3 +35,7 @@ koa-neo4j/*.js
 koa-neo4j/*.js.map
 !koa-neo4j/src/**/*.js
 !webpack.config.js
+
+nohup.out
+
+dump.rdb
