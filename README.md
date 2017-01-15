@@ -279,52 +279,48 @@ GET /API/cabinets/{id}
 
 全部服务列表查询：列出所有的分组和服务、子服务:
 
-```/API/IT_Services```
+    /API/IT_Services
 
-```
-{
-	"status":"ok", //ok, info, warning, error,
-	"message":{
-		"content":"message text here",
-		"displayAs":"toast" //toast, modal, console, alert
-	},
-	"data":{
-		"results":[ //所有成员的ID, Name, Description: group->service->subservice
-		]
-	}
-}
-```
+    {
+        "status":"ok", //ok, info, warning, error,
+        "message":{
+            "content":"message text here",
+            "displayAs":"toast" //toast, modal, console, alert
+        },
+        "data":{
+            "results":[ //所有成员的ID, Name, Description: group->service->subservice
+            ]
+        }
+    }
+
 
 查看某IT Service, IT Service Group:
 
-```
-/API/IT_Services/service/{IT Service uuid}
-/API/IT_Services/group/{IT Service Group uuid}
-```
+    /API/IT_Services/service/{IT Service uuid}
+    /API/IT_Services/group/{IT Service Group uuid}
+
 
 以下数组中的服务对象，只需包含Name, Description, uuid
 
-```
-{
-	"status":"ok", //ok, info, warning, error,
-	"message":{
-		"content":"message text here",
-		"displayAs":"toast" //toast, modal, console, alert
-	},
-	"data":{
-		"Type":"IT Service(Group) uuid"
-		"ID":"IT Service(Group) uuid",
-		"Name":"IT Service(Group) Name",
-		"Description":"IT Service Desc",
-		"Services":[ITService1, ITService2], // n/a for IT Service
-		"Group":"ITServiceGroup Name",// n/a for IT Service Group
-		"Sub IT Services":[ITService1, ITService2],// n/a for IT Service Group
-		"Parent":"IT Service Name",// n/a for IT Service Group
-		"Dependencies":[],// n/a for IT Service Group
-		"Dependendents":[] // n/a for IT Service Group
-	}
-}
-```
+    {
+        "status":"ok", //ok, info, warning, error,
+        "message":{
+            "content":"message text here",
+            "displayAs":"toast" //toast, modal, console, alert
+        },
+        "data":{
+            "Type":"IT Service(Group) uuid"
+            "ID":"IT Service(Group) uuid",
+            "Name":"IT Service(Group) Name",
+            "Description":"IT Service Desc",
+            "Services":[ITService1, ITService2], // n/a for IT Service
+            "Group":"ITServiceGroup Name",// n/a for IT Service Group
+            "Sub IT Services":[ITService1, ITService2],// n/a for IT Service Group
+            "Parent":"IT Service Name",// n/a for IT Service Group
+            "Dependencies":[],// n/a for IT Service Group
+            "Dependendents":[] // n/a for IT Service Group
+        }
+    }
 
 # 安装部署
     
@@ -332,23 +328,18 @@ A [CMDB](https://en.wikipedia.org/wiki/Configuration_management_database) backen
 
 ## Relationship for Entities 
 
-```
-(:ITServiceGroup)<-[:BelongsTo]-(:ITService)
-(:ITService)-[:ParentOf]->(:ITService)
-(:ITService)-[:DependsOn]->(:ITService)
-```
+    (:ITServiceGroup)<-[:BelongsTo]-(:ITService)
+    (:ITService)-[:ParentOf]->(:ITService)
+    (:ITService)-[:DependsOn]->(:ITService)
+    
+    (:ConfigurationItem)-[:LOCATED]->(:Cabinet|Location)
+    (:ConfigurationItem)-[:SUPPORT_SERVICE]->(:ITService)
+    (:ConfigurationItem)<-[r:RESPONSIBLE_FOR]-(:User)
+    
+    (:ProcessFlow)-[:CommitedBy|ExecutedBy]->(:User)
+    (:ProcessFlow)-[:REFERENCED_SERVICE]->(:ITService)
+    (:ProcessFlow)<-[:REFERENCED_PROCESSFLOW]-(:ProcessFlow)
 
-```
-(:ConfigurationItem)-[:LOCATED]->(:Cabinet|Location)
-(:ConfigurationItem)-[:SUPPORT_SERVICE]->(:ITService)
-(:ConfigurationItem)<-[r:RESPONSIBLE_FOR]-(:User)
-```
-
-```
-(:ProcessFlow)-[:CommitedBy|ExecutedBy]->(:User)
-(:ProcessFlow)-[:REFERENCED_SERVICE]->(:ITService)
-(:ProcessFlow)<-[:REFERENCED_PROCESSFLOW]-(:ProcessFlow)
-```
 
 
 ## Build and Start
