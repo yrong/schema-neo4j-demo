@@ -18,7 +18,7 @@ var addProcessFlow = function(result,params,ctx) {
     return es_client.index({
         index: indexName,
         type: typeName,
-        body: _.omit(params,['fields','cyphers','method']),
+        body: _.omit(params,['fields','cyphers','method','data','token']),
         refresh:true
     }).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);

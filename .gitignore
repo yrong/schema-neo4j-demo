@@ -37,3 +37,4 @@ koa-neo4j/*.js.map
 !webpack.config.js
 
 nohup.out
+dump.rdb
