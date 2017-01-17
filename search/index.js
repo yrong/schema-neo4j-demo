@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 var esConfig = config.get('config.elasticsearch');
 
-var hook = require('./hook');
+var hook = require('./../hook');
 
 var elasticsearch = require('elasticsearch');
 
@@ -47,6 +47,10 @@ var delProcessFlows = function(result,params,ctx) {
 
 module.exports.delProcessFlows = delProcessFlows;
 
+var responseWrapper = function(response){
+    return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>result._source)}
+}
+
 var searchProcessFlows = function(params,ctx) {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
@@ -56,7 +60,7 @@ var searchProcessFlows = function(params,ctx) {
         q: query,
         _source:_source
     }).then(function (response) {
-        return hook.queryItems_postProcess(response.hits, params, ctx);
+        return hook.queryItems_postProcess(responseWrapper(response), params, ctx);
     }, function (error) {
         throw error;
     });

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "nohup node server.js&",
-    "webpack": "./node_modules/.bin/webpack",
-    "sync": "node sync.js",
+    "start": "node server.js",
+    "webpack": "webpack",
+    "sync": "node ./sync/index.js",
     "test": "node ./test/postman.js",
     "schema": "sh init.sh"
   },
