@@ -14,11 +14,13 @@ var es_client = new elasticsearch.Client({
 
 var indexName = 'cmdb',typeName = 'processFlow';
 
+var hidden_fields = ['fields','cyphers','method','data','token']
+
 var addProcessFlow = function(result,params,ctx) {
     return es_client.index({
         index: indexName,
         type: typeName,
-        body: _.omit(params,['fields','cyphers','method','data','token']),
+        body: _.omit(params,hidden_fields),
         refresh:true
     }).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
@@ -48,7 +50,7 @@ var delProcessFlows = function(result,params,ctx) {
 module.exports.delProcessFlows = delProcessFlows;
 
 var responseWrapper = function(response){
-    return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>result._source)}
+    return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
 }
 
 var searchProcessFlows = function(params,ctx) {
