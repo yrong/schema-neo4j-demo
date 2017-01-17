@@ -94,6 +94,13 @@ app.defineAPI({
     postProcess: hook.queryItems_postProcess
 });
 
+app.defineAPI({
+    method: 'POST',
+    route: '/api/users',
+    preProcess: hook.cudItem_preProcess,
+    postProcess: hook.cudItem_postProcess
+});
+
 /*Schema*/
 app.router.get('/api/schema/:id', function (ctx, next) {
     ctx.body = schema.getSchema('/'+ctx.params.id);

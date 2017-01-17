@@ -56,7 +56,8 @@ const cmdbTypeLabels= {
     Router:[cmdbTypeName.Router,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow]
+    IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow],
+    User:[cmdbTypeName.User]
 }
 
 //ConfigurationItem real types

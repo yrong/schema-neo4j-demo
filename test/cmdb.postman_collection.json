@@ -4,6 +4,9 @@
 	"description": "",
 	"order": [
 		"58ac28b3-9e1c-eefb-c64c-bab9cc4b487a",
+		"bfa88dfb-a45d-e84c-3de0-a92fae720f2d",
+		"a07b1501-6d09-011e-effc-0304af952167",
+		"61494ddd-7f5a-f7e9-0756-c2a8b6b1d1f8",
 		"d1e42023-816c-88cb-827d-2cd63732d7b5",
 		"30e54a89-912e-56f6-1540-5e314f77a008",
 		"387442e0-4ba7-6309-1bd0-25dc0683e1e3",
@@ -16,8 +19,6 @@
 		"82464cf2-ea78-978f-912f-814fe6c1d2f4",
 		"8760b186-0b43-41c6-225f-e5d728cc1fbf",
 		"7cb2084e-9a26-93bb-2f94-7d58ff070f2a",
-		"a07b1501-6d09-011e-effc-0304af952167",
-		"61494ddd-7f5a-f7e9-0756-c2a8b6b1d1f8",
 		"2cbe54d8-e6fd-fe18-f120-37357aed8a5c",
 		"db3015d6-3979-8b33-e39c-12473ea542a3",
 		"3405fca5-2d1d-4351-6d7c-ee097150dc4e",
@@ -583,6 +584,24 @@
 			"helperAttributes": {},
 			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889",
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Location\",\n    \"fields\":{\n      \"name\":\"location\",\n      \"desc\":\"location\"\n    }\n  }\n}"
+		},
+		{
+			"id": "bfa88dfb-a45d-e84c-3de0-a92fae720f2d",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/users",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1484660079488,
+			"name": "add user",
+			"description": "",
+			"collectionId": "afb07903-675b-24d2-66d2-838f65aa9889",
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"uuid\":6,\n  \"data\":{\n    \"category\":\"User\",\n    \"fields\":{\n      \"type\":1,\n      \"uuid\":6,\n      \"attempt_ip\":\"10.50.13.69\",\n      \"userid\":6,\n      \"url\":\"\",\n      \"passwd\":\"4d3d82e202dfa673d3077f03b3be185\",\n      \"surname\":\"\",\n      \"autologout\":0,\n      \"name\":\"\",\n      \"alias\":\"shijinglei\",\n      \"theme\":\"default\",\n      \"lang\":\"en_GB\"\n    }\n  }\n}"
 		},
 		{
 			"folder": null,

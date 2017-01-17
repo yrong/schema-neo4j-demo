@@ -24,7 +24,7 @@ var cudItem_preProcess = function (params,ctx) {
     if(params.method === 'POST'){
         params.fields = params.data.fields;
         params.fields.category = params.data.category;
-        params.fields.uuid = uuid.v1();
+        params.fields.uuid = params.fields.uuid||uuid.v1();
         params = _.assign(params,params.fields);
         generateCypher(params);
     }else if(params.method === 'DEL'){

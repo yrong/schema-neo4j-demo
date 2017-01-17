@@ -38,3 +38,4 @@ koa-neo4j/*.js.map
 
 nohup.out
 dump.rdb
+data

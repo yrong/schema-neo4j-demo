@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "NODE_ENV=development node server.js",
     "webpack": "webpack",
     "sync": "node ./sync/index.js",
     "test": "node ./test/postman.js",
-    "schema": "sh init.sh"
+    "init": "/bin/bash ./script/init.sh",
+    "export": "/bin/bash ./script/export.sh",
+    "import": "/bin/bash ./script/import.sh"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
@@ -46,6 +48,7 @@
     "chalk": "^1.1.3",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
+    "elasticdump": "^3.0.2",
     "eslint": "^3.3.1",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-babel": "^3.3.0",
