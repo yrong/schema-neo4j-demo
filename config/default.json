@@ -16,6 +16,12 @@
     "elasticsearch":{
       "host": "localhost",
       "port": 9200
+    },
+    "import":{
+      "base_url":"http://localhost:3001/api",
+      "importFileBaseDir":"./import_data",
+      "configurationItemFile":"configurationItem.xlsx"
     }
+
   }
 }
