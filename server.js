@@ -177,6 +177,14 @@ app.defineAPI({
     postProcess: search.delProcessFlows
 });
 
+/* get mounted location relationship between configurationItem and Cabinet*/
+app.defineAPI({
+    method: 'GET',
+    route: '/api/relationship/located/mounted',
+    cypherQueryFile: './cypher/QueryMountedCabinet.cyp',
+    postProcess: hook.queryItems_postProcess
+});
+
 app.listen(3001, function () {
     console.log('App listening on port 3001.');
 });
