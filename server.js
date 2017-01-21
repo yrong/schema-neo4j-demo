@@ -70,10 +70,10 @@ app.defineAPI({
     postProcess: hook.queryItems_postProcess
 });
 
-/*Location*/
+/*Position*/
 app.defineAPI({
     method: 'POST',
-    route: '/api/locations',
+    route: '/api/positions',
     check: schema.checkSchema,
     preProcess: hook.cudItem_preProcess,
     postProcess: hook.cudItem_postProcess
@@ -81,7 +81,7 @@ app.defineAPI({
 
 app.defineAPI({
     method: 'GET',
-    route: '/api/locations',
+    route: '/api/positions',
     preProcess: hook.queryItems_preProcess,
     postProcess: hook.queryItems_postProcess
 });

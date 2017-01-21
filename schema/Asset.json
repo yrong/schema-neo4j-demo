@@ -34,9 +34,9 @@
             {"properties" :
               {
                 "status":{"type":"string"},
-                "location":{"type":"string"}
+                "position":{"type":"string"}
               },
-              "required":["status","location"]
+              "required":["status","position"]
             }
           ]
         },

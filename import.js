@@ -137,8 +137,8 @@ var physicalServerMapping = async (line)=>{
 }
 
 var copyToErrorBookWorkSheet = (src_line,dst_line,error)=>{
-    let src_cell,dst_cell
-    for(var i=0;i<26;i++){
+    let src_cell,dst_cell,range = XLSX.utils.decode_range(physical_server_worksheet['!ref'])
+    for(var i=0;i<=range.e.c;i++){
         src_cell = XLSX.utils.encode_cell({c:i,r:src_line})
         dst_cell = XLSX.utils.encode_cell({c:i,r:dst_line})
         errorbook_worksheet[dst_cell] = physical_server_worksheet[src_cell]

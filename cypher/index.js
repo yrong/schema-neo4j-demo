@@ -7,7 +7,7 @@ var cmdb_delRelsExistInConfigurationItem_cypher = fs.readFileSync('./cypher/delR
 var cmdb_addConfigurationItemITServiceRel_cypher = fs.readFileSync('./cypher/addConfigurationItemITServiceRel.cyp', 'utf8');
 var cmdb_addConfigurationItemUserRel_cypher = fs.readFileSync('./cypher/addConfigurationItemUserRel.cyp', 'utf8');
 var cmdb_addConfigurationItemCabinetRel_cypher = fs.readFileSync('./cypher/addConfigurationItemCabinetRel.cyp', 'utf8');
-var cmdb_addConfigurationLocationRel_cypher = fs.readFileSync('./cypher/addConfigurationItemLocationRel.cyp', 'utf8');
+var cmdb_addConfigurationLocationRel_cypher = fs.readFileSync('./cypher/addConfigurationItemPositionRel.cyp', 'utf8');
 
 /*ITService*/
 var cmdb_delRelsExistInITService_cypher = fs.readFileSync('./cypher/delRelsExistInITService.cyp', 'utf8');
@@ -153,7 +153,7 @@ module.exports = {
         if(params.asset_location&&params.asset_location.cabinet){
             cyphers_todo.push(cmdb_addConfigurationItemCabinetRel_cypher);
         }
-        if(params.asset_location&&params.asset_location.location){
+        if(params.asset_location&&params.asset_location.position){
             cyphers_todo.push(cmdb_addConfigurationLocationRel_cypher);
         }
         return cyphers_todo;

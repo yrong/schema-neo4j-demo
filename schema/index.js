@@ -16,7 +16,7 @@ const cmdbTypeName = {
     Hardware:'Hardware',
     NetworkDevice:'NetworkDevice',
     Cabinet:'Cabinet',
-    Location:'Location',
+    Position:'Position',
     User:'User',
     ITService:'ITService',
     ITServiceGroup:'ITServiceGroup',
@@ -64,7 +64,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Location,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
