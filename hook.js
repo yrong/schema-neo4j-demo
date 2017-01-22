@@ -26,6 +26,7 @@ var cudItem_preProcess = function (params,ctx) {
         params.fields.category = params.data.category;
         params.fields.uuid = params.fields.uuid||uuid.v1();
         params = _.assign(params,params.fields);
+        params.created = Date.now()
         generateCypher(params);
     }else if(params.method === 'DEL'){
         cypher.generateDelNodeCypher(params);
@@ -35,6 +36,7 @@ var cudItem_preProcess = function (params,ctx) {
                 params.fields = result[0];
                 params.fields = _.assign(params.fields,params.data.fields);
                 params = _.assign(params,params.fields);
+                params.last_updated = Date.now()
                 generateCypher(params);
                 return params;
             }else{
