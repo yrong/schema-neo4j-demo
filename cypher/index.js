@@ -59,7 +59,7 @@ const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
 
 const keyword_condition = `WHERE n.name =~ {keyword} OR n.desc =~ {keyword}`;
 const user_keyword_condition = `WHERE n.alias =~ {keyword}`;
-const user_attributes = `{userid:n.userid,alias:n.alias,lang:n.lang,name:n.name,surname:n.surname}`;
+const user_attributes = `{uuid:n.uuid,userid:n.userid,alias:n.alias,lang:n.lang,name:n.name,surname:n.surname}`;
 const all_attributes = `n`;
 
 const cmdb_findConfigurationItemWithUser_cypher = `MATCH (item:ConfigurationItem)

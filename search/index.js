@@ -20,6 +20,7 @@ var addProcessFlow = function(result,params,ctx) {
     return es_client.index({
         index: indexName,
         type: typeName,
+        id:params.uuid,
         body: _.omit(params,hidden_fields),
         refresh:true
     }).then(function (response) {
@@ -30,6 +31,22 @@ var addProcessFlow = function(result,params,ctx) {
 }
 
 module.exports.addProcessFlow = addProcessFlow;
+
+var patchProcessFlow = function(result,params,ctx) {
+    return es_client.update({
+        index: indexName,
+        type: typeName,
+        id:params.uuid,
+        body: {doc:_.omit(params,hidden_fields)},
+        refresh:true
+    }).then(function (response) {
+        return hook.cudItem_postProcess(response, params, ctx);
+    }, function (error) {
+        throw error;
+    });
+}
+
+module.exports.patchProcessFlow = patchProcessFlow;
 
 var delProcessFlows = function(result,params,ctx) {
     return es_client.deleteByQuery({

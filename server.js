@@ -149,6 +149,13 @@ app.defineAPI({
 });
 
 app.defineAPI({
+    method: 'PATCH',
+    route: '/api/processFlows/:uuid',
+    preProcess: hook.cudItem_preProcess,
+    postProcess: search.patchProcessFlow
+});
+
+app.defineAPI({
     method: 'GET',
     route: '/api/processFlows',
     procedure: search.searchProcessFlows
