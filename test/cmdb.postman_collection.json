@@ -30,6 +30,7 @@
 		"0294866a-e51c-bcea-1b23-8bc85fb20074",
 		"498097fc-e8d6-43f0-97fd-55c46e37efbc",
 		"df5f7341-21fe-5a4f-797e-8387bc976226",
+		"60941c55-cbf7-9b58-3f25-c12295015dfc",
 		"a16b35f6-bb50-5f9d-9398-2caf5be8e860",
 		"33f2310e-cee1-a5fc-252c-75b6bedee5b3",
 		"a2ebd0be-2148-ebe7-9865-329ff4bfa808",
@@ -40,7 +41,9 @@
 		"80350cf0-c8dd-37a4-139e-0a99704b8acc",
 		"3b918412-61ef-8b9f-6e61-99675b9c6012",
 		"cbbd977e-be3a-4ecc-1c05-631d981c1d8d",
-		"176abb1d-0b70-ea87-6ac3-ee224dc19c20"
+		"176abb1d-0b70-ea87-6ac3-ee224dc19c20",
+		"3c649c67-3b51-03d3-a144-28fb231e2b1c",
+		"42334382-b9c8-6517-4953-d3f78a9d9165"
 	],
 	"folders": [],
 	"timestamp": 0,
@@ -283,6 +286,24 @@
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router-3\",\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\"\n    }\n  }\n}"
 		},
 		{
+			"id": "3c649c67-3b51-03d3-a144-28fb231e2b1c",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/processFlows/{{incident_flow_1_id}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485170675112,
+			"name": "patch incident flow 1 status",
+			"description": "",
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"closed\"\n    }\n  }\n}"
+		},
+		{
 			"folder": null,
 			"id": "417928a1-c3d6-6686-520a-bf214de86a99",
 			"name": "query it service groups by keyword",
@@ -299,6 +320,23 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 it service group found\"] = jsonData.data.results.length === 1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
+		},
+		{
+			"id": "42334382-b9c8-6517-4953-d3f78a9d9165",
+			"headers": "",
+			"url": "{{url}}/processFlows/{{incident_flow_1_id}}/timeline",
+			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow timeline change found\"] = jsonData.data[0].length == 2;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485172303425,
+			"name": "query process flow timeline by uuid",
+			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
 		},
 		{
@@ -376,6 +414,23 @@
 			"helperAttributes": {},
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"dns\",\n      \"desc\":\"dns\",\n      \"group\":\"{{group_infrastructure_id}}\",\n      \"dependendents\":[\"{{service_email_id}}\"]\n    }\n  }\n}"
+		},
+		{
+			"id": "60941c55-cbf7-9b58-3f25-c12295015dfc",
+			"headers": "",
+			"url": "{{url}}/schema/Router",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Router schema found\"] = jsonData.id === '/Router'",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485155703744,
+			"name": "query json schema of router ",
+			"description": "",
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
 		},
 		{
 			"folder": null,

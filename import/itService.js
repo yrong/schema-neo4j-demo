@@ -26,7 +26,7 @@ var importer = async ()=>{
     items=cloneArray(pulledItems)
     index = 0
     for (let item of items) {
-        if (item.category === 'ITService' && !item.parent && !item.dependencies) {
+        if (item.category === 'ITService' && !item.parent &&!item.children&&!item.dependencies&&!item.dependendents) {
             await apiInvoker.addItService(item)
             _.pullAt(pulledItems,index)
             index--

@@ -31,10 +31,21 @@ var cmdb_addProcessFlowExecutedByUserRel_cypher = fs.readFileSync('./cypher/addP
 var cmdb_addProcessFlowSelfReferencedRel_cypher = fs.readFileSync('./cypher/addProcessFlowSelfReferencedRel.cyp', 'utf8');
 
 
-const cmdb_addNode_Cypher_template = (labels, created,last_updated) => `MERGE (n:${labels} {uuid: {uuid}})
+const cmdb_addNode_Cypher_template = (labels, created='',last_updated='') => `MERGE (n:${labels} {uuid: {uuid}})
                                     ON CREATE SET n = {fields}${created}
                                     ON MATCH SET n = {fields}${last_updated}
                                     RETURN n`;
+
+const cmdb_addPrevNodeRel_Cypher_template = (label) => `match (current:${label} {uuid:{uuid}})
+                                    optional match (current)-[rel:PREV]->(prev_prev)
+                                    delete rel
+                                    create (prev:${label}Prev {fields_old})
+                                    create (current)-[:PREV {last_updated:{last_updated},committer:{committer}}]->(prev)
+                                    FOREACH (o IN CASE WHEN prev_prev IS NOT NULL THEN [prev_prev] ELSE [] END |
+                                      create (prev)-[:PREV {last_updated:{last_updated},committer:{committer}}]->(prev_prev)
+                                    )`;
+
+
 
 const cmdb_delNode_cypher = `MATCH (s)
                             WHERE s.uuid = {uuid}
@@ -42,7 +53,7 @@ const cmdb_delNode_cypher = `MATCH (s)
                             DELETE s
                             RETURN s`;
 
-const cmdb_findNode_cypher = `MATCH (n)
+const cmdb_findNode_cypher_template = (label) => `MATCH (n:${label})
                             WHERE n.uuid = {uuid}
                             RETURN n`;
 
@@ -122,10 +133,14 @@ var generateAddNodeCypher = function(params) {
     labels = schema.cmdbTypeLabels[params.category],created='',last_updated='';
     if(Array.isArray(labels)&&(labels.includes(schema.cmdbTypeName.ConfigurationItem)||labels.includes(schema.cmdbTypeName.ProcessFlow))){
         created = `,n.created = timestamp()`;
-        last_updated = `,n.lastUpated = timestamp()`;
+        last_updated = `,n.lastUpdated = timestamp()`;
     }
     labels = labels?labels.join(":"):params.category;
     return cmdb_addNode_Cypher_template(labels,created,last_updated);
+};
+
+var generateAddPrevNodeCypher = function(params) {
+    return cmdb_addPrevNodeRel_Cypher_template(params.category);
 };
 
 var resultMapping = function(result,params){
@@ -187,6 +202,8 @@ module.exports = {
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowCommitedByUserRel_cypher];
         if(params.executor)
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowExecutedByUserRel_cypher];
+        if(params.method == 'PUT'||params.method =='PATCH')
+            cyphers_todo = [...cyphers_todo,generateAddPrevNodeCypher(params)];
         return cyphers_todo;
     },
     generateQueryNodesCypher:function(type) {
@@ -214,13 +231,13 @@ module.exports = {
         }
         return cypher;
     },
-    generateQueryITServiceByUuidsCypher:function(type) {
+    generateQueryByUuidsCypher:function(type) {
         if(type !== schema.cmdbTypeName.ITService){
             throw new Error('only ITService support query by uuids temporarily')
         }
         return cmdb_queryITServiceByUuids_cypher;
     },
-    generateAdvancedSearchITServiceCypher:function(type) {
+    generateAdvancedSearchCypher:function(type) {
         if(type !== schema.cmdbTypeName.ITService){
             throw new Error('only ITService support search temporarily')
         }
@@ -230,7 +247,7 @@ module.exports = {
         if(type == schema.cmdbTypeName.ConfigurationItem){
             return cmdb_findConfigurationItemWithUser_cypher;
         }
-        return cmdb_findNode_cypher;
+        return cmdb_findNode_cypher_template(type);
     },
     generateDelNodeCypher:function(params){
         params.cypher = cmdb_delNode_cypher;
@@ -238,7 +255,7 @@ module.exports = {
     },
     getTypeFromUrl:getTypeFromUrl,
     resultMapping:resultMapping,
-    cmdb_findNode_cypher:cmdb_findNode_cypher
+    cmdb_findNode_cypher:cmdb_findNode_cypher_template
 }
 
 

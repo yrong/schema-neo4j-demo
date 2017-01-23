@@ -167,6 +167,13 @@ app.defineAPI({
     procedure: search.searchProcessFlows
 });
 
+app.defineAPI({
+    method: 'GET',
+    route: '/api/processFlows/:uuid/timeline',
+    cypherQueryFile:'./cypher/queryProcessFlowTimeline.cyp',
+    postProcess: hook.queryItems_postProcess
+});
+
 /* Delete any item*/
 app.defineAPI({
     method: 'DEL',

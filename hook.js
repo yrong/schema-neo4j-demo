@@ -31,9 +31,10 @@ var cudItem_preProcess = function (params,ctx) {
     }else if(params.method === 'DEL'){
         cypher.generateDelNodeCypher(params);
     }else if(params.method === 'PUT' || params.method === 'PATCH'){
-        return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypher.cmdb_findNode_cypher,params,true).then((result)=>{
+        return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypher.cmdb_findNode_cypher(params.data.category),params,true).then((result)=>{
             if(result&&result[0]){
-                params.fields = result[0];
+                params.fields_old = result[0]
+                params.fields = _.assign({},result[0]);
                 params.fields = _.assign(params.fields,params.data.fields);
                 params = _.assign(params,params.fields);
                 params.last_updated = Date.now()
@@ -90,10 +91,10 @@ var keyWordQueryItems_preProcess = function (params,ctx) {
         params.cypher = cypher.generateQueryNodesByKeyWordCypher(type);
     }else if(params.uuids){
         params.uuids = params.uuids.split(",");
-        params.cypher = cypher.generateQueryITServiceByUuidsCypher(type);
+        params.cypher = cypher.generateQueryByUuidsCypher(type);
     }else if(params.search){
         params.search = params.search.split(",");
-        params.cypher = cypher.generateAdvancedSearchITServiceCypher(type);
+        params.cypher = cypher.generateAdvancedSearchCypher(type);
     }else if(params.uuid){
         params.cypher = cypher.generateQueryNodeCypher(type);
     }

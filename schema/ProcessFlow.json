@@ -40,5 +40,5 @@
       "type": "string"
     }
   },
-  "required": ["it_service"]
+  "required": ["it_service","committer"]
 }
