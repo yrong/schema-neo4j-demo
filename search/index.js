@@ -14,7 +14,7 @@ var es_client = new elasticsearch.Client({
 
 var indexName = 'cmdb',typeName = 'processFlow';
 
-var hidden_fields = ['fields','cyphers','method','data','token']
+var hidden_fields = ['fields','cyphers','method','data','token','fields_old','change']
 
 var addProcessFlow = function(result,params,ctx) {
     return es_client.index({

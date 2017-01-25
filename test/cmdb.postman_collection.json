@@ -331,10 +331,10 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow timeline change found\"] = jsonData.data[0].length == 2;",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow timeline change found\"] = jsonData.data.length == 2;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485172303425,
+			"time": 1485323330499,
 			"name": "query process flow timeline by uuid",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"

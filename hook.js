@@ -36,6 +36,7 @@ var cudItem_preProcess = function (params,ctx) {
                 params.fields_old = result[0]
                 params.fields = _.assign({},result[0]);
                 params.fields = _.assign(params.fields,params.data.fields);
+                params.fields.change = JSON.stringify(params.data.fields);
                 params = _.assign(params,params.fields);
                 params.last_updated = Date.now()
                 generateCypher(params);
@@ -70,7 +71,7 @@ var cudItem_postProcess = function (result,params,ctx) {
     return　result_wrapped;
 };
 
-var paginationQueryItems_preProcess = function (params) {
+var paginationParams_preProcess = function (params) {
     var params_pagination = {"skip":0,"limit":MAXNUM};
     if(params.page&&params.per_page){
         var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
@@ -82,10 +83,11 @@ var paginationQueryItems_preProcess = function (params) {
     return _.assign(params,params_pagination);
 };
 
-var keyWordQueryItems_preProcess = function (params,ctx) {
+var queryParams_preProcess = function (params, ctx) {
     let url = ctx.req.url;
     let type = cypher.getTypeFromUrl(url);
-    params.type = type;
+    params.type = type
+    params.url = url
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = cypher.generateQueryNodesByKeyWordCypher(type);
@@ -97,6 +99,8 @@ var keyWordQueryItems_preProcess = function (params,ctx) {
         params.cypher = cypher.generateAdvancedSearchCypher(type);
     }else if(params.uuid){
         params.cypher = cypher.generateQueryNodeCypher(type);
+        if(url.includes('/processFlows')&&url.includes('/timeline'))
+            params.cypher = cypher.generateQueryProcessFlowTimelineCypher()
     }
     else{
         params.cypher = cypher.generateQueryNodesCypher(type);
@@ -105,8 +109,8 @@ var keyWordQueryItems_preProcess = function (params,ctx) {
 }
 
 var queryItems_preProcess = function (params,ctx) {
-    params = paginationQueryItems_preProcess(params);
-    params = keyWordQueryItems_preProcess(params,ctx);
+    params = paginationParams_preProcess(params);
+    params = queryParams_preProcess(params,ctx);
     return params;
 }
 
@@ -124,9 +128,10 @@ var queryItems_postProcess = function (result,params) {
     if(!result||result.total==0||result.count==0||result.length==0){
         result_new.message.content = CONTENT_NO_RECORD;
         result_new.status = STATUS_WARNING;
+        return result_new;
     }
-    result = cypher.removeInternalPropertys(result);
     result = cypher.resultMapping(result,params);
+    result = cypher.removeInternalPropertys(result);
     result_new.data = result;
     return result_new;
 };

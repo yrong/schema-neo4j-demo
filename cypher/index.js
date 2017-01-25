@@ -23,12 +23,12 @@ var cmdb_queryITServiceByUuids_cypher = fs.readFileSync('./cypher/queryITService
 var cmdb_advancedSearchITService_cypher = fs.readFileSync('./cypher/searchITService.cyp', 'utf8');
 
 /*ProcessFlow*/
-//var cmdb_addProcessFlow_cypher = fs.readFileSync('./cypher/addProcessFlow.cyp', 'utf8');
 var cmdb_delRelsExistInProcessFlow_cypher = fs.readFileSync('./cypher/delRelsExistInProcessFlow.cyp', 'utf8');
 var cmdb_addProcessFlowITServiceRel_cypher = fs.readFileSync('./cypher/addProcessFlowITServiceRel.cyp', 'utf8');
 var cmdb_addProcessFlowCommitedByUserRel_cypher = fs.readFileSync('./cypher/addProcessFlowCommitedByUserRel.cyp', 'utf8');
 var cmdb_addProcessFlowExecutedByUserRel_cypher = fs.readFileSync('./cypher/addProcessFlowExecutedByUserRel.cyp', 'utf8');
 var cmdb_addProcessFlowSelfReferencedRel_cypher = fs.readFileSync('./cypher/addProcessFlowSelfReferencedRel.cyp', 'utf8');
+var cmdb_queryProcessFlowTimeline_cypher = fs.readFileSync('./cypher/queryProcessFlowTimeline.cyp', 'utf8');
 
 
 const cmdb_addNode_Cypher_template = (labels, created='',last_updated='') => `MERGE (n:${labels} {uuid: {uuid}})
@@ -37,12 +37,12 @@ const cmdb_addNode_Cypher_template = (labels, created='',last_updated='') => `ME
                                     RETURN n`;
 
 const cmdb_addPrevNodeRel_Cypher_template = (label) => `match (current:${label} {uuid:{uuid}})
-                                    optional match (current)-[rel:PREV]->(prev_prev)
+                                    optional match (current)-[rel:PREV]->(prev_prev)                                
                                     delete rel
                                     create (prev:${label}Prev {fields_old})
-                                    create (current)-[:PREV {last_updated:{last_updated},committer:{committer}}]->(prev)
+                                    create (current)-[:PREV]->(prev)
                                     FOREACH (o IN CASE WHEN prev_prev IS NOT NULL THEN [prev_prev] ELSE [] END |
-                                      create (prev)-[:PREV {last_updated:{last_updated},committer:{committer}}]->(prev_prev)
+                                      create (prev)-[:PREV]->(prev_prev)
                                     )`;
 
 
@@ -101,7 +101,7 @@ var removeInternalPropertys = function(val) {
         });
     } else {
         for (prop in val) {
-            if (prop === 'id'||prop === '_index'||prop === '_type'||prop === '_id'||prop === 'passwd')
+            if (prop === 'id'||prop === '_index'||prop === '_type'||prop === '_id'||prop === 'passwd'||prop === 'change')
                 delete val[prop];
             else if (typeof val[prop] === 'object')
                 removeInternalPropertys(val[prop]);
@@ -150,8 +150,22 @@ var resultMapping = function(result,params){
         if(result.user&&!result.user.alias){
             result = _.omit(result,['user']);
         }
+    }else if(params.type === schema.cmdbTypeName.ProcessFlow){
+        if(params.url.includes('/timeline')){
+            let change_logs = [],change_log,index=0,segments=result[0].segments
+            for(segment of segments){
+                change_log = {}
+                change_log.user = segment.start.committer
+                change_log.time = segment.start.lastUpdated
+                change_log.action = (index==segments.length-1?'created':'updated')
+                change_log.object = {start:_.omit(segment.start,['change']),end:_.omit(segment.end,['change']),change_fields:JSON.parse(segment.start.change)}
+                change_logs.push(change_log)
+                index ++
+            }
+            result = change_logs
+        }
     }
-    return result;
+    return result
 }
 
 module.exports = {
@@ -255,7 +269,8 @@ module.exports = {
     },
     getTypeFromUrl:getTypeFromUrl,
     resultMapping:resultMapping,
-    cmdb_findNode_cypher:cmdb_findNode_cypher_template
+    cmdb_findNode_cypher:cmdb_findNode_cypher_template,
+    generateQueryProcessFlowTimelineCypher:()=>cmdb_queryProcessFlowTimeline_cypher
 }
 
 

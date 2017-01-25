@@ -77,7 +77,6 @@ var importer = async ()=>{
     while (line<=xslxHelper.range.e.r) {
         try{
             physical_server = await physicalServerMapping(line)
-            console.log(JSON.stringify(physical_server))
             await apiInvoker.addConfigurationItem('PhysicalServer',physical_server)
             success++
         }catch(error){

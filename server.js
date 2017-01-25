@@ -170,7 +170,7 @@ app.defineAPI({
 app.defineAPI({
     method: 'GET',
     route: '/api/processFlows/:uuid/timeline',
-    cypherQueryFile:'./cypher/queryProcessFlowTimeline.cyp',
+    preProcess: hook.queryItems_preProcess,
     postProcess: hook.queryItems_postProcess
 });
 
