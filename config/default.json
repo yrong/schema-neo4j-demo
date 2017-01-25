@@ -16,7 +16,9 @@
     },
     "elasticsearch":{
       "host": "localhost",
-      "port": 9200
+      "port": 9200,
+      "index":"cmdb",
+      "type":"processFlow"
     },
     "import":{
       "base_url":"http://localhost:3001/api",

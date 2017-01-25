@@ -12,7 +12,7 @@ var es_client = new elasticsearch.Client({
     host: esConfig.host + ":" + esConfig.port
 });
 
-var indexName = 'cmdb',typeName = 'processFlow';
+var indexName = esConfig.index,typeName = esConfig.type;
 
 var hidden_fields = ['fields','cyphers','method','data','token','fields_old','change']
 
