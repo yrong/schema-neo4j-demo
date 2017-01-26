@@ -38,6 +38,12 @@
     },
     "attachment":{
       "type": "string"
+    },
+    "title":{
+      "type":"string"
+    },
+    "pfid":{
+      "type":"string"
     }
   },
   "required": ["it_service","committer"]

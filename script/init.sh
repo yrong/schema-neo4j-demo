@@ -9,6 +9,10 @@ curl -XPUT 'http://localhost:9200/cmdb/' -d'{
                     "uuid": {
                         "type": "string",
                         "index": "not_analyzed"
+                    },
+                    "pfid": {
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             }

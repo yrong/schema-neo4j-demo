@@ -2,8 +2,8 @@ var _ = require('lodash');
 var uuid = require('node-uuid');
 var schema = require('./schema');
 var MAXNUM = 1000;
-var cypherBuilder = require('./helper/cypherBuilder');
-var cypherResponseMapping = require('./helper/cypherResponseMapping')
+var cypherBuilder = require('./cypher/cypherBuilder');
+var cypherResponseMapping = require('./cypher/cypherResponseMapping')
 
 var getTypeFromUrl = function (url) {
     var type;
@@ -30,7 +30,7 @@ var createOrUpdateCypherGenerator = (params)=>{
     }else if(params.category === schema.cmdbTypeName.ITService){
         params.cyphers = cypherBuilder.generateITServiceCyphers(params);
     }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
-        params.fields = _.omit(params.fields,['desc','note','attachment']);
+        params.fields = _.omit(params.fields,['desc','note','attachment','title']);
         params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
@@ -91,6 +91,14 @@ module.exports = {
             params.fields = params.data.fields;
             params.fields.category = params.data.category;
             params.fields.uuid = params.fields.uuid||uuid.v1();
+            if(params.data.category === schema.cmdbTypeName.IncidentFlow)
+                return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow),params,true).then((result)=>{
+                    params.fields.pfid='IR'+result[0]
+                    params = _.assign(params,params.fields);
+                    params.created = Date.now()
+                    createOrUpdateCypherGenerator(params)
+                    return params
+                })
             params = _.assign(params,params.fields);
             params.created = Date.now()
             createOrUpdateCypherGenerator(params);

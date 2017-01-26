@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var schema = require('./../schema')
+var schema = require('./../schema/index')
 
 /*ConfigurationItem*/
 const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH ()<-[r2:LOCATED|SUPPORT_SERVICE]-(n:ConfigurationItem{uuid: {uuid}})<-[r1:RESPONSIBLE_FOR]-()
@@ -202,6 +202,13 @@ const generateAddNodeCypher=(params)=>{
     return cmdb_addNode_Cypher_template(labels,created,last_updated);
 }
 
+const generateSequence=(name)=>
+    `MERGE (s:Sequence {name:'${name}'})
+    ON CREATE set s.current = 1
+    ON MATCH set s.current=s.current+1
+    WITH s.current as seq return seq`
+
+
 module.exports = {
     generateAddNodeCypher:generateAddNodeCypher,
     generateCmdbCyphers: (params)=>{
@@ -288,5 +295,6 @@ module.exports = {
     },
     generateDelNodeCypher:(params)=>cmdb_delNode_cypher,
     cmdb_findNode_cypher:cmdb_findNode_cypher_template,
-    generateQueryProcessFlowTimelineCypher:()=>cmdb_queryProcessFlowTimeline_cypher
+    generateQueryProcessFlowTimelineCypher:()=>cmdb_queryProcessFlowTimeline_cypher,
+    generateSequence:generateSequence
 }

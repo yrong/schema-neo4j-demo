@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var schema = require('./../schema')
+var schema = require('./../schema/index')
 
 const hidden_properties = ['id','_id','_index','_type','passwd','change']
 const removeInternalPropertys = (val) => {
@@ -13,7 +13,6 @@ const removeInternalPropertys = (val) => {
                 if (prop === hidden_prop)
                     delete val[prop];
             }
-            //if (prop === 'id' || prop === '_index' || prop === '_type' || prop === '_id' || prop === 'passwd' || prop === 'change')
             if (typeof val[prop] === 'object')
                 removeInternalPropertys(val[prop]);
         }
