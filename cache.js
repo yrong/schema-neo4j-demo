@@ -10,6 +10,8 @@ var loadAll = async ()=>{
         _.each(item.data.results,(item)=>{
             if(item&&item.uuid)
                 cmdbCache.set(item.uuid,{name:item.name,uuid:item.uuid})
+            if(item&&item.group&&item.group.uuid)
+                cmdbCache.set(item.group.uuid,{name:item.group.name,uuid:item.group.uuid})
         })
     })
     initialized = true

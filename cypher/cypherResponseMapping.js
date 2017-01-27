@@ -37,17 +37,8 @@ const referencedMapper = (val) => {
                 if(val_key == 'userid'){
                     val.user = cache.get(val_val)
                 }
-                if(val_key == 'committer'){
-                    val.committer = cache.get(val_val)
-                }
-                if(val_key=='executor'){
-                    val.executor = cache.get(val_val)
-                }
-                if(val_key == 'cabinet'){
-                    val.cabinet = cache.get(val_val)
-                }
-                if(val_key == 'position'){
-                    val.position = cache.get(val_val)
+                if(val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){
+                    val[val_key] = cache.get(val_val)
                 }
                 if(val_key == 'it_service'){
                     val.it_service=_.map(val[val_key],(val_val)=>{

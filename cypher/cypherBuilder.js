@@ -170,12 +170,6 @@ const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
             SKIP {skip} LIMIT {limit}
             RETURN { count: cnt, results:collect(${node_alias}) }`;
 
-// const cmdb_findConfigurationItemWithUser_cypher = `MATCH (item:ConfigurationItem)
-//                             WHERE item.uuid = {uuid}
-//                             OPTIONAL MATCH (n:User) where n.userid = item.userid
-//                             WITH ${user_attributes} as n,item as item
-//                             return {configurationItem:item,user:n}`
-
 
 const keyword_condition = `WHERE ${node_alias}.name =~ {keyword} OR ${node_alias}.desc =~ {keyword}`;
 const user_keyword_condition = `WHERE ${node_alias}.alias =~ {keyword}`;
