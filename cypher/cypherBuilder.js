@@ -147,7 +147,8 @@ const cmdb_addPrevNodeRel_Cypher_template = (label) => `match (current:${label} 
 const cmdb_delNode_cypher = `MATCH (n)
                             WHERE n.uuid = {uuid}
                             DETACH
-                            DELETE n`;
+                            DELETE n
+                            return n`;
 
 const cmdb_findNode_cypher_template = (label) => `MATCH (n:${label})
                             WHERE n.uuid = {uuid}
@@ -260,39 +261,34 @@ module.exports = {
             cyphers_todo = [...cyphers_todo,cmdb_addPrevNodeRel_Cypher_template(params.category)];
         return cyphers_todo;
     },
-    generateQueryNodesCypher:(type)=>{
+    generateQueryNodesCypher:(params)=>{
         var cypher,attributes=all_attributes;
-        if(type === schema.cmdbTypeName.ITServiceGroup){
+        if(params.type === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroup_cypher;
         }else{
-            if(type === schema.cmdbTypeName.User){
+            if(params.type === schema.cmdbTypeName.User){
                 attributes= user_attributes;
             }
-            cypher = cmdb_findNodes_Cypher_template(type,attributes);
+            cypher = cmdb_findNodes_Cypher_template(params.type,attributes);
         }
         return cypher;
     },
-    generateQueryNodesByKeyWordCypher:(type)=>{
+    generateQueryNodesByKeyWordCypher:(params)=>{
         var cypher,attributes=all_attributes,condition=keyword_condition;
-        if(type === schema.cmdbTypeName.ITServiceGroup){
+        if(params.type === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroupByKeyword_cypher;
         }else{
-            if(type === schema.cmdbTypeName.User){
+            if(params.type === schema.cmdbTypeName.User){
                 attributes= user_attributes;
                 condition = user_keyword_condition;
             }
-            cypher = cmdb_findNodesByKeyword_Cypher_template(type,condition,attributes);
+            cypher = cmdb_findNodesByKeyword_Cypher_template(params.type,condition,attributes);
         }
         return cypher;
     },
-    generateQueryByUuidsCypher:(type)=> cmdb_queryITServiceByUuids_cypher,
-    generateAdvancedSearchCypher:(type) =>cmdb_advancedSearchITService_cypher,
-    generateQueryNodeCypher:function(type){
-        // if(type == schema.cmdbTypeName.ConfigurationItem){
-        //     return cmdb_findConfigurationItemWithUser_cypher;
-        // }
-        return cmdb_findNode_cypher_template(type);
-    },
+    generateQueryByUuidsCypher:(params)=> cmdb_queryITServiceByUuids_cypher,
+    generateAdvancedSearchCypher:(params) =>cmdb_advancedSearchITService_cypher,
+    generateQueryNodeCypher:(params)=> cmdb_findNode_cypher_template(params.type),
     generateDelNodeCypher:(params)=>cmdb_delNode_cypher,
     cmdb_findNode_cypher:cmdb_findNode_cypher_template,
     generateQueryProcessFlowTimelineCypher:()=>cmdb_queryProcessFlowTimeline_cypher,

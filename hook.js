@@ -4,6 +4,7 @@ var schema = require('./schema');
 var MAXNUM = 1000;
 var cypherBuilder = require('./cypher/cypherBuilder');
 var cypherResponseMapping = require('./cypher/cypherResponseMapping')
+var cache = require('./cache')
 
 var getTypeFromUrl = function (url) {
     var type;
@@ -44,7 +45,7 @@ var deleteCypherGenerator = (params)=>{
 }
 
 const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
-    CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success'
+    CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
     DISPLAY_AS_TOAST='toast';
 
 var paginationParamsGenerator = function (params) {
@@ -60,84 +61,95 @@ var paginationParamsGenerator = function (params) {
 };
 
 var queryParamsCypherGenerator = function (params, ctx) {
-    let url = ctx.req.url;
-    let type = getTypeFromUrl(url);
-    params.type = type
-    params.url = url
+    params.type = getTypeFromUrl(params.url)
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
-        params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(type);
+        params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
     }else if(params.uuids){
         params.uuids = params.uuids.split(",");
-        params.cypher = cypherBuilder.generateQueryByUuidsCypher(type);
+        params.cypher = cypherBuilder.generateQueryByUuidsCypher(params);
     }else if(params.search){
         params.search = params.search.split(",");
-        params.cypher = cypherBuilder.generateAdvancedSearchCypher(type);
+        params.cypher = cypherBuilder.generateAdvancedSearchCypher(params);
     }else if(params.uuid){
-        params.cypher = cypherBuilder.generateQueryNodeCypher(type);
-        if(url.includes('/processFlows')&&url.includes('/timeline'))
+        params.cypher = cypherBuilder.generateQueryNodeCypher(params);
+        if(params.url.includes('/processFlows')&&params.url.includes('/timeline'))
             params.cypher = cypherBuilder.generateQueryProcessFlowTimelineCypher()
     }
     else{
-        params.cypher = cypherBuilder.generateQueryNodesCypher(type);
+        params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
     return params;
 }
 
 module.exports = {
-    cudItem_preProcess:function (params,ctx) {
-        params = _.assign({},params);
-        if(params.method === 'POST'){
-            params.fields = params.data.fields;
-            params.fields.category = params.data.category;
-            params.fields.uuid = params.fields.uuid||uuid.v1();
-            if(params.data.category === schema.cmdbTypeName.IncidentFlow)
-                return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow),params,true).then((result)=>{
-                    params.fields.pfid='IR'+result[0]
-                    params = _.assign(params,params.fields);
-                    params.created = Date.now()
-                    createOrUpdateCypherGenerator(params)
-                    return params
+    cudItem_preProcess: function (params, ctx) {
+        let cb//params = _.assign({}, params)
+        if (params.method === 'POST') {
+            cb = (params) => {
+                params.fields = params.data.fields
+                params.fields.category = params.data.category;
+                params.fields.uuid = params.fields.uuid || uuid.v1();
+                params = _.assign(params, params.fields);
+                params.created = Date.now()
+                return createOrUpdateCypherGenerator(params);
+            }
+            if (params.data.category === schema.cmdbTypeName.IncidentFlow)
+                return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true).then((result) => {
+                    params.data.fields.pfid = 'IR' + result[0]
+                    return cb(params)
                 })
-            params = _.assign(params,params.fields);
-            params.created = Date.now()
-            createOrUpdateCypherGenerator(params);
-        }else if(params.method === 'DEL'){
-            deleteCypherGenerator(params);
-        }else if(params.method === 'PUT' || params.method === 'PATCH'){
-            return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.cmdb_findNode_cypher(params.data.category),params,true).then((result)=>{
-                if(result&&result[0]){
+            else
+                return cb(params)
+        }
+        else if (params.method === 'PUT' || params.method === 'PATCH') {
+            cb = (params)=>{
+                params.fields = _.assign(params.fields, params.data.fields);
+                params.fields.change = JSON.stringify(params.data.fields);
+                params = _.assign(params, params.fields);
+                params.lastUpdated = Date.now()
+                return createOrUpdateCypherGenerator(params);
+            }
+            return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.cmdb_findNode_cypher(params.data.category), params, true).then((result) => {
+                if (result && result[0]) {
                     params.fields_old = result[0]
-                    params.fields = _.assign({},result[0]);
-                    params.fields = _.assign(params.fields,params.data.fields);
-                    params.fields.change = JSON.stringify(params.data.fields);
-                    params = _.assign(params,params.fields);
-                    params.last_updated = Date.now()
-                    createOrUpdateCypherGenerator(params);
-                    return params;
-                }else{
+                    params.fields = _.assign({}, result[0]);
+                    return cb(params)
+                } else {
                     throw new Error("no record found to patch,uuid is" + params.uuid);
                 }
             })
+        } else if (params.method === 'DEL') {
+            return deleteCypherGenerator(params);
         }
-        return params;
     },
     cudItem_postProcess:function (result,params,ctx) {
-        var result_wrapped = {
+        if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
+            if(!params.uuid||!params.fields)
+                throw new Error('added obj without uuid')
+            cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid})
+        }
+        if(params.method==='DEL'){
+            if(params.uuid)
+                cache.del(params.uuid)
+            if(params.url.includes('items'))
+                cache.flushAll()
+        }
+        let response_wrapped = {
             "status":STATUS_INFO,
             "content": CONTENT_OPERATION_SUCESS,
             "displayAs":DISPLAY_AS_TOAST
         }
         if(params.method == 'DEL' && params.uuid && result.length != 1){
-            result_wrapped = {
+            response_wrapped = {
                 "status":STATUS_WARNING,
                 "content": CONTENT_NO_RECORD,
                 "displayAs":DISPLAY_AS_TOAST
             }
         }
         if(params.uuid)
-            result_wrapped.uuid = params.uuid;
-        return　result_wrapped;
+            response_wrapped.uuid = params.uuid;
+        return　response_wrapped;
     },
     queryItems_preProcess:function (params,ctx) {
         params = paginationParamsGenerator(params);
@@ -145,7 +157,7 @@ module.exports = {
         return params;
     },
     queryItems_postProcess:function (result,params) {
-        let base_query_response = {
+        let response_wrapped = {
             "status":STATUS_OK, //ok, info, warning, error,
             "message":{
                 "content":CONTENT_QUERY_SUCESS,
@@ -153,20 +165,19 @@ module.exports = {
             },
             "data":{}
         };
-        var result_new = _.assign({},base_query_response);
         result = _.isArray(result)&&result.length>0?result[0]:result;
         if(!result||result.total==0||result.count==0||result.length==0){
-            result_new.message.content = CONTENT_NO_RECORD;
-            result_new.status = STATUS_WARNING;
-            return result_new;
+            response_wrapped.message.content = CONTENT_NO_RECORD;
+            response_wrapped.status = STATUS_WARNING;
+            return response_wrapped;
         }
-        result = cypherResponseMapping.resultMapping(result,params);
+        result = cypherResponseMapping.resultMapper(result,params);
         result = cypherResponseMapping.removeInternalPropertys(result);
-        result_new.data = result;
-        return result_new;
+        response_wrapped.data = result;
+        return response_wrapped;
     },
     configurationItemCategoryProcess:function(params) {
-        let base_query_response = {
+        let response_wrapped = {
             "status":STATUS_OK, //ok, info, warning, error,
             "message":{
                 "content":CONTENT_QUERY_SUCESS,
@@ -174,12 +185,11 @@ module.exports = {
             },
             "data":{}
         };
-        var result_new = Object.assign({},base_query_response);
-        result_new.data = schema.cmdbConfigurationItemInheritanceRelationship;
+        response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship;
         if(params.filter == schema.cmdbTypeName.Asset){
-            result_new.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
+            response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
         }
-        return result_new;
+        return response_wrapped;
     }
 }
 

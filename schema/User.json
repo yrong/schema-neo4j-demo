@@ -9,7 +9,7 @@
       "type": "string"
     },
     "lang": {
-      "type": "integer"
+      "type": "string"
     },
     "surname": {
       "type": "string"
