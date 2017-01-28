@@ -34,10 +34,7 @@ const referencedMapper = (val) => {
                 val.asset_location = val_val
             }
             if(val_val){
-                if(val_key == 'userid'){
-                    val.user = cache.get(val_val)
-                }
-                if(val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){
+                if(val_key == 'responsibility'||val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){
                     val[val_key] = cache.get(val_val)
                 }
                 if(val_key == 'it_service'){

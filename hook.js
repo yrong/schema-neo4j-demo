@@ -89,7 +89,7 @@ module.exports = {
             cb = (params) => {
                 params.fields = params.data.fields
                 params.fields.category = params.data.category;
-                params.fields.uuid = params.fields.uuid || uuid.v1();
+                params.fields.uuid = params.uuid || uuid.v1();
                 params = _.assign(params, params.fields);
                 params.created = Date.now()
                 return createOrUpdateCypherGenerator(params);

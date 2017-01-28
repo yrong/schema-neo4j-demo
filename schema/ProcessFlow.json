@@ -5,13 +5,13 @@
     "it_service": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": { "type": "string","format":"uuid"},
       "uniqueItems": true
     },
     "reference_process_flow":{
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": { "type": "string","format":"uuid" },
       "uniqueItems": true
     },
     "committer":{
@@ -23,7 +23,7 @@
     "reference_kb":{
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": { "type": "string","format":"uuid" },
       "uniqueItems": true
     },
     "status":{
@@ -33,7 +33,7 @@
     "note":{
       "type": "string"
     },
-    "desc": {
+    "description": {
       "type": "string"
     },
     "attachment":{

@@ -9,6 +9,7 @@ module.exports = {
         }
         else if(asset&&asset.asset_location_position)
             asset.asset_location = {position:asset.asset_location_position,status:"unmounted"}
+        return asset
     },
     omitProperties:async(configuratonItem)=>{
         return _.omit(configuratonItem,['directory_type','created_date','last_updated_date','asset_location_cabinet','asset_location_u','asset_location_mounted_date','asset_location_position'])

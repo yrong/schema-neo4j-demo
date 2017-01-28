@@ -20,7 +20,7 @@
             {"properties" :
               {
                 "status":{"type":"string"},
-                "cabinet":{"type":"string"},
+                "cabinet":{"type":"string","format":"uuid"},
                 "date_mounted" : {
                   "type" : "string",
                   "format": "date"
@@ -34,7 +34,7 @@
             {"properties" :
               {
                 "status":{"type":"string"},
-                "position":{"type":"string"}
+                "position":{"type":"string","format":"uuid"}
               },
               "required":["status","position"]
             }

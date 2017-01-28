@@ -67,7 +67,7 @@ var physicalServerMapping = async (line)=>{
         }
     }
     for(var process of physicalServer_mappings.postProcess){
-        await process(physicalServer)
+         physicalServer = await process(physicalServer)
     }
     return physicalServer;
 }

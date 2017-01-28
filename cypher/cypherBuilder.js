@@ -11,7 +11,7 @@ MATCH (s:ITService{uuid:service_id})
 CREATE (n)-[r:SUPPORT_SERVICE]->(s)`
 
 const cmdb_addConfigurationItemUserRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
-MATCH (u:User{userid:{userid}})
+MATCH (u:User{userid:{responsibility}})
 CREATE (n)<-[r:RESPONSIBLE_FOR]-(u)`
 
 const cmdb_addConfigurationItemCabinetRel_cypher = `MATCH (cabinet:Cabinet {uuid:{asset_location}.cabinet})
@@ -211,7 +211,7 @@ module.exports = {
         if(params.it_service){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemITServiceRel_cypher]
         }
-        if(params.userid){
+        if(params.responsibility){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemUserRel_cypher]
         }
         if(params.asset_location&&params.asset_location.position){

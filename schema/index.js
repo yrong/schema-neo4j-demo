@@ -93,6 +93,7 @@ var checkSchema = function (params) {
     if(!valid){
         throw new Error(ajv.errorsText());
     }
+    checkAdditionalProperty(params)
     return valid;
 };
 
@@ -105,6 +106,42 @@ var getSchema = function(id) {
     var schema = _getSchema(id);
     schema = extendSchema(schema);
     return schema;
+}
+
+var getPropertiesFromSchema = function(properties,schema){
+    for (let prop in schema) {
+        if (prop === 'properties')
+            properties.push(schema[prop])
+        if (typeof schema[prop] === 'object')
+            getPropertiesFromSchema(properties,schema[prop]);
+    }
+    return properties;
+}
+
+var isAdditionalProperty = function(property,properties){
+    let find = false;
+    for (let prop of properties) {
+        for (let key in prop){
+            if(property===key){
+                find = true
+                break
+            }
+        }
+    }
+    return !find
+}
+
+var checkAdditionalProperty = function(params){
+    let schema = getSchema('/'+params.data.category)
+    let properties = [],additionalPropertyExist=false
+    getPropertiesFromSchema(properties,schema)
+    for (let key in params.data.fields){
+        additionalPropertyExist=isAdditionalProperty(key,properties)
+        if(additionalPropertyExist){
+            throw new Error(`additional property:${key}`)
+            break
+        }
+    }
 }
 
 var extendSchema = function(schema) {
