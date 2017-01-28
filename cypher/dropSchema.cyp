@@ -1,0 +1,7 @@
+begin
+DROP CONSTRAINT ON (n:ITService) ASSERT n.name IS UNIQUE;
+DROP CONSTRAINT ON (n:ITServiceGroup) ASSERT n.name IS UNIQUE;
+DROP CONSTRAINT ON (n:Location) ASSERT n.name IS UNIQUE;
+DROP CONSTRAINT ON (n:Cabinet) ASSERT n.name IS UNIQUE;
+DROP CONSTRAINT ON (n:ConfigurationItem) ASSERT n.name IS UNIQUE;
+commit

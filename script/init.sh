@@ -9,12 +9,17 @@ curl -XPUT 'http://localhost:9200/cmdb/' -d'{
                     "uuid": {
                         "type": "string",
                         "index": "not_analyzed"
+                    },
+                    "pfid": {
+                        "type": "string",
+                        "index": "not_analyzed"
                     }
                 }
             }
         }
 }'
 
-$NEO4J_HOME/bin/neo4j-shell -file ./cypher/cmdbSchema.cyp
+$NEO4J_HOME/bin/neo4j-shell -file ./cypher/initSchema.cyp
+
 
 

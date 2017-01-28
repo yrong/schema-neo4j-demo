@@ -1,0 +1,14 @@
+{
+  "config": {
+    "neo4j": {
+      "host": "localhost",
+      "port": 7688,
+      "user": "neo4j",
+      "password": "neo4j"
+    },
+    "elasticsearch":{
+      "host": "localhost",
+      "port": 9201
+    }
+  }
+}

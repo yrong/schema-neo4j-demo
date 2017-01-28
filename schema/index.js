@@ -16,7 +16,7 @@ const cmdbTypeName = {
     Hardware:'Hardware',
     NetworkDevice:'NetworkDevice',
     Cabinet:'Cabinet',
-    Location:'Location',
+    Position:'Position',
     User:'User',
     ITService:'ITService',
     ITServiceGroup:'ITServiceGroup',
@@ -56,14 +56,17 @@ const cmdbTypeLabels= {
     Router:[cmdbTypeName.Router,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow]
+    IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow],
+    User:[cmdbTypeName.User],
+    Switch:[cmdbTypeName.Switch,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
+    Firewall:[cmdbTypeName.Firewall,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem]
 }
 
 //ConfigurationItem real types
-const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage];
+const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Location,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
@@ -90,6 +93,7 @@ var checkSchema = function (params) {
     if(!valid){
         throw new Error(ajv.errorsText());
     }
+    checkAdditionalProperty(params)
     return valid;
 };
 
@@ -102,6 +106,42 @@ var getSchema = function(id) {
     var schema = _getSchema(id);
     schema = extendSchema(schema);
     return schema;
+}
+
+var getPropertiesFromSchema = function(properties,schema){
+    for (let prop in schema) {
+        if (prop === 'properties')
+            properties.push(schema[prop])
+        if (typeof schema[prop] === 'object')
+            getPropertiesFromSchema(properties,schema[prop]);
+    }
+    return properties;
+}
+
+var isAdditionalProperty = function(property,properties){
+    let find = false;
+    for (let prop of properties) {
+        for (let key in prop){
+            if(property===key){
+                find = true
+                break
+            }
+        }
+    }
+    return !find
+}
+
+var checkAdditionalProperty = function(params){
+    let schema = getSchema('/'+params.data.category)
+    let properties = [],additionalPropertyExist=false
+    getPropertiesFromSchema(properties,schema)
+    for (let key in params.data.fields){
+        additionalPropertyExist=isAdditionalProperty(key,properties)
+        if(additionalPropertyExist){
+            throw new Error(`additional property:${key}`)
+            break
+        }
+    }
 }
 
 var extendSchema = function(schema) {

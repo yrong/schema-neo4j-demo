@@ -11,6 +11,5 @@
       }
     }
     }
-  ],
-  "required": ["management_ip"]
+  ]
 }

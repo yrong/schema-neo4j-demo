@@ -101,9 +101,11 @@ class KoaNeo4jApp extends Application {
             }
             params = {...params, ...ctx.params, ...ctx.request.body};
             params.method = api.method;
+            params.url = ctx.req.url;
             try {
                 ctx.body = await api.invoke(params, ctx);
             } catch (error) {
+                console.log(error)
                 ctx.throw(error.message || error, 409);
             }
             await next();

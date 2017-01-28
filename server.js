@@ -1,4 +1,7 @@
-var KoaNeo4jApp = require('./koa-neo4j');
+require("babel-core/register");
+require("babel-polyfill");
+
+var _ = require('lodash');
 
 var config = require('config');
 
@@ -10,6 +13,8 @@ var schema = require('./schema');
 
 var search = require('./search');
 
+var KoaNeo4jApp = require('./koa-neo4j/src');
+
 var app = new KoaNeo4jApp({
     neo4j: {
         boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
@@ -18,80 +23,64 @@ var app = new KoaNeo4jApp({
     }
 });
 
-/* ConfigurationItem */
-app.defineAPI({
-    method: 'POST',
-    route: '/api/cfgItems',
-    check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
+const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
+const apiDef = {
+    ConfigurationItem: {route: '/cfgItems'},
+    Cabinet:{route: '/cabinets'},
+    Position:{route: '/positions'},
+    User:{route:'/users'},
+    ITService:{route:'/it_services/service'},
+    ITServiceGroup:{route:'/it_services/group'},
+    ProcessFlow: {
+        route: '/processFlows',
+        allowed_methods:[...allowed_methods,"FindChanges"],
+        customizedHook:{
+            Add:{postProcess:search.addProcessFlow},
+            Modify:{postProcess:search.patchProcessFlow},
+            FindAll:{procedure:search.searchProcessFlows},
+            FindOne:{procedure:search.searchProcessFlows},
+        }
+    }
+}
+const none_checker=(params)=>true
+let preProcess,postProcess,http_method,route,checker,methods,procedure
+_.each(apiDef,(val,key)=>{
+    methods = val.allowed_methods||allowed_methods
+    _.each(methods,(method)=>{
+        procedure=null
+        http_method = method==='Add'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
+        route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid')
+        checker = method==='Add'?schema.checkSchema:none_checker
+        preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
+        if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
+            preProcess = val.customizedHook[method].preProcess
+        postProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_postProcess:hook.queryItems_postProcess
+        if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].postProcess)
+            postProcess = val.customizedHook[method].postProcess
+        if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].procedure)
+            procedure = val.customizedHook[method].procedure
+        if(procedure)
+            app.defineAPI({
+                method: http_method,
+                route: route,
+                procedure: procedure
+            })
+        else
+            app.defineAPI({
+                method: http_method,
+                route: route,
+                check: checker,
+                preProcess: preProcess,
+                postProcess: postProcess
+            })
+    })
+})
 
-app.defineAPI({
-    method: 'PATCH',
-    route: '/api/cfgItems/:uuid',
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/cfgItems',
-    preProcess: hook.queryItems_preProcess,
-    postProcess: hook.queryItems_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/cfgItems/:uuid',
-    preProcess: hook.queryItems_preProcess,
-    postProcess: hook.queryItems_postProcess
-});
 
 app.defineAPI({
     method: 'GET',
     route: '/api/cfgItems/categories/:filter',
     procedure: hook.configurationItemCategoryProcess
-});
-
-/*Cabinet*/
-app.defineAPI({
-    method: 'POST',
-    route: '/api/cabinets',
-    check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/cabinets',
-    preProcess: hook.queryItems_preProcess,
-    postProcess: hook.queryItems_postProcess
-});
-
-/*Location*/
-app.defineAPI({
-    method: 'POST',
-    route: '/api/locations',
-    check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/locations',
-    preProcess: hook.queryItems_preProcess,
-    postProcess: hook.queryItems_postProcess
-});
-
-/*Users*/
-app.defineAPI({
-    method: 'GET',
-    route: '/api/users',
-    preProcess: hook.queryItems_preProcess,
-    postProcess: hook.queryItems_postProcess
 });
 
 /*Schema*/
@@ -100,65 +89,12 @@ app.router.get('/api/schema/:id', function (ctx, next) {
     return next();
 });
 
-/*ITService*/
-app.defineAPI({
-    method: 'POST',
-    route: '/api/it_services/service',
-    check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
+/* get mounted location relationship between configurationItem and Cabinet(for cabinet_u unique check purpose when import*/
 app.defineAPI({
     method: 'GET',
-    route: '/api/it_services/service',
-    preProcess: hook.queryItems_preProcess,
+    route: '/api/relationship/located/mounted',
+    cypherQueryFile: './cypher/QueryMountedCabinet.cyp',
     postProcess: hook.queryItems_postProcess
-});
-
-/*ITServiceGroup*/
-app.defineAPI({
-    method: 'POST',
-    route: '/api/it_services/group',
-    check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/it_services/group',
-    preProcess:hook.queryItems_preProcess,
-    postProcess: hook.queryItems_postProcess
-});
-
-/* ProcessFlow */
-app.defineAPI({
-    method: 'POST',
-    route: '/api/processFlows',
-    check: schema.checkSchema,
-    preProcess: hook.cudItem_preProcess,
-    postProcess: search.addProcessFlow
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/processFlows',
-    procedure: search.searchProcessFlows
-});
-
-app.defineAPI({
-    method: 'GET',
-    route: '/api/processFlows/:uuid',
-    procedure: search.searchProcessFlows
-});
-
-/* Delete any item*/
-app.defineAPI({
-    method: 'DEL',
-    route: '/api/items/:uuid',
-    preProcess: hook.cudItem_preProcess,
-    postProcess: hook.cudItem_postProcess
 });
 
 

@@ -5,13 +5,13 @@
     "it_service": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": { "type": "string","format":"uuid"},
       "uniqueItems": true
     },
     "reference_process_flow":{
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": { "type": "string","format":"uuid" },
       "uniqueItems": true
     },
     "committer":{
@@ -23,22 +23,28 @@
     "reference_kb":{
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": { "type": "string","format":"uuid" },
       "uniqueItems": true
     },
     "status":{
       "type": "string",
-      "enum": ["open", "cancel", "finish"]
+      "enum": ["open", "closed","solved","cancelled"]
     },
     "note":{
       "type": "string"
     },
-    "desc": {
+    "description": {
       "type": "string"
     },
     "attachment":{
       "type": "string"
+    },
+    "title":{
+      "type":"string"
+    },
+    "pfid":{
+      "type":"string"
     }
   },
-  "required": ["it_service"]
+  "required": ["it_service","committer"]
 }

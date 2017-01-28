@@ -1,5 +1,5 @@
 {
-  "id": "/Location",
+  "id": "/Position",
   "type": "object",
   "properties": {
     "name": {
