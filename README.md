@@ -338,6 +338,7 @@ A [CMDB](https://en.wikipedia.org/wiki/Configuration_management_database) backen
     (:ProcessFlow)-[:CommitedBy|ExecutedBy]->(:User)
     (:ProcessFlow)-[:REFERENCED_SERVICE]->(:ITService)
     (:ProcessFlow)<-[:REFERENCED_PROCESSFLOW]-(:ProcessFlow)
+    (:ProcessFlow)-[:PREV]->(:ProcessFlowPrev)
 
 
 
