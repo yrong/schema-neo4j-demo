@@ -50,7 +50,10 @@
 		"176abb1d-0b70-ea87-6ac3-ee224dc19c20",
 		"3c649c67-3b51-03d3-a144-28fb231e2b1c",
 		"42334382-b9c8-6517-4953-d3f78a9d9165",
-		"dc612472-1337-3155-68b1-2a71bbc7009c"
+		"dc612472-1337-3155-68b1-2a71bbc7009c",
+		"24462f11-d232-8d7a-4c23-06d879a1ec12",
+		"c55092c2-58bb-3fe1-22f2-21910c257abb",
+		"27479a9e-9840-06a0-67cc-09cff3435343"
 	],
 	"folders": [],
 	"timestamp": 0,
@@ -158,7 +161,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.results.length === 1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485498793951,
+			"time": 1485785691473,
 			"name": "query ConfigurationItem by pagination",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
@@ -175,11 +178,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485605892575,
+			"time": 1485790764339,
 			"name": "add router",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router-1\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		},
 		{
 			"id": "1bc8c1ff-ecb8-c207-b071-8d5be982764b",
@@ -213,6 +216,40 @@
 			"time": 1484626571204,
 			"name": "query process flow by keyword and with attributes filter",
 			"description": "",
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
+		},
+		{
+			"id": "24462f11-d232-8d7a-4c23-06d879a1ec12",
+			"headers": "",
+			"url": "{{url}}/cfgItems?keyword=a10&getReferencedObj=true",
+			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow by matched keyword found\"] = jsonData.data.count == 2;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485783463214,
+			"name": "query configurationItem by keyword matched",
+			"description": "",
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
+		},
+		{
+			"id": "27479a9e-9840-06a0-67cc-09cff3435343",
+			"headers": "",
+			"url": "{{url}}/processFlows/{{incident_flow_2_id}}",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"tests": "\n\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485785923888,
+			"name": "delete processflow 2",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
 		},
 		{
@@ -519,11 +556,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485603213097,
+			"time": 1485783572435,
 			"name": "add physical server",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"10.10.35.63\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"unmounted\",\"position\":\"{{position_id}}\"},\n      \"management_ip\":[\"10.10.35.64\"],\n      \"monitored\":true\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"10.10.35.63\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"unmounted\",\"position\":\"{{position_id}}\"},\n      \"management_ip\":[\"10.10.35.64\"],\n      \"monitored\":true\n    }\n  }\n}"
 		},
 		{
 			"id": "760a02cb-a116-9223-6ed6-56baf385b1e5",
@@ -537,7 +574,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_email_id\", jsonData.uuid);",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485603916975,
+			"time": 1485607176429,
 			"name": "add ITService Email",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
@@ -555,7 +592,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"switch_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485605918584,
+			"time": 1485783581224,
 			"name": "add switch",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
@@ -703,6 +740,24 @@
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
 		},
 		{
+			"id": "c55092c2-58bb-3fe1-22f2-21910c257abb",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/search/cfgItems?page=1&per_page=2",
+			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"configuration items found\"] = jsonData.data.count == 2;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485790561815,
+			"name": "search configurationItem",
+			"description": "",
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
+			"rawModeData": "{\n\t\"body\":\n\t{\n\t    \"query\": {\n\t        \"term\": {\"model\": \"a10\"}\n\t    },\n\t    \"sort\" : [\n\t        { \"product_date\" : {\"order\" : \"desc\"}}]\n\t}\n}\n\n\n\n\n\n"
+		},
+		{
 			"id": "cbbd977e-be3a-4ecc-1c05-631d981c1d8d",
 			"headers": "Content-Type: application/json\n",
 			"url": "{{url}}/cfgItems/{{router_id}}",
@@ -714,11 +769,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1484127906398,
+			"time": 1485790893879,
 			"name": "patch router for all attributes",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"userid\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		},
 		{
 			"id": "d1282fca-7495-c59f-8e13-d1e3f2f555b9",
@@ -911,11 +966,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"firewall_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485605924584,
+			"time": 1485783586117,
 			"name": "add firewall",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Firewall\",\n    \"fields\":{\n      \"name\":\"firewall\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Firewall\",\n    \"fields\":{\n      \"name\":\"firewall\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		}
 	]
 }

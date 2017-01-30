@@ -257,32 +257,32 @@ module.exports = {
     },
     generateQueryNodesCypher:(params)=>{
         var cypher,attributes=all_attributes;
-        if(params.type === schema.cmdbTypeName.ITServiceGroup){
+        if(params.category === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroup_cypher;
         }else{
-            if(params.type === schema.cmdbTypeName.User){
+            if(params.category === schema.cmdbTypeName.User){
                 attributes= user_attributes;
             }
-            cypher = cmdb_findNodes_Cypher_template(params.type,attributes);
+            cypher = cmdb_findNodes_Cypher_template(params.category,attributes);
         }
         return cypher;
     },
     generateQueryNodesByKeyWordCypher:(params)=>{
         var cypher,attributes=all_attributes,condition=keyword_condition;
-        if(params.type === schema.cmdbTypeName.ITServiceGroup){
+        if(params.category === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroupByKeyword_cypher;
         }else{
-            if(params.type === schema.cmdbTypeName.User){
+            if(params.category === schema.cmdbTypeName.User){
                 attributes= user_attributes;
                 condition = user_keyword_condition;
             }
-            cypher = cmdb_findNodesByKeyword_Cypher_template(params.type,condition,attributes);
+            cypher = cmdb_findNodesByKeyword_Cypher_template(params.category,condition,attributes);
         }
         return cypher;
     },
     generateQueryByUuidsCypher:(params)=> cmdb_queryITServiceByUuids_cypher,
     generateAdvancedSearchCypher:(params) =>cmdb_advancedSearchITService_cypher,
-    generateQueryNodeCypher:(params)=> cmdb_findNode_cypher_template(params.type),
+    generateQueryNodeCypher:(params)=> cmdb_findNode_cypher_template(params.category),
     generateDelNodeCypher:(params)=>cmdb_delNode_cypher,
     cmdb_findNode_cypher:cmdb_findNode_cypher_template,
     generateQueryProcessFlowTimelineCypher:()=>cmdb_queryProcessFlowTimeline_cypher,

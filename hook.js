@@ -6,22 +6,22 @@ var cypherBuilder = require('./cypher/cypherBuilder');
 var cypherResponseMapping = require('./cypher/cypherResponseMapping')
 var cache = require('./cache')
 
-var getTypeFromUrl = function (url) {
-    var type;
+var getCategoryFromUrl = function (url) {
+    var category;
     if (url.includes('/it_services/service')) {
-        type = schema.cmdbTypeName.ITService;
+        category = schema.cmdbTypeName.ITService;
     } else if (url.includes('/it_services/group')) {
-        type =  schema.cmdbTypeName.ITServiceGroup;
+        category =  schema.cmdbTypeName.ITServiceGroup;
     } else if (url.includes('/cfgItems')) {
-        type =  schema.cmdbTypeName.ConfigurationItem;
+        category =  schema.cmdbTypeName.ConfigurationItem;
     } else if (url.includes('/processFlows')) {
-        type =  schema.cmdbTypeName.ProcessFlow;
+        category =  schema.cmdbTypeName.ProcessFlow;
     } else {
-        type = _.find(schema.cmdbConfigurationItemAuxiliaryTypes, function (type) {
+        category = _.find(schema.cmdbConfigurationItemAuxiliaryTypes, function (type) {
             return url.includes(type.toLowerCase());
         });
     }
-    return type;
+    return category;
 };
 
 var createOrUpdateCypherGenerator = (params)=>{
@@ -40,6 +40,7 @@ var createOrUpdateCypherGenerator = (params)=>{
 }
 
 var deleteCypherGenerator = (params)=>{
+    params.category = getCategoryFromUrl(params.url)
     params.cypher = cypherBuilder.generateDelNodeCypher();
     return params;
 }
@@ -61,7 +62,7 @@ var paginationParamsGenerator = function (params) {
 };
 
 var queryParamsCypherGenerator = function (params, ctx) {
-    params.type = getTypeFromUrl(params.url)
+    params.category = getCategoryFromUrl(params.url)
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
@@ -84,7 +85,7 @@ var queryParamsCypherGenerator = function (params, ctx) {
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
-        let cb//params = _.assign({}, params)
+        let cb
         if (params.method === 'POST') {
             cb = (params) => {
                 params.fields = params.data.fields
@@ -107,6 +108,7 @@ module.exports = {
                 params.fields = _.assign(params.fields, params.data.fields);
                 params.fields.change = JSON.stringify(params.data.fields);
                 params = _.assign(params, params.fields);
+                params.asset_location = _.isString(params.asset_location)?JSON.parse(params.asset_location):params.asset_location
                 params.lastUpdated = Date.now()
                 return createOrUpdateCypherGenerator(params);
             }
@@ -190,6 +192,7 @@ module.exports = {
             response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
         }
         return response_wrapped;
-    }
+    },
+    getCategoryFromUrl:getCategoryFromUrl
 }
 

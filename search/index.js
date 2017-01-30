@@ -12,14 +12,16 @@ var es_client = new elasticsearch.Client({
     host: esConfig.host + ":" + esConfig.port
 });
 
-var indexName = esConfig.index,typeName = esConfig.type;
+var indexName = esConfig.index
 
-var hidden_fields = ['fields','cyphers','method','data','token','fields_old','change']
+var hidden_fields = ['fields','cyphers','method','data','token','fields_old','change','url','id']
 
-var addProcessFlow = function(result,params,ctx) {
+var schema = require('../schema')
+
+var addItem = function(result, params, ctx) {
     return es_client.index({
         index: indexName,
-        type: typeName,
+        type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: _.omit(params,hidden_fields),
         refresh:true
@@ -30,12 +32,12 @@ var addProcessFlow = function(result,params,ctx) {
     });
 }
 
-module.exports.addProcessFlow = addProcessFlow;
+module.exports.addItem = addItem;
 
-var patchProcessFlow = function(result,params,ctx) {
+var patchItem = function(result, params, ctx) {
     return es_client.update({
         index: indexName,
-        type: typeName,
+        type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: {doc:_.omit(params,hidden_fields)},
         refresh:true
@@ -46,12 +48,12 @@ var patchProcessFlow = function(result,params,ctx) {
     });
 }
 
-module.exports.patchProcessFlow = patchProcessFlow;
+module.exports.patchItem = patchItem;
 
-var delProcessFlows = function(result,params,ctx) {
+var delItem = function(result, params, ctx) {
     return es_client.deleteByQuery({
         index: indexName,
-        type: typeName,
+        type: hook.getCategoryFromUrl(params.url),
         body: {
             query: {
                 match_all: {}
@@ -64,25 +66,32 @@ var delProcessFlows = function(result,params,ctx) {
     });
 }
 
-module.exports.delProcessFlows = delProcessFlows;
+module.exports.delItem = delItem;
 
 var responseWrapper = function(response){
     return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
 }
 
-var searchProcessFlows = function(params,ctx) {
+var searchItem = function(params, ctx) {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
-    return es_client.search({
+    var params_pagination = {"from":0,"size":10},from;
+    if(params.page&&params.per_page){
+        from = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
+        params_pagination = {"from":from,"size":params.per_page}
+    }
+    var queryObj = params.body?{body:params.body}:{q:query}
+
+    var searchObj = _.assign({
         index: indexName,
-        type: typeName,
-        q: query,
+        type: hook.getCategoryFromUrl(params.url),
         _source:_source
-    }).then(function (response) {
+    },queryObj,params_pagination)
+    return es_client.search(searchObj).then(function (response) {
         return hook.queryItems_postProcess(responseWrapper(response), params, ctx);
     }, function (error) {
         throw error;
     });
 }
 
-module.exports.searchProcessFlows = searchProcessFlows;
+module.exports.searchItem = searchItem;

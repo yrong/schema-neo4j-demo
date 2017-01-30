@@ -7,11 +7,13 @@ var wrapRequest = (category,item) => {
     return {token:token, data:{category:category,fields:item}}
 }
 
+var base_url=`http://localhost:${config.get('config.base.port')}/api`
+
 module.exports = {
     apiGetter:async function(path,params){
         var options = {
             method: 'GET',
-            uri: config.get('config.import.base_url') + path + (params?('/?' + queryString.stringify(params)):''),
+            uri: base_url + path + (params?('/?' + queryString.stringify(params)):''),
             json: true
         }
         return await rp(options)
@@ -19,7 +21,7 @@ module.exports = {
     addConfigurationItem:async (category,configurationItem)=>{
         var options = {
             method: 'POST',
-            uri: config.get('config.import.base_url')  + '/cfgItems',
+            uri: base_url  + '/cfgItems',
             body: wrapRequest(category,configurationItem),
             json: true
         };
@@ -28,7 +30,7 @@ module.exports = {
     addItService: async (service)=>{
         var options = {
             method: 'POST',
-            uri: config.get('config.import.base_url')  + '/it_services/service',
+            uri: base_url  + '/it_services/service',
             body: wrapRequest('ITService',service),
             json: true
         };
@@ -37,7 +39,7 @@ module.exports = {
     addItServiceGroup: async (serviceGroup)=>{
         var options = {
             method: 'POST',
-            uri: config.get('config.import.base_url')  + '/it_services/group',
+            uri: base_url  + '/it_services/group',
             body: wrapRequest('ITServiceGroup',serviceGroup),
             json: true
         };

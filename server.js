@@ -25,7 +25,17 @@ var app = new KoaNeo4jApp({
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
 const apiDef = {
-    ConfigurationItem: {route: '/cfgItems'},
+    ConfigurationItem: {
+        route: '/cfgItems',
+        allowed_methods:[...allowed_methods,"Search"],
+        customizedHook:{
+            Add:{postProcess:search.addItem},
+            Modify:{postProcess:search.patchItem},
+            Delete:{postProcess: search.delItem},
+            FindAll:{procedure:search.searchItem},
+            Search:{procedure:search.searchItem}
+        }
+    },
     Cabinet:{route: '/cabinets'},
     Position:{route: '/positions'},
     User:{route:'/users'},
@@ -35,10 +45,11 @@ const apiDef = {
         route: '/processFlows',
         allowed_methods:[...allowed_methods,"FindChanges"],
         customizedHook:{
-            Add:{postProcess:search.addProcessFlow},
-            Modify:{postProcess:search.patchProcessFlow},
-            FindAll:{procedure:search.searchProcessFlows},
-            FindOne:{procedure:search.searchProcessFlows},
+            Add:{postProcess:search.addItem},
+            Modify:{postProcess:search.patchItem},
+            Delete:{postProcess: search.delItem},
+            FindAll:{procedure:search.searchItem},
+            FindOne:{procedure:search.searchItem},
         }
     }
 }
@@ -48,8 +59,8 @@ _.each(apiDef,(val,key)=>{
     methods = val.allowed_methods||allowed_methods
     _.each(methods,(method)=>{
         procedure=null
-        http_method = method==='Add'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
-        route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid')
+        http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
+        route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='Search'?'/api/search'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid'))
         checker = method==='Add'?schema.checkSchema:none_checker
         preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
         if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
@@ -103,9 +114,9 @@ app.defineAPI({
     method: 'DEL',
     route: '/api/items',
     cypherQueryFile: './cypher/deleteItems.cyp',
-    postProcess: search.delProcessFlows
+    postProcess: search.delItem
 });
 
-app.listen(3001, function () {
-    console.log('App listening on port 3001.');
+app.listen(config.get('config.base.port'), function () {
+    console.log(`App started`);
 });
