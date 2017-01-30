@@ -30,8 +30,7 @@ const referencedMapper = (val) => {
         for (let val_key in val) {
             let val_val = val[val_key]
             if(val_key == 'asset_location'){
-                val_val = JSON.parse(val_val)
-                val.asset_location = val_val
+                val.asset_location = _.isString(val_val)?JSON.parse(val_val):val_val
             }
             if(val_val){
                 if(val_key == 'responsibility'||val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){

@@ -52,7 +52,7 @@ const cmdbConfigurationItemInheritanceRelationship = {
 
 const cmdbTypeLabels= {
     VirtualServer:[cmdbTypeName.VirtualServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem],
-    PhysicalServer: [cmdbTypeName.PhysicalServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem,cmdbTypeName.Hardware,cmdbTypeName.Asset],
+    PhysicalServer: [cmdbTypeName.PhysicalServer,cmdbTypeName.AbstractServer,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Router:[cmdbTypeName.Router,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
@@ -111,33 +111,19 @@ var getSchema = function(id) {
 var getPropertiesFromSchema = function(properties,schema){
     for (let prop in schema) {
         if (prop === 'properties')
-            properties.push(schema[prop])
+            properties = _.assign(properties,schema[prop])
         if (typeof schema[prop] === 'object')
             getPropertiesFromSchema(properties,schema[prop]);
     }
     return properties;
 }
 
-var isAdditionalProperty = function(property,properties){
-    let find = false;
-    for (let prop of properties) {
-        for (let key in prop){
-            if(property===key){
-                find = true
-                break
-            }
-        }
-    }
-    return !find
-}
-
 var checkAdditionalProperty = function(params){
     let schema = getSchema('/'+params.data.category)
-    let properties = [],additionalPropertyExist=false
+    let properties = {}
     getPropertiesFromSchema(properties,schema)
     for (let key in params.data.fields){
-        additionalPropertyExist=isAdditionalProperty(key,properties)
-        if(additionalPropertyExist){
+        if(!_.has(properties,key)){
             throw new Error(`additional property:${key}`)
             break
         }
