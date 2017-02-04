@@ -4,6 +4,10 @@ var _ = require('lodash');
 
 var ajv = new Ajv({ useDefaults: true });
 
+var config = require('config');
+
+var additionalPropertyCheck = config.get('config.base.additionalPropertyCheck');
+
 const cmdbTypeName = {
     VirtualServer:'VirtualServer',
     PhysicalServer:'PhysicalServer',
@@ -93,7 +97,8 @@ var checkSchema = function (params) {
     if(!valid){
         throw new Error(ajv.errorsText());
     }
-    checkAdditionalProperty(params)
+    if(additionalPropertyCheck)
+        checkAdditionalProperty(params)
     return valid;
 };
 

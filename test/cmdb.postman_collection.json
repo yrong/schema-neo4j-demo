@@ -5,7 +5,6 @@
 	"order": [
 		"e9b07610-fb3f-9c70-d78d-1ff13bac7c23",
 		"12b0561d-8edd-e2e4-a249-aef8d8a170cd",
-		"e769f3d6-ecfe-ed9a-2e74-bd8693565bb0",
 		"ad9e4629-6b53-813a-430b-6961d13b63af",
 		"335fdf58-ee11-abd9-4eee-9b3a9544c5bf",
 		"479386de-f6d8-b4c6-aebf-7a864d0f65cc",
@@ -152,16 +151,16 @@
 		{
 			"id": "17a4dd7a-74ac-27a3-0eab-65f937d3d394",
 			"headers": "",
-			"url": "{{url}}/cfgItems?page=1&per_page=1",
+			"url": "{{url}}/cfgItems",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.results.length === 1",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.results.length === 4",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485785691473,
+			"time": 1486196760049,
 			"name": "query ConfigurationItem by pagination",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
@@ -178,11 +177,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485790764339,
+			"time": 1486196606334,
 			"name": "add router",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router-1\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		},
 		{
 			"id": "1bc8c1ff-ecb8-c207-b071-8d5be982764b",
@@ -221,16 +220,16 @@
 		{
 			"id": "24462f11-d232-8d7a-4c23-06d879a1ec12",
 			"headers": "",
-			"url": "{{url}}/cfgItems?keyword=a10&getReferencedObj=true",
+			"url": "{{url}}/search/cfgItems?keyword=a10&getReferencedObj=true",
 			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
 			"pathVariables": {},
-			"method": "GET",
+			"method": "POST",
 			"data": null,
 			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow by matched keyword found\"] = jsonData.data.count == 2;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1485783463214,
+			"time": 1486196948335,
 			"name": "query configurationItem by keyword matched",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
@@ -717,7 +716,7 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1485605904158,
-			"name": "add router with invalid parameter",
+			"name": "add router with additional parameter",
 			"description": "",
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"},\n      \"not_exist\":\"not_exist\"\n    }\n  }\n}"
@@ -844,24 +843,6 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
-		},
-		{
-			"id": "e769f3d6-ecfe-ed9a-2e74-bd8693565bb0",
-			"headers": "Content-Type: application/json\n",
-			"url": "{{url}}/users",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"additional property\"] = jsonData.status==='error';",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1485603781633,
-			"name": "add user with additional property",
-			"description": "",
-			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"uuid\":6,\n  \"data\":{\n    \"category\":\"User\",\n    \"fields\":{\n      \"type\":1,\n      \"attempt_ip\":\"10.50.13.69\",\n      \"userid\":6,\n      \"passwd\":\"4d3d82e202dfa673d3077f03b3be185\",\n      \"surname\":\"\",\n      \"name\":\"shijinglei\",\n      \"alias\":\"shijinglei\",\n      \"theme\":\"default\",\n      \"lang\":\"en_GB\",\n      \"not_exist\":\"not_exist\"\n    }\n  }\n}"
 		},
 		{
 			"folder": null,

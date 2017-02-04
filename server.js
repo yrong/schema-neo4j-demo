@@ -32,7 +32,6 @@ const apiDef = {
             Add:{postProcess:search.addItem},
             Modify:{postProcess:search.patchItem},
             Delete:{postProcess: search.delItem},
-            FindAll:{procedure:search.searchItem},
             Search:{procedure:search.searchItem}
         }
     },
