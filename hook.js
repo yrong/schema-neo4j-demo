@@ -16,11 +16,15 @@ var getCategoryFromUrl = function (url) {
         category =  schema.cmdbTypeName.ConfigurationItem;
     } else if (url.includes('/processFlows')) {
         category =  schema.cmdbTypeName.ProcessFlow;
+    } else if(url.includes('/items')){
+        category = [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ConfigurationItem]
     } else {
         category = _.find(schema.cmdbConfigurationItemAuxiliaryTypes, function (type) {
             return url.includes(type.toLowerCase());
         });
     }
+    if(!category)
+        throw new Error('can not find category from url:'+url)
     return category;
 };
 
