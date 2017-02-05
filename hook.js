@@ -142,12 +142,13 @@ module.exports = {
             "content": CONTENT_OPERATION_SUCESS,
             "displayAs":DISPLAY_AS_TOAST
         }
-        if(params.method == 'DEL' && params.uuid && result.length != 1){
-            response_wrapped = {
-                "status":STATUS_WARNING,
-                "content": CONTENT_NO_RECORD,
-                "displayAs":DISPLAY_AS_TOAST
-            }
+        if(params.method == 'DEL'){
+            if(params.uuid && (result.length != 1&&result.total!=1))
+                response_wrapped = {
+                    "status":STATUS_WARNING,
+                    "content": CONTENT_NO_RECORD,
+                    "displayAs":DISPLAY_AS_TOAST
+                }
         }
         if(params.uuid)
             response_wrapped.uuid = params.uuid;
