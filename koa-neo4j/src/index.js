@@ -26,7 +26,7 @@ class KoaNeo4jApp extends Application {
         super();
         options = {...defaultOptions, ...options};
 
-        this.router = new Router();
+        this.router = new Router({sensitive:true});
         this.configuredAuthentication = false;
 
         this.methods = {
