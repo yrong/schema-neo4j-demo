@@ -51,13 +51,12 @@ var patchItem = function(result, params, ctx) {
 module.exports.patchItem = patchItem;
 
 var delItem = function(result, params, ctx) {
+    var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
     return es_client.deleteByQuery({
         index: indexName,
         type: hook.getCategoryFromUrl(params.url),
         body: {
-            query: {
-                match_all: {}
-            }
+            query: queryObj
         }
     }).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
