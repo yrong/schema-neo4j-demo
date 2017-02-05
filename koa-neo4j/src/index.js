@@ -52,6 +52,10 @@ class KoaNeo4jApp extends Application {
             .use(async (ctx, next) => {
                 try {
                     await next();
+                    const status = ctx.status || 404
+                    if (status === 404) {
+                        ctx.throw(404)
+                    }
                 } catch (error) {
                     //wrap cmdb error message
                     let cmdb_error = {
@@ -77,6 +81,7 @@ class KoaNeo4jApp extends Application {
 
         for (const api of options.apis)
             this.defineAPI(api);
+
     }
 
     defineAPI(options) {
