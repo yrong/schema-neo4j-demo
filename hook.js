@@ -17,7 +17,7 @@ var getCategoryFromUrl = function (url) {
     } else if (url.includes('/cfgItems')) {
         category =  schema.cmdbTypeName.ConfigurationItem;
     } else if (url.includes('/processFlows')) {
-        category =  schema.cmdbTypeName.ProcessFlow;
+        category =  [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ProcessFlowLegacy]
     } else if(url.includes('/items')){
         category = [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ConfigurationItem]
     } else {

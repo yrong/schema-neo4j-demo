@@ -27,7 +27,8 @@ const cmdbTypeName = {
     Switch:'Switch',
     Firewall:'Firewall',
     ProcessFlow:'ProcessFlow',
-    IncidentFlow:'IncidentFlow'
+    IncidentFlow:'IncidentFlow',
+    ProcessFlowLegacy:'processFlow'
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {
