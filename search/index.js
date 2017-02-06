@@ -18,14 +18,18 @@ var hidden_fields = ['fields','cyphers','method','data','token','fields_old','ch
 
 var schema = require('../schema')
 
+var logger = require('../logger')
+
 var addItem = function(result, params, ctx) {
-    return es_client.index({
+    let index_obj = {
         index: indexName,
         type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: _.omit(params,hidden_fields),
         refresh:true
-    }).then(function (response) {
+    }
+    logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
+    return es_client.index(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
         throw error;
@@ -35,13 +39,15 @@ var addItem = function(result, params, ctx) {
 module.exports.addItem = addItem;
 
 var patchItem = function(result, params, ctx) {
-    return es_client.update({
+    let index_obj = {
         index: indexName,
         type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: {doc:_.omit(params,hidden_fields)},
         refresh:true
-    }).then(function (response) {
+    }
+    logger.debug(`patch index in es:${JSON.stringify(index_obj,null,'\t')}`)
+    return es_client.update(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
         throw error;
@@ -52,13 +58,15 @@ module.exports.patchItem = patchItem;
 
 var delItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    return es_client.deleteByQuery({
+    var delObj = {
         index: indexName,
         type: hook.getCategoryFromUrl(params.url),
         body: {
             query: queryObj
         }
-    }).then(function (response) {
+    }
+    logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
+    return es_client.deleteByQuery(delObj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
         throw error;
@@ -86,6 +94,7 @@ var searchItem = function(params, ctx) {
         type: hook.getCategoryFromUrl(params.url),
         _source:_source
     },queryObj,params_pagination)
+    logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
     return es_client.search(searchObj).then(function (response) {
         return hook.queryItems_postProcess(responseWrapper(response), params, ctx);
     }, function (error) {

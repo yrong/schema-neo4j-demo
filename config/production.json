@@ -1,5 +1,8 @@
 {
   "config": {
+    "base":{
+      "logLevel":"INFO"
+    },
     "neo4j": {
       "host": "localhost",
       "port": 7688,

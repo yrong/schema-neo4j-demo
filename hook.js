@@ -6,6 +6,8 @@ var cypherBuilder = require('./cypher/cypherBuilder');
 var cypherResponseMapping = require('./cypher/cypherResponseMapping')
 var cache = require('./cache')
 
+var logger = require('./logger')
+
 var getCategoryFromUrl = function (url) {
     var category;
     if (url.includes('/it_services/service')) {
@@ -40,12 +42,17 @@ var createOrUpdateCypherGenerator = (params)=>{
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
     }
+    let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
+    let fields = JSON.stringify(params.fields,null,'\t')
+    logger.debug(`cypher to executed:${cypher}`)
+    logger.debug(`cypher fields:${fields}`)
     return params;
 }
 
 var deleteCypherGenerator = (params)=>{
     params.category = getCategoryFromUrl(params.url)
     params.cypher = cypherBuilder.generateDelNodeCypher();
+    logger.debug(`cypher to executed:${params.cypher}`)
     return params;
 }
 
@@ -84,6 +91,7 @@ var queryParamsCypherGenerator = function (params, ctx) {
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
+    logger.debug(`cypher to executed:${params.cypher}`)
     return params;
 }
 

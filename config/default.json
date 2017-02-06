@@ -2,7 +2,8 @@
   "config": {
     "base":{
       "port":3001,
-      "additionalPropertyCheck":false
+      "additionalPropertyCheck":false,
+      "logLevel":"DEBUG"
     },
     "neo4j": {
       "host": "localhost",

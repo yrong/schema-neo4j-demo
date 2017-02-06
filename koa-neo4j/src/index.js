@@ -2,7 +2,6 @@
 
 import Application from 'koa';
 import Router from 'koa-router';
-import logger from 'koa-logger';
 import bodyParser from 'koa-bodyparser';
 import cors from 'kcors';
 import queryString from 'query-string';
@@ -20,6 +19,7 @@ const defaultOptions = {
     }
 };
 
+const logger = require('../../logger')
 
 class KoaNeo4jApp extends Application {
     constructor(options) {
@@ -44,18 +44,19 @@ class KoaNeo4jApp extends Application {
         if (options.authentication)
             this.configureAuthentication(options.authentication);
 
-        if (options.log)
-            this.use(logger());
-
         this
             .use(cors(options.cors))
             .use(async (ctx, next) => {
                 try {
+                    var start = new Date()
                     await next();
                     const status = ctx.status || 404
                     if (status === 404) {
                         ctx.throw(404)
                     }
+                    var ms = new Date() - start
+                    if (options.log)
+                        logger.info('%s %s - %s ms', ctx.method,ctx.originalUrl, ms)
                 } catch (error) {
                     //wrap cmdb error message
                     let cmdb_error = {
@@ -66,7 +67,7 @@ class KoaNeo4jApp extends Application {
                         }
                     };
                     ctx.body = JSON.stringify(cmdb_error);
-                    // ctx.body = String(error);
+                    logger.error('%s %s - %s', ctx.method,ctx.originalUrl, String(error))
                     ctx.status = error.status;
                 }
             })
