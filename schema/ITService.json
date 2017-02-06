@@ -17,24 +17,21 @@
       "items": {
         "type": "string",
         "format": "uuid"
-      },
-      "minItems": 1
+      }
     },
     "dependencies": {
       "type": "array",
       "items": {
         "type": "string",
         "format": "uuid"
-      },
-      "minItems": 1
+      }
     },
     "children": {
       "type": "array",
       "items": {
         "type": "string",
         "format": "uuid"
-      },
-      "minItems": 1
+      }
     },
     "parent":{
       "type": "string",
