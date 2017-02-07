@@ -5,13 +5,13 @@
     },
     "neo4j": {
       "host": "localhost",
-      "port": 7688,
+      "port": 7687,
       "user": "neo4j",
       "password": "neo4j"
     },
     "elasticsearch":{
       "host": "localhost",
-      "port": 9201
+      "port": 9200
     }
   }
 }

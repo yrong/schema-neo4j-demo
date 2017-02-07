@@ -1,6 +1,3 @@
-require("babel-core/register");
-require("babel-polyfill");
-
 var _ = require('lodash');
 
 var config = require('config');
@@ -131,6 +128,37 @@ app.defineAPI({
     cypherQueryFile: './cypher/deleteItems.cyp',
     postProcess: search.delItem
 });
+
+/* file upload for demo purpose */
+app.router.get('/upload_demo', (ctx,next)=>{
+    ctx.body = `
+                  <!DOCTYPE html>
+                  <html>
+                    <head>
+                      <meta charset="utf-8">
+                      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                      <title>test</title>
+                      <meta name="description" content="">
+                      <meta name="viewport" content="width=device-width, initial-scale=1">
+                    </head>
+                    <body>
+                    <form method="POST" action="/api/upload/processFlows/attachment" enctype="multipart/form-data">
+                      <input type="file" multiple name="file" />
+                      <br />
+                      <input type="submit" value="submit"/>
+                    </form>
+                    </body>
+                  </html>
+                  `
+    return next()
+})
+const uploader = require("./koa2-file-upload")
+const upload_options = config.get('config.upload')
+app.use(uploader(upload_options))
+const convert = require('koa-convert')
+const staticFile = require('koa-static')
+app.use(convert(staticFile(__dirname + '/public')))
+
 
 app.listen(config.get('config.base.port'), function () {
     console.log(`App started`);

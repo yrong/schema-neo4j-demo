@@ -68,7 +68,7 @@ class KoaNeo4jApp extends Application {
                     };
                     ctx.body = JSON.stringify(cmdb_error);
                     logger.error('%s %s - %s', ctx.method,ctx.originalUrl, String(error))
-                    ctx.status = error.status;
+                    ctx.status = error.status||500;
                 }
             })
             .use(bodyParser({

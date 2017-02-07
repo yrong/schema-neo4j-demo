@@ -20,7 +20,18 @@ var schema = require('../schema')
 
 var logger = require('../logger')
 
+var validate = require('uuid-validate');
+const upload_options = config.get('config.upload')
+let store = require(`../koa2-file-upload/${upload_options.provider}`)(upload_options)
+var pre_process = function(params) {
+    if(params.attachment&&validate(params.attachment, 1)){
+        params.attachment = store.get(params.attachment)
+    }
+    return params
+}
+
 var addItem = function(result, params, ctx) {
+    params = pre_process(params)
     let index_obj = {
         index: indexName,
         type: _.last(schema.cmdbTypeLabels[params.category]),
@@ -39,6 +50,7 @@ var addItem = function(result, params, ctx) {
 module.exports.addItem = addItem;
 
 var patchItem = function(result, params, ctx) {
+    params = pre_process(params)
     let index_obj = {
         index: indexName,
         type: _.last(schema.cmdbTypeLabels[params.category]),

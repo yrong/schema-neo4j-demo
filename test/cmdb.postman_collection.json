@@ -53,7 +53,8 @@
 		"24462f11-d232-8d7a-4c23-06d879a1ec12",
 		"c55092c2-58bb-3fe1-22f2-21910c257abb",
 		"19c65fac-0d7c-3199-798e-292175d126cb",
-		"27479a9e-9840-06a0-67cc-09cff3435343"
+		"27479a9e-9840-06a0-67cc-09cff3435343",
+		"bbc8d8c2-564b-4e98-0ce0-3080ce46f7a2"
 	],
 	"folders": [],
 	"timestamp": 0,
@@ -721,6 +722,24 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a"
+		},
+		{
+			"id": "bbc8d8c2-564b-4e98-0ce0-3080ce46f7a2",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/processFlows",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_3_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1486464182225,
+			"name": "add incident flow with attachment referenced",
+			"description": "",
+			"collectionId": "675e5d66-72f0-59c4-d40c-5c5841053c9a",
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{user_id}},\n      \"executor\":{{user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\",\n      \"description\":\"{{process_flow_desc}}\",\n      \"note\":\"note\",\n      \"attachment\":\"da91c9f0-ed21-11e6-bb79-374a320b0637\",\n      \"title\":\"title\"\n    }\n  }\n}"
 		},
 		{
 			"id": "c0822b32-fbc2-d9c7-f531-015653f217b6",

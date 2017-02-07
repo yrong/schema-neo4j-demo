@@ -26,7 +26,13 @@
     },
     "import":{
       "importFileBaseDir":"./import_data"
+    },
+    "upload":{
+      "url": "/api/upload/processFlows/attachment",
+      "storeDir": "ProcessFlowAttachment",
+      "provider": "local",
+      "folder": "public/upload",
+      "mimetypes": ["text/plain"]
     }
-
   }
 }
