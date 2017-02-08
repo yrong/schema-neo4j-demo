@@ -7,7 +7,6 @@
     },
     "it_service": {
       "type": "array",
-      "minItems": 1,
       "items": { "type": "string","format":"uuid" },
       "uniqueItems": true
     },

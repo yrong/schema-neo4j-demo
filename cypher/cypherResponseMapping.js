@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var schema = require('./../schema/index')
 var cache = require('../cache')
 
 const hidden_properties = ['id','_id','_index','_type','passwd','change']

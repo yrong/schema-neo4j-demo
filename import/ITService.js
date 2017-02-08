@@ -1,9 +1,9 @@
 var jsonfile = require('jsonfile')
 var _ = require('lodash')
+var path = require('path')
+var config = require('config')
 var apiInvoker = require('../helper/apiInvoker')
-var dir = process.argv.slice(2)[0]
-var file = './data/' + dir + '/services.json'
-var items = jsonfile.readFileSync(file)
+var cypherInvoker = require('../helper/cypherInvoker')
 
 var cloneArray = (items)=>{
     var clonedItems = new Array(items.length)
@@ -14,8 +14,14 @@ var cloneArray = (items)=>{
 }
 
 var importer = async ()=>{
-    let index = 0,pulledItems=cloneArray(items)
-    for (let item of items){
+    let query = `MATCH (n) WHERE n:ITService OR n:ITServiceGroup DETACH DELETE n`
+    await cypherInvoker(query, {})
+    let date_dir = process.argv.slice(2)[1]
+    let file = path.join(config.get('config.export.storeDir'), date_dir,'services.json')
+    let items = jsonfile.readFileSync(file)
+    let items_undo = cloneArray(items)
+    let index = 0,pulledItems=cloneArray(items_undo)
+    for (let item of items_undo){
         if(item.category==='ITServiceGroup'){
             await apiInvoker.addItServiceGroup(item)
             _.pullAt(pulledItems,index)
@@ -23,9 +29,9 @@ var importer = async ()=>{
         }
         index++
     }
-    items=cloneArray(pulledItems)
+    items_undo=cloneArray(pulledItems)
     index = 0
-    for (let item of items) {
+    for (let item of items_undo) {
         if (item.category === 'ITService' && !item.parent &&!item.children&&!item.dependencies&&!item.dependendents) {
             await apiInvoker.addItService(item)
             _.pullAt(pulledItems,index)
@@ -33,9 +39,9 @@ var importer = async ()=>{
         }
         index++
     }
-    items=cloneArray(pulledItems)
+    items_undo=cloneArray(pulledItems)
     index = 0
-    for (let item of items) {
+    for (let item of items_undo) {
         if (item.category === 'ITService') {
             await apiInvoker.addItService(item)
             _.pullAt(pulledItems,index)
@@ -43,19 +49,10 @@ var importer = async ()=>{
         }
         index++
     }
+    return items
 }
 
 module.exports = importer
 
-if (require.main === module) {
-    console.time("importServiceConsuming")
-    importer().then((result)=>{
-        console.timeEnd("importServiceConsuming");
-        process.exit()
-    }).catch((err)=>{
-        console.log(err)
-        process.exit()
-    })
-}
 
 

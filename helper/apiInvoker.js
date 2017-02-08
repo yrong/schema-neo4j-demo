@@ -7,7 +7,7 @@ var wrapRequest = (category,item) => {
     return {token:token, data:{category:category,fields:item}}
 }
 
-var base_url=`http://localhost:${config.get('config.base.port')}/api`
+var base_url=`http://localhost:${config.get('config.port')}/api`
 
 module.exports = {
     apiGetter:async function(path,params){

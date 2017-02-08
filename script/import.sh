@@ -16,7 +16,7 @@ while [ "$1" != "" ]; do
             service_only=1
             ;;
         --dir)
-            dir=$VALUE
+            date_dir=$VALUE
             ;;
         *)
             echo "ERROR: unknown parameter \"$PARAM\""
@@ -27,24 +27,29 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ -z "$dir" ]; then
+if [ -z "$date_dir" ]; then
         usage
         exit
 fi
 
+storeDir=$(cat ./config/default.json|./script/jq-linux64 '.config.export.storeDir'| sed -e 's/^"//' -e 's/"$//')
+esHost=$(cat ./config/default.json|./script/jq-linux64 '.config.elasticsearch.host'| sed -e 's/^"//' -e 's/"$//')
+esPort=$(cat ./config/default.json|./script/jq-linux64 '.config.elasticsearch.port')
+esIndex=$(cat ./config/default.json|./script/jq-linux64 '.config.elasticsearch.index'| sed -e 's/^"//' -e 's/"$//')
+
 if [ $service_only -eq 0 ]; then
     #$NEO4J_HOME/bin/neo4j-shell -file ./cypher/dropSchema.cyp
     curl -X DELETE --header "Content-Type: application/json" --url "http://localhost:3001/api/items"
-    cat ./data/$dir/neo4j.dump | $NEO4J_HOME/bin/neo4j-shell
+    cat $storeDir/$date_dir/neo4j.dump | $NEO4J_HOME/bin/neo4j-shell
     elasticdump \
-      --input=./data/$dir/es.dump \
-      --output=http://localhost:9200/cmdb \
+      --input=$storeDir/$date_dir/es.dump \
+      --output=http://$esHost:$esPort/$esIndex \
       --type=data
     if [ $? -eq 0 ]; then
         echo "importing data successfully!"
     fi
 else
-   node ./importItService.js $dir
+   node ./import/index.js ITService $date_dir
 fi
 
 

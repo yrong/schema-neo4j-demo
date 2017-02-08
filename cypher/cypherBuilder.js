@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var schema = require('./../schema/index')
+var schema = require('./../schema')
 
 /*ConfigurationItem*/
 const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH ()<-[r2:LOCATED|SUPPORT_SERVICE]-(n:ConfigurationItem{uuid: {uuid}})<-[r1:RESPONSIBLE_FOR]-()
@@ -208,7 +208,7 @@ module.exports = {
     generateAddNodeCypher:generateAddNodeCypher,
     generateCmdbCyphers: (params)=>{
         let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInConfigurationItem_cypher]
-        if(params.it_service){
+        if(params.it_service&&params.it_service.length){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemITServiceRel_cypher]
         }
         if(params.responsibility){
@@ -230,10 +230,10 @@ module.exports = {
         if(params.parent){
             cyphers_todo = [...cyphers_todo,cmdb_addITServiceParentRel_cypher]
         }
-        if(params.children){
+        if(params.children&&params.children.length){
             cyphers_todo = [...cyphers_todo,cmdb_addITServiceChildrenRel_cypher]
         }
-        if(params.dependencies){
+        if(params.dependencies&&params.dependencies.length){
             cyphers_todo = [...cyphers_todo,cmdb_addITServiceDependenciesRel_cypher]
         }
         if(params.dependendents){
@@ -243,9 +243,9 @@ module.exports = {
     },
     generateProcessFlowCypher:(params)=>{
         let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInProcessFlow_cypher];
-        if(params.it_service)
+        if(params.it_service&&params.it_service.length)
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowITServiceRel_cypher];
-        if(params.reference_process_flow)
+        if(params.reference_process_flow&&params.reference_process_flow.length)
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowSelfReferencedRel_cypher];
         if(params.committer)
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowCommitedByUserRel_cypher];

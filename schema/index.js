@@ -4,6 +4,10 @@ var _ = require('lodash');
 
 var ajv = new Ajv({ useDefaults: true });
 
+var config = require('config');
+
+var additionalPropertyCheck = config.get('config.additionalPropertyCheck');
+
 const cmdbTypeName = {
     VirtualServer:'VirtualServer',
     PhysicalServer:'PhysicalServer',
@@ -23,7 +27,8 @@ const cmdbTypeName = {
     Switch:'Switch',
     Firewall:'Firewall',
     ProcessFlow:'ProcessFlow',
-    IncidentFlow:'IncidentFlow'
+    IncidentFlow:'IncidentFlow',
+    ProcessFlowLegacy:'processFlow'
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {
@@ -66,7 +71,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
@@ -93,7 +98,8 @@ var checkSchema = function (params) {
     if(!valid){
         throw new Error(ajv.errorsText());
     }
-    checkAdditionalProperty(params)
+    if(additionalPropertyCheck)
+        checkAdditionalProperty(params)
     return valid;
 };
 

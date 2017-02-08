@@ -6,8 +6,7 @@
     {"properties": {
       "management_ip":{
         "type": "array",
-        "items": {"type": "string","format":"ipv4"},
-        "minItems": 1
+        "items": {"type": "string","format":"ipv4"}
       }
     }
     }

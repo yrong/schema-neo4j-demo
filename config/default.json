@@ -1,7 +1,22 @@
 {
   "config": {
-    "base":{
-      "port":3001
+    "port":3001,
+    "additionalPropertyCheck":false,
+    "logger":{
+      "appenders": [
+        {
+          "type": "console"
+        },
+        {
+          "type": "file",
+          "filename": "cmdb-api.log",
+          "maxLogSize": 20480,
+          "numBackups": 5,
+          "category": "cmdb-api"
+        }
+      ],
+      "replaceConsole": true,
+      "defaultLevel":"DEBUG"
     },
     "neo4j": {
       "host": "localhost",
@@ -20,11 +35,20 @@
     "elasticsearch":{
       "host": "localhost",
       "port": 9200,
-      "index":"cmdb"
+      "index": "cmdb"
+    },
+    "export":{
+      "storeDir": "./export_data"
     },
     "import":{
-      "importFileBaseDir":"./import_data"
+      "storeDir": "./import_data"
+    },
+    "upload":{
+      "url": "/api/upload/processFlows/attachment",
+      "storeDir": "ProcessFlowAttachment",
+      "provider": "local",
+      "folder": "public/upload",
+      "mimetypes": ["text/plain"]
     }
-
   }
 }
