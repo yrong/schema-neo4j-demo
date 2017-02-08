@@ -42,11 +42,11 @@ var physicalServer_mappings = {
 
 }
 
-var physicalServerMapping = async (line)=>{
+var physicalServerMapping = async (sheet,line)=>{
     let physicalServer = {},value,raw_value
     for (var key in physicalServer_mappings.def){
         value = physicalServer_mappings.def[key];
-        raw_value = xslxHelper.getRawValue(value.col,line)
+        raw_value = xslxHelper.getRawValue(sheet,value.col,line)
         if(value.type === 'array')
             value.value = parser.toArray(raw_value)
         else if(value.type === 'boolean')
@@ -73,36 +73,30 @@ var physicalServerMapping = async (line)=>{
 }
 
 var importer = async ()=>{
-    let line = xslxHelper.range.s.r,physical_server,errors=0,success=0,exception,exceptions=[]
-    while (line<=xslxHelper.range.e.r) {
+    const SHEET_NAME = '物理服务器'
+    const SHEET_START_LINE = 3
+    let src_sheet = xslxHelper.initSheet('configurationItem.xlsx',SHEET_NAME),error_sheet={}
+    let range = xslxHelper.getSheetRange(src_sheet)
+    let line = SHEET_START_LINE,physical_server,errors=0,success=0,exception,exceptions=[]
+    while (line<=range.e.r) {
         try{
-            physical_server = await physicalServerMapping(line)
+            physical_server = await physicalServerMapping(src_sheet,line)
             await apiInvoker.addConfigurationItem('PhysicalServer',physical_server)
             success++
         }catch(error){
-            xslxHelper.generateSheetWithError(line,errors,error.message)
+            error_sheet = xslxHelper.generateErrorSheet(src_sheet,line,error_sheet,errors,error.message)
             errors ++
             exception = {srcLine:line+1,error:error.message}
             exceptions.push(exception)
         }
         line ++
     }
-    await xslxHelper.writeErrorBook(errors)
+    await xslxHelper.writeErrorBook(src_sheet,error_sheet,SHEET_NAME,errors)
     return {success_num:success,exception_num:errors,exceptions:exceptions}
 }
 
 module.exports = importer
 
-if (require.main === module) {
-    console.time("importConfigurationItemConsuming")
-    importer().then((result)=>{
-        console.timeEnd("importConfigurationItemConsuming");
-        process.exit()
-    }).catch((err)=>{
-        console.log(err)
-        process.exit()
-    })
-}
 
 
 

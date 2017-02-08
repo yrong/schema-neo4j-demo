@@ -2,7 +2,7 @@ var newman = require('newman');
 require("babel-core/register");
 require("babel-polyfill");
 var assert = require('chai').assert;
-var importer = require("../import/configurationItem.js");
+var importer = require("../import/ConfigurationItem.js");
 
 describe("CMDB Integration test suite", function() {
     this.timeout(15000)

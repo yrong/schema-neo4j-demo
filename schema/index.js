@@ -6,7 +6,7 @@ var ajv = new Ajv({ useDefaults: true });
 
 var config = require('config');
 
-var additionalPropertyCheck = config.get('config.base.additionalPropertyCheck');
+var additionalPropertyCheck = config.get('config.additionalPropertyCheck');
 
 const cmdbTypeName = {
     VirtualServer:'VirtualServer',
@@ -71,7 +71,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.ITService,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];

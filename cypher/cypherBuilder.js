@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var schema = require('./../schema/index')
+var schema = require('./../schema')
 
 /*ConfigurationItem*/
 const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH ()<-[r2:LOCATED|SUPPORT_SERVICE]-(n:ConfigurationItem{uuid: {uuid}})<-[r1:RESPONSIBLE_FOR]-()

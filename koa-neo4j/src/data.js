@@ -5,7 +5,7 @@
 import {v1 as neo4j} from 'neo4j-driver';
 import fs from 'file-system';
 import chalk from 'chalk';
-import parser from 'parse-neo4j';
+import {parse} from 'parse-neo4j';
 import {parseNeo4jInts} from './preprocess';
 import {Procedure} from './procedure';
 
@@ -17,7 +17,7 @@ class Neo4jConnection {
         const session = this.driver.session();
         this.initialized = session.run('RETURN "Neo4j instance successfully connected."')
             .then((result) => {
-                console.log(chalk.green(parser.parse(result)));
+                console.log(chalk.green(parse(result)));
                 session.close();
             })
             .catch(error => {
@@ -51,9 +51,10 @@ class Neo4jConnection {
                 .catch(error => {
                     error = error.fields ? JSON.stringify(error.fields[0]) : String(error);
                     reject(`error while executing Cypher: ${error}`);
+                    session.close();
                 });
         })
-            .then(parser.parse);
+            .then(parse);
     }
 
     executeCyphers(cyphers,params) {
@@ -95,7 +96,7 @@ class Neo4jConnection {
         }).then(function(results){
             let results_parsed = [];
             for (let result of results) {
-                results_parsed.push(parser.parse(result));
+                results_parsed.push(parse(result));
             }
             return results_parsed;
         });

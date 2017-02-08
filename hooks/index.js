@@ -1,34 +1,30 @@
-var _ = require('lodash');
-var uuid = require('node-uuid');
-var schema = require('./schema');
-var MAXNUM = 1000;
-var cypherBuilder = require('./cypher/cypherBuilder');
-var cypherResponseMapping = require('./cypher/cypherResponseMapping')
-var cache = require('./cache')
-
-var logger = require('./logger')
+var _ = require('lodash')
+var uuid = require('node-uuid')
+var schema = require('../schema')
+var MAXNUM = 1000
+var cypherBuilder = require('../cypher/cypherBuilder')
+var cypherResponseMapping = require('../cypher/cypherResponseMapping')
+var cache = require('../cache')
+var logger = require('../logger')
+var routesDef = require('../routes/def')
 
 var getCategoryFromUrl = function (url) {
-    var category;
-    if (url.includes('/it_services/service')) {
-        category = schema.cmdbTypeName.ITService;
-    } else if (url.includes('/it_services/group')) {
-        category =  schema.cmdbTypeName.ITServiceGroup;
-    } else if (url.includes('/cfgItems')) {
-        category =  schema.cmdbTypeName.ConfigurationItem;
-    } else if (url.includes('/processFlows')) {
-        category =  [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ProcessFlowLegacy]
-    } else if(url.includes('/items')){
-        category = [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ConfigurationItem]
-    } else {
-        category = _.find(schema.cmdbConfigurationItemAuxiliaryTypes, function (type) {
-            return url.includes(type.toLowerCase());
-        });
+    let category,key,val
+    for (key in routesDef){
+        val = routesDef[key]
+        if(url.includes(val.route)){
+            category = key
+            break
+        }
     }
+    if (url.includes('/processFlows')) //for legacy compatible
+        category =  [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ProcessFlowLegacy]
+    else if(url.includes('/items'))//for delete all test
+        category = [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ConfigurationItem]
     if(!category)
         throw new Error('can not find category from url:'+url)
     return category;
-};
+}
 
 var createOrUpdateCypherGenerator = (params)=>{
     if(schema.cmdbConfigurationItemTypes.includes(params.category)){
@@ -70,7 +66,7 @@ var paginationParamsGenerator = function (params) {
         }
     }
     return _.assign(params,params_pagination);
-};
+}
 
 var queryParamsCypherGenerator = function (params, ctx) {
     params.category = getCategoryFromUrl(params.url)
@@ -102,7 +98,7 @@ module.exports = {
             cb = (params) => {
                 params.fields = params.data.fields
                 params.fields.category = params.data.category;
-                params.fields.uuid = params.uuid || uuid.v1();
+                params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1();
                 params = _.assign(params, params.fields);
                 params.created = Date.now()
                 return createOrUpdateCypherGenerator(params);

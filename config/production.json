@@ -1,7 +1,7 @@
 {
   "config": {
-    "base":{
-      "logLevel":"INFO"
+    "logger": {
+      "defaultLevel": "INFO"
     },
     "neo4j": {
       "host": "localhost",

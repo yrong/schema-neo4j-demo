@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 var esConfig = config.get('config.elasticsearch');
 
-var hook = require('./../hook');
+var hook = require('../hooks');
 
 var elasticsearch = require('elasticsearch');
 
@@ -22,7 +22,7 @@ var logger = require('../logger')
 
 var validate = require('uuid-validate');
 const upload_options = config.get('config.upload')
-let store = require(`../koa2-file-upload/${upload_options.provider}`)(upload_options)
+let store = require(`../koa-file-upload/${upload_options.provider}`)(upload_options)
 var pre_process = function(params) {
     if(params.attachment&&validate(params.attachment, 1)){
         params.attachment = store.get(params.attachment)

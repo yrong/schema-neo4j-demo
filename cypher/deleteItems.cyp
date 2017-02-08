@@ -1,4 +1,3 @@
 MATCH (n)
 DETACH
 DELETE n
-RETURN n
