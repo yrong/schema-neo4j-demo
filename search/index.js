@@ -94,7 +94,7 @@ var responseWrapper = function(response){
 var searchItem = function(params, ctx) {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
-    var params_pagination = {"from":0,"size":10},from;
+    var params_pagination = {"from":0,"size":config.get('config.perPageSize')},from;
     if(params.page&&params.per_page){
         from = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"from":from,"size":params.per_page}

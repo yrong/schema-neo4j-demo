@@ -2,6 +2,7 @@
   "config": {
     "port":3001,
     "additionalPropertyCheck":false,
+    "perPageSize":2000,
     "logger":{
       "appenders": [
         {

@@ -45,13 +45,13 @@ class Neo4jConnection {
 
             session.run(query, queryParams)
                 .then(result => {
-                    resolve(result);
                     session.close();
+                    resolve(result);
                 })
                 .catch(error => {
+                    session.close();
                     error = error.fields ? JSON.stringify(error.fields[0]) : String(error);
                     reject(`error while executing Cypher: ${error}`);
-                    session.close();
                 });
         })
             .then(parse);
@@ -59,20 +59,16 @@ class Neo4jConnection {
 
     executeCyphers(cyphers,params) {
 
-        let that = this;
-
         let results = [];
 
-        let runCyphers = function (array, fn) {
+        let runCyphers = (session,array, fn)=>{
             let index = 0;
-            const session = that.driver.session();
             return new Promise(function(resolve, reject) {
                 function next() {
                     if (index < array.length) {
                         fn(session,array[index++]).then(next, reject);
                     } else {
                         resolve();
-                        session.close();
                     }
                 }
                 next();
@@ -80,25 +76,24 @@ class Neo4jConnection {
         }
 
 
-        let runCypher= function(session,cypher){
+        let runCypher= (session,cypher)=>{
             return session.run(cypher, params).then(result => {
                 results.push(result);
             })
         }
 
         return new Promise((resolve, reject) => {
-            runCyphers(cyphers,runCypher).then(function() {
+            const session = this.driver.session();
+            runCyphers(session,cyphers,runCypher).then(function() {
+                session.close();
                 resolve(results);
             }, function(error) {
+                session.close();
                 error = error.fields ? JSON.stringify(error.fields[0]) : String(error);
                 reject(`error while executing Cypher: ${error}`);
             });
         }).then(function(results){
-            let results_parsed = [];
-            for (let result of results) {
-                results_parsed.push(parse(result));
-            }
-            return results_parsed;
+            return results.map(parse)
         });
     }
 }

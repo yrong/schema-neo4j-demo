@@ -1,7 +1,7 @@
 var _ = require('lodash')
 var uuid = require('node-uuid')
 var schema = require('../schema')
-var MAXNUM = 1000
+var config = require('config')
 var cypherBuilder = require('../cypher/cypherBuilder')
 var cypherResponseMapping = require('../cypher/cypherResponseMapping')
 var cache = require('../cache')
@@ -48,7 +48,7 @@ var createOrUpdateCypherGenerator = (params)=>{
 var deleteCypherGenerator = (params)=>{
     params.category = getCategoryFromUrl(params.url)
     params.cypher = cypherBuilder.generateDelNodeCypher();
-    logger.debug(`cypher to executed:${params.cypher}`)
+    logger.debug(`cypher to executed:${JSON.stringify(params,null,'\t')}`)
     return params;
 }
 
@@ -57,7 +57,7 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     DISPLAY_AS_TOAST='toast';
 
 var paginationParamsGenerator = function (params) {
-    var params_pagination = {"skip":0,"limit":MAXNUM};
+    var params_pagination = {"skip":0,"limit":config.get('config.perPageSize')};
     if(params.page&&params.per_page){
         var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
@@ -87,7 +87,7 @@ var queryParamsCypherGenerator = function (params, ctx) {
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
-    logger.debug(`cypher to executed:${params.cypher}`)
+    logger.debug(`cypher to executed:${JSON.stringify(params,null,'\t')}`)
     return params;
 }
 
