@@ -26,6 +26,12 @@ var getCategoryFromUrl = function (url) {
     return category;
 }
 
+var logCypher = (params)=>{
+    let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
+    logger.debug(`cypher to executed:${cypher}`)
+    logger.debug(`params:${JSON.stringify(_.omit(params,['cypher','cyphers','data','fields','fields_old']),null,'\t')}`)
+}
+
 var createOrUpdateCypherGenerator = (params)=>{
     if(schema.cmdbConfigurationItemTypes.includes(params.category)){
         params.fields.asset_location = _.isString(params.fields.asset_location)?params.fields.asset_location:JSON.stringify(params.fields.asset_location);
@@ -38,17 +44,14 @@ var createOrUpdateCypherGenerator = (params)=>{
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
     }
-    let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
-    let fields = JSON.stringify(params.fields,null,'\t')
-    logger.debug(`cypher to executed:${cypher}`)
-    logger.debug(`cypher fields:${fields}`)
+    logCypher(params)
     return params;
 }
 
 var deleteCypherGenerator = (params)=>{
     params.category = getCategoryFromUrl(params.url)
     params.cypher = cypherBuilder.generateDelNodeCypher();
-    logger.debug(`cypher to executed:${JSON.stringify(params,null,'\t')}`)
+    logCypher(params)
     return params;
 }
 
@@ -87,7 +90,7 @@ var queryParamsCypherGenerator = function (params, ctx) {
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
-    logger.debug(`cypher to executed:${JSON.stringify(params,null,'\t')}`)
+    logCypher(params)
     return params;
 }
 

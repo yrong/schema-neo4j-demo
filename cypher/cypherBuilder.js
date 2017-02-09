@@ -18,9 +18,9 @@ const cmdb_addConfigurationItemCabinetRel_cypher = `MATCH (cabinet:Cabinet {uuid
 MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(cabinet)`
 
-const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (l:Position {uuid:{asset_location}.position})
+const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (p:Position {uuid:{asset_location}.position})
 MATCH (n:Asset {uuid:{uuid}})
-CREATE (n)-[r:LOCATED{asset_location}]->(l)`
+CREATE (n)-[r:LOCATED{asset_location}]->(p)`
 
 /*ITService*/
 const cmdb_delRelsExistInITService_cypher = `MATCH ()<-[r1:BelongsTo|ParentOf|DependsOn]-(n:ITService{uuid: {uuid}})<-[r2:ParentOf|DependsOn]-()
@@ -40,13 +40,13 @@ MATCH (s1:ITService{uuid:child})
 CREATE (s)-[r:ParentOf]->(s1)`
 
 const cmdb_addITServiceDependenciesRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-UNWIND {dependencies} AS child
-MATCH (s1:ITService{uuid:child})
+UNWIND {dependencies} AS dependency
+MATCH (s1:ITService{uuid:dependency})
 CREATE (s)-[r:DependsOn]->(s1)`
 
 const cmdb_addITServiceDependendentsRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-UNWIND {dependendents} AS child
-MATCH (s1:ITService{uuid:child})
+UNWIND {dependendents} AS dependendent
+MATCH (s1:ITService{uuid:dependendent})
 MERGE (s)<-[r:DependsOn]-(s1)`
 
 const cmdb_queryITServiceGroup_cypher = `MATCH
@@ -87,20 +87,18 @@ OPTIONAL MATCH (s1)<-[:ParentOf]-(s3)
 OPTIONAL MATCH (s1)-[:DependsOn]->(s4)
 OPTIONAL MATCH (s1)<-[:DependsOn]-(s5)
 WITH {service:s1,group:sg,children:(collect(distinct(s2))),parent:s3,dependencies:(collect(distinct(s4))),dependendents:(collect(distinct(s5)))} as service
-RETURN collect(service)`
+RETURN COLLECT(service)`
 
 
 const cmdb_advancedSearchITService_cypher = `OPTIONAL MATCH (s1:ITService)
 WHERE s1.uuid IN {search} or s1.group IN {search}
-with collect(distinct(s1.uuid)) as services_byIds
-
+WITH COLLECT(distinct(s1.uuid)) as services_byIds
 UNWIND {search} as keyword
 OPTIONAL MATCH (s1:ITService)
 WHERE s1.name =~ ('(?i).*'+keyword+'.*') or s1.desc =~ ('(?i).*'+keyword+'.*')
 WITH services_byIds+collect(distinct(s1.uuid)) as services
-
 UNWIND services AS service
-return COLLECT( distinct service)`
+RETURN COLLECT( distinct service)`
 
 /*ProcessFlow*/
 const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]->()
