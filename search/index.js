@@ -72,7 +72,7 @@ var delItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
     var delObj = {
         index: indexName,
-        type: hook.getCategoryFromUrl(params.url),
+        type: hook.getCategoryFromUrl(ctx.url),
         body: {
             query: queryObj
         }
@@ -103,7 +103,7 @@ var searchItem = function(params, ctx) {
 
     var searchObj = _.assign({
         index: indexName,
-        type: hook.getCategoryFromUrl(params.url),
+        type: hook.getCategoryFromUrl(ctx.url),
         _source:_source
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)

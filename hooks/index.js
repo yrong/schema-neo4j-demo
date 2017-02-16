@@ -28,8 +28,8 @@ var getCategoryFromUrl = function (url) {
 
 var logCypher = (params)=>{
     let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
-    logger.debug(`cypher to executed:${cypher}`)
-    logger.debug(`params:${JSON.stringify(_.omit(params,['cypher','cyphers','data','fields','fields_old']),null,'\t')}`)
+    let cypher_params = _.omit(params,['cypher','cyphers','data','fields','fields_old','method','url','token'])
+    logger.debug(`cypher to executed:${JSON.stringify({cypher:cypher,params:cypher_params},null,'\t')}`)
 }
 
 var createOrUpdateCypherGenerator = (params)=>{
@@ -72,7 +72,7 @@ var paginationParamsGenerator = function (params) {
 }
 
 var queryParamsCypherGenerator = function (params, ctx) {
-    params.category = getCategoryFromUrl(params.url)
+    params.category = getCategoryFromUrl(ctx.url)
     if(params.keyword){
         params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
@@ -84,7 +84,7 @@ var queryParamsCypherGenerator = function (params, ctx) {
         params.cypher = cypherBuilder.generateAdvancedSearchCypher(params);
     }else if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
-        if(params.url.includes('/processFlows')&&params.url.includes('/timeline'))
+        if(ctx.url.includes('/processFlows')&&ctx.url.includes('/timeline'))
             params.cypher = cypherBuilder.generateQueryProcessFlowTimelineCypher()
     }
     else{
@@ -96,6 +96,7 @@ var queryParamsCypherGenerator = function (params, ctx) {
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
+        params.method = ctx.method,params.url = ctx.url
         let cb
         if (params.method === 'POST') {
             cb = (params) => {
@@ -132,7 +133,7 @@ module.exports = {
                     throw new Error("no record found to patch,uuid is" + params.uuid);
                 }
             })
-        } else if (params.method === 'DEL') {
+        } else if (params.method === 'DELETE') {
             return deleteCypherGenerator(params);
         }
     },
@@ -166,11 +167,12 @@ module.exports = {
         return　response_wrapped;
     },
     queryItems_preProcess:function (params,ctx) {
+        params.method = ctx.method,params.url = ctx.url
         params = paginationParamsGenerator(params);
         params = queryParamsCypherGenerator(params,ctx);
         return params;
     },
-    queryItems_postProcess:function (result,params) {
+    queryItems_postProcess:function (result,params,ctx) {
         let response_wrapped = {
             "status":STATUS_OK, //ok, info, warning, error,
             "message":{
