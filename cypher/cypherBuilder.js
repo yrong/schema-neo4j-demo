@@ -94,8 +94,8 @@ const cmdb_advancedSearchITService_cypher = `OPTIONAL MATCH (s1:ITService)
 WHERE s1.uuid IN {search} or s1.group IN {search}
 WITH COLLECT(distinct(s1.uuid)) as services_byIds
 UNWIND {search} as keyword
-OPTIONAL MATCH (s1:ITService)
-WHERE s1.name =~ ('(?i).*'+keyword+'.*') or s1.desc =~ ('(?i).*'+keyword+'.*')
+OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
+WHERE s1.name =~ ('(?i).*'+keyword+'.*') or s1.desc =~ ('(?i).*'+keyword+'.*') or sg.name =~ ('(?i).*'+keyword+'.*') or sg.desc =~ ('(?i).*'+keyword+'.*')
 WITH services_byIds+collect(distinct(s1.uuid)) as services
 UNWIND services AS service
 RETURN COLLECT( distinct service)`
