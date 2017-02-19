@@ -11,7 +11,8 @@
     "export": "/bin/bash ./script/export.sh",
     "exportITService": "/bin/bash ./script/export.sh --service_only",
     "importConfigurationItem": "node ./import/index.js ConfigurationItem",
-    "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment_all.json"
+    "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment_all.json",
+    "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
