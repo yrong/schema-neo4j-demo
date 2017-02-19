@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "build":"webpack",
+    "build": "webpack",
     "start": "NODE_ENV=production node bin/start.js",
     "sync": "node ./sync/index.js",
     "test": "mocha",
     "init": "/bin/bash ./script/init.sh",
     "export": "/bin/bash ./script/export.sh",
     "exportITService": "/bin/bash ./script/export.sh --service_only",
-    "importConfigurationItem": "node ./import/index.js ConfigurationItem"
+    "importConfigurationItem": "node ./import/index.js ConfigurationItem",
+    "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment_all.json"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
@@ -83,6 +84,7 @@
     "jasmine-spec-reporter": "^2.7.0",
     "mocha": "^3.2.0",
     "newman": "^3.3.1",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "postman_simplify":"^1.0.2"
   }
 }
