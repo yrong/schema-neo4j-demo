@@ -64,12 +64,12 @@ RETURN { count: cnt, results:collect(group_with_services) }`
 
 const cmdb_queryITServiceGroupByKeyword_cypher = `MATCH
     (n:ITServiceGroup)
-WHERE n.name =~ {keyword} OR n.desc =~ {keyword}
+WHERE n.name = {keyword}
 WITH
     count(n) AS cnt
 MATCH
     (n:ITServiceGroup)
-WHERE n.name =~ {keyword} OR n.desc =~ {keyword}
+WHERE n.name = {keyword}
 OPTIONAL MATCH
     (s:ITService)
 WHERE s.group=n.uuid
@@ -95,7 +95,7 @@ WHERE s1.uuid IN {search} or s1.group IN {search}
 WITH COLLECT(distinct(s1.uuid)) as services_byIds
 UNWIND {search} as keyword
 OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
-WHERE s1.name =~ ('(?i).*'+keyword+'.*') or s1.desc =~ ('(?i).*'+keyword+'.*') or sg.name =~ ('(?i).*'+keyword+'.*') or sg.desc =~ ('(?i).*'+keyword+'.*')
+WHERE s1.name = keyword or sg.name = keyword
 WITH services_byIds+collect(distinct(s1.uuid)) as services
 UNWIND services AS service
 RETURN COLLECT( distinct service)`
@@ -169,8 +169,8 @@ const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
             RETURN { count: cnt, results:collect(${node_alias}) }`;
 
 
-const keyword_condition = `WHERE ${node_alias}.name =~ {keyword} OR ${node_alias}.desc =~ {keyword}`;
-const user_keyword_condition = `WHERE ${node_alias}.alias =~ {keyword}`;
+const keyword_condition = `WHERE ${node_alias}.name = {keyword}`;
+const user_keyword_condition = `WHERE ${node_alias}.alias = {keyword}`;
 
 const cmdb_findNodesByKeyword_Cypher_template = (type,condition,attributes) => `MATCH
             (n:${type})

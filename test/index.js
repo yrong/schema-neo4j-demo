@@ -27,7 +27,7 @@ describe("CMDB Integration test suite", function() {
                 assert.equal(result.success_num, 1);
                 assert.equal(result.exception_num, 1);
                 done()
-            })
+            }).catch(done)
         });
     });
 })

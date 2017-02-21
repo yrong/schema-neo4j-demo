@@ -74,7 +74,6 @@ var paginationParamsGenerator = function (params) {
 var queryParamsCypherGenerator = function (params, ctx) {
     params.category = getCategoryFromUrl(ctx.url)
     if(params.keyword){
-        params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
     }else if(params.uuids){
         params.uuids = params.uuids.split(",");
