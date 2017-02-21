@@ -45,6 +45,7 @@ module.exports = ()=>{
             });
         }
     })
+    search.checkStatus()
     customized_routes(routesDef)
     const none_checker=(params)=>true
     let preProcess,postProcess,http_method,route,checker,methods,procedure

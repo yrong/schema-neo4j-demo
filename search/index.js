@@ -21,8 +21,11 @@ var schema = require('../schema')
 var logger = require('../logger')
 
 var validate = require('uuid-validate');
+
 const upload_options = config.get('config.upload')
+
 let store = require(`../koa-file-upload/${upload_options.provider}`)(upload_options)
+
 var pre_process = function(params) {
     if(params.attachment&&validate(params.attachment, 1)){
         params.attachment = store.get(params.attachment)
@@ -47,8 +50,6 @@ var addItem = function(result, params, ctx) {
     });
 }
 
-module.exports.addItem = addItem;
-
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
     let index_obj = {
@@ -65,8 +66,6 @@ var patchItem = function(result, params, ctx) {
         throw error;
     });
 }
-
-module.exports.patchItem = patchItem;
 
 var delItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
@@ -85,7 +84,6 @@ var delItem = function(result, params, ctx) {
     });
 }
 
-module.exports.delItem = delItem;
 
 var responseWrapper = function(response){
     return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
@@ -114,4 +112,11 @@ var searchItem = function(params, ctx) {
     });
 }
 
-module.exports.searchItem = searchItem;
+var checkStatus = ()=> {
+    return es_client.ping({
+        requestTimeout: Infinity,
+        hello: "elasticsearch!"
+    })
+}
+
+module.exports = {searchItem,delItem,patchItem,addItem,checkStatus}
