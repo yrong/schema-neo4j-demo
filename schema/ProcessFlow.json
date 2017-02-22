@@ -41,6 +41,9 @@
     },
     "pfid":{
       "type":"string"
+    },
+    "user_affected": {
+      "type": "string"
     }
   },
   "required": ["it_service","committer"]

@@ -1,375 +1,533 @@
-#CMDB-API
+A [CMDB](https://en.wikipedia.org/wiki/Configuration_management_database) backend implementation built with [Neo4j](http://vertx.io/vertx2/), [ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/getting-started.html).
 
-# 格式
-## 查
-返回所有配置项：
-```
-GET /API/cfgItems?page={page}&per_page={per_page}
-```
-若不带page和per_page参数，则返回所有结果，以下同
-response: //所有分页的返回结果均为此格式
-```
-{
-	"status":"ok", //ok, info, warning, error,
-	"message":{
-		"content":"message text here",
-		"displayAs":"toast" //toast, modal, console, alert
-	},
-	"data":{
-		"count":9,//所有结果总数
-		"results":[ //当前页的所有成员
-			{},
-			{}
-		]
-	}
-}
-```
-返回所有配置项类别：//可以过滤资产
-```
-GET /API/cfgItems/categories?filter=asset
-```
-response:
-```
-{
-	"status":"ok", //ok, info, warning, error,
-	"message":{
-		"content":"message text here",
-		"displayAs":"toast" //toast, modal, console, alert
-	},
-	"data":{
-		"results":[ //当前页的所有成员的name, description, id
-			{},
-			{}
-		]
-	}
-}
-```
+## Data model
 
-返回指定配置项的详细信息：
-```
-GET /API/cfgItems/{id}
-```
-## 搜
-```
-POST /API/cfgItems/search?page={page}&per_page={per_page}
-```
-request:
+* User
+
 ```
 {
-	"token": "xxxxxxxxxxxxxxxxxx",
-	"conditions":{
-		"tags":{
-			"content": ["tag1","tag2"],
-			"logic": "and"//and, or, not
-		},
-		"IT Services":{
-			"content": ["service1","service2"],
-			"logic": "and"//and, or, not
-		},
-		"keywords":{
-			"content": ["keyword1","keyword2"],
-			"logic": "and"//and, or, not
-		},
-		"logic": "and"//and, or, not
-	}
-}
-```
-## 增
-```
-POST /API/cfgItems/
-```
-request:
-```
-{
-	"token": "xxxxxxxxxxxxxxxxxx",
-	"data":{
-	    "category":"category name", //PhysicalServer, VirtualServer, Firewall, Router, Switch, Storage, Camera
-	    fields:{
-    	    "field1":"field1 text",
-            "field2":"field2 text"
-	    }
-	}
-}
-```
-response:
-成功：
-```
-{
-    "status":"info", //ok, info, warning, error,
-    "message":{
-        "content":"添加成功",
-        "displayAs":"toast" //toast, modal, console, alert
+  "id": "/User",
+  "type": "object",
+  "properties": {
+    "alias": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "lang": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "type":{
+      "type": "integer"
+    },
+    "attempt_ip":{
+      "type":"string"
+    },
+    "userid":{
+      "type":"integer"
+    },
+    "theme":{
+      "type":"string"
+    },
+    "passwd":{
+      "type":"string"
     }
+  }
 }
 ```
-失败：
+* Cabinet
+
 ```
 {
-    "status":"error", //ok, info, warning, error,
-    "message":{
-        "content":"添加失败：{原因}",
-        "displayAs":"modal" //toast, modal, console, alert
+  "id": "/Cabinet",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
     }
+  },
+  "required": ["name"]
 }
 ```
-## 删
-```
-DELETE /API/cfgItems/{id}
-```
-## 改
-```
-PUT /API/cfgItems/{id} //必须包含所有字段
-PATCH /API/cfgItems/{id} //部分或单个字段
-```
-# 身份认证：
-读取MySQL中的tokens表，有记录即可通过；后期需增加根据用户id做权限判断
-mysql_auth.sql位于项目文件中，包含users和tokens两张表，暂时只需用到tokens
+* Position
 
-# 建模
-
-第一层父类，继承关系如下：
-
-```
-ConfigurationItem
-	Asset
-		Hardware
-		Software
-	AbstractServer//服务器
-	Application//暂时忽略
-```
-
-字段定义：
-
-```
-ConfigurationItem字段
-	Name//string, required
-	IT Service//IT_Service, 为了不影响进度，初期为可选字段，待IT Service相关接口完善，此字段改为必填。从现有IT Service列表中选择，关系：(ConfigurationItem)-[:SUPPORT:]-> (IT Service)
-	Monitored//bool, required, default: false
-	Responsibility//User, 系统中的User对象，初期为可选字段，待User相关接口完善，此字段改为必填，关系：(User)-[:RESPONSIBLE FOR:]-> (ConfigurationItem)
-	Technical Support Info//string, optional
-	Date Added//date, 自动生成，虽然名字是date但请保存具体时间，时间戳格式
-	Last Updated//date，自动生成，虽然名字是date但请保存具体时间，时间戳格式
-	Updated By//User，自动生成，保存用户id
-Asset字段
-	Asset ID//待定，暂时为空
-	SN//string, optional
-	GEO Location//string, required
-	Asset location//位置信息，上架或未上架。
-		上架：//(Asset)-[:IS LOCATED:{status:'mounted',U:42,'Date Mounted':'time stamp'}]-> (Cabinet)
-			Cabinet//string, required 
-			U//int, required
-			Date Mounted//date, required, 时间戳
-		未上架：//(Asset)-[:IS LOCATED:{status:'unmounted'}]-> (Location)
-			Position//string
-	Model//string, required
-	Product Date //date, required, 时间戳
-	Warranty Expiration Date //date, required, 时间戳
-	Date of Retirement //date, optional, 时间戳
-AbstractServer字段：
-	IP Address //array: valid IPv4 addresses, required
-	Virtual Machine //bool, required
-	Operating System //string, required
-	Hardware Info //string, optional
-	Storage Info //string, required if ("Virtual Machine"==true)
-```
-
-
-第二层 - category
-```
-PhysicalServer - 物理机：继承ConfigurationItem.AbstractServer, ConfigurationItem.Asset.Hardware
-VirtualServer - 虚拟机：继承ConfigurationItem.AbstractServer
-Storage - 存储：继承ConfigurationItem.Asset.Hardware
-NetworkDevice - 网络设备：继承ConfigurationItem.Asset.Hardware
-– Switch - 交换机 
-– Router - 路由器 
-– Firewall - 防火墙
-Camera - 摄像头：继承ConfigurationItem.Asset.Hardware
-```
-字段定义：
-```
-PhysicalServer //物理机：
-	Management IP //array: valid IPv4 addresses
-VirtualServer //虚拟机：
-	Host Server //PhysicalServer
-```
-
-其他类的字段：
-```
-Cabinet
-    Name //string, required
-    Description //string
-Location
-    Name //string, required
-    Description //string
-```
-
-# 测试集用postman保存；
-
-# 项目阶段：
-- 配置项目增删改查、搜索、身份认证
--- Users查询、与配置项关联
--- Location, Cabinet增删改查、与配置项关联
--- 配置项签入、签出
-- IT_Services增删改查、与配置项关联
-- 变更记录的保存和查询、搜索
-- 权限管理
-
-
-# 补充：与配置项相关联的对象
-## 用户
-### 查、搜
-> 搜索Users，将keyword作为条件匹配alias字段，若keyword为空则返回所有：//只返回公开信息：userid, alias, lang, name, surname；系统权限功能启用之后，针对admin用户，此API返回passwd之外的用户的所有字段
-```
-GET /API/users?keyword={keyword}&page={page}&per_page={per_page}
-```
-> 不加参数则直接返回所有用户列表：
-```
-GET /API/users/
-```
 ```
 {
-	"status":"ok", //ok, info, warning, error,
-	"message":{
-		"content":"message text here",
-		"displayAs":"toast" //toast, modal, console, alert
-	},
-	"data":{
-		"results":[ //所有user的userid, alias, lang, name, surname
-		]
-	}
+  "id": "/Position",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": ["name"]
 }
 ```
-
-> 返回指定User的详细信息：//要求同上
+* ITServiceGroup
 
 ```
-GET /API/users/{id}
+{
+  "id": "/ITServiceGroup",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": ["name"]
+}
 ```
+* ITService
 
-## Cabinet
-### 查、搜
-> 搜索Cabinets，将keyword作为条件匹配==所有==字段，若keyword为空则返回所有：
+```
+{
+  "id": "/ITService",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "group":{
+      "type": "string",
+      "format": "uuid"
+    },
+    "dependendents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "parent":{
+      "type": "string",
+      "format": "uuid"
+    }
+  },
+  "required": ["name"]
+}
+```
+* ConfigurationItem
 
-    GET /API/cabinets?keyword={keyword}&page={page}&per_page={per_page}
+```
+{
+  "id": "/ConfigurationItem",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "it_service": {
+      "type": "array",
+      "items": { "type": "string","format":"uuid" },
+      "uniqueItems": true
+    },
+    "monitored": {
+      "type": "boolean",
+      "default": false
+    },
+    "responsibility": {
+      "type": "integer"
+    },
+    "updated_by":{
+      "type": "integer"
+    },
+    "technical_support_info": {
+      "type": "string"
+    },
 
-> 返回指定Cabinet的详细信息：//要求同上
-
-    GET /API/cabinets/{id}
-
-
-### 增删改：格式和cfgItems相同，略
-以下格式和Cabinet相同，所以仅注明URI
-## Location:  /API/locations
-## IT Service:  /API/IT_Services
-关系：
-
-    (sg1:ITServiceGroup)<-[:BelongsTo]-(service1:ITService)-[:ParentOf]->(service2:ITService)-[:DependsOn]->(service3:ITService)
-
-字段定义：
-
-    IT Service：
-        ID //uuid
-        Name //string, required
-        Description //string
-    IT Service Group:
-        ID //uuid
-        Name //string, required
-        Description //string
-
-全部服务列表查询：列出所有的分组和服务、子服务:
-
-    /API/IT_Services
-
-    {
-        "status":"ok", //ok, info, warning, error,
-        "message":{
-            "content":"message text here",
-            "displayAs":"toast" //toast, modal, console, alert
+    "asset_id": {
+      "type": "string"
+    },
+    "sn": {
+      "type": "string"
+    },
+    "geo_location": {
+      "type": "string"
+    },
+    "asset_location":{
+      "type":"object",
+      "oneOf":[
+        {"properties" :
+          {
+            "status":{"type":"string"},
+            "cabinet":{"type":"string","format":"uuid"},
+            "date_mounted" : {
+              "type" : "string",
+              "format": "date"
+            },
+            "u" : {
+              "type" : "integer"
+            }
+          },
+          "required":["status","u"]
         },
-        "data":{
-            "results":[ //所有成员的ID, Name, Description: group->service->subservice
-            ]
+        {"properties" :
+          {
+            "status":{"type":"string"},
+            "position":{"type":"string","format":"uuid"}
+          },
+          "required":["status","position"]
         }
+      ]
+    },
+    "model":{
+      "type": "string"
+    },
+    "product_date":{
+      "type": "string",
+      "format": "date"
+    },
+    "warranty_expiration_date":{
+      "type": "string",
+      "format": "date"
+    },
+    "retirement_date":{
+      "type": "string",
+      "format": "date"
+    },
+    "ip_address": {
+      "type": "array",
+      "items": {"type": "string","format":"ipv4"},
+      "minItems": 1
+    },
+    "operating_system": {
+      "type": "string"
+    },
+    "storage_info":{
+      "type": "string"
+    },
+    "hardware_info":{
+      "type": "string"
     }
+  },
+  "required": ["name","monitored","model", "product_date","ip_address", "operating_system"]
+}
+```
+* ProcessFlow
 
-
-查看某IT Service, IT Service Group:
-
-    /API/IT_Services/service/{IT Service uuid}
-    /API/IT_Services/group/{IT Service Group uuid}
-
-
-以下数组中的服务对象，只需包含Name, Description, uuid
-
-    {
-        "status":"ok", //ok, info, warning, error,
-        "message":{
-            "content":"message text here",
-            "displayAs":"toast" //toast, modal, console, alert
-        },
-        "data":{
-            "Type":"IT Service(Group) uuid"
-            "ID":"IT Service(Group) uuid",
-            "Name":"IT Service(Group) Name",
-            "Description":"IT Service Desc",
-            "Services":[ITService1, ITService2], // n/a for IT Service
-            "Group":"ITServiceGroup Name",// n/a for IT Service Group
-            "Sub IT Services":[ITService1, ITService2],// n/a for IT Service Group
-            "Parent":"IT Service Name",// n/a for IT Service Group
-            "Dependencies":[],// n/a for IT Service Group
-            "Dependendents":[] // n/a for IT Service Group
-        }
+```
+{
+  "id": "/ProcessFlow",
+  "type": "object",
+  "properties": {
+    "it_service": {
+      "type": "array",
+      "items": { "type": "string","format":"uuid"},
+      "uniqueItems": true
+    },
+    "reference_process_flow":{
+      "type": "array",
+      "items": { "type": "string","format":"uuid" },
+      "uniqueItems": true
+    },
+    "committer":{
+      "type": "integer"
+    },
+    "executor":{
+      "type": "integer"
+    },
+    "reference_kb":{
+      "type": "array",
+      "items": { "type": "string","format":"uuid" },
+      "uniqueItems": true
+    },
+    "status":{
+      "type": "string",
+      "enum": ["open", "closed","solved","cancelled"]
+    },
+    "note":{
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "attachment":{
+      "type": "string"
+    },
+    "title":{
+      "type":"string"
+    },
+    "pfid":{
+      "type":"string"
     }
+  },
+  "required": ["it_service","committer"]
+}
+```
 
-# 安装部署
-    
-A [CMDB](https://en.wikipedia.org/wiki/Configuration_management_database) backend implementation built with [Neo4j](http://vertx.io/vertx2/), [ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/getting-started.html). 
-
-## Relationship for Entities 
+## Relationship of Entities
 
     (:ITServiceGroup)<-[:BelongsTo]-(:ITService)
     (:ITService)-[:ParentOf]->(:ITService)
     (:ITService)-[:DependsOn]->(:ITService)
     
-    (:ConfigurationItem)-[:LOCATED]->(:Cabinet|Location)
+    (:ConfigurationItem)-[:LOCATED_AT]->(:Cabinet|Location)
     (:ConfigurationItem)-[:SUPPORT_SERVICE]->(:ITService)
-    (:ConfigurationItem)<-[r:RESPONSIBLE_FOR]-(:User)
+    (:ConfigurationItem)<-[:RESPONSIBLE_FOR]-(:User)
     
     (:ProcessFlow)-[:CommitedBy|ExecutedBy]->(:User)
     (:ProcessFlow)-[:REFERENCED_SERVICE]->(:ITService)
-    (:ProcessFlow)<-[:REFERENCED_PROCESSFLOW]-(:ProcessFlow)
-    (:ProcessFlow)-[:PREV]->(:ProcessFlowPrev)
+    (:ProcessFlow)<-[:REFERENCED_PROCESSFLOW]-(:ProcessFlow)//ProcessFlow can reference another one
+    (:ProcessFlow)-[:PREV]->(:ProcessFlowPrev)//to describe the change history of ProcessFlow
+
+## Cypher Related
+
+```
+/*ConfigurationItem*/
+const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH ()<-[r2:LOCATED|SUPPORT_SERVICE]-(n:ConfigurationItem{uuid: {uuid}})<-[r1:RESPONSIBLE_FOR]-()
+DELETE r1,r2`
+
+const cmdb_addConfigurationItemITServiceRel_cypher = `UNWIND {it_service} as service_id
+MATCH (n:ConfigurationItem {uuid:{uuid}})
+MATCH (s:ITService{uuid:service_id})
+CREATE (n)-[r:SUPPORT_SERVICE]->(s)`
+
+const cmdb_addConfigurationItemUserRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
+MATCH (u:User{userid:{responsibility}})
+CREATE (n)<-[r:RESPONSIBLE_FOR]-(u)`
+
+const cmdb_addConfigurationItemCabinetRel_cypher = `MATCH (cabinet:Cabinet {uuid:{asset_location}.cabinet})
+MATCH (n:Asset {uuid:{uuid}})
+CREATE (n)-[r:LOCATED{asset_location}]->(cabinet)`
+
+const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (p:Position {uuid:{asset_location}.position})
+MATCH (n:Asset {uuid:{uuid}})
+CREATE (n)-[r:LOCATED{asset_location}]->(p)`
+
+/*ITService*/
+const cmdb_delRelsExistInITService_cypher = `MATCH ()<-[r1:BelongsTo|ParentOf|DependsOn]-(n:ITService{uuid: {uuid}})<-[r2:ParentOf|DependsOn]-()
+DELETE r1,r2`
+
+const cmdb_addITServiceBelongsToGroupRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
+MATCH (sg:ITServiceGroup {uuid:{group}})
+CREATE (s)-[r:BelongsTo]->(sg)`
+
+const cmdb_addITServiceParentRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
+MATCH (s1:ITService {uuid:{parent}})
+CREATE (s)<-[r:ParentOf]-(s1)`
+
+const cmdb_addITServiceChildrenRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
+UNWIND {children} AS child
+MATCH (s1:ITService{uuid:child})
+CREATE (s)-[r:ParentOf]->(s1)`
+
+const cmdb_addITServiceDependenciesRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
+UNWIND {dependencies} AS dependency
+MATCH (s1:ITService{uuid:dependency})
+CREATE (s)-[r:DependsOn]->(s1)`
+
+const cmdb_addITServiceDependendentsRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
+UNWIND {dependendents} AS dependendent
+MATCH (s1:ITService{uuid:dependendent})
+MERGE (s)<-[r:DependsOn]-(s1)`
+
+const cmdb_queryITServiceGroup_cypher = `MATCH
+    (n:ITServiceGroup)
+WITH
+    count(n) AS cnt
+MATCH
+    (n:ITServiceGroup)
+OPTIONAL MATCH
+    (s:ITService)
+WHERE s.group=n.uuid
+WITH { group: n, services:collect(s) } as group_with_services,cnt
+SKIP {skip} LIMIT {limit}
+RETURN { count: cnt, results:collect(group_with_services) }`
+
+const cmdb_queryITServiceGroupByKeyword_cypher = `MATCH
+    (n:ITServiceGroup)
+WHERE n.name = {keyword}
+WITH
+    count(n) AS cnt
+MATCH
+    (n:ITServiceGroup)
+WHERE n.name = {keyword}
+OPTIONAL MATCH
+    (s:ITService)
+WHERE s.group=n.uuid
+WITH
+    { group: n, services:collect(s) } as group_with_services,cnt
+SKIP {skip} LIMIT {limit}
+RETURN { count: cnt, results:collect(group_with_services) }
+`
+
+const cmdb_queryITServiceByUuids_cypher = `MATCH (s1:ITService)
+WHERE s1.uuid IN {uuids}
+OPTIONAL MATCH (s1)-[:BelongsTo]->(sg)
+OPTIONAL MATCH (s1)-[:ParentOf]->(s2)
+OPTIONAL MATCH (s1)<-[:ParentOf]-(s3)
+OPTIONAL MATCH (s1)-[:DependsOn]->(s4)
+OPTIONAL MATCH (s1)<-[:DependsOn]-(s5)
+WITH {service:s1,group:sg,children:(collect(distinct(s2))),parent:s3,dependencies:(collect(distinct(s4))),dependendents:(collect(distinct(s5)))} as service
+RETURN COLLECT(service)`
 
 
+const cmdb_advancedSearchITService_cypher = `OPTIONAL MATCH (s1:ITService)
+WHERE s1.uuid IN {search} or s1.group IN {search}
+WITH COLLECT(distinct(s1.uuid)) as services_byIds
+UNWIND {search} as keyword
+OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
+WHERE s1.name = keyword or sg.name = keyword
+WITH services_byIds+collect(distinct(s1.uuid)) as services
+UNWIND services AS service
+RETURN COLLECT( distinct service)`
+
+/*ProcessFlow*/
+const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]->()
+DELETE r`
+
+const cmdb_addProcessFlowITServiceRel_cypher = `UNWIND {it_service} as service_id
+MATCH (n:ProcessFlow{uuid:{uuid}})
+MATCH (s:ITService{uuid:service_id})
+CREATE (n)-[r:REFERENCED_SERVICE]->(s)`
+
+const cmdb_addProcessFlowCommitedByUserRel_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})
+MATCH (u:User{userid:{committer}})
+CREATE (n)-[:COMMITTED_BY]->(u)`
+
+const cmdb_addProcessFlowExecutedByUserRel_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})
+MATCH (u:User{userid:{executor}})
+CREATE (n)-[:EXECUTED_BY]->(u)`
+
+const cmdb_addProcessFlowSelfReferencedRel_cypher = `UNWIND {reference_process_flow} as reference_id
+MATCH (n:ProcessFlow{uuid:{uuid}})
+MATCH (rn:ProcessFlow{uuid:reference_id})
+CREATE (n)-[:REFERENCED_PROCESSFLOW]->(rn)`
+
+const cmdb_queryProcessFlowTimeline_cypher = `match p=(current:ProcessFlow {uuid:{uuid}})-[:PREV*]->()
+WITH COLLECT(p) AS paths, MAX(length(p)) AS maxLength
+RETURN FILTER(path IN paths WHERE length(path)= maxLength) AS longestPaths`
+
+const node_alias = 'n'
+
+const cmdb_addNode_Cypher_template = (labels, created='',last_updated='') => `MERGE (${node_alias}:${labels} {uuid: {uuid}})
+                                    ON CREATE SET ${node_alias} = {fields}${created}
+                                    ON MATCH SET ${node_alias} = {fields}${last_updated}`
+
+const cmdb_addPrevNodeRel_Cypher_template = (label) => `match (current:${label} {uuid:{uuid}})
+                                    optional match (current)-[rel:PREV]->(prev_prev)
+                                    delete rel
+                                    create (prev:${label}Prev {fields_old})
+                                    create (current)-[:PREV]->(prev)
+                                    FOREACH (o IN CASE WHEN prev_prev IS NOT NULL THEN [prev_prev] ELSE [] END |
+                                      create (prev)-[:PREV]->(prev_prev)
+                                    )`;
+
+
+const cmdb_delNode_cypher = `MATCH (n)
+                            WHERE n.uuid = {uuid}
+                            DETACH
+                            DELETE n
+                            return n`;
+
+const cmdb_findNode_cypher_template = (label) => `MATCH (n:${label})
+                            WHERE n.uuid = {uuid}
+                            RETURN n`;
+
+var user_attributes = ['uuid','userid','alias','lang','name','surname']
+user_attributes=_.map(user_attributes,(attribute)=>`${attribute}:${node_alias}.${attribute}`)
+user_attributes=`{${user_attributes.join()}}`
+const all_attributes = `${node_alias}`;
+
+const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
+            (${node_alias}:${type})
+            WITH
+            count(${node_alias}) AS cnt
+            MATCH
+            (${node_alias}:${type})
+            WITH
+            ${attributes} as ${node_alias}, cnt
+            SKIP {skip} LIMIT {limit}
+            RETURN { count: cnt, results:collect(${node_alias}) }`;
+
+
+const keyword_condition = `WHERE ${node_alias}.name = {keyword}`;
+const user_keyword_condition = `WHERE ${node_alias}.alias = {keyword}`;
+
+const cmdb_findNodesByKeyword_Cypher_template = (type,condition,attributes) => `MATCH
+            (n:${type})
+            ${condition}
+            WITH
+            count(n) AS cnt
+            MATCH
+            (n:${type})
+            ${condition}
+            WITH
+            ${attributes} as n, cnt
+            SKIP {skip} LIMIT {limit}
+            RETURN { count: cnt, results:collect(n) }`
+
+const generateAddNodeCypher=(params)=>{
+    let labels = schema.cmdbTypeLabels[params.category],created='',last_updated='';
+    if(Array.isArray(labels)&&(labels.includes(schema.cmdbTypeName.ConfigurationItem)||labels.includes(schema.cmdbTypeName.ProcessFlow))){
+        created = `,${node_alias}.created = timestamp()`;
+        last_updated = `,${node_alias}.lastUpdated = timestamp()`;
+    }
+    labels = labels?labels.join(":"):params.category;
+    return cmdb_addNode_Cypher_template(labels,created,last_updated);
+}
+
+const generateSequence=(name)=>
+    `MERGE (s:Sequence {name:'${name}'})
+    ON CREATE set s.current = 1
+    ON MATCH set s.current=s.current+1
+    WITH s.current as seq return seq`
+```
 
 ## Build and Start
 
-### Prepare User
-
-Since user data is synchronized from mysql,so add some mock user here. 
-
-
-    MERGE (u:User{userid:1}) ON CREATE SET u = {autologin:1,type:3,uuid:1,attempt_ip:"10.50.13.69",userid:1,surname:"werq",name:"test",alias:"nerds",lang:"en_GB"}
-
-
-### DB Server
+### Start DB Server
 
 >	[neo4j](http://neo4j.com/docs/operations-manual/current/installation/)
 
->	[elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/_installation.html)
+>   [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/_installation.html)
+
+### Prepare User
+
+user data is synchronized from mysql,to avoid the dependency,just add some mock data here.
+
+    MERGE (u:User{userid:1}) ON CREATE SET u = {autologin:1,type:3,uuid:1,attempt_ip:"10.50.13.69",userid:1,surname:"werq",name:"test",alias:"nerds",lang:"en_GB"}
 
 ### Nbi Server
     
-*install npm dependencies and compile codes and start nbi* 
+*install npm dependencies and start nbi*
 
-    
     npm install
-    npm run webpack
     npm start
     
 
-*run test cases with [postman](https://www.getpostman.com/docs/)*
+*run integration test cases with [postman](https://www.getpostman.com/docs/)*
 
-    npm run postman
+    npm test
 
 
