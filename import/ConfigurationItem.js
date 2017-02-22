@@ -1,5 +1,4 @@
 var config = require('config')
-var parser = require('./../helper/parser')
 var apiInvoker = require('./../helper/apiInvoker')
 var converter = require('./../helper/converter')
 var checker = require('./../helper/checker')
@@ -14,15 +13,15 @@ var configurationItemMapping = async (type, sheet, line)=>{
         value = configurationItemMappingDefinition.definition[key];
         raw_value = xslxHelper.getRawValue(sheet,value.col,line)
         if(value.type === 'array')
-            value.value = parser.toArray(raw_value)
+            value.value = xslxHelper.data_parser.toArray(raw_value)
         else if(value.type === 'boolean')
-            value.value = parser.toBoolean(raw_value)
+            value.value = xslxHelper.data_parser.toBoolean(raw_value)
         else if(value.type === 'date')
-            value.value = parser.toDate(raw_value)
+            value.value = xslxHelper.data_parser.toDate(raw_value)
         else if(value.type === 'integer')
-            value.value = parser.toInteger(raw_value)
+            value.value = xslxHelper.data_parser.toInteger(raw_value)
         else
-            value.value = parser.toString(raw_value)
+            value.value = xslxHelper.data_parser.toString(raw_value)
         if(value.required)
             if(!raw_value)
                 throw new Error(`required field ${key} missing!`)
@@ -39,18 +38,22 @@ var configurationItemMapping = async (type, sheet, line)=>{
 }
 
 var importer = async ()=>{
-    const SHEET_NAME = '物理服务器'
-    const SHEET_START_LINE = 3
-    let src_sheet = xslxHelper.initSheet('configurationItem.xlsx',SHEET_NAME),error_sheet={}
-    let range = xslxHelper.getSheetRange(src_sheet)
-    let line = SHEET_START_LINE,physical_server,errors=0,success=0,exception,exceptions=[]
-    while (line<=range.e.r) {
+    const SHEET_NAME = '物理服务器',SHEET_START_LINE = 3,SHEET_END_COL = 25
+    const src_data_range = {s:{r:SHEET_START_LINE},e:{c:SHEET_END_COL}}
+    let src_sheet = xslxHelper.initSheet('configurationItem.xlsx',SHEET_NAME)
+    src_sheet.data_range = src_data_range
+    let src_range = xslxHelper.getSheetRange(src_sheet)
+    let error_sheet={}
+    let line = SHEET_START_LINE,physical_server,errors=0,success=0,error_line,exception,exceptions=[]
+    await xslxHelper.generateHeaderInErrorSheet(src_sheet,error_sheet)
+    while (line<=src_range.e.r) {
         try{
             physical_server = await configurationItemMapping(schema.cmdbTypeName.PhysicalServer,src_sheet,line)
-            await apiInvoker.addConfigurationItem('PhysicalServer',physical_server)
+            await apiInvoker.addConfigurationItem(schema.cmdbTypeName.PhysicalServer,physical_server)
             success++
         }catch(error){
-            error_sheet = xslxHelper.generateErrorSheet(src_sheet,line,error_sheet,errors,error.message)
+            error_line = errors + SHEET_START_LINE
+            error_sheet = xslxHelper.generateLineInErrorSheet(src_sheet,line,error_sheet,error_line,error.message)
             errors ++
             exception = {srcLine:line+1,error:error.message}
             exceptions.push(exception)
@@ -62,7 +65,7 @@ var importer = async ()=>{
 }
 
 if (require.main === module) {
-    importer();
+    importer()
 }
 
 module.exports = importer

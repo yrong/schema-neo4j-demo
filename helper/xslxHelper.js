@@ -2,6 +2,7 @@ var XLSX = require('xlsx')
 var config = require('config')
 var fs = require('file-system')
 var path = require('path')
+var moment = require('moment')
 
 const getSheetRange = (sheet)=>{
     return XLSX.utils.decode_range(sheet['!ref'])
@@ -18,14 +19,14 @@ module.exports = {
         let cell = XLSX.utils.encode_cell({c:col,r:line})
         return sheet[cell]
     },
-    generateErrorSheet:(src_sheet,src_line,error_sheet,error_line,error)=>{
-        let src_cell,dst_cell,range = getSheetRange(src_sheet)
-        for(var i=0;i<=range.e.c;i++){
-            src_cell = XLSX.utils.encode_cell({c:i,r:src_line})
-            dst_cell = XLSX.utils.encode_cell({c:i,r:error_line})
+    generateLineInErrorSheet:(src_sheet, src_line, error_sheet, error_line, error)=>{
+        let src_cell,dst_cell
+        for(var col=0;col<=src_sheet.data_range.e.c;col++){
+            src_cell = XLSX.utils.encode_cell({c:col,r:src_line})
+            dst_cell = XLSX.utils.encode_cell({c:col,r:error_line})
             error_sheet[dst_cell] = src_sheet[src_cell]
         }
-        dst_cell = XLSX.utils.encode_cell({c:i,r:error_line})
+        dst_cell = XLSX.utils.encode_cell({c:col,r:error_line})
         error_sheet[dst_cell]={v:error}
         return error_sheet
     },
@@ -34,9 +35,44 @@ module.exports = {
         errorbook.Sheets[error_sheet_name]=error_sheet
         let importFileBaseDir = config.get('config.import.storeDir')
         let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
-        let range =  {s: {c:0, r:0}, e: {c:getSheetRange(src_sheet).e.c+1, r:errors }}
+        let range =  {s: {c:0, r:0}, e: {c:src_sheet.data_range.e.c+1, r:errors+src_sheet.data_range.s.r-1}}
         error_sheet['!ref'] = XLSX.utils.encode_range(range)
         fs.mkdirSync(exceptionFileBaseDir)
         XLSX.writeFile(errorbook, exceptionFileBaseDir + path.sep + (new Date).getTime() + '.xlsx')
+    },
+    generateHeaderInErrorSheet:(src_sheet,error_sheet)=>{
+        let src_cell,dst_cell
+        for(var line=0;line<src_sheet.data_range.s.r;line++){
+            for(var col=0;col<=src_sheet.data_range.e.c;col++){
+                src_cell = XLSX.utils.encode_cell({c:col,r:line})
+                dst_cell = XLSX.utils.encode_cell({c:col,r:line})
+                error_sheet[dst_cell] = src_sheet[src_cell]
+            }
+            dst_cell = XLSX.utils.encode_cell({c:col,r:line})
+            error_sheet[dst_cell]={v:undefined}
+        }
+        return error_sheet
+    },
+    data_parser: {
+        toBoolean: (val) => {
+            if (val && (val.v === 'Yes' || val.v === 'yes' || val.v === '1'))
+                return true
+            else if (val && (val.v === 'No' || val.v === 'no' || val.v === '0'))
+                return false
+            else
+                return null
+        },
+        toInteger: (val) => {
+            return val ? parseInt(val.v) : null
+        },
+        toDate: (val) => {
+            return val ? moment(val.w, 'YYYY-M-D').format('YYYY-MM-DD') : null
+        },
+        toArray: (val) => {
+            return val ? val.v.split(',') : null
+        },
+        toString: (val) => {
+            return val ? val.v : null
+        }
     }
 }
