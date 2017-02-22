@@ -1,8 +1,9 @@
-var XLSX = require('xlsx')
-var config = require('config')
-var fs = require('file-system')
-var path = require('path')
-var moment = require('moment')
+const XLSX = require('xlsx')
+const config = require('config')
+const fs = require('file-system')
+const path = require('path')
+const moment = require('moment')
+const _ = require('lodash')
 
 const getSheetRange = (sheet)=>{
     return XLSX.utils.decode_range(sheet['!ref'])
@@ -30,15 +31,23 @@ module.exports = {
         error_sheet[dst_cell]={v:error}
         return error_sheet
     },
-    writeErrorBook:(src_sheet,error_sheet,error_sheet_name,errors)=>{
-        let errorbook = {SheetNames:[error_sheet_name],Sheets:{}}
-        errorbook.Sheets[error_sheet_name]=error_sheet
-        let importFileBaseDir = config.get('config.import.storeDir')
-        let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
+    writeErrorBook:(src_sheet,error_sheet,error_sheet_name,errors,error_book)=>{
         let range =  {s: {c:0, r:0}, e: {c:src_sheet.data_range.e.c+1, r:errors+src_sheet.data_range.s.r-1}}
         error_sheet['!ref'] = XLSX.utils.encode_range(range)
+        if(_.isEmpty(error_book)){
+            error_book = {SheetNames:[error_sheet_name],Sheets:{}}
+            error_book.Sheets[error_sheet_name]=error_sheet
+        }else{
+            error_book.SheetNames.push(error_sheet_name)
+            error_book.Sheets[error_sheet_name]=error_sheet
+        }
+        return error_book
+    },
+    dumpErrorBook:(errorbook,bookType)=>{
+        let importFileBaseDir = config.get('config.import.storeDir')
+        let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
         fs.mkdirSync(exceptionFileBaseDir)
-        XLSX.writeFile(errorbook, exceptionFileBaseDir + path.sep + (new Date).getTime() + '.xlsx')
+        XLSX.writeFile(errorbook, path.join(exceptionFileBaseDir,bookType+(new Date).getTime() + '.xlsx'))
     },
     generateHeaderInErrorSheet:(src_sheet,error_sheet)=>{
         let src_cell,dst_cell

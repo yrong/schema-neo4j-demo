@@ -1,16 +1,16 @@
-var config = require('config')
-var apiInvoker = require('./../helper/apiInvoker')
-var converter = require('./../helper/converter')
-var checker = require('./../helper/checker')
-var xslxHelper = require('./../helper/xslxHelper')
-var mappingDefinition = require('./mappingDef')
-var schema = require('../schema')
+const _ = require('lodash')
+const apiInvoker = require('../helper/apiInvoker')
+const converter = require('../helper/converter')
+const checker = require('../helper/checker')
+const xslxHelper = require('../helper/xslxHelper')
+const mappingDefinition = require('./mappingDef')
+const schema = require('../schema')
 
-var configurationItemMapping = async (type, sheet, line)=>{
+const configurationItemMapping = async (type, sheet, line)=>{
     let configurationItem = {},value,raw_value
     let configurationItemMappingDefinition = mappingDefinition[type]
-    for (var key in configurationItemMappingDefinition.definition){
-        value = configurationItemMappingDefinition.definition[key];
+    for (let key in configurationItemMappingDefinition.definition){
+        value = configurationItemMappingDefinition.definition[key]
         raw_value = xslxHelper.getRawValue(sheet,value.col,line)
         if(value.type === 'array')
             value.value = xslxHelper.data_parser.toArray(raw_value)
@@ -37,22 +37,23 @@ var configurationItemMapping = async (type, sheet, line)=>{
     return configurationItem;
 }
 
-var importer = async ()=>{
-    const SHEET_NAME = '物理服务器',SHEET_START_LINE = 3,SHEET_END_COL = 25
-    const src_data_range = {s:{r:SHEET_START_LINE},e:{c:SHEET_END_COL}}
-    let src_sheet = xslxHelper.initSheet('configurationItem.xlsx',SHEET_NAME)
-    src_sheet.data_range = src_data_range
+let error_book={}
+const xlsxFilePrefix = '.xlsx'
+
+const importer = async (category)=>{
+    let configurationItemMappingDefinition = mappingDefinition[category]
+    let src_sheet = xslxHelper.initSheet(schema.cmdbTypeName.ConfigurationItem+xlsxFilePrefix,category)
+    src_sheet.data_range = configurationItemMappingDefinition.range
     let src_range = xslxHelper.getSheetRange(src_sheet)
-    let error_sheet={}
-    let line = SHEET_START_LINE,physical_server,errors=0,success=0,error_line,exception,exceptions=[]
+    let start_line = configurationItemMappingDefinition.range.s.r,line = start_line,configurationItem,errors=0,success=0,error_line,exception,exceptions=[],error_sheet={}
     await xslxHelper.generateHeaderInErrorSheet(src_sheet,error_sheet)
     while (line<=src_range.e.r) {
         try{
-            physical_server = await configurationItemMapping(schema.cmdbTypeName.PhysicalServer,src_sheet,line)
-            await apiInvoker.addConfigurationItem(schema.cmdbTypeName.PhysicalServer,physical_server)
+            configurationItem = await configurationItemMapping(category,src_sheet,line)
+            await apiInvoker.addConfigurationItem(category,configurationItem)
             success++
         }catch(error){
-            error_line = errors + SHEET_START_LINE
+            error_line = errors + start_line
             error_sheet = xslxHelper.generateLineInErrorSheet(src_sheet,line,error_sheet,error_line,error.message)
             errors ++
             exception = {srcLine:line+1,error:error.message}
@@ -60,15 +61,30 @@ var importer = async ()=>{
         }
         line ++
     }
-    await xslxHelper.writeErrorBook(src_sheet,error_sheet,SHEET_NAME,errors)
+    error_book = await xslxHelper.writeErrorBook(src_sheet,error_sheet,category,errors,error_book)
     return {success_num:success,exception_num:errors,exceptions:exceptions}
 }
 
-if (require.main === module) {
-    importer()
+const importConfigurationItems = async()=>{
+    let categorys = process.argv.slice(2)[1],results = {}
+    const MOCHA_ARGUMENT = '0'//tweak for mocha test when run "npm test"
+    if(categorys&&categorys!=MOCHA_ARGUMENT)
+        categorys = categorys.split(',')
+    else
+        categorys = _.keys(mappingDefinition)
+    for (let category of categorys){
+        let result = await importer(category)
+        results[category] = result
+    }
+    await xslxHelper.dumpErrorBook(error_book,schema.cmdbTypeName.ConfigurationItem)
+    return results
 }
 
-module.exports = importer
+if (require.main === module) {
+    importConfigurationItems()
+}
+
+module.exports = importConfigurationItems
 
 
 

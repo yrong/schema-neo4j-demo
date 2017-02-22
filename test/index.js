@@ -24,8 +24,10 @@ describe("CMDB Integration test suite", function() {
             importer().then((result)=>{
                 console.timeEnd("importConfigurationItemConsuming");
                 console.log(JSON.stringify(result))
-                assert.equal(result.success_num, 1);
-                assert.equal(result.exception_num, 1);
+                assert.equal(result.PhysicalServer.success_num, 1);
+                assert.equal(result.PhysicalServer.exception_num, 1);
+                assert.equal(result.VirtualServer.success_num, 1);
+                assert.equal(result.VirtualServer.exception_num, 1);
                 done()
             }).catch(done)
         });

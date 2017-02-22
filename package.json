@@ -10,7 +10,8 @@
     "init": "/bin/bash ./script/init.sh",
     "export": "/bin/bash ./script/export.sh",
     "exportITService": "/bin/bash ./script/export.sh --service_only",
-    "importConfigurationItem": "node ./import/index.js ConfigurationItem",
+    "importConfigurationItemAll": "node ./import/index.js ConfigurationItem",
+    "importConfigurationItem": "node ./import/index.js ConfigurationItem PhysicalServer,VirtualServer",
     "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment_all.json",
     "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp"
   },
