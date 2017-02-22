@@ -530,4 +530,3 @@ user data is synchronized from mysql,to avoid the dependency,just add some mock 
 
     npm test
 
-
