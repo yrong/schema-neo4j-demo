@@ -29,7 +29,7 @@
                   "type" : "integer"
                 }
               },
-              "required":["status","u","date_mounted"]
+              "required":["status","u"]
             },
             {"properties" :
               {
@@ -58,5 +58,5 @@
       }
     }
   ],
-  "required": ["model", "product_date","warranty_expiration_date"]
+  "required": ["model", "product_date"]
 }

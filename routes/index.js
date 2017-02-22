@@ -3,8 +3,9 @@ const config = require('config');
 const hook = require('../hooks');
 const schema = require('../schema');
 const search = require('../search');
-const KoaNeo4jApp = require('../koa-neo4j/src');
+const KoaNeo4jApp = require('koa-neo4j');
 const routesDef = require('./def');
+const logger = require('../logger')
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
 const customized_routes = (routesDef)=>{
@@ -32,8 +33,19 @@ module.exports = ()=>{
             boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
             user: neo4jConfig.user,
             password: neo4jConfig.password
+        },
+        logger:logger,
+        exceptionWrapper:(error)=>{
+            return JSON.stringify({
+                status:"error",
+                message:{
+                    content: String(error),
+                    displayAs:"modal"
+                }
+            });
         }
     })
+    search.checkStatus()
     customized_routes(routesDef)
     const none_checker=(params)=>true
     let preProcess,postProcess,http_method,route,checker,methods,procedure

@@ -1,37 +1,43 @@
 var _ = require('lodash')
 var apiInvoker = require('./apiInvoker')
+var routesDefinition = require('../routes/def')
+var schema = require('../schema')
 
-var name2IdMappingDef = {it_service:{path:'/it_services/service',type:'array'},user:{path:'/users'},cabinet:{path:'/cabinets'},position:{path:'/positions'}},
-    name2IdConverter = {},
-    name2IdCache = {}
+var name2IdConverter = {}, name2IdCache = {}
 
 
-_.each(name2IdMappingDef,(value,key)=>{
+_.each(routesDefinition,(value,key)=>{
     name2IdCache[key]={}
-    let single_converter = async(key,name)=>{
+    let single_converter = async(name)=>{
         let uuid,response
         if(name2IdCache[key][name])
             uuid = name2IdCache[key][name]
         else{
-            response = await apiInvoker.apiGetter(value.path,{keyword:name})
-            if(response&&response.data&&response.data.results&&response.data.results.length==1){
-                uuid = response.data.results[0].uuid
-                name2IdCache[key][name]=uuid
+            response = await apiInvoker.apiGetter(value.route,{keyword:name})
+            if(response&&response.data&&response.data.results){
+                if(response.data.results.length!=1){
+                    throw new Error(`find multiple '${key}' with name '${name}' in cmdb`)
+                }else{
+                    uuid = response.data.results[0].uuid
+                    name2IdCache[key][name]=uuid
+                }
             }else{
                 throw new Error(`can not find '${key}' with name '${name}' in cmdb`)
             }
         }
         return uuid
     }
-    let array_converter = async (key,names)=>{
-        let uuids=[],uuid,response
+    let array_converter = async (names)=>{
+        let uuids=[],uuid
         for (let name of names){
-            uuid = await single_converter(key,name)
+            uuid = await single_converter(name)
             uuids.push(uuid)
         }
         return uuids
     }
-    name2IdConverter[key]=value.type==='array'?array_converter:single_converter
+    name2IdConverter[key]= async (value)=>{
+        _.isArray(value)?await(array_converter(value)):await(single_converter(value))
+    }
 })
 
 module.exports = name2IdConverter

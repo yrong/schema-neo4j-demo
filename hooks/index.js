@@ -1,7 +1,7 @@
 var _ = require('lodash')
 var uuid = require('node-uuid')
 var schema = require('../schema')
-var MAXNUM = 1000
+var config = require('config')
 var cypherBuilder = require('../cypher/cypherBuilder')
 var cypherResponseMapping = require('../cypher/cypherResponseMapping')
 var cache = require('../cache')
@@ -26,6 +26,12 @@ var getCategoryFromUrl = function (url) {
     return category;
 }
 
+var logCypher = (params)=>{
+    let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
+    let cypher_params = _.omit(params,['cypher','cyphers','data','fields','fields_old','method','url','token'])
+    logger.debug(`cypher to executed:${JSON.stringify({cypher:cypher,params:cypher_params},null,'\t')}`)
+}
+
 var createOrUpdateCypherGenerator = (params)=>{
     if(schema.cmdbConfigurationItemTypes.includes(params.category)){
         params.fields.asset_location = _.isString(params.fields.asset_location)?params.fields.asset_location:JSON.stringify(params.fields.asset_location);
@@ -38,17 +44,14 @@ var createOrUpdateCypherGenerator = (params)=>{
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
     }
-    let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
-    let fields = JSON.stringify(params.fields,null,'\t')
-    logger.debug(`cypher to executed:${cypher}`)
-    logger.debug(`cypher fields:${fields}`)
+    logCypher(params)
     return params;
 }
 
 var deleteCypherGenerator = (params)=>{
     params.category = getCategoryFromUrl(params.url)
     params.cypher = cypherBuilder.generateDelNodeCypher();
-    logger.debug(`cypher to executed:${params.cypher}`)
+    logCypher(params)
     return params;
 }
 
@@ -57,7 +60,7 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     DISPLAY_AS_TOAST='toast';
 
 var paginationParamsGenerator = function (params) {
-    var params_pagination = {"skip":0,"limit":MAXNUM};
+    var params_pagination = {"skip":0,"limit":config.get('config.perPageSize')};
     if(params.page&&params.per_page){
         var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
@@ -69,9 +72,8 @@ var paginationParamsGenerator = function (params) {
 }
 
 var queryParamsCypherGenerator = function (params, ctx) {
-    params.category = getCategoryFromUrl(params.url)
+    params.category = getCategoryFromUrl(ctx.url)
     if(params.keyword){
-        params.keyword = '(?i).*' +params.keyword + '.*';
         params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
     }else if(params.uuids){
         params.uuids = params.uuids.split(",");
@@ -81,18 +83,19 @@ var queryParamsCypherGenerator = function (params, ctx) {
         params.cypher = cypherBuilder.generateAdvancedSearchCypher(params);
     }else if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
-        if(params.url.includes('/processFlows')&&params.url.includes('/timeline'))
+        if(ctx.url.includes('/processFlows')&&ctx.url.includes('/timeline'))
             params.cypher = cypherBuilder.generateQueryProcessFlowTimelineCypher()
     }
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
-    logger.debug(`cypher to executed:${params.cypher}`)
+    logCypher(params)
     return params;
 }
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
+        params.method = ctx.method,params.url = ctx.url
         let cb
         if (params.method === 'POST') {
             cb = (params) => {
@@ -129,7 +132,7 @@ module.exports = {
                     throw new Error("no record found to patch,uuid is" + params.uuid);
                 }
             })
-        } else if (params.method === 'DEL') {
+        } else if (params.method === 'DELETE') {
             return deleteCypherGenerator(params);
         }
     },
@@ -163,11 +166,12 @@ module.exports = {
         return　response_wrapped;
     },
     queryItems_preProcess:function (params,ctx) {
+        params.method = ctx.method,params.url = ctx.url
         params = paginationParamsGenerator(params);
         params = queryParamsCypherGenerator(params,ctx);
         return params;
     },
-    queryItems_postProcess:function (result,params) {
+    queryItems_postProcess:function (result,params,ctx) {
         let response_wrapped = {
             "status":STATUS_OK, //ok, info, warning, error,
             "message":{
