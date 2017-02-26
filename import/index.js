@@ -1,11 +1,12 @@
 require("babel-core/register");
 require("babel-polyfill");
-var category = process.argv.slice(2)[0]
-var importer = require(`./${category}`);
-
-console.time(category)
+const import_type = process.env.IMPORT_TYPE
+let importer = require('./excel')
+if(import_type === 'json')
+    importer = require('./json')
+console.time(`${import_type} import`)
 importer().then((result)=>{
-    console.timeEnd(category)
+    console.timeEnd(`${import_type} import`)
     console.log(JSON.stringify(result,null,'\t'))
     process.exit()
 })

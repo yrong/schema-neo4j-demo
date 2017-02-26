@@ -1,10 +1,10 @@
 const _ = require('lodash')
-const apiInvoker = require('../helper/apiInvoker')
-const converter = require('../helper/converter')
-const checker = require('../helper/checker')
-const xslxHelper = require('../helper/xslxHelper')
+const apiInvoker = require('../../helper/apiInvoker')
+const converter = require('../../helper/converter')
+const checker = require('../../helper/checker')
+const xslxHelper = require('../../helper/xslxHelper')
 const mappingDefinition = require('./mappingDef')
-const schema = require('../schema')
+const schema = require('../../schema/index')
 
 const configurationItemMapping = async (type, sheet, line)=>{
     let configurationItem = {},value,raw_value
@@ -27,7 +27,7 @@ const configurationItemMapping = async (type, sheet, line)=>{
                 throw new Error(`required field ${key} missing!`)
         if(value.value!=null){
             if(value.converter)
-                value.value = await (converter[value.converter](value.value))
+                value.value = await converter[value.converter](value.value)
             configurationItem[key] = value.value
         }
     }
@@ -38,11 +38,11 @@ const configurationItemMapping = async (type, sheet, line)=>{
 }
 
 let error_book={}
-const xlsxFilePrefix = '.xlsx'
+const xlsxFilePrefix = '.xlsx',ConfigurationItemFileName = schema.cmdbTypeName.ConfigurationItem+xlsxFilePrefix
 
-const importer = async (category)=>{
+const importConfigurationItem = async (category)=>{
     let configurationItemMappingDefinition = mappingDefinition[category]
-    let src_sheet = xslxHelper.initSheet(schema.cmdbTypeName.ConfigurationItem+xlsxFilePrefix,category)
+    let src_sheet = xslxHelper.initSheet(ConfigurationItemFileName,category)
     src_sheet.data_range = configurationItemMappingDefinition.range
     let src_range = xslxHelper.getSheetRange(src_sheet)
     let start_line = configurationItemMappingDefinition.range.s.r,line = start_line,configurationItem,errors=0,success=0,error_line,exception,exceptions=[],error_sheet={}
@@ -50,7 +50,7 @@ const importer = async (category)=>{
     while (line<=src_range.e.r) {
         try{
             configurationItem = await configurationItemMapping(category,src_sheet,line)
-            await apiInvoker.addConfigurationItem(category,configurationItem)
+            await apiInvoker.addItem(category,configurationItem)
             success++
         }catch(error){
             error_line = errors + start_line
@@ -65,15 +65,14 @@ const importer = async (category)=>{
     return {success_num:success,exception_num:errors,exceptions:exceptions}
 }
 
-const importConfigurationItems = async()=>{
-    let categorys = process.argv.slice(2)[1],results = {}
-    const MOCHA_ARGUMENT = '0'//tweak for mocha test when run "npm test"
-    if(categorys&&categorys!=MOCHA_ARGUMENT)
-        categorys = categorys.split(',')
+const importer = async()=>{
+    let categories = process.env.IMPORT_CATEGORIES,results = {}
+    if(categories)
+        categories = categories.split(',')
     else
-        categorys = _.keys(mappingDefinition)
-    for (let category of categorys){
-        let result = await importer(category)
+        categories = _.keys(xslxHelper.initSheets(ConfigurationItemFileName))
+    for (let category of categories){
+        let result = await importConfigurationItem(category)
         results[category] = result
     }
     await xslxHelper.dumpErrorBook(error_book,schema.cmdbTypeName.ConfigurationItem)
@@ -81,10 +80,10 @@ const importConfigurationItems = async()=>{
 }
 
 if (require.main === module) {
-    importConfigurationItems()
+    importer()
 }
 
-module.exports = importConfigurationItems
+module.exports = importer
 
 
 

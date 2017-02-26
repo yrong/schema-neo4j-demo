@@ -62,7 +62,6 @@ const cmdbTypeLabels= {
     Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow],
-    User:[cmdbTypeName.User],
     Switch:[cmdbTypeName.Switch,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
     Firewall:[cmdbTypeName.Firewall,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem]
 }
@@ -83,8 +82,7 @@ const cmdbProcessFlowTypes = [cmdbTypeName.IncidentFlow];
 const cmdbProcessFlowAbstractTypes = [cmdbTypeName.ProcessFlow];
 
 //cmdb all types
-const cmdbTypesAll = cmdbConfigurationItemAbstractTypes.concat(cmdbConfigurationItemTypes).concat(cmdbConfigurationItemAuxiliaryTypes).concat(cmdbProcessFlowTypes).concat(cmdbProcessFlowAbstractTypes);
-
+const cmdbTypesAll = [...cmdbConfigurationItemAuxiliaryTypes,...cmdbConfigurationItemAbstractTypes,...cmdbConfigurationItemTypes,...cmdbProcessFlowAbstractTypes,...cmdbProcessFlowTypes]
 
 _.forEach(cmdbTypesAll,function(type){
     ajv.addSchema(require('./'+ type + '.json'));
@@ -150,19 +148,4 @@ var extendSchema = function(schema) {
 }
 
 
-
-module.exports.checkSchema = checkSchema;
-
-module.exports.getSchema = getSchema;
-
-module.exports.cmdbConfigurationItemTypes = cmdbConfigurationItemTypes;
-
-module.exports.cmdbConfigurationItemAuxiliaryTypes = cmdbConfigurationItemAuxiliaryTypes;
-
-module.exports.cmdbTypeLabels = cmdbTypeLabels;
-
-module.exports.cmdbTypeName = cmdbTypeName;
-
-module.exports.cmdbConfigurationItemInheritanceRelationship = cmdbConfigurationItemInheritanceRelationship;
-
-module.exports.cmdbProcessFlowTypes = cmdbProcessFlowTypes;
+module.exports = {checkSchema,getSchema,cmdbConfigurationItemTypes,cmdbConfigurationItemAuxiliaryTypes,cmdbTypeLabels,cmdbTypeName,cmdbConfigurationItemInheritanceRelationship,cmdbProcessFlowTypes,cmdbTypesAll,cmdbProcessFlowAbstractTypes}

@@ -85,7 +85,7 @@
     }
   },
   {
-    "name": "add incident flow with it_service empty",
+    "name": "add incident flow 3 with it_service empty",
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
@@ -127,9 +127,9 @@
     "url": "http://localhost:3001/api/search/cfgItems?keyword=a10&getReferencedObj=true"
   },
   {
-    "name": "delete processflow 2",
+    "name": "delete incident flow 3",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/processFlows/c78f3600-f5c6-11e6-b240-eb7da0788697"
+    "url": "http://localhost:3001/api/processFlows/cb194720-f5c6-11e6-b240-eb7da0788697"
   },
   {
     "name": "query all it service groups",
@@ -464,7 +464,7 @@
     "url": "http://localhost:3001/api/users"
   },
   {
-    "name": "add incident flow with attachment referenced",
+    "name": "add incident flow 4 with attachment referenced",
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {

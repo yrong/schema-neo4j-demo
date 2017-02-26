@@ -9,12 +9,18 @@ const getSheetRange = (sheet)=>{
     return XLSX.utils.decode_range(sheet['!ref'])
 }
 
+const initSheets = (fileName)=>{
+    let importFileBaseDir = config.get('config.import.storeDir')
+    let workbook = XLSX.readFile(path.join(importFileBaseDir,fileName))
+    return workbook.Sheets
+}
+
 module.exports = {
     initSheet:(file_name, sheet_name)=>{
-        let importFileBaseDir = config.get('config.import.storeDir')
-        let workbook = XLSX.readFile(path.join(importFileBaseDir,file_name))
-        return workbook.Sheets[sheet_name]
+        let sheets = initSheets(file_name)
+        return sheets[sheet_name]
     },
+    initSheets,
     getSheetRange:getSheetRange,
     getRawValue:(sheet,col,line)=>{
         let cell = XLSX.utils.encode_cell({c:col,r:line})

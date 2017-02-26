@@ -26,6 +26,8 @@ const customized_routes = (routesDef)=>{
     routesDef.ProcessFlow.allowed_methods = [...allowed_methods,"FindChanges"]
 }
 
+const none_checker=()=>true
+
 module.exports = ()=>{
     const neo4jConfig = config.get('config.neo4j')
     const app = new KoaNeo4jApp({
@@ -45,9 +47,8 @@ module.exports = ()=>{
             });
         }
     })
-    search.checkStatus()
     customized_routes(routesDef)
-    const none_checker=(params)=>true
+    search.checkStatus()
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     _.each(routesDef,(val, key)=>{
         methods = val.allowed_methods||allowed_methods
@@ -55,7 +56,7 @@ module.exports = ()=>{
             procedure=null
             http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
             route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='Search'?'/api/search'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid'))
-            checker = method==='Add'?schema.checkSchema:none_checker
+            checker = method==='Add'?[schema.checkSchema,search.checkStatus]:(method==='Modify'||method==='Delete')?search.checkStatus:none_checker
             preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
                 preProcess = val.customizedHook[method].preProcess

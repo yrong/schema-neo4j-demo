@@ -98,7 +98,6 @@ var searchItem = function(params, ctx) {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-
     var searchObj = _.assign({
         index: indexName,
         type: hook.getCategoryFromUrl(ctx.url),
@@ -107,15 +106,12 @@ var searchItem = function(params, ctx) {
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
     return es_client.search(searchObj).then(function (response) {
         return hook.queryItems_postProcess(responseWrapper(response), params, ctx);
-    }, function (error) {
-        throw error;
     });
 }
 
 var checkStatus = ()=> {
     return es_client.ping({
-        requestTimeout: Infinity,
-        hello: "elasticsearch!"
+        requestTimeout: Infinity
     })
 }
 
