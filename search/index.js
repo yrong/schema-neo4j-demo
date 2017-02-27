@@ -40,7 +40,7 @@ var addItem = function(result, params, ctx) {
         type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: _.omit(params,hidden_fields),
-        refresh:true
+        refresh:esConfig.refresh
     }
     logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
     return es_client.index(index_obj).then(function (response) {
@@ -57,7 +57,7 @@ var patchItem = function(result, params, ctx) {
         type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: {doc:_.omit(params,hidden_fields)},
-        refresh:true
+        refresh:esConfig.refresh
     }
     logger.debug(`patch index in es:${JSON.stringify(index_obj,null,'\t')}`)
     return es_client.update(index_obj).then(function (response) {
@@ -74,7 +74,8 @@ var delItem = function(result, params, ctx) {
         type: hook.getCategoryFromUrl(ctx.url),
         body: {
             query: queryObj
-        }
+        },
+        refresh:esConfig.refresh
     }
     logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
     return es_client.deleteByQuery(delObj).then(function (response) {
