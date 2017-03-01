@@ -8,9 +8,11 @@
     "sync": "node ./sync/index.js",
     "test": "mocha",
     "init": "/bin/bash ./script/init.sh",
-    "export": "/bin/bash ./script/export.sh",
-    "exportITService": "/bin/bash ./script/export.sh --service_only",
-    "importConfigurationItem": "node ./import/index.js ConfigurationItem",
+    "backup": "/bin/bash ./script/backup.sh",
+    "restore": "/bin/bash ./script/restore.sh --dir=export_data/20170226163454",
+    "importFromExcel": "cross-env IMPORT_TYPE=excel node ./import/index.js",
+    "exportToJson": "cross-env EXPORT_TYPE=json node ./export/index.js",
+    "importFromJson": "cross-env IMPORT_TYPE=json IMPORT_FOLDER=export_data/20170226163617 node ./import/index.js",
     "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment_all.json",
     "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp"
   },
@@ -77,6 +79,7 @@
     "chalk": "^1.1.3",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
+    "cross-env": "^3.1.4",
     "eslint": "^3.3.1",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-babel": "^3.3.0",
@@ -85,7 +88,7 @@
     "jasmine-spec-reporter": "^2.7.0",
     "mocha": "^3.2.0",
     "newman": "^3.3.1",
-    "webpack": "^1.12.14",
-    "postman_simplify":"^1.0.2"
+    "postman_simplify": "^1.0.3",
+    "webpack": "^1.12.14"
   }
 }

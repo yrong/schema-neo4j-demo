@@ -34,12 +34,11 @@ var logCypher = (params)=>{
 
 var createOrUpdateCypherGenerator = (params)=>{
     if(schema.cmdbConfigurationItemTypes.includes(params.category)){
-        params.fields.asset_location = _.isString(params.fields.asset_location)?params.fields.asset_location:JSON.stringify(params.fields.asset_location);
         params.cyphers = cypherBuilder.generateCmdbCyphers(params);
     }else if(params.category === schema.cmdbTypeName.ITService){
         params.cyphers = cypherBuilder.generateITServiceCyphers(params);
     }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
-        params.fields = _.omit(params.fields,['desc','note','attachment','title']);
+        params.fields = _.omit(params.fields,['desc','description','note','attachment','title']);
         params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
@@ -93,41 +92,52 @@ var queryParamsCypherGenerator = function (params, ctx) {
     return params;
 }
 
+var cudItem_params_stringify = (params, list) => {
+    for(let name of list){
+        if(_.isObject(params.fields[name])){
+            params.fields[name] = JSON.stringify(params.fields[name])
+        }
+    }
+    params = _.assign(params, params.fields)
+    for(let name of list){
+        if(_.isString(params[name])){
+            params[name] = JSON.parse(params[name])
+        }
+    }
+}
+
+var cudItem_callback = (params,update)=>{
+    params.fields = _.assign(params.fields, params.data.fields)
+    if(update){
+        params.change = params.data.fields
+        params.lastUpdated = Date.now()
+    }else{
+        params.fields.category = params.data.category
+        params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
+        params.created = Date.now()
+    }
+    cudItem_params_stringify(params,['asset_location'])
+    return createOrUpdateCypherGenerator(params)
+}
+
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
         params.method = ctx.method,params.url = ctx.url
-        let cb
         if (params.method === 'POST') {
-            cb = (params) => {
-                params.fields = params.data.fields
-                params.fields.category = params.data.category;
-                params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1();
-                params = _.assign(params, params.fields);
-                params.created = Date.now()
-                return createOrUpdateCypherGenerator(params);
-            }
             if (params.data.category === schema.cmdbTypeName.IncidentFlow)
                 return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true).then((result) => {
                     params.data.fields.pfid = 'IR' + result[0]
-                    return cb(params)
+                    return cudItem_callback(params)
                 })
             else
-                return cb(params)
+                return cudItem_callback(params)
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
-            cb = (params)=>{
-                params.fields = _.assign(params.fields, params.data.fields);
-                params.fields.change = JSON.stringify(params.data.fields);
-                params = _.assign(params, params.fields);
-                params.asset_location = _.isString(params.asset_location)?JSON.parse(params.asset_location):params.asset_location
-                params.lastUpdated = Date.now()
-                return createOrUpdateCypherGenerator(params);
-            }
             return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.cmdb_findNode_cypher(params.data.category), params, true).then((result) => {
                 if (result && result[0]) {
                     params.fields_old = result[0]
                     params.fields = _.assign({}, result[0]);
-                    return cb(params)
+                    return cudItem_callback(params,true)
                 } else {
                     throw new Error("no record found to patch,uuid is" + params.uuid);
                 }

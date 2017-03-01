@@ -57,9 +57,9 @@ var timelineMapper = (result)=>{
         change_log.time = segment.start.lastUpdated
         change_log.action = (index == segments.length - 1 ? 'created' : 'updated')
         change_log.object = {
-            start: _.omit(segment.start, ['change']),
-            end: _.omit(segment.end, ['change']),
-            change_fields: segment.start.change?JSON.parse(segment.start.change):null
+            start: segment.start,
+            end: segment.end,
+            change_fields: _.omit(segment.relationship,'id')
         }
         change_logs.push(change_log)
         index++

@@ -9,5 +9,5 @@
     }
     }
   ],
-  "required": ["host_server","storage_info"]
+  "required": ["storage_info"]
 }

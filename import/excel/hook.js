@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var checker = require('./../helper/checker')
+var checker = require('./../../helper/checker')
 
 module.exports = {
     buildAssetLocation:async (asset) =>{

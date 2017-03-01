@@ -40,7 +40,7 @@ var addItem = function(result, params, ctx) {
         type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: _.omit(params,hidden_fields),
-        refresh:true
+        refresh:esConfig.refresh
     }
     logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
     return es_client.index(index_obj).then(function (response) {
@@ -57,7 +57,7 @@ var patchItem = function(result, params, ctx) {
         type: _.last(schema.cmdbTypeLabels[params.category]),
         id:params.uuid,
         body: {doc:_.omit(params,hidden_fields)},
-        refresh:true
+        refresh:esConfig.refresh
     }
     logger.debug(`patch index in es:${JSON.stringify(index_obj,null,'\t')}`)
     return es_client.update(index_obj).then(function (response) {
@@ -74,7 +74,8 @@ var delItem = function(result, params, ctx) {
         type: hook.getCategoryFromUrl(ctx.url),
         body: {
             query: queryObj
-        }
+        },
+        refresh:esConfig.refresh
     }
     logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
     return es_client.deleteByQuery(delObj).then(function (response) {
@@ -98,7 +99,6 @@ var searchItem = function(params, ctx) {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-
     var searchObj = _.assign({
         index: indexName,
         type: hook.getCategoryFromUrl(ctx.url),
@@ -107,15 +107,12 @@ var searchItem = function(params, ctx) {
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
     return es_client.search(searchObj).then(function (response) {
         return hook.queryItems_postProcess(responseWrapper(response), params, ctx);
-    }, function (error) {
-        throw error;
     });
 }
 
 var checkStatus = ()=> {
     return es_client.ping({
-        requestTimeout: Infinity,
-        hello: "elasticsearch!"
+        requestTimeout: Infinity
     })
 }
 

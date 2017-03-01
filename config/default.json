@@ -36,7 +36,8 @@
     "elasticsearch":{
       "host": "localhost",
       "port": 9200,
-      "index": "cmdb"
+      "index": "cmdb",
+      "refresh": false
     },
     "export":{
       "storeDir": "./export_data"

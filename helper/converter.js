@@ -36,7 +36,10 @@ _.each(routesDefinition,(value,key)=>{
         return uuids
     }
     name2IdConverter[key]= async (value)=>{
-        _.isArray(value)?await(array_converter(value)):await(single_converter(value))
+        if(_.isArray(value))
+            return await(array_converter(value))
+        else
+            return await(single_converter(value))
     }
 })
 

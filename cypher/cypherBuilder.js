@@ -2,8 +2,8 @@ var _ = require('lodash')
 var schema = require('./../schema')
 
 /*ConfigurationItem*/
-const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH ()<-[r2:LOCATED|SUPPORT_SERVICE]-(n:ConfigurationItem{uuid: {uuid}})<-[r1:RESPONSIBLE_FOR]-()
-DELETE r1,r2`
+const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH (n:ConfigurationItem{uuid: {uuid}})-[r:RESPONSIBLE_FOR|LOCATED|SUPPORT_SERVICE]-()
+DELETE r`
 
 const cmdb_addConfigurationItemITServiceRel_cypher = `UNWIND {it_service} as service_id
 MATCH (n:ConfigurationItem {uuid:{uuid}})
@@ -23,8 +23,8 @@ MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(p)`
 
 /*ITService*/
-const cmdb_delRelsExistInITService_cypher = `MATCH ()<-[r1:BelongsTo|ParentOf|DependsOn]-(n:ITService{uuid: {uuid}})<-[r2:ParentOf|DependsOn]-()
-DELETE r1,r2`
+const cmdb_delRelsExistInITService_cypher = `MATCH (n:ITService{uuid: {uuid}})-[r:ParentOf|DependsOn|BelongsTo]-()
+DELETE r`
 
 const cmdb_addITServiceBelongsToGroupRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
 MATCH (sg:ITServiceGroup {uuid:{group}})
@@ -101,7 +101,7 @@ UNWIND services AS service
 RETURN COLLECT( distinct service)`
 
 /*ProcessFlow*/
-const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]->()
+const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]-()
 DELETE r`
 
 const cmdb_addProcessFlowITServiceRel_cypher = `UNWIND {it_service} as service_id
@@ -133,13 +133,15 @@ const cmdb_addNode_Cypher_template = (labels, created='',last_updated='') => `ME
                                     ON MATCH SET ${node_alias} = {fields}${last_updated}`
 
 const cmdb_addPrevNodeRel_Cypher_template = (label) => `match (current:${label} {uuid:{uuid}})
-                                    optional match (current)-[rel:PREV]->(prev_prev)                                
-                                    delete rel
+                                    optional match (current)-[prev_rel:PREV]->(prev_prev)                                                    
                                     create (prev:${label}Prev {fields_old})
-                                    create (current)-[:PREV]->(prev)
+                                    create (current)-[:PREV {change}]->(prev)
                                     FOREACH (o IN CASE WHEN prev_prev IS NOT NULL THEN [prev_prev] ELSE [] END |
-                                      create (prev)-[:PREV]->(prev_prev)
-                                    )`;
+                                      create (prev)-[prev_rel_new:PREV]->(prev_prev)
+                                      set prev_rel_new = properties(prev_rel)
+                                      DELETE prev_rel
+                                    )                                   
+`;
 
 
 const cmdb_delNode_cypher = `MATCH (n)
