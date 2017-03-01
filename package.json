@@ -88,7 +88,7 @@
     "jasmine-spec-reporter": "^2.7.0",
     "mocha": "^3.2.0",
     "newman": "^3.3.1",
-    "postman_simplify": "^1.0.2",
+    "postman_simplify": "^1.0.3",
     "webpack": "^1.12.14"
   }
 }
