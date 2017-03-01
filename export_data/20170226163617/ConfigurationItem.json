@@ -20,7 +20,8 @@
     "model": "a10",
     "sn": "123456",
     "id": 704,
-    "category": "Router"
+    "category": "Router",
+    "geo_location": "beijing"
   },
   {
     "technical_support_info": "010-123456",
@@ -48,7 +49,8 @@
     "name": "physicalserver",
     "operating_system": "ubuntu",
     "model": "b10",
-    "category": "PhysicalServer"
+    "category": "PhysicalServer",
+    "geo_location": "beijing"
   },
   {
     "created": 1488097698061,

@@ -29,6 +29,14 @@ const sortItemsDependentFirst = (items)=>{
     return [...dependent_items,...other_items]
 }
 
+const itemPreprocess = (item)=>{
+    if(_.includes(schema.cmdbConfigurationItemTypes,item.category)){
+        if(_.isString(item.geo_location))
+            item.geo_location = {name:item.geo_location}
+    }
+    return item
+}
+
 const importer = async ()=>{
     let date_dir = process.env.IMPORT_FOLDER
     let categories = schema.cmdbTypesAll
@@ -39,7 +47,7 @@ const importer = async ()=>{
             let items = jsonfile.readFileSync(filePath)
             items = sortItemsDependentFirst(items)
             for (let item of items) {
-                await apiInvoker.addItem(item.category,item)
+                await apiInvoker.addItem(item.category,itemPreprocess(item))
             }
             filesImported.push(filePath)
         }
