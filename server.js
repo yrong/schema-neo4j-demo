@@ -1,17 +1,17 @@
 const config = require('config')
 const convert = require('koa-convert')
 const staticFile = require('koa-static')
-const upload_options = config.get('config.upload')
+const mount = require('koa-mount')
 const path = require('path')
 const appDir = path.resolve(__dirname, '.')
 const logDir = path.join(appDir, 'logs')
-const log4js = require('koa-log4')
+const log4js = require('log4js')
 log4js.configure(config.get('config.logger'), { cwd: logDir })
-
 const initAppRoutes = require("./routes")
-const uploader = require("./koa-file-upload")
 let app = initAppRoutes()
-app.use(uploader(upload_options))
+const file_uploader = require('koa2-file-upload-local')
+const upload_options = config.get('config.upload')
+app.use(mount(upload_options.url,file_uploader(upload_options).handler))
 app.use(convert(staticFile(__dirname + '/public')))
 
 app.listen(config.get('config.port'), function () {

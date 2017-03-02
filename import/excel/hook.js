@@ -9,6 +9,8 @@ module.exports = {
         }
         else if(asset&&asset.asset_location_position)
             asset.asset_location = {position:asset.asset_location_position,status:"unmounted"}
+        if(_.isString(asset.geo_location))
+            asset.geo_location = {name:asset.geo_location}
         return asset
     },
     omitProperties:async(configuratonItem)=>{

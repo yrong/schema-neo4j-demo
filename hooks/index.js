@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var uuid = require('node-uuid')
+var uuid = require('uuid')
 var schema = require('../schema')
 var config = require('config')
 var cypherBuilder = require('../cypher/cypherBuilder')
