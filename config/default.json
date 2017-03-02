@@ -17,7 +17,8 @@
         }
       ],
       "replaceConsole": true,
-      "defaultLevel":"DEBUG"
+      "defaultLevel":"DEBUG",
+      "defaultCategory":"cmdb-api"
     },
     "neo4j": {
       "host": "localhost",

@@ -20,11 +20,11 @@ var schema = require('../schema')
 
 var logger = require('../logger')
 
-var validate = require('uuid-validate');
+var validate = require('uuid-validate')
 
-const upload_options = config.get('config.upload')
+const file_upload = require('koa2-file-upload-local')
 
-let store = require(`../koa-file-upload/${upload_options.provider}`)(upload_options)
+const store = file_upload(config.get('config.upload')).store
 
 var pre_process = function(params) {
     if(params.attachment&&validate(params.attachment, 1)){

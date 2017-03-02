@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var uuid = require('node-uuid')
+var uuid = require('uuid')
 var schema = require('../schema')
 var config = require('config')
 var cypherBuilder = require('../cypher/cypherBuilder')
@@ -116,7 +116,7 @@ var cudItem_callback = (params,update)=>{
         params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
         params.created = Date.now()
     }
-    cudItem_params_stringify(params,['asset_location'])
+    cudItem_params_stringify(params,['asset_location','geo_location'])
     return createOrUpdateCypherGenerator(params)
 }
 
