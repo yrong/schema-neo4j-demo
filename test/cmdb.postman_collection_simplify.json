@@ -1,0 +1,676 @@
+[
+  {
+    "name": "add ITService Pop3",
+    "method": "POST",
+    "url": "http://localhost:3001/api/it_services/service",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "pop3",
+          "description": "pop3",
+          "group": "bb590380-fcd7-11e6-8345-3beeef62bcf0",
+          "parent": "bb72f420-fcd7-11e6-8345-3beeef62bcf0"
+        }
+      }
+    }
+  },
+  {
+    "name": "search it service by group name",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/service?search=Messaging"
+  },
+  {
+    "name": "add position",
+    "method": "POST",
+    "url": "http://localhost:3001/api/positions",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Position",
+        "fields": {
+          "name": "position",
+          "description": "position"
+        }
+      }
+    }
+  },
+  {
+    "name": "query cfgitem by uuid  v2",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems/bbfff1e0-fcd7-11e6-8345-3beeef62bcf0?getReferencedObj=true"
+  },
+  {
+    "name": "query all it service",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/service"
+  },
+  {
+    "name": "add ITService Email With Name Conflict",
+    "method": "POST",
+    "url": "http://localhost:3001/api/it_services/service",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "email",
+          "description": "email",
+          "group": "bb590380-fcd7-11e6-8345-3beeef62bcf0"
+        }
+      }
+    }
+  },
+  {
+    "name": "query all it service groups",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/group"
+  },
+  {
+    "name": "query it service by uuids",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/service?uuids=bb72f420-fcd7-11e6-8345-3beeef62bcf0,bb976c10-fcd7-11e6-8345-3beeef62bcf0"
+  },
+  {
+    "name": "add incident flow 2 reference incident flow 1",
+    "method": "POST",
+    "url": "http://localhost:3001/api/processFlows",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "committer": 6,
+          "executor": 6,
+          "reference_kb": [
+            "255e17da-ecb6-4c9c-85b4-94c3ff002e1c",
+            "92fdc211-8f90-4164-ba4d-fda97de9d88c",
+            "7abbf933-b9e7-4229-8eef-8dde49007f2e",
+            "e2fc7cf3-0ebe-4533-aa11-9dbd59eeb50a"
+          ],
+          "reference_process_flow": [
+            "bd7fdb20-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "status": "open",
+          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "note": "note",
+          "attachment": "attachment",
+          "title": "title"
+        }
+      }
+    }
+  },
+  {
+    "name": "add incident flow 3 with it_service empty",
+    "method": "POST",
+    "url": "http://localhost:3001/api/processFlows",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [],
+          "committer": 6,
+          "executor": 6,
+          "reference_kb": [
+            "255e17da-ecb6-4c9c-85b4-94c3ff002e1c",
+            "92fdc211-8f90-4164-ba4d-fda97de9d88c",
+            "7abbf933-b9e7-4229-8eef-8dde49007f2e",
+            "e2fc7cf3-0ebe-4533-aa11-9dbd59eeb50a"
+          ],
+          "status": "open",
+          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "note": "note",
+          "attachment": "attachment",
+          "title": "title"
+        }
+      }
+    }
+  },
+  {
+    "name": "search it service by group id",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/service?search=bb590380-fcd7-11e6-8345-3beeef62bcf0,bb6586a0-fcd7-11e6-8345-3beeef62bcf0"
+  },
+  {
+    "name": "add incident flow 4 with attachment referenced",
+    "method": "POST",
+    "url": "http://localhost:3001/api/processFlows",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [
+            "bb72f420-fcd7-11e6-8345-3beeef62bcf0",
+            "bb976c10-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "committer": 6,
+          "executor": 6,
+          "reference_kb": [
+            "255e17da-ecb6-4c9c-85b4-94c3ff002e1c",
+            "92fdc211-8f90-4164-ba4d-fda97de9d88c",
+            "7abbf933-b9e7-4229-8eef-8dde49007f2e",
+            "e2fc7cf3-0ebe-4533-aa11-9dbd59eeb50a"
+          ],
+          "status": "open",
+          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "note": "note",
+          "attachment": "da91c9f0-ed21-11e6-bb79-374a320b0637",
+          "title": "title"
+        }
+      }
+    }
+  },
+  {
+    "name": "clear all items in db",
+    "method": "DELETE",
+    "url": "http://localhost:3001/api/items"
+  },
+  {
+    "name": "add ITService Email",
+    "method": "POST",
+    "url": "http://localhost:3001/api/it_services/service",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "email",
+          "description": "email",
+          "group": "bb590380-fcd7-11e6-8345-3beeef62bcf0"
+        }
+      }
+    }
+  },
+  {
+    "name": "delete cabinet 1",
+    "method": "DELETE",
+    "url": "http://localhost:3001/api/cabinets/bb1a4cd0-fcd7-11e6-8345-3beeef62bcf0"
+  },
+  {
+    "name": "query it service groups by keyword",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/group?keyword=Messaging"
+  },
+  {
+    "name": "query User",
+    "method": "GET",
+    "url": "http://localhost:3001/api/users"
+  },
+  {
+    "name": "query ConfigurationItem by pagination",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems"
+  },
+  {
+    "name": "query ConfigurationItem by pagination v2",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems?page=1&per_page=1&getReferencedObj=true"
+  },
+  {
+    "name": "add user",
+    "method": "POST",
+    "url": "http://localhost:3001/api/users",
+    "body": {
+      "token": 123456,
+      "uuid": 6,
+      "data": {
+        "category": "User",
+        "fields": {
+          "type": 1,
+          "attempt_ip": "10.50.13.69",
+          "userid": 6,
+          "passwd": "4d3d82e202dfa673d3077f03b3be185",
+          "surname": "",
+          "name": "shijinglei",
+          "alias": "shijinglei",
+          "theme": "default",
+          "lang": "en_GB"
+        }
+      }
+    }
+  },
+  {
+    "name": "add ServiceGroup Infrastructure",
+    "method": "POST",
+    "url": "http://localhost:3001/api/it_services/group",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "ITServiceGroup",
+        "fields": {
+          "name": "Infrastructure",
+          "description": "Infrastructure"
+        }
+      }
+    }
+  },
+  {
+    "name": "patch incident flow 1 status to closed",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/processFlows/bd7fdb20-fcd7-11e6-8345-3beeef62bcf0",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "status": "closed"
+        }
+      }
+    }
+  },
+  {
+    "name": "get articles from kb api",
+    "method": "GET",
+    "url": "http://localhost:3000/KB/API/v1/articles"
+  },
+  {
+    "name": "patch router for all attributes",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/cfgItems/bbfff1e0-fcd7-11e6-8345-3beeef62bcf0",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Router",
+        "fields": {
+          "name": "router",
+          "it_service": [
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "responsibility": 6,
+          "sn": "123456",
+          "model": "a10",
+          "product_date": "2016-08-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "mounted",
+            "u": 42,
+            "date_mounted": "2016-06-28",
+            "cabinet": "bb0d2d70-fcd7-11e6-8345-3beeef62bcf0"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "query configurationItem by keyword matched",
+    "method": "POST",
+    "url": "http://localhost:3001/api/search/cfgItems?keyword=a10&getReferencedObj=true"
+  },
+  {
+    "name": "search it service by name",
+    "method": "GET",
+    "url": "http://localhost:3001/api/it_services/service?search=email,pop3"
+  },
+  {
+    "name": "delete incident flow 3",
+    "method": "DELETE",
+    "url": "http://localhost:3001/api/processFlows/bdd8f7a0-fcd7-11e6-8345-3beeef62bcf0"
+  },
+  {
+    "name": "add physical server",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cfgItems",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "PhysicalServer",
+        "fields": {
+          "name": "physicalserver",
+          "it_service": [
+            "bb72f420-fcd7-11e6-8345-3beeef62bcf0",
+            "bb976c10-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "ip_address": [
+            "10.10.35.63"
+          ],
+          "technical_support_info": "010-123456",
+          "operating_system": "ubuntu",
+          "storage_info": "hp-disk1",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "unmounted",
+            "position": "bb4c3240-fcd7-11e6-8345-3beeef62bcf0"
+          },
+          "management_ip": [
+            "10.10.35.64"
+          ],
+          "monitored": true
+        }
+      }
+    }
+  },
+  {
+    "name": "add firewall",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cfgItems",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Firewall",
+        "fields": {
+          "name": "firewall",
+          "it_service": [
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "responsibility": 6,
+          "sn": "123456",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "mounted",
+            "u": 42,
+            "date_mounted": "2016-06-28",
+            "cabinet": "bb0d2d70-fcd7-11e6-8345-3beeef62bcf0"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "query process flow by keyword full text match",
+    "method": "GET",
+    "url": "http://localhost:3001/api/processFlows?keyword=henry&getReferencedObj=true"
+  },
+  {
+    "name": "query json schema of router ",
+    "method": "GET",
+    "url": "http://localhost:3001/api/schema/Router"
+  },
+  {
+    "name": "query process flow timeline by uuid",
+    "method": "GET",
+    "url": "http://localhost:3001/api/processFlows/bd7fdb20-fcd7-11e6-8345-3beeef62bcf0/timeline"
+  },
+  {
+    "name": "add cabinet 1",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cabinets",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Cabinet",
+        "fields": {
+          "name": "cabinet-1",
+          "description": "cabinet-1"
+        }
+      }
+    }
+  },
+  {
+    "name": "query User By Keyword",
+    "method": "GET",
+    "url": "http://localhost:3001/api/users?keyword=shijinglei&page=1&per_page=2"
+  },
+  {
+    "name": "query ConfigurationItem Category",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems/categories/all"
+  },
+  {
+    "name": "query physical server by uuid",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems/bc3029a0-fcd7-11e6-8345-3beeef62bcf0"
+  },
+  {
+    "name": "query process flow timeline by uuid v2",
+    "method": "GET",
+    "url": "http://localhost:3001/api/processFlows/bd7fdb20-fcd7-11e6-8345-3beeef62bcf0/timeline?getReferencedObj=true"
+  },
+  {
+    "name": "add cabinet ",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cabinets",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Cabinet",
+        "fields": {
+          "name": "cabinet",
+          "description": "cabinet"
+        }
+      }
+    }
+  },
+  {
+    "name": "add switch",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cfgItems",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Switch",
+        "fields": {
+          "name": "switch",
+          "it_service": [
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "responsibility": 6,
+          "sn": "123456",
+          "model": "a10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "mounted",
+            "u": 42,
+            "date_mounted": "2016-06-28",
+            "cabinet": "bb0d2d70-fcd7-11e6-8345-3beeef62bcf0"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "add router",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cfgItems",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Router",
+        "fields": {
+          "name": "router",
+          "it_service": [
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "responsibility": 6,
+          "sn": "123456",
+          "model": "a10",
+          "product_date": "2016-08-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "mounted",
+            "u": 42,
+            "date_mounted": "2016-06-28",
+            "cabinet": "bb0d2d70-fcd7-11e6-8345-3beeef62bcf0"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "add incident flow 1",
+    "method": "POST",
+    "url": "http://localhost:3001/api/processFlows",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [
+            "bb72f420-fcd7-11e6-8345-3beeef62bcf0",
+            "bb976c10-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "committer": 6,
+          "executor": 6,
+          "reference_kb": [
+            "255e17da-ecb6-4c9c-85b4-94c3ff002e1c",
+            "92fdc211-8f90-4164-ba4d-fda97de9d88c",
+            "7abbf933-b9e7-4229-8eef-8dde49007f2e",
+            "e2fc7cf3-0ebe-4533-aa11-9dbd59eeb50a"
+          ],
+          "status": "open",
+          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "note": "note",
+          "attachment": "attachment",
+          "title": "title"
+        }
+      }
+    }
+  },
+  {
+    "name": "query cfgitem by uuid ",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems/bbfff1e0-fcd7-11e6-8345-3beeef62bcf0"
+  },
+  {
+    "name": "patch incident flow 1 status to solved",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/processFlows/bd7fdb20-fcd7-11e6-8345-3beeef62bcf0",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "status": "solved"
+        }
+      }
+    }
+  },
+  {
+    "name": "query process flow by uuid v2",
+    "method": "GET",
+    "url": "http://localhost:3001/api/processFlows/bd7fdb20-fcd7-11e6-8345-3beeef62bcf0?getReferencedObj=true"
+  },
+  {
+    "name": "query ConfigurationItem Category by filter",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems/categories/Asset"
+  },
+  {
+    "name": "patch router for patial attributes",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/cfgItems/bbfff1e0-fcd7-11e6-8345-3beeef62bcf0",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Router",
+        "fields": {
+          "name": "router-3",
+          "it_service": [
+            "bb976c10-fcd7-11e6-8345-3beeef62bcf0",
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "sn": "12345678"
+        }
+      }
+    }
+  },
+  {
+    "name": "query process flow by keyword and with attributes filter",
+    "method": "GET",
+    "url": "http://localhost:3001/api/processFlows?keyword=attachment&_source=status,uuid"
+  },
+  {
+    "name": "query cabinet by keyword",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cabinets?keyword=cabinet&page=1&per_page=2"
+  },
+  {
+    "name": "query Cabinets",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cabinets"
+  },
+  {
+    "name": "add ServiceGroup Messaging",
+    "method": "POST",
+    "url": "http://localhost:3001/api/it_services/group",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "ITServiceGroup",
+        "fields": {
+          "name": "Messaging",
+          "description": "Messaging"
+        }
+      }
+    }
+  },
+  {
+    "name": "search configurationItem",
+    "method": "POST",
+    "url": "http://localhost:3001/api/search/cfgItems?page=1&per_page=2",
+    "body": {
+      "body": {
+        "query": {
+          "term": {
+            "model": "a10"
+          }
+        },
+        "sort": [
+          {
+            "product_date": {
+              "order": "desc"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "add ITService Dns",
+    "method": "POST",
+    "url": "http://localhost:3001/api/it_services/service",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "dns",
+          "description": "dns",
+          "group": "bb6586a0-fcd7-11e6-8345-3beeef62bcf0",
+          "dependendents": [
+            "bb72f420-fcd7-11e6-8345-3beeef62bcf0"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "name": "add router with additional parameter",
+    "method": "POST",
+    "url": "http://localhost:3001/api/cfgItems",
+    "body": {
+      "token": 123456,
+      "data": {
+        "category": "Router",
+        "fields": {
+          "name": "router",
+          "it_service": [
+            "bba72380-fcd7-11e6-8345-3beeef62bcf0"
+          ],
+          "responsibility": 6,
+          "sn": "123456",
+          "model": "a10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "mounted",
+            "u": 42,
+            "date_mounted": "2016-06-28",
+            "cabinet": "bb0d2d70-fcd7-11e6-8345-3beeef62bcf0"
+          },
+          "not_exist": "not_exist"
+        }
+      }
+    }
+  }
+]

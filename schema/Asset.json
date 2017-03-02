@@ -1,0 +1,72 @@
+{
+  "id": "/Asset",
+  "allOf":
+  [
+    {"$ref": "/ConfigurationItem"},
+    {"properties":
+      {
+        "asset_id": {
+          "type": "string"
+        },
+        "sn": {
+          "type": "string"
+        },
+        "geo_location": {
+          "type": "object",
+          "properties":{
+            "name":{"type":"string"},
+            "location":{
+              "type":"object",
+              "properties":{
+                "lat":{"type":"number"},
+                "lon":{"type":"number"}
+              }
+            }
+          }
+        },
+        "asset_location":{
+          "type":"object",
+          "oneOf":[
+            {"properties" :
+              {
+                "status":{"type":"string"},
+                "cabinet":{"type":"string","format":"uuid"},
+                "date_mounted" : {
+                  "type" : "string",
+                  "format": "date"
+                },
+                "u" : {
+                  "type" : "integer"
+                }
+              },
+              "required":["status","u"]
+            },
+            {"properties" :
+              {
+                "status":{"type":"string"},
+                "position":{"type":"string","format":"uuid"}
+              },
+              "required":["status","position"]
+            }
+          ]
+        },
+        "model":{
+          "type": "string"
+        },
+        "product_date":{
+          "type": "string",
+          "format": "date"
+        },
+        "warranty_expiration_date":{
+          "type": "string",
+          "format": "date"
+        },
+        "retirement_date":{
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  ],
+  "required": ["model", "product_date"]
+}

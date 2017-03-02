@@ -1,5 +1,4 @@
 # Logs
-logs
 *.log
 
 .env
@@ -26,3 +25,16 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+.idea
+
+dist
+
+koa-neo4j/*.js
+koa-neo4j/*.js.map
+!koa-neo4j/src/**/*.js
+!webpack.config.js
+
+nohup.out
+dump.rdb
+wheels

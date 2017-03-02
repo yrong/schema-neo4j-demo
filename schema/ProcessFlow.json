@@ -1,0 +1,47 @@
+{
+  "id": "/ProcessFlow",
+  "type": "object",
+  "properties": {
+    "it_service": {
+      "type": "array",
+      "items": { "type": "string","format":"uuid"},
+      "uniqueItems": true
+    },
+    "reference_process_flow":{
+      "type": "array",
+      "items": { "type": "string","format":"uuid" },
+      "uniqueItems": true
+    },
+    "committer":{
+      "type": "integer"
+    },
+    "executor":{
+      "type": "integer"
+    },
+    "reference_kb":{
+      "type": "array",
+      "items": { "type": "string","format":"uuid" },
+      "uniqueItems": true
+    },
+    "status":{
+      "type": "string",
+      "enum": ["open", "closed","solved","cancelled"]
+    },
+    "note":{
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "attachment":{
+      "type": "string"
+    },
+    "title":{
+      "type":"string"
+    },
+    "pfid":{
+      "type":"string"
+    }
+  },
+  "required": ["it_service","committer"]
+}

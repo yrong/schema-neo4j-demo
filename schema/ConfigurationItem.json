@@ -1,0 +1,28 @@
+{
+  "id": "/ConfigurationItem",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "it_service": {
+      "type": "array",
+      "items": { "type": "string","format":"uuid" },
+      "uniqueItems": true
+    },
+    "monitored": {
+      "type": "boolean",
+      "default": false
+    },
+    "responsibility": {
+      "type": "integer"
+    },
+    "updated_by":{
+      "type": "integer"
+    },
+    "technical_support_info": {
+      "type": "string"
+    }
+  },
+  "required": ["name","monitored"]
+}

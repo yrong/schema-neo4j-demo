@@ -1,0 +1,13 @@
+{
+  "id": "/VirtualServer",
+  "allOf": [
+    {"$ref": "/AbstractServer"},
+    {"properties": {
+      "host_server":{
+        "type": "string"
+      }
+    }
+    }
+  ],
+  "required": ["storage_info"]
+}

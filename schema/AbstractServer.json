@@ -1,0 +1,24 @@
+{
+  "id": "/AbstractServer",
+  "allOf": [
+    {"$ref": "/ConfigurationItem"},
+    {"properties": {
+        "ip_address": {
+          "type": "array",
+          "items": {"type": "string","format":"ipv4"},
+          "minItems": 1
+        },
+        "operating_system": {
+          "type": "string"
+        },
+        "storage_info":{
+          "type": "string"
+        },
+        "hardware_info":{
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "required": ["ip_address", "operating_system"]
+}

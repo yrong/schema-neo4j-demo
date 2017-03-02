@@ -1,0 +1,33 @@
+{
+  "id": "/User",
+  "type": "object",
+  "properties": {
+    "alias": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "lang": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "type":{
+      "type": "integer"
+    },
+    "attempt_ip":{
+      "type":"string"
+    },
+    "userid":{
+      "type":"integer"
+    },
+    "theme":{
+      "type":"string"
+    },
+    "passwd":{
+      "type":"string"
+    }
+  }
+}

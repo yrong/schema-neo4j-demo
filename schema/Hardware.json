@@ -1,0 +1,6 @@
+{
+  "id": "/Hardware",
+  "allOf": [
+    {"$ref": "/Asset"}
+  ]
+}

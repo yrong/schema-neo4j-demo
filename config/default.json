@@ -1,0 +1,56 @@
+{
+  "config": {
+    "port":3001,
+    "additionalPropertyCheck":false,
+    "perPageSize":2000,
+    "logger":{
+      "appenders": [
+        {
+          "type": "console"
+        },
+        {
+          "type": "file",
+          "filename": "cmdb-api.log",
+          "maxLogSize": 20480,
+          "numBackups": 5,
+          "category": "cmdb-api"
+        }
+      ],
+      "replaceConsole": true,
+      "defaultLevel":"DEBUG"
+    },
+    "neo4j": {
+      "host": "localhost",
+      "port": 7687,
+      "http_port":7474,
+      "user": "neo4j",
+      "password": "neo4j"
+    },
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "user": "root",
+      "password": "root",
+      "database": "test"
+    },
+    "elasticsearch":{
+      "host": "localhost",
+      "port": 9200,
+      "index": "cmdb",
+      "refresh": false
+    },
+    "export":{
+      "storeDir": "./export_data"
+    },
+    "import":{
+      "storeDir": "./import_data"
+    },
+    "upload":{
+      "url": "/api/upload/processFlows/attachment",
+      "storeDir": "ProcessFlowAttachment",
+      "provider": "local",
+      "folder": "public/upload",
+      "mimetypes": ["text/plain"]
+    }
+  }
+}
