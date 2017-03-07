@@ -37,29 +37,35 @@ const itemPreprocess = (item)=>{
     return item
 }
 
-const importer = async ()=>{
-    let date_dir = process.env.IMPORT_FOLDER
-    let categories = schema.cmdbTypesAll
-    let filesImported = []
-    for(let category of categories){
-        let filePath = path.join(date_dir,category + '.json')
-        if(fs.existsSync(filePath)){
-            let items = jsonfile.readFileSync(filePath)
-            items = sortItemsDependentFirst(items)
-            for (let item of items) {
-                await apiInvoker.addItem(item.category,itemPreprocess(item))
-            }
-            filesImported.push(filePath)
-        }
+class Importer {
+    constructor(exportedJsonFilesFolder) {
+        this.exportedJsonFilesFolder = exportedJsonFilesFolder
     }
-    return filesImported
+
+    async importer()  {
+        let date_dir = this.exportedJsonFilesFolder||process.env.IMPORT_FOLDER
+        let categories = schema.cmdbTypesAll
+        let filesImported = []
+        for(let category of categories){
+            let filePath = path.join(date_dir,category + '.json')
+            if(fs.existsSync(filePath)){
+                let items = jsonfile.readFileSync(filePath)
+                items = sortItemsDependentFirst(items)
+                for (let item of items) {
+                    await apiInvoker.addItem(item.category,itemPreprocess(item))
+                }
+                filesImported.push(filePath)
+            }
+        }
+        return filesImported
+    }
 }
 
 if (require.main === module) {
-    importer()
+    new Importer().importer()
 }
 
-module.exports = importer
+module.exports = Importer
 
 
 

@@ -24,7 +24,7 @@ var validate = require('uuid-validate')
 
 const file_upload = require('koa2-file-upload-local')
 
-const store = file_upload(config.get('config.upload')).store
+const store = file_upload(config.get('config.upload')[schema.cmdbTypeName.ProcessFlow]).store
 
 var pre_process = function(params) {
     if(params.attachment&&validate(params.attachment, 1)){

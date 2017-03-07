@@ -6,6 +6,8 @@ const search = require('../search');
 const KoaNeo4jApp = require('koa-neo4j');
 const routesDef = require('./def');
 const logger = require('../logger')
+const IO = require( 'koa-socket' )
+const excelImporter = require('../import/excel')
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
 const customized_routes = (routesDef)=>{
@@ -134,6 +136,23 @@ module.exports = ()=>{
                   </html>
                   `
         return next()
+    })
+
+    const socketio = new IO('importer')
+    socketio.attach(app)
+    socketio.on( 'importConfigurationItem', ( ctx, data ) => {
+        let importerInstance
+        try{
+            importerInstance = new excelImporter(socketio,data.fileId)
+        }catch(error){
+            ctx.socket.emit('importConfigurationItemError',error)
+            return
+        }
+        importerInstance.importer().then((result)=>{
+            ctx.socket.emit('importConfigurationItemResponse',result)
+        }).catch((error)=>{
+            ctx.socket.emit('importConfigurationItemError',error)
+        })
     })
     return app
 }

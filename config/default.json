@@ -44,14 +44,27 @@
       "storeDir": "./export_data"
     },
     "import":{
-      "storeDir": "./import_data"
+      "storeDir": "./public/upload/ConfigurationItem"
     },
-    "upload":{
-      "url": "/api/upload/processFlows/attachment",
-      "storeDir": "ProcessFlowAttachment",
-      "provider": "local",
-      "folder": "public/upload",
-      "mimetypes": ["text/plain"]
+    "upload": {
+      "ProcessFlow": {
+        "url": "/api/upload/processFlows/attachment",
+        "storeDir": "ProcessFlowAttachment",
+        "provider": "local",
+        "folder": "public/upload",
+        "mimetypes": [
+          "text/plain"
+        ]
+      },
+      "ConfigurationItem": {
+        "url": "/api/upload/configurationItem/xslx",
+        "storeDir": "ConfigurationItem",
+        "provider": "local",
+        "folder": "public/upload",
+        "mimetypes": [
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ]
+      }
     }
   }
 }

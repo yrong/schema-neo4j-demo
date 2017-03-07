@@ -10,8 +10,10 @@ log4js.configure(config.get('config.logger'), { cwd: logDir })
 const initAppRoutes = require("./routes")
 let app = initAppRoutes()
 const file_uploader = require('koa2-file-upload-local')
-const upload_options = config.get('config.upload')
-app.use(mount(upload_options.url,file_uploader(upload_options).handler))
+const _ = require('lodash')
+for(let option of _.values(config.get('config.upload'))){
+    app.use(mount(option.url,file_uploader(option).handler))
+}
 app.use(convert(staticFile(__dirname + '/public')))
 
 app.listen(config.get('config.port'), function () {

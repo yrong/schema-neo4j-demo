@@ -32,7 +32,7 @@ describe("CMDB Integration test suite", function() {
     describe('import cmdb from excel file', function() {
         it('1 line error with it_service name not exist', function(done) {
             console.time("importerFromExcel")
-            importerFromExcel().then((result)=>{
+            new importerFromExcel().importer().then((result)=>{
                 console.timeEnd("importerFromExcel");
                 console.log(JSON.stringify(result))
                 assert.equal(result.PhysicalServer.success_num, 1);
@@ -58,7 +58,7 @@ describe("CMDB Integration test suite", function() {
 
         it('import all categories', function(done) {
             console.time("importAll")
-            importerFromJson().then((result)=>{
+            new importerFromJson().importer().then((result)=>{
                 console.timeEnd("importAll");
                 console.log(JSON.stringify(result))
                 assert.equal(result.length,Cmdb_Categories.length)
