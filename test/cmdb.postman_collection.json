@@ -5,15 +5,20 @@
 	"order": [],
 	"folders": [
 		{
+			"owner": "1388965",
+			"lastUpdatedBy": "1388965",
+			"lastRevision": 1105706467,
 			"id": "2ec9aac5-d888-d055-1c12-8267647a8ed5",
 			"name": "0-cleardb",
 			"description": "",
 			"order": [
 				"332c4b24-3abd-903f-5bab-1c19954dfbfe"
-			],
-			"owner": "1388965"
+			]
 		},
 		{
+			"owner": "1388965",
+			"lastUpdatedBy": "1388965",
+			"lastRevision": 1105708829,
 			"id": "63da411c-66ce-5e82-8fda-48fa456332aa",
 			"name": "1-auxiliary",
 			"description": "",
@@ -27,11 +32,12 @@
 				"d97bce68-0281-4c9c-55c0-18e952d1aeeb",
 				"e0ee0756-adf3-d95f-d879-b0d32a29c457",
 				"09907106-b171-fa5c-1f5a-592a23c137d9"
-			],
-			"owner": "1388965",
-			"collectionId": "9c219891-03af-d9e4-efa5-8b7b904ce417"
+			]
 		},
 		{
+			"owner": "1388965",
+			"lastUpdatedBy": "1388965",
+			"lastRevision": 1105709647,
 			"id": "ff06c913-9b46-3abb-1b12-c50ccb257895",
 			"name": "2-itservice",
 			"description": "",
@@ -49,10 +55,12 @@
 				"7594ffda-40a0-0103-af8e-2970bbe550dd",
 				"08780915-973c-d030-83bd-a7d3fabc609a",
 				"1a84ead1-85de-35bc-fec4-1c4eb502c223"
-			],
-			"owner": "1388965"
+			]
 		},
 		{
+			"owner": "1388965",
+			"lastUpdatedBy": "1388965",
+			"lastRevision": 1105709527,
 			"id": "a78c8402-2327-65be-d8e4-8dd284bb8ba1",
 			"name": "3-configurationItem",
 			"description": "",
@@ -73,11 +81,14 @@
 				"7e9b97e8-23de-8f2e-cfa6-7188494279b3",
 				"89bda392-f9e0-2e4a-e024-f403e844a262",
 				"743f00c9-c2ce-c87c-ec98-ab8f2291bd18",
-				"e43d847a-b274-a29a-e22b-b6543241e953"
-			],
-			"owner": "1388965"
+				"e43d847a-b274-a29a-e22b-b6543241e953",
+				"dbf07fde-b168-16d9-553a-9157f09f6590"
+			]
 		},
 		{
+			"owner": "1388965",
+			"lastUpdatedBy": "1388965",
+			"lastRevision": 1105710114,
 			"id": "04fc395a-ef4b-b585-9afa-556154de2e0c",
 			"name": "4-processFlow",
 			"description": "",
@@ -95,12 +106,10 @@
 				"8108c8e7-06da-3159-4d98-d1bf087995ef",
 				"89f33a7c-ff9a-5d1c-8812-9053c45c81c4",
 				"786ee9b5-6da3-0dca-40ec-65294be1f9ea"
-			],
-			"owner": "1388965",
-			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
+			]
 		}
 	],
-	"timestamp": 1488166717803,
+	"timestamp": 0,
 	"owner": "1388965",
 	"public": false,
 	"requests": [
@@ -333,6 +342,7 @@
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{user_id}},\n      \"executor\":{{user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\",\n      \"description\":\"{{process_flow_desc}}\",\n      \"note\":\"note\",\n      \"attachment\":\"da91c9f0-ed21-11e6-bb79-374a320b0637\",\n      \"title\":\"title\"\n    }\n  }\n}"
 		},
 		{
+			"folder": "2ec9aac5-d888-d055-1c12-8267647a8ed5",
 			"id": "332c4b24-3abd-903f-5bab-1c19954dfbfe",
 			"name": "clear all items in db",
 			"dataMode": "params",
@@ -348,8 +358,7 @@
 			"tests": "\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"folder": "2ec9aac5-d888-d055-1c12-8267647a8ed5"
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
 			"folder": "ff06c913-9b46-3abb-1b12-c50ccb257895",
@@ -656,20 +665,22 @@
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Firewall\",\n    \"fields\":{\n      \"name\":\"firewall\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		},
 		{
+			"folder": "04fc395a-ef4b-b585-9afa-556154de2e0c",
 			"id": "791ca68a-5476-bd8f-75a3-d2d74234429e",
+			"name": "query process flow by keyword full text match",
+			"dataMode": "params",
+			"data": null,
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
 			"headers": "",
+			"method": "GET",
+			"pathVariables": {},
 			"url": "{{url}}/processFlows?keyword={{matched_word}}&getReferencedObj=true",
 			"preRequestScript": "\n",
-			"pathVariables": {},
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow by matched keyword found\"] = jsonData.data.count = 4;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1488191014287,
-			"name": "query process flow by keyword full text match",
-			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
@@ -730,6 +741,7 @@
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet-1\",\n      \"description\":\"cabinet-1\"\n    }\n  }\n}"
 		},
 		{
+			"folder": "63da411c-66ce-5e82-8fda-48fa456332aa",
 			"id": "88e68a8e-5a71-4967-23bc-ad22c6e77d3f",
 			"name": "query User By Keyword",
 			"dataMode": "params",
@@ -745,8 +757,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one user found\"] = jsonData.data.results.length >=1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"folder": "63da411c-66ce-5e82-8fda-48fa456332aa"
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
 			"folder": "a78c8402-2327-65be-d8e4-8dd284bb8ba1",
@@ -860,7 +871,7 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
 		},
 		{
 			"folder": "04fc395a-ef4b-b585-9afa-556154de2e0c",
@@ -977,20 +988,22 @@
 			"rawModeData": "{\n  \"token\": {{token}},\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router-3\",\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\"\n    }\n  }\n}"
 		},
 		{
+			"folder": "04fc395a-ef4b-b585-9afa-556154de2e0c",
 			"id": "bdc9d8d2-9294-709d-a457-8434a74e64e9",
+			"name": "query process flow by keyword and with attributes filter",
+			"dataMode": "params",
+			"data": null,
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
 			"headers": "",
+			"method": "GET",
+			"pathVariables": {},
 			"url": "{{url}}/processFlows?keyword=attachment&_source=status,uuid",
 			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\npausecomp(environment['es-refresh-interval']);\n",
-			"pathVariables": {},
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow with attributes filter\"] = jsonData.data.count = 4;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1488191390858,
-			"name": "query process flow by keyword and with attributes filter",
-			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
@@ -1010,6 +1023,23 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"query cabinet by keyword found\"] = jsonData.data.results.length === 1;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
+		},
+		{
+			"id": "dbf07fde-b168-16d9-553a-9157f09f6590",
+			"headers": "",
+			"url": "{{url}}/cfgItems/{{router_id}}/timeline",
+			"preRequestScript": "\n",
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"router timeline change found\"] = jsonData.data.length == 2;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1488966610778,
+			"name": "query router timeline",
+			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{

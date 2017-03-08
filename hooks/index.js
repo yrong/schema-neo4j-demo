@@ -7,6 +7,7 @@ var cypherResponseMapping = require('../cypher/cypherResponseMapping')
 var cache = require('../cache')
 var logger = require('../logger')
 var routesDef = require('../routes/def')
+var utils = require('../helper/utils')
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -18,7 +19,7 @@ var getCategoryFromUrl = function (url) {
         }
     }
     if (url.includes('/processFlows')) //for legacy compatible
-        category =  [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ProcessFlowLegacy]
+        category =  [schema.cmdbTypeName.ProcessFlowLegacy,schema.cmdbTypeName.ProcessFlow]
     else if(url.includes('/items'))//for delete all test
         category = [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ConfigurationItem]
     if(!category)
@@ -43,6 +44,8 @@ var createOrUpdateCypherGenerator = (params)=>{
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
     }
+    if(params.method == 'PUT'||params.method =='PATCH')
+        params.cyphers = [...params.cyphers,cypherBuilder.generateAddPrevNodeRelCypher(params)];
     logCypher(params)
     return params;
 }
@@ -74,19 +77,22 @@ var queryParamsCypherGenerator = function (params, ctx) {
     params.category = getCategoryFromUrl(ctx.url)
     if(params.keyword){
         params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
-    }else if(params.uuids){
-        params.uuids = params.uuids.split(",");
-        params.cypher = cypherBuilder.generateQueryByUuidsCypher(params);
-    }else if(params.search){
-        params.search = params.search.split(",");
-        params.cypher = cypherBuilder.generateAdvancedSearchCypher(params);
     }else if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
-        if(ctx.url.includes('/processFlows')&&ctx.url.includes('/timeline'))
-            params.cypher = cypherBuilder.generateQueryProcessFlowTimelineCypher()
+        if(utils.isChangeTimelineQuery(ctx.url))
+            params.cypher = cypherBuilder.generateQueryNodeChangeTimelineCypher(params)
     }
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
+    }
+    if(params.category === schema.cmdbTypeName.ITService){
+        if(params.uuids){
+            params.uuids = params.uuids.split(",");
+            params.cypher = cypherBuilder.generateQueryITServiceByUuidsCypher(params);
+        }else if(params.search){
+            params.search = params.search.split(",");
+            params.cypher = cypherBuilder.generateAdvancedSearchITServiceCypher(params);
+        }
     }
     logCypher(params)
     return params;
@@ -96,6 +102,9 @@ var cudItem_params_stringify = (params, list) => {
     for(let name of list){
         if(_.isObject(params.fields[name])){
             params.fields[name] = JSON.stringify(params.fields[name])
+        }
+        if(params.change&&_.isObject(params.change[name])){
+            params.change[name] = JSON.stringify(params.change[name])
         }
     }
     params = _.assign(params, params.fields)
@@ -109,12 +118,11 @@ var cudItem_params_stringify = (params, list) => {
 var cudItem_callback = (params,update)=>{
     params.fields = _.assign(params.fields, params.data.fields)
     if(update){
-        params.change = params.data.fields
-        params.lastUpdated = Date.now()
+        params.fields.lastUpdated = Date.now()
     }else{
         params.fields.category = params.data.category
         params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
-        params.created = Date.now()
+        params.fields.created = Date.now()
     }
     cudItem_params_stringify(params,['asset_location','geo_location'])
     return createOrUpdateCypherGenerator(params)
@@ -124,6 +132,7 @@ module.exports = {
     cudItem_preProcess: function (params, ctx) {
         params.method = ctx.method,params.url = ctx.url
         if (params.method === 'POST') {
+            params.category = params.data.category
             if (params.data.category === schema.cmdbTypeName.IncidentFlow)
                 return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true).then((result) => {
                     params.data.fields.pfid = 'IR' + result[0]
@@ -133,10 +142,12 @@ module.exports = {
                 return cudItem_callback(params)
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
-            return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.cmdb_findNode_cypher(params.data.category), params, true).then((result) => {
+            params.category = params.data.category
+            return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeCypher(params), params, true).then((result) => {
                 if (result && result[0]) {
                     params.fields_old = result[0]
                     params.fields = _.assign({}, result[0]);
+                    params.change = params.data.fields
                     return cudItem_callback(params,true)
                 } else {
                     throw new Error("no record found to patch,uuid is" + params.uuid);

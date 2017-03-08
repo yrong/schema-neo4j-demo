@@ -491,6 +491,13 @@
             "u": 42,
             "date_mounted": "2016-06-28",
             "cabinet": "bb0d2d70-fcd7-11e6-8345-3beeef62bcf0"
+          },
+          "geo_location": {
+            "name": "beijing",
+            "location": {
+              "lat": 39.98,
+              "lon": 116.3
+            }
           }
         }
       }
@@ -583,6 +590,11 @@
     "name": "query cabinet by keyword",
     "method": "GET",
     "url": "http://localhost:3001/api/cabinets?keyword=cabinet&page=1&per_page=2"
+  },
+  {
+    "name": "query router timeline",
+    "method": "GET",
+    "url": "http://localhost:3001/api/cfgItems/bbfff1e0-fcd7-11e6-8345-3beeef62bcf0/timeline"
   },
   {
     "name": "query Cabinets",

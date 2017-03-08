@@ -9,7 +9,7 @@ const logger = require('../logger')
 const IO = require( 'koa-socket' )
 const excelImporter = require('../import/excel')
 
-const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
+const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
 const customized_routes = (routesDef)=>{
     routesDef.ConfigurationItem.customizedHook = {
         Add:{postProcess:search.addItem},
@@ -17,15 +17,16 @@ const customized_routes = (routesDef)=>{
         Delete:{postProcess: search.delItem},
         Search:{procedure:search.searchItem}
     }
-    routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,"Search"]
+    routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,'Search']
     routesDef.ProcessFlow.customizedHook = {
         Add:{postProcess:search.addItem},
         Modify:{postProcess:search.patchItem},
         Delete:{postProcess: search.delItem},
         FindAll:{procedure:search.searchItem},
-        FindOne:{procedure:search.searchItem}
+        FindOne:{procedure:search.searchItem},
+        Search:{procedure:search.searchItem}
     }
-    routesDef.ProcessFlow.allowed_methods = [...allowed_methods,"FindChanges"]
+    routesDef.ProcessFlow.allowed_methods = [...allowed_methods,'Search']
 }
 
 const none_checker=()=>true

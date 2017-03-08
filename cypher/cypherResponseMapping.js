@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var cache = require('../cache')
+var utils = require('../helper/utils')
 
-const hidden_properties = ['id','_id','_index','_type','passwd','change']
 const removeInternalPropertys = (val) => {
     if (_.isArray(val)) {
         val = _.map(val, function (val) {
@@ -9,7 +9,7 @@ const removeInternalPropertys = (val) => {
         });
     } else {
         for (let prop in val) {
-            for(let hidden_prop of hidden_properties){
+            for(let hidden_prop of utils.globalHiddenFields){
                 if (prop === hidden_prop)
                     delete val[prop];
             }
@@ -28,8 +28,8 @@ const referencedMapper = (val) => {
     } else {
         for (let val_key in val) {
             let val_val = val[val_key]
-            if(val_key == 'asset_location'){
-                val.asset_location = _.isString(val_val)?JSON.parse(val_val):val_val
+            if(val_key == 'asset_location'||val_key == 'geo_location'){
+                val[val_key] = _.isString(val_val)?JSON.parse(val_val):val_val
             }
             if(val_val){
                 if(val_key == 'responsibility'||val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){
@@ -55,7 +55,6 @@ var timelineMapper = (result)=>{
         change_log = {}
         change_log.user = segment.start.committer
         change_log.time = segment.start.lastUpdated
-        change_log.action = (index == segments.length - 1 ? 'created' : 'updated')
         change_log.object = {
             start: segment.start,
             end: segment.end,
@@ -70,7 +69,7 @@ var timelineMapper = (result)=>{
 module.exports = {
     removeInternalPropertys: removeInternalPropertys,
     resultMapper: (result, params) => {
-        if (params.url&&params.url.includes('/timeline')) {
+        if (params.url&&utils.isChangeTimelineQuery(params.url)) {
             result = timelineMapper(result)
         }
         return params.getReferencedObj?referencedMapper(result):result

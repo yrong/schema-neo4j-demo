@@ -14,7 +14,8 @@ var es_client = new elasticsearch.Client({
 
 var indexName = esConfig.index
 
-var hidden_fields = ['fields','cyphers','method','data','token','fields_old','change','url','id']
+var utils = require('../helper/utils')
+var hidden_fields = utils.globalHiddenFields
 
 var schema = require('../schema')
 

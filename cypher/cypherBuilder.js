@@ -76,29 +76,7 @@ WHERE s.group=n.uuid
 WITH
     { group: n, services:collect(s) } as group_with_services,cnt
 SKIP {skip} LIMIT {limit}
-RETURN { count: cnt, results:collect(group_with_services) }
-`
-
-const cmdb_queryITServiceByUuids_cypher = `MATCH (s1:ITService)
-WHERE s1.uuid IN {uuids}
-OPTIONAL MATCH (s1)-[:BelongsTo]->(sg)
-OPTIONAL MATCH (s1)-[:ParentOf]->(s2)
-OPTIONAL MATCH (s1)<-[:ParentOf]-(s3)
-OPTIONAL MATCH (s1)-[:DependsOn]->(s4)
-OPTIONAL MATCH (s1)<-[:DependsOn]-(s5)
-WITH {service:s1,group:sg,children:(collect(distinct(s2))),parent:s3,dependencies:(collect(distinct(s4))),dependendents:(collect(distinct(s5)))} as service
-RETURN COLLECT(service)`
-
-
-const cmdb_advancedSearchITService_cypher = `OPTIONAL MATCH (s1:ITService)
-WHERE s1.uuid IN {search} or s1.group IN {search}
-WITH COLLECT(distinct(s1.uuid)) as services_byIds
-UNWIND {search} as keyword
-OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
-WHERE s1.name = keyword or sg.name = keyword
-WITH services_byIds+collect(distinct(s1.uuid)) as services
-UNWIND services AS service
-RETURN COLLECT( distinct service)`
+RETURN { count: cnt, results:collect(group_with_services) }`
 
 /*ProcessFlow*/
 const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]-()
@@ -122,79 +100,96 @@ MATCH (n:ProcessFlow{uuid:{uuid}})
 MATCH (rn:ProcessFlow{uuid:reference_id})
 CREATE (n)-[:REFERENCED_PROCESSFLOW]->(rn)`
 
-const cmdb_queryProcessFlowTimeline_cypher = `match p=(current:ProcessFlow {uuid:{uuid}})-[:PREV*]->()
-WITH COLLECT(p) AS paths, MAX(length(p)) AS maxLength
-RETURN FILTER(path IN paths WHERE length(path)= maxLength) AS longestPaths`
+const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uuid}})
+                                    ON CREATE SET n = {fields}
+                                    ON MATCH SET n = {fields}`
 
-const node_alias = 'n'
 
-const cmdb_addNode_Cypher_template = (labels, created='',last_updated='') => `MERGE (${node_alias}:${labels} {uuid: {uuid}})
-                                    ON CREATE SET ${node_alias} = {fields}${created}
-                                    ON MATCH SET ${node_alias} = {fields}${last_updated}`
+const generateQueryITServiceByUuidsCypher = (params)=>`MATCH (s1:ITService)
+WHERE s1.uuid IN {uuids}
+OPTIONAL MATCH (s1)-[:BelongsTo]->(sg)
+OPTIONAL MATCH (s1)-[:ParentOf]->(s2)
+OPTIONAL MATCH (s1)<-[:ParentOf]-(s3)
+OPTIONAL MATCH (s1)-[:DependsOn]->(s4)
+OPTIONAL MATCH (s1)<-[:DependsOn]-(s5)
+WITH {service:s1,group:sg,children:(collect(distinct(s2))),parent:s3,dependencies:(collect(distinct(s4))),dependendents:(collect(distinct(s5)))} as service
+RETURN COLLECT(service)`
 
-const cmdb_addPrevNodeRel_Cypher_template = (label) => `match (current:${label} {uuid:{uuid}})
+
+const generateAdvancedSearchITServiceCypher = (params)=>`OPTIONAL MATCH (s1:ITService)
+WHERE s1.uuid IN {search} or s1.group IN {search}
+WITH COLLECT(distinct(s1.uuid)) as services_byIds
+UNWIND {search} as keyword
+OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
+WHERE s1.name = keyword or sg.name = keyword
+WITH services_byIds+collect(distinct(s1.uuid)) as services
+UNWIND services AS service
+RETURN COLLECT( distinct service)`
+
+const generateQueryNodeChangeTimelineCypher = (params)=> {
+    let label = _.isArray(params.category)?_.last(params.category):params.category
+    return `match p=(current:${label} {uuid:{uuid}})-[:PREV*]->()
+            WITH COLLECT(p) AS paths, MAX(length(p)) AS maxLength
+            RETURN FILTER(path IN paths WHERE length(path)= maxLength) AS longestPaths`
+}
+
+
+const generateAddPrevNodeRelCypher = (params) => {
+    let label = schema.cmdbTypeLabels[params.category]?_.last(schema.cmdbTypeLabels[params.category]):params.category
+    return `match (current:${label} {uuid:{uuid}})
                                     optional match (current)-[prev_rel:PREV]->(prev_prev)                                                    
                                     create (prev:${label}Prev {fields_old})
                                     create (current)-[:PREV {change}]->(prev)
                                     FOREACH (o IN CASE WHEN prev_prev IS NOT NULL THEN [prev_prev] ELSE [] END |
                                       create (prev)-[prev_rel_new:PREV]->(prev_prev)
                                       set prev_rel_new = properties(prev_rel)
-                                      DELETE prev_rel
-                                    )                                   
-`;
+                                      DELETE prev_rel)`
+}
 
 
-const cmdb_delNode_cypher = `MATCH (n)
+const generateDelNodeCypher = (params)=>`MATCH (n)
                             WHERE n.uuid = {uuid}
                             DETACH
                             DELETE n
                             return n`;
 
-const cmdb_findNode_cypher_template = (label) => `MATCH (n:${label})
+const generateQueryNodeCypher = (params) => {
+    let label = _.isArray(params.category)?_.last(params.category):params.category
+    return `MATCH (n:${label})
                             WHERE n.uuid = {uuid}
                             RETURN n`;
+}
 
-var user_attributes = ['uuid','userid','alias','lang','name','surname']
-user_attributes=_.map(user_attributes,(attribute)=>`${attribute}:${node_alias}.${attribute}`)
-user_attributes=`{${user_attributes.join()}}`
-const all_attributes = `${node_alias}`;
+// var user_attributes = ['uuid','userid','alias','lang','name','surname']
 
-const cmdb_findNodes_Cypher_template = (type,attributes) => `MATCH
-            (${node_alias}:${type})
+const cmdb_findNodes_Cypher_template = (label) => `MATCH
+            (n:${label})
             WITH
-            count(${node_alias}) AS cnt
+            count(n) AS cnt
             MATCH
-            (${node_alias}:${type})
+            (n:${label})
             WITH
-            ${attributes} as ${node_alias}, cnt
+            n as n, cnt
             SKIP {skip} LIMIT {limit}
-            RETURN { count: cnt, results:collect(${node_alias}) }`;
+            RETURN { count: cnt, results:collect(n) }`;
 
-
-const keyword_condition = `WHERE ${node_alias}.name = {keyword}`;
-const user_keyword_condition = `WHERE ${node_alias}.alias = {keyword}`;
-
-const cmdb_findNodesByKeyword_Cypher_template = (type,condition,attributes) => `MATCH
-            (n:${type})
+const cmdb_findNodesByKeyword_Cypher_template = (label,condition) => `MATCH
+            (n:${label})
             ${condition}
             WITH
             count(n) AS cnt
             MATCH
-            (n:${type})
+            (n:${label})
             ${condition}
             WITH
-            ${attributes} as n, cnt
+            n as n, cnt
             SKIP {skip} LIMIT {limit}
             RETURN { count: cnt, results:collect(n) }`
 
 const generateAddNodeCypher=(params)=>{
-    let labels = schema.cmdbTypeLabels[params.category],created='',last_updated='';
-    if(Array.isArray(labels)&&(labels.includes(schema.cmdbTypeName.ConfigurationItem)||labels.includes(schema.cmdbTypeName.ProcessFlow))){
-        created = `,${node_alias}.created = timestamp()`;
-        last_updated = `,${node_alias}.lastUpdated = timestamp()`;
-    }
-    labels = labels?labels.join(":"):params.category;
-    return cmdb_addNode_Cypher_template(labels,created,last_updated);
+    let labels = schema.cmdbTypeLabels[params.category];
+    labels = _.isArray(labels)?labels.join(":"):params.category;
+    return cmdb_addNode_Cypher_template(labels);
 }
 
 const generateSequence=(name)=>
@@ -205,7 +200,6 @@ const generateSequence=(name)=>
 
 
 module.exports = {
-    generateAddNodeCypher:generateAddNodeCypher,
     generateCmdbCyphers: (params)=>{
         let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInConfigurationItem_cypher]
         if(params.it_service&&params.it_service.length){
@@ -251,40 +245,40 @@ module.exports = {
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowCommitedByUserRel_cypher];
         if(params.executor)
             cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowExecutedByUserRel_cypher];
-        if(params.method == 'PUT'||params.method =='PATCH')
-            cyphers_todo = [...cyphers_todo,cmdb_addPrevNodeRel_Cypher_template(params.category)];
         return cyphers_todo;
     },
     generateQueryNodesCypher:(params)=>{
-        var cypher,attributes=all_attributes;
+        var cypher,label;
         if(params.category === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroup_cypher;
         }else{
-            if(params.category === schema.cmdbTypeName.User){
-                attributes= user_attributes;
-            }
-            cypher = cmdb_findNodes_Cypher_template(params.category,attributes);
+            label = _.isArray(params.category)?_.last(params.category):params.category
+            cypher = cmdb_findNodes_Cypher_template(label);
         }
         return cypher;
     },
     generateQueryNodesByKeyWordCypher:(params)=>{
-        var cypher,attributes=all_attributes,condition=keyword_condition;
+        let keyword_condition = `WHERE n.name = {keyword}`
+            ,user_keyword_condition = `WHERE n.alias = {keyword}`
+            ,condition=keyword_condition
+            ,cypher,label;
         if(params.category === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroupByKeyword_cypher;
         }else{
             if(params.category === schema.cmdbTypeName.User){
-                attributes= user_attributes;
                 condition = user_keyword_condition;
             }
-            cypher = cmdb_findNodesByKeyword_Cypher_template(params.category,condition,attributes);
+            label = _.isArray(params.category)?_.last(params.category):params.category
+            cypher = cmdb_findNodesByKeyword_Cypher_template(label,condition);
         }
         return cypher;
     },
-    generateQueryByUuidsCypher:(params)=> cmdb_queryITServiceByUuids_cypher,
-    generateAdvancedSearchCypher:(params) =>cmdb_advancedSearchITService_cypher,
-    generateQueryNodeCypher:(params)=> cmdb_findNode_cypher_template(params.category),
-    generateDelNodeCypher:(params)=>cmdb_delNode_cypher,
-    cmdb_findNode_cypher:cmdb_findNode_cypher_template,
-    generateQueryProcessFlowTimelineCypher:()=>cmdb_queryProcessFlowTimeline_cypher,
-    generateSequence:generateSequence
+    generateQueryITServiceByUuidsCypher,
+    generateAdvancedSearchITServiceCypher,
+    generateAddNodeCypher,
+    generateQueryNodeCypher,
+    generateDelNodeCypher,
+    generateQueryNodeChangeTimelineCypher,
+    generateSequence,
+    generateAddPrevNodeRelCypher
 }
