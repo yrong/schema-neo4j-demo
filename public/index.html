@@ -31,6 +31,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.8/themes/fa/theme.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -87,18 +88,31 @@
                     from: "bottom",
                     align: "left"
                 },
-                allow_dismiss: false,
-                type:'success'
+                allow_dismiss: false
             });
-            notify = $.notify('start import,waiting...')
+            $.notify('start import,waiting...')
             importerSocket.emit( 'importConfigurationItem', {fileId:fileId} )
         }
     })
     importerSocket.on( 'importConfigurationItemResponse', function( event ) {
-        $.notify({
+        var error_exist = _.some(_.values(event),function(rec) {
+            return rec.exception_num>0
+        })
+        var type = error_exist?'warning':'success'
+        var options = {message:JSON.stringify(event,null,'\t')}
+        var settings = {
             icon: 'fa fa-paw',
-            message:JSON.stringify(event,null,'\t')
-        });
+            type: type
+        }
+        var fileId = $('#uploaded_fileId').text()
+        if(error_exist){
+            options = _.assign(options,{url:`/upload/ConfigurationItem/exception/${fileId}.xlsx`})
+            settings = _.assign(settings,{allow_dismiss: true,delay:0})
+        }
+        $.notify(options,settings);
+    })
+    importerSocket.on( 'importConfigurationItemError', function( event ) {
+        $.notify({message:JSON.stringify(event,null,'\t')},{type:'danger',allow_dismiss: true,delay:0});
     })
 </script>
 </body>

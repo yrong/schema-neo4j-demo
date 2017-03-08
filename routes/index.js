@@ -145,13 +145,13 @@ module.exports = ()=>{
         try{
             importerInstance = new excelImporter(socketio,data.fileId)
         }catch(error){
-            ctx.socket.emit('importConfigurationItemError',error)
+            ctx.socket.emit('importConfigurationItemError',error.message)
             return
         }
         importerInstance.importer().then((result)=>{
             ctx.socket.emit('importConfigurationItemResponse',result)
         }).catch((error)=>{
-            ctx.socket.emit('importConfigurationItemError',error)
+            ctx.socket.emit('importConfigurationItemError',error.message)
         })
     })
     return app
