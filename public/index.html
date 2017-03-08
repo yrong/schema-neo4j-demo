@@ -77,7 +77,7 @@
         $('#uploaded_fileId').text(fileId)
         importerBtn.removeClass('hidden')
     });
-    var importerSocket = io( 'http://localhost:3001/importer' ),notify
+    var importerSocket = io( '/importer' ),notify
     importerBtn.click(function(event){
         var fileId = $('#uploaded_fileId').text()
         if(fileId){
