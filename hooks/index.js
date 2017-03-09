@@ -51,7 +51,6 @@ var createOrUpdateCypherGenerator = (params)=>{
 }
 
 var deleteCypherGenerator = (params)=>{
-    params.category = getCategoryFromUrl(params.url)
     params.cypher = cypherBuilder.generateDelNodeCypher();
     logCypher(params)
     return params;
@@ -73,13 +72,12 @@ var paginationParamsGenerator = function (params) {
     return _.assign(params,params_pagination);
 }
 
-var queryParamsCypherGenerator = function (params, ctx) {
-    params.category = getCategoryFromUrl(ctx.url)
+var queryParamsCypherGenerator = function (params) {
     if(params.keyword){
         params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
     }else if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
-        if(utils.isChangeTimelineQuery(ctx.url))
+        if(utils.isChangeTimelineQuery(params.url))
             params.cypher = cypherBuilder.generateQueryNodeChangeTimelineCypher(params)
     }
     else{
@@ -130,9 +128,8 @@ var cudItem_callback = (params,update)=>{
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
-        params.method = ctx.method,params.url = ctx.url
+        params.method = ctx.method,params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
-            params.category = params.data.category
             if (params.data.category === schema.cmdbTypeName.IncidentFlow)
                 return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true).then((result) => {
                     params.data.fields.pfid = 'IR' + result[0]
@@ -142,7 +139,6 @@ module.exports = {
                 return cudItem_callback(params)
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
-            params.category = params.data.category
             return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeCypher(params), params, true).then((result) => {
                 if (result && result[0]) {
                     params.fields_old = result[0]
@@ -187,9 +183,9 @@ module.exports = {
         return　response_wrapped;
     },
     queryItems_preProcess:function (params,ctx) {
-        params.method = ctx.method,params.url = ctx.url
+        params.method = ctx.method,params.url = ctx.url,params.category = getCategoryFromUrl(ctx.url)
         params = paginationParamsGenerator(params);
-        params = queryParamsCypherGenerator(params,ctx);
+        params = queryParamsCypherGenerator(params);
         return params;
     },
     queryItems_postProcess:function (result,params,ctx) {

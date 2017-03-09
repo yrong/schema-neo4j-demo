@@ -5,7 +5,6 @@
   "scripts": {
     "build": "webpack",
     "start": "NODE_ENV=production node bin/start.js",
-    "sync": "node ./sync/index.js",
     "test": "mocha",
     "init": "/bin/bash ./script/init.sh",
     "backup": "/bin/bash ./script/backup.sh",
