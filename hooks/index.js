@@ -122,7 +122,7 @@ var cudItem_callback = (params,update)=>{
         params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
         params.fields.created = Date.now()
     }
-    cudItem_params_stringify(params,['asset_location','geo_location'])
+    cudItem_params_stringify(params,['asset_location','geo_location','status'])
     return createOrUpdateCypherGenerator(params)
 }
 

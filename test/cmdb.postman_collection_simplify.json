@@ -478,6 +478,12 @@
         "category": "Router",
         "fields": {
           "name": "router",
+          "status": {
+            "status": "In_Use",
+            "fields": {
+              "a": 1
+            }
+          },
           "it_service": [
             "bba72380-fcd7-11e6-8345-3beeef62bcf0"
           ],

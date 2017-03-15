@@ -142,16 +142,20 @@ module.exports = ()=>{
     const socketio = new IO('importer')
     socketio.attach(app)
     socketio.on( 'importConfigurationItem', ( ctx, data ) => {
+        logger.info("receive importConfigurationItem request from socket")
         let importerInstance
         try{
             importerInstance = new excelImporter(socketio,data.fileId)
         }catch(error){
+            logger.error("excelImporter initialized failed:" + String(error))
             ctx.socket.emit('importConfigurationItemError',error.message)
             return
         }
         importerInstance.importer().then((result)=>{
+            logger.info("importConfigurationItem success:" + JSON.stringify(result))
             ctx.socket.emit('importConfigurationItemResponse',result)
         }).catch((error)=>{
+            logger.error("importConfigurationItemError:" + String(error))
             ctx.socket.emit('importConfigurationItemError',error.message)
         })
     })
