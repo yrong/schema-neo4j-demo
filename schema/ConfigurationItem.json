@@ -22,6 +22,15 @@
     },
     "technical_support_info": {
       "type": "string"
+    },
+    "status":{
+      "type":"object",
+      "properties":{
+        "status":{
+          "type": "string",
+          "enum": ["In_Use", "Un_Use"]
+        }
+      }
     }
   },
   "required": ["name","monitored"]
