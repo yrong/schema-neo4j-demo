@@ -27,13 +27,6 @@
       "user": "neo4j",
       "password": "neo4j"
     },
-    "mysql": {
-      "host": "localhost",
-      "port": 3306,
-      "user": "root",
-      "password": "root",
-      "database": "test"
-    },
     "elasticsearch":{
       "host": "localhost",
       "port": 9200,

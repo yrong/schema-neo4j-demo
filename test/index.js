@@ -24,6 +24,7 @@ describe("CMDB Integration test suite", function() {
             newman.run({
                 collection: require('./cmdb.postman_collection.json'),
                 environment: require('./cmdb.postman_environment.json'),
+                globals: require('./globals.postman_globals.json'),
                 reporters: 'cli'
             }, done);
         })

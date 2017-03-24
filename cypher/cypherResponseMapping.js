@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var cache = require('../cache')
 var utils = require('../helper/utils')
+var schema = require('../schema')
 
 const removeInternalPropertys = (val) => {
     if (_.isArray(val)) {
@@ -26,23 +27,32 @@ const referencedMapper = (val) => {
             return referencedMapper(val);
         });
     } else {
-        for (let val_key in val) {
-            let val_val = val[val_key]
-            if(val_key == 'asset_location'||val_key == 'geo_location'){
-                val[val_key] = _.isString(val_val)?JSON.parse(val_val):val_val
-            }
-            if(val_val){
-                if(val_key == 'responsibility'||val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){
-                    val[val_key] = cache.get(val_val)
+        for (let key in val) {
+            let val_val = val[key]
+            for(let field of utils.objectFields){
+                if(key === field){
+                    if(_.isString(val_val)){
+                        try{
+                            val[key] = JSON.parse(val_val)
+                        }catch(error){
+                        }
+                    }
                 }
-                if(val_key == 'it_service'){
-                    val.it_service=_.map(val[val_key],(val_val)=>{
-                        return cache.get(val_val)
+            }
+            for(let field of utils.referencedFields) {
+                if (key === field) {
+                    val[key] = cache.get(val_val)
+                }
+            }
+            for(let field of utils.referencedArrayFields) {
+                if (key === field) {
+                    val[key] = _.map(val_val,(id)=>{
+                        return cache.get(id)
                     })
                 }
-                if (typeof val_val === 'object'){
-                    referencedMapper(val_val);
-                }
+            }
+            if (typeof val_val === 'object'){
+                val[key] = referencedMapper(val_val);
             }
         }
     }
@@ -72,7 +82,9 @@ module.exports = {
         if (params.url&&utils.isChangeTimelineQuery(params.url)) {
             result = timelineMapper(result)
         }
-        return params.getReferencedObj?referencedMapper(result):result
+        if(params.category === schema.cmdbTypeName.ConfigurationItem || params.category === schema.cmdbTypeName.ProcessFlow)
+            return referencedMapper(result)
+        return result
     }
 }
 

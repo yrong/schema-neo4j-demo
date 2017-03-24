@@ -12,7 +12,7 @@
     "importFromExcel": "cross-env IMPORT_TYPE=excel IMPORT_FILE=9c2af160-034b-11e7-9f6b-2d9ac64b3726 node ./import/index.js",
     "exportToJson": "cross-env EXPORT_TYPE=json node ./export/index.js",
     "importFromJson": "cross-env IMPORT_TYPE=json IMPORT_FOLDER=export_data/20170226163617 node ./import/index.js",
-    "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment_all.json",
+    "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment.json",
     "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
@@ -36,7 +36,6 @@
     "koa2-file-upload-local": "^1.0.0",
     "log4js": "^1.1.1",
     "moment": "^2.17.1",
-    "mysql": "^2.12.0",
     "node-cache": "^4.1.1",
     "request-promise": "^4.1.1",
     "uuid": "^3.0.1",

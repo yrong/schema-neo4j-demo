@@ -8,6 +8,7 @@ const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('../../schema/index')
 const apiInvoker = require('../../helper/apiInvoker')
 const routeDef = require('../../routes/def')
+const utils = require('../../helper/utils')
 
 const exportItems = async ()=>{
     let categories = process.env.EXPORT_CATEGORIES,categories_original,containsProcessFlow = true
@@ -33,13 +34,13 @@ const exportItems = async ()=>{
             return item.row[0]
         })
         items = _.map(items,(item)=>{
-            if(_.isString(item.asset_location))
-                item.asset_location = JSON.parse(item.asset_location)
-            if(_.isString(item.geo_location))
-                try{
-                    item.geo_location = JSON.parse(item.geo_location)
-                }catch(error){//just for geo_location legacy string format compatibility,do nothing
-                }
+            for(let field of utils.objectFields){
+                if(_.isString(item[field]))
+                    try {
+                        item[field] = JSON.parse(item[field])
+                    }catch(error){//just for geo_location legacy string format compatibility,do nothing
+                    }
+            }
             return item
         })
         if (items && items.length) {
