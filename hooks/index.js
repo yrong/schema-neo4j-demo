@@ -101,6 +101,11 @@ var cudItem_params_stringify = (params, list) => {
             params.change[name] = JSON.stringify(params.change[name])
         }
     }
+    for (let key in params.fields){
+        if(_.isArray(params.fields[key])&&params.fields[key].length ==1&&params.fields[key][0]==''){
+            params.fields[key] = []
+        }
+    }
     params = _.assign(params, params.fields)
     for(let name of list){
         if(_.isString(params[name])){

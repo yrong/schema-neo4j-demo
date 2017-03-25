@@ -33,6 +33,12 @@ const itemPreprocess = (item)=>{
     if(_.includes(schema.cmdbConfigurationItemTypes,item.category)){
         if(_.isString(item.geo_location))
             item.geo_location = {name:item.geo_location}
+        if(_.isString(item.status))
+            item.status = JSON.parse(item.status)
+        if(item.asset_location&&item.asset_location.location){
+            item.asset_location.position = item.asset_location.location
+            delete item.asset_location.location
+        }
     }
     return item
 }
@@ -52,6 +58,8 @@ class Importer {
                 let items = jsonfile.readFileSync(filePath)
                 items = sortItemsDependentFirst(items)
                 for (let item of items) {
+                    if(!item.category&&schema.cmdbConfigurationItemAuxiliaryTypes.includes(category))
+                        item.category = category
                     await apiInvoker.addItem(item.category,itemPreprocess(item))
                 }
                 filesImported.push(filePath)
