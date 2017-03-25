@@ -3,19 +3,30 @@ var cache = require('../cache')
 var utils = require('../helper/utils')
 var schema = require('../schema')
 
-const removeInternalPropertys = (val) => {
+const removeInternalProperties = (val) => {
+    for (let prop in val) {
+        for(let hidden_prop of utils.globalHiddenFields){
+            if (prop === hidden_prop)
+                delete val[prop];
+        }
+    }
+    return recursivelyRemoveInternalProperties(val)
+}
+
+const recursivelyRemoveInternalProperties =  (val) => {
     if (_.isArray(val)) {
         val = _.map(val, function (val) {
-            return removeInternalPropertys(val);
+            return recursivelyRemoveInternalProperties(val);
         });
     } else {
         for (let prop in val) {
-            for(let hidden_prop of utils.globalHiddenFields){
+            for(let hidden_prop of utils.globalHiddenFieldsInAllLevel){
                 if (prop === hidden_prop)
                     delete val[prop];
             }
             if (typeof val[prop] === 'object')
-                removeInternalPropertys(val[prop]);
+                if(prop !== 'status')//not remove 'fields' in field 'status'
+                    recursivelyRemoveInternalProperties(val[prop]);
         }
     }
     return val;
@@ -77,7 +88,7 @@ var timelineMapper = (result)=>{
 }
 
 module.exports = {
-    removeInternalPropertys: removeInternalPropertys,
+    removeInternalPropertys: removeInternalProperties,
     resultMapper: (result, params) => {
         if (params.url&&utils.isChangeTimelineQuery(params.url)) {
             result = timelineMapper(result)
