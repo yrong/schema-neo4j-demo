@@ -14,14 +14,14 @@ const customized_routes = (routesDef)=>{
     routesDef.ConfigurationItem.customizedHook = {
         Add:{postProcess:search.addItem},
         Modify:{postProcess:search.patchItem},
-        Delete:{postProcess: search.delItem},
+        Delete:{postProcess: search.deleteItem},
         Search:{procedure:search.searchItem}
     }
     routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,'Search']
     routesDef.ProcessFlow.customizedHook = {
         Add:{postProcess:search.addItem},
         Modify:{postProcess:search.patchItem},
-        Delete:{postProcess: search.delItem},
+        Delete:{postProcess: search.deleteItem},
         FindAll:{procedure:search.searchItem},
         FindOne:{procedure:search.searchItem},
         Search:{procedure:search.searchItem}
@@ -112,7 +112,7 @@ module.exports = ()=>{
         method: 'DEL',
         route: '/api/items',
         cypherQueryFile: './cypher/deleteItems.cyp',
-        postProcess: search.delItem
+        postProcess: search.deleteAll
     });
 
     /* file upload for demo purpose */

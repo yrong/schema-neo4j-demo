@@ -18,10 +18,6 @@ var getCategoryFromUrl = function (url) {
             break
         }
     }
-    if (url.includes('/processFlows')) //for legacy compatible
-        category =  [schema.cmdbTypeName.ProcessFlowLegacy,schema.cmdbTypeName.ProcessFlow]
-    else if(url.includes('/items'))//for delete all test
-        category = [schema.cmdbTypeName.ProcessFlow,schema.cmdbTypeName.ConfigurationItem]
     if(!category)
         throw new Error('can not find category from url:'+url)
     return category;
@@ -108,7 +104,11 @@ var cudItem_params_stringify = (params, list) => {
     params = _.assign(params, params.fields)
     for(let name of list){
         if(_.isString(params[name])){
-            params[name] = JSON.parse(params[name])
+             try{
+                 params[name] = JSON.parse(params[name])
+             }catch(error){
+                 //same field with different type in different categories(e.g:'status in 'ConfigurationItem' and 'ProcessFlow'),ignore error and just for protection here
+             }
         }
     }
 }

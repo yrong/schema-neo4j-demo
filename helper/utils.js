@@ -4,7 +4,7 @@ module.exports = {
         return re.test(url)
     },
     globalHiddenFields:['fields','cyphers','method','data','token','fields_old','change','url','id','_id','_index','_type','passwd'],
-    objectFields:['asset_location','geo_location','cfg_status'],
+    objectFields:['asset_location','geo_location','status'],
     referencedFields:['responsibility','committer','executor','cabinet','position','group'],
     referencedArrayFields:['it_service']
 }

@@ -17,7 +17,7 @@
         }
       ],
       "replaceConsole": true,
-      "defaultLevel":"INFO",
+      "defaultLevel":"DEBUG",
       "defaultCategory":"cmdb-api"
     },
     "neo4j": {
@@ -30,7 +30,6 @@
     "elasticsearch":{
       "host": "localhost",
       "port": 9200,
-      "index": "cmdb",
       "refresh": false
     },
     "export":{
