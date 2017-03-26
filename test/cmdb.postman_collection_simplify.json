@@ -4,14 +4,14 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "pop3",
           "description": "pop3",
-          "group": "70e1ea40-103e-11e7-a01d-e59573a6b656",
-          "parent": "711cd060-103e-11e7-a01d-e59573a6b656"
+          "group": "218d4e00-1203-11e7-9162-e95a680838a3",
+          "parent": "21cf11f0-1203-11e7-9162-e95a680838a3"
         }
       }
     }
@@ -26,7 +26,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/positions",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Position",
         "fields": {
@@ -46,13 +46,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "email",
           "description": "email",
-          "group": "70e1ea40-103e-11e7-a01d-e59573a6b656"
+          "group": "218d4e00-1203-11e7-9162-e95a680838a3"
         }
       }
     }
@@ -65,28 +65,28 @@
   {
     "name": "query it service by uuids",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?uuids=711cd060-103e-11e7-a01d-e59573a6b656,71654b10-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/it_services/service?uuids=21cf11f0-1203-11e7-9162-e95a680838a3,222484f0-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "add incident flow 2 reference incident flow 1",
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "719d23f0-103e-11e7-a01d-e59573a6b656"
+            "2260a390-1203-11e7-9162-e95a680838a3"
           ],
           "committer": 1,
           "executor": 1,
           "reference_kb": [
-            "d4c92e7a-2251-4bfd-be42-93eaafe1906d",
-            "92d86966-0d23-4c76-83f3-8bd77fb01418"
+            "6cff283b-6878-4f78-b22d-52c9271b4994",
+            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
           ],
           "reference_process_flow": [
-            "759debb0-103e-11e7-a01d-e59573a6b656"
+            "26e82780-1203-11e7-9162-e95a680838a3"
           ],
           "status": "open",
           "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
@@ -102,7 +102,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -110,8 +110,8 @@
           "committer": 1,
           "executor": 1,
           "reference_kb": [
-            "d4c92e7a-2251-4bfd-be42-93eaafe1906d",
-            "92d86966-0d23-4c76-83f3-8bd77fb01418"
+            "6cff283b-6878-4f78-b22d-52c9271b4994",
+            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
           ],
           "status": "open",
           "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
@@ -125,26 +125,26 @@
   {
     "name": "search it service by group id",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?search=70e1ea40-103e-11e7-a01d-e59573a6b656,70fe24d0-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/it_services/service?search=218d4e00-1203-11e7-9162-e95a680838a3,21abf990-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "add incident flow 4 with attachment referenced",
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "711cd060-103e-11e7-a01d-e59573a6b656",
-            "71654b10-103e-11e7-a01d-e59573a6b656"
+            "21cf11f0-1203-11e7-9162-e95a680838a3",
+            "222484f0-1203-11e7-9162-e95a680838a3"
           ],
           "committer": 1,
           "executor": 1,
           "reference_kb": [
-            "d4c92e7a-2251-4bfd-be42-93eaafe1906d",
-            "92d86966-0d23-4c76-83f3-8bd77fb01418"
+            "6cff283b-6878-4f78-b22d-52c9271b4994",
+            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
           ],
           "status": "open",
           "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
@@ -165,13 +165,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "email",
           "description": "email",
-          "group": "70e1ea40-103e-11e7-a01d-e59573a6b656"
+          "group": "218d4e00-1203-11e7-9162-e95a680838a3"
         }
       }
     }
@@ -179,7 +179,7 @@
   {
     "name": "delete cabinet 1",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/cabinets/70589600-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/cabinets/20f4b780-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "query it service groups by keyword",
@@ -201,7 +201,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/users",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "uuid": 1,
       "data": {
         "category": "User",
@@ -224,7 +224,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/group",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "ITServiceGroup",
         "fields": {
@@ -237,15 +237,24 @@
   {
     "name": "patch incident flow 1 status to closed",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/processFlows/759debb0-103e-11e7-a01d-e59573a6b656",
+    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "status": "closed"
         }
       }
+    }
+  },
+  {
+    "name": "login",
+    "method": "POST",
+    "url": "http://localhost:3002/auth/login",
+    "body": {
+      "username": "nerds",
+      "password": "098f6bcd4621d373cade4e832627b4f6"
     }
   },
   {
@@ -256,14 +265,14 @@
   {
     "name": "patch router for all attributes",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/cfgItems/729825c0-103e-11e7-a01d-e59573a6b656",
+    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Router",
         "fields": {
           "it_service": [
-            "719d23f0-103e-11e7-a01d-e59573a6b656"
+            "2260a390-1203-11e7-9162-e95a680838a3"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -274,7 +283,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "70335ac0-103e-11e7-a01d-e59573a6b656"
+            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
           }
         }
       }
@@ -293,21 +302,21 @@
   {
     "name": "delete incident flow 3",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/processFlows/765295b0-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/processFlows/27772110-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "add physical server",
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "PhysicalServer",
         "fields": {
           "name": "physicalserver",
           "it_service": [
-            "711cd060-103e-11e7-a01d-e59573a6b656",
-            "71654b10-103e-11e7-a01d-e59573a6b656"
+            "21cf11f0-1203-11e7-9162-e95a680838a3",
+            "222484f0-1203-11e7-9162-e95a680838a3"
           ],
           "ip_address": [
             "10.10.35.63"
@@ -320,7 +329,7 @@
           "warranty_expiration_date": "2016-11-11",
           "asset_location": {
             "status": "unmounted",
-            "position": "70c64bf0-103e-11e7-a01d-e59573a6b656"
+            "position": "216f3eb0-1203-11e7-9162-e95a680838a3"
           },
           "management_ip": [
             "10.10.35.64"
@@ -335,13 +344,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Firewall",
         "fields": {
           "name": "firewall",
           "it_service": [
-            "719d23f0-103e-11e7-a01d-e59573a6b656"
+            "2260a390-1203-11e7-9162-e95a680838a3"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -352,7 +361,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "70335ac0-103e-11e7-a01d-e59573a6b656"
+            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
           }
         }
       }
@@ -371,14 +380,14 @@
   {
     "name": "query process flow timeline by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows/759debb0-103e-11e7-a01d-e59573a6b656/timeline"
+    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3/timeline"
   },
   {
     "name": "add cabinet 1",
     "method": "POST",
     "url": "http://localhost:3001/api/cabinets",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Cabinet",
         "fields": {
@@ -401,14 +410,14 @@
   {
     "name": "query physical server by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/72eeaa30-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/cfgItems/23dc4710-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "add cabinet ",
     "method": "POST",
     "url": "http://localhost:3001/api/cabinets",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Cabinet",
         "fields": {
@@ -423,13 +432,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Switch",
         "fields": {
           "name": "switch",
           "it_service": [
-            "719d23f0-103e-11e7-a01d-e59573a6b656"
+            "2260a390-1203-11e7-9162-e95a680838a3"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -440,7 +449,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "70335ac0-103e-11e7-a01d-e59573a6b656"
+            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
           }
         }
       }
@@ -451,7 +460,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Router",
         "fields": {
@@ -463,7 +472,7 @@
             }
           },
           "it_service": [
-            "719d23f0-103e-11e7-a01d-e59573a6b656"
+            "2260a390-1203-11e7-9162-e95a680838a3"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -474,7 +483,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "70335ac0-103e-11e7-a01d-e59573a6b656"
+            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
           },
           "geo_location": {
             "name": "beijing",
@@ -492,19 +501,19 @@
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "711cd060-103e-11e7-a01d-e59573a6b656",
-            "71654b10-103e-11e7-a01d-e59573a6b656"
+            "21cf11f0-1203-11e7-9162-e95a680838a3",
+            "222484f0-1203-11e7-9162-e95a680838a3"
           ],
           "committer": 1,
           "executor": 1,
           "reference_kb": [
-            "d4c92e7a-2251-4bfd-be42-93eaafe1906d",
-            "92d86966-0d23-4c76-83f3-8bd77fb01418"
+            "6cff283b-6878-4f78-b22d-52c9271b4994",
+            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
           ],
           "status": "open",
           "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
@@ -518,14 +527,14 @@
   {
     "name": "query cfgitem by uuid ",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/729825c0-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "patch incident flow 1 status to solved",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/processFlows/759debb0-103e-11e7-a01d-e59573a6b656",
+    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -537,7 +546,7 @@
   {
     "name": "query process flow by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows/759debb0-103e-11e7-a01d-e59573a6b656"
+    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3"
   },
   {
     "name": "query ConfigurationItem Category by filter",
@@ -547,16 +556,16 @@
   {
     "name": "patch router for patial attributes",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/cfgItems/729825c0-103e-11e7-a01d-e59573a6b656",
+    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "Router",
         "fields": {
           "name": "router-3",
           "it_service": [
-            "71654b10-103e-11e7-a01d-e59573a6b656",
-            "719d23f0-103e-11e7-a01d-e59573a6b656"
+            "222484f0-1203-11e7-9162-e95a680838a3",
+            "2260a390-1203-11e7-9162-e95a680838a3"
           ],
           "sn": "12345678"
         }
@@ -576,7 +585,7 @@
   {
     "name": "query router timeline",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/729825c0-103e-11e7-a01d-e59573a6b656/timeline"
+    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3/timeline"
   },
   {
     "name": "query Cabinets",
@@ -588,7 +597,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/group",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "ITServiceGroup",
         "fields": {
@@ -624,15 +633,15 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "{{token}}",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "dns",
           "description": "dns",
-          "group": "70fe24d0-103e-11e7-a01d-e59573a6b656",
+          "group": "21abf990-1203-11e7-9162-e95a680838a3",
           "dependendents": [
-            "711cd060-103e-11e7-a01d-e59573a6b656"
+            "21cf11f0-1203-11e7-9162-e95a680838a3"
           ]
         }
       }
