@@ -102,8 +102,14 @@ var cudItem_params_stringify = (params, list) => {
         }
     }
     for (let key in params.fields){
-        if(_.isArray(params.fields[key])&&params.fields[key].length ==1&&params.fields[key][0]==''){
-            params.fields[key] = []
+        if(_.isArray(params.fields[key])){
+            if(_.isObject(params.fields[key][0]))
+                throw new Error('Property values can only be of primitive types or arrays thereof,invalid field:' + key)
+            if(params.fields[key].length ==1&&params.fields[key][0]=='')
+                params.fields[key] = []
+        }
+        else if(_.isObject(params.fields[key])){
+            throw new Error('Property values can only be of primitive types or arrays thereof,invalid field:' + key)
         }
     }
     params = _.assign(params, params.fields)
