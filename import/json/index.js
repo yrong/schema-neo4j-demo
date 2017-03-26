@@ -51,21 +51,36 @@ class Importer {
     async importer()  {
         let date_dir = this.exportedJsonFilesFolder||process.env.IMPORT_FOLDER
         let categories = schema.cmdbTypesAll
-        let filesImported = []
+        let result = {}
         for(let category of categories){
             let filePath = path.join(date_dir,category + '.json')
+            let errorFolder = path.join(date_dir,'exception')
+            let errorFilePath = path.join(errorFolder,category + '.json')
+            let errorItems = []
             if(fs.existsSync(filePath)){
                 let items = jsonfile.readFileSync(filePath)
                 items = sortItemsDependentFirst(items)
                 for (let item of items) {
                     if(!item.category&&schema.cmdbConfigurationItemAuxiliaryTypes.includes(category))
                         item.category = category
-                    await apiInvoker.addItem(item.category,itemPreprocess(item))
+                    try {
+                        item = itemPreprocess(item)
+                        await apiInvoker.addItem(item.category, item)
+                    }catch(error){
+                        item.error = String(error)
+                        errorItems.push(item)
+                    }
                 }
-                filesImported.push(filePath)
+                if(errorItems.length){
+                    if (!fs.existsSync(errorFolder)){
+                        fs.mkdirSync(errorFolder)
+                        jsonfile.writeFileSync(errorFilePath, errorItems, {spaces: 2})
+                    }
+                }
             }
+            result[category] = {errorItems}
         }
-        return filesImported
+        return result
     }
 }
 
