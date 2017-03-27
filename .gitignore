@@ -39,3 +39,4 @@ dump.rdb
 wheels
 build
 tmp
+export_data

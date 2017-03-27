@@ -45,12 +45,13 @@ const itemPreprocess = (item)=>{
 }
 
 class Importer {
-    constructor(exportedJsonFilesFolder) {
-        this.exportedJsonFilesFolder = exportedJsonFilesFolder
+    constructor() {
     }
 
     async importer()  {
-        let date_dir = this.exportedJsonFilesFolder||process.env.IMPORT_FOLDER
+        let date_dir = process.env.IMPORT_FOLDER
+        if(!date_dir)
+            throw new Error(`env 'IMPORT_FOLDER' not defined`)
         let importStrategy = process.env.IMPORT_STRATEGY||'api'
         let categories = schema.cmdbTypesAll
         let result = {}
@@ -89,7 +90,7 @@ class Importer {
 }
 
 if (require.main === module) {
-    new Importer().importer()
+    new Importer().importer().then(console.log)
 }
 
 module.exports = Importer

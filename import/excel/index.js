@@ -89,7 +89,7 @@ class Importer {
 }
 
 if (require.main === module) {
-    new Importer().importer()
+    new Importer().importer().then(console.log)
 }
 
 module.exports = Importer

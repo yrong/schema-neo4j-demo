@@ -17,7 +17,7 @@
         }
       ],
       "replaceConsole": true,
-      "defaultLevel":"DEBUG",
+      "defaultLevel":"INFO",
       "defaultCategory":"cmdb-api"
     },
     "neo4j": {
