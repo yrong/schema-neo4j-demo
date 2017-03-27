@@ -13,22 +13,11 @@ var plugins = [];
 
 var config = {
     target: 'node',
-    entry: {
-        './koa-neo4j/index': './koa-neo4j/src/index',
-        './koa-neo4j/preprocess': ['./koa-neo4j/src/preprocess'],
-        './koa-neo4j/postprocess': ['./koa-neo4j/src/postprocess'],
-        './koa-neo4j/check': './koa-neo4j/src/check',
-        './koa-neo4j/procedure': ['./koa-neo4j/src/procedure'],
-        './koa-neo4j/util': ['./koa-neo4j/src/util'],
-        './koa-neo4j/bdd': './koa-neo4j/src/bdd'
-    },
+    entry: './server.js',
     devtool: 'source-map',
     output: {
-        path: './',
-        filename: '[name].js',
-        library: '[name]',
-        libraryTarget: 'umd',
-        umdNamedDefine: true
+        path: path.join(__dirname, '.'),
+        filename: '[name].js'
     },
     externals: mods,
     module: {
@@ -38,15 +27,12 @@ var config = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules)/,
                 loader: "babel"
-            }
+            },
+            { test: /\.json$/, loader: "json" }
         ]
     },
     resolveLoader: {
         root: path.join(__dirname, 'node_modules')
-    },
-    resolve: {
-        root: path.resolve('./src'),
-        extensions: ['', '.js']
     },
     plugins: plugins
 };

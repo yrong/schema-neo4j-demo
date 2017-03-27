@@ -4,6 +4,7 @@ const path = require('path')
 const fs = require('file-system')
 const apiInvoker = require('../../helper/apiInvoker')
 const schema = require('../../schema')
+const search = require('../../search')
 
 const sortItemsDependentFirst = (items)=>{
     let dependent_items = []
@@ -50,6 +51,7 @@ class Importer {
 
     async importer()  {
         let date_dir = this.exportedJsonFilesFolder||process.env.IMPORT_FOLDER
+        let importStrategy = process.env.IMPORT_STRATEGY||'api'
         let categories = schema.cmdbTypesAll
         let result = {}
         for(let category of categories){
@@ -65,17 +67,19 @@ class Importer {
                         item.category = category
                     try {
                         item = itemPreprocess(item)
-                        await apiInvoker.addItem(item.category, item)
+                        if(importStrategy === 'api')
+                            await apiInvoker.addItem(item.category, item)
+                        else if(importStrategy === 'search')
+                            await search.addItem({},item)
                     }catch(error){
                         item.error = String(error)
                         errorItems.push(item)
                     }
                 }
                 if(errorItems.length){
-                    if (!fs.existsSync(errorFolder)){
+                    if (!fs.existsSync(errorFolder))
                         fs.mkdirSync(errorFolder)
-                        jsonfile.writeFileSync(errorFilePath, errorItems, {spaces: 2})
-                    }
+                    jsonfile.writeFileSync(errorFilePath, errorItems, {spaces: 2})
                 }
             }
             result[category] = {errorItems}

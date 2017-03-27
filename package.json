@@ -12,6 +12,7 @@
     "importFromExcel": "cross-env IMPORT_TYPE=excel IMPORT_FILE=9c2af160-034b-11e7-9f6b-2d9ac64b3726 node ./import/index.js",
     "exportToJson": "cross-env EXPORT_TYPE=json node ./export/index.js",
     "importFromJson": "cross-env IMPORT_TYPE=json IMPORT_FOLDER=export_data/20170226163617 node ./import/index.js",
+    "importToESFromJson": "cross-env IMPORT_TYPE=json IMPORT_FOLDER=export_data/20170226163617 IMPORT_STRATEGY=search node ./import/index.js",
     "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment.json",
     "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp"
   },
@@ -70,16 +71,17 @@
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
     "cross-env": "^3.1.4",
+    "elasticdump": "^3.0.2",
     "eslint": "^3.3.1",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-babel": "^3.3.0",
     "jasmine": "^2.5.0",
     "jasmine-given": "^2.6.4",
     "jasmine-spec-reporter": "^2.7.0",
+    "json-loader": "^0.5.4",
     "mocha": "^3.2.0",
     "newman": "^3.3.1",
     "postman_simplify": "^1.0.3",
-    "webpack": "^1.12.14",
-    "elasticdump": "^3.0.2"
+    "webpack": "^2.3.2"
   }
 }
