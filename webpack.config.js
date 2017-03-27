@@ -23,7 +23,7 @@ var plugins = [
         }
     }),
     new CopyWebpackPlugin([{from:'config',to:'config'},{from:'cypher/*.cyp'},{from:'logs',to:'logs'}
-    ,{from:'public',to:'public'},{from:'script',to:'script'},{from:'test/*.json'},{from:'package.json'}
+    ,{from:'public',to:'public'},{from:'script',to:'script'},{from:'test/*.json'},{from:'node_modules',to:'node_modules'}
     ], {ignore: ['*.gitignore']}),
     new CleanWebpackPlugin(['build'])
 ];
