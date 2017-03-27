@@ -14,8 +14,8 @@ const exportItems = async ()=>{
     let categories = process.env.EXPORT_CATEGORIES,categories_original,containsProcessFlow = true
     if(categories){
         categories = categories.split(',')
-        categories_original = _.assign({},categories)
-        categories = _.without(categories,schema.cmdbProcessFlowTypes,schema.cmdbProcessFlowAbstractTypes)
+        categories_original = categories.slice(0)
+        categories = _.without(categories,schema.cmdbTypeName.ProcessFlow)
         containsProcessFlow = categories.length != categories_original.length
     }
     else{

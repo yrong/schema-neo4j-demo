@@ -14,7 +14,7 @@ var plugins = [];
 var config = {
     target: 'node',
     entry: './server.js',
-    devtool: 'source-map',
+    // devtool: 'source-map',
     output: {
         path: path.join(__dirname, '.'),
         filename: '[name].js'
@@ -22,17 +22,11 @@ var config = {
     externals: mods,
     module: {
         loaders: [
-            // Support for ES6 modules and the latest ES syntax.
-            {
-                test: /\.jsx?$/,
-                exclude: /(node_modules)/,
-                loader: "babel"
-            },
-            { test: /\.json$/, loader: "json" }
+            { test: /\.json$/, loader: "json-loader" }
         ]
     },
     resolveLoader: {
-        root: path.join(__dirname, 'node_modules')
+        modules:['node_modules']
     },
     plugins: plugins
 };
