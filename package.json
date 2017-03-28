@@ -13,12 +13,14 @@
     "exportConfigurationItem": "cross-env EXPORT_TYPE=json EXPORT_CATEGORIES=ConfigurationItem node ./build/exportJSON.js",
     "importToESFromJson": "cross-env IMPORT_TYPE=json IMPORT_STRATEGY=search node ./build/importJSON.js",
     "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment.json",
-    "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./build/script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp"
+    "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./build/script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp",
+    "generateLicense": "generateLicense"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "ajv": "^4.9.0",
+    "cmdb-license-checker": "^1.0.3",
     "config": "^1.24.0",
     "elasticsearch": "^12.1.3",
     "file-system": "^2.2.2",
