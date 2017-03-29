@@ -27,21 +27,8 @@ if [ -z "$storeDir" ]; then
         exit
 fi
 
-#storeDir=$(cat ./config/default.json|./script/jq-linux64 '.config.export.storeDir'| sed -e 's/^"//' -e 's/"$//')
-esHost=$(cat ./config/default.json|./script/jq-linux64 '.config.elasticsearch.host'| sed -e 's/^"//' -e 's/"$//')
-esPort=$(cat ./config/default.json|./script/jq-linux64 '.config.elasticsearch.port')
-esIndex=$(cat ./config/default.json|./script/jq-linux64 '.config.elasticsearch.index'| sed -e 's/^"//' -e 's/"$//')
-
-#$NEO4J_HOME/bin/neo4j-shell -file ./cypher/dropSchema.cyp
 curl -X DELETE --header "Content-Type: application/json" --url "http://localhost:3001/api/items"
 cat $storeDir/neo4j.dump | $NEO4J_HOME/bin/neo4j-shell
-elasticdump \
-  --input=$storeDir/es.dump \
-  --output=http://$esHost:$esPort/$esIndex \
-  --type=data
-if [ $? -eq 0 ]; then
-    echo "importing data successfully!"
-fi
 
 
 

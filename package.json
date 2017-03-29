@@ -1,19 +1,20 @@
 {
   "name": "CMDB-API",
   "version": "1.0.0",
-  "main": "./build/server.js",
+  "main": "./server.js",
   "scripts": {
-    "start": "node ./build/server.js",
-    "init": "/bin/bash ./build/script/init.sh",
-    "backup": "/bin/bash ./build/script/backup.sh",
-    "restore": "/bin/bash ./build/script/restore.sh",
-    "importFromExcel": "cross-env IMPORT_TYPE=excel IMPORT_FILE=9c2af160-034b-11e7-9f6b-2d9ac64b3726 node ./build/importExcel.js",
-    "exportToJson": "node ./build/exportJSON.js",
-    "importFromJson": "cross-env IMPORT_TYPE=json node ./build/importJSON.js",
-    "exportConfigurationItem": "cross-env EXPORT_TYPE=json EXPORT_CATEGORIES=ConfigurationItem node ./build/exportJSON.js",
-    "importToESFromJson": "cross-env IMPORT_TYPE=json IMPORT_STRATEGY=search node ./build/importJSON.js",
+    "build": "webpack",
+    "test": "mocha",
+    "start": "node ./server.js",
+    "init": "/bin/bash ./script/init.sh",
+    "backup": "/bin/bash ./script/backup.sh",
+    "restore": "/bin/bash ./script/restore.sh",
+    "exportToJson": "node ./exportJSON.js",
+    "importFromJson": "node ./importJSON.js",
+    "exportConfigurationItem": "EXPORT_CATEGORIES=ConfigurationItem,ProcessFlow node ./exportJSON.js",
+    "importToESFromJson": "IMPORT_STRATEGY=search node ./importJSON.js",
     "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json ./test/cmdb.postman_environment.json",
-    "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./build/script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp",
+    "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp",
     "generateLicense": "generateLicense"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
@@ -85,6 +86,7 @@
     "newman": "^3.3.1",
     "postman_simplify": "^1.0.3",
     "uglifyjs-webpack-plugin": "^0.3.1",
-    "webpack": "^2.3.2"
+    "webpack": "^2.3.2",
+    "webpack-shell-plugin": "^0.5.0"
   }
 }

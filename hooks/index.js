@@ -35,7 +35,6 @@ var createOrUpdateCypherGenerator = (params)=>{
     }else if(params.category === schema.cmdbTypeName.ITService){
         params.cyphers = cypherBuilder.generateITServiceCyphers(params);
     }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
-        params.fields = _.omit(params.fields,['desc','description','note','attachment','title']);
         params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
@@ -187,8 +186,6 @@ module.exports = {
                     "displayAs":DISPLAY_AS_TOAST
                 }
         }
-        if(params.error)
-            response_wrapped.additional = params.error
         if(params.uuid)
             response_wrapped.uuid = params.uuid;
         return　response_wrapped;

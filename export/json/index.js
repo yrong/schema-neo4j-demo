@@ -11,16 +11,12 @@ const routeDef = require('../../routes/def')
 const utils = require('../../helper/utils')
 
 const exportItems = async ()=>{
-    let categories = process.env.EXPORT_CATEGORIES,categories_original,containsProcessFlow = true
+    let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')
-        categories_original = categories.slice(0)
-        categories = _.without(categories,schema.cmdbTypeName.ProcessFlow)
-        containsProcessFlow = categories.length != categories_original.length
     }
     else{
-        categories = [...schema.cmdbConfigurationItemAuxiliaryTypes,schema.cmdbTypeName.ConfigurationItem]
-        categories_original = [...categories,schema.cmdbTypeName.ProcessFlow]
+        categories = [...schema.cmdbConfigurationItemAuxiliaryTypes,schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let directory = path.join(config.get('config.export.storeDir'), timestamp)
@@ -48,14 +44,7 @@ const exportItems = async ()=>{
             jsonfile.writeFileSync(filePath, items, {spaces: 2});
         }
     }
-    if(containsProcessFlow){
-        items = await apiInvoker.apiGetter(routeDef.ProcessFlow.route)
-        if(items&&items.data&&items.data.results){
-            filePath = path.join(directory, `ProcessFlow.json`)
-            jsonfile.writeFileSync(filePath, items.data.results, {spaces: 2});
-        }
-    }
-    return {directory,categories:categories_original}
+    return {directory,categories}
 }
 
 if (require.main === module) {

@@ -12,16 +12,10 @@ const excelImporter = require('../import/excel')
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
 const customized_routes = (routesDef)=>{
     routesDef.ConfigurationItem.customizedHook = {
-        Add:{postProcess:search.addItem},
-        Modify:{postProcess:search.patchItem},
-        Delete:{postProcess: search.deleteItem},
         Search:{procedure:search.searchItem}
     }
     routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,'Search']
     routesDef.ProcessFlow.customizedHook = {
-        Add:{postProcess:search.addItem},
-        Modify:{postProcess:search.patchItem},
-        Delete:{postProcess: search.deleteItem},
         Search:{procedure:search.searchItem}
     }
     routesDef.ProcessFlow.allowed_methods = [...allowed_methods,'Search']
@@ -49,7 +43,6 @@ module.exports = ()=>{
         }
     })
     customized_routes(routesDef)
-    search.checkStatus()
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     _.each(routesDef,(val, key)=>{
         methods = val.allowed_methods||allowed_methods
@@ -109,33 +102,8 @@ module.exports = ()=>{
     app.defineAPI({
         method: 'DEL',
         route: '/api/items',
-        cypherQueryFile: './cypher/deleteItems.cyp',
-        postProcess: search.deleteAll
+        cypherQueryFile: './cypher/deleteItems.cyp'
     });
-
-    /* file upload for demo purpose */
-    app.router.get('/upload_demo', (ctx,next)=>{
-        ctx.body = `
-                  <!DOCTYPE html>
-                  <html>
-                    <head>
-                      <meta charset="utf-8">
-                      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                      <title>test</title>
-                      <meta name="description" content="">
-                      <meta name="viewport" content="width=device-width, initial-scale=1">
-                    </head>
-                    <body>
-                    <form method="POST" action="/api/upload/processFlows/attachment" enctype="multipart/form-data">
-                      <input type="file" multiple name="file" />
-                      <br />
-                      <input type="submit" value="submit"/>
-                    </form>
-                    </body>
-                  </html>
-                  `
-        return next()
-    })
 
     const socketio = new IO('importer')
     socketio.attach(app)

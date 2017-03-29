@@ -17,7 +17,7 @@ const file_uploader = require('koa2-file-upload-local')
 for(let option of _.values(config.get('config.upload'))){
     app.use(mount(option.url,file_uploader(option).handler))
 }
-app.use(convert(staticFile(__dirname + '/public')))
+app.use(convert(staticFile(path.join(__dirname, 'public'))))
 /*license checker*/
 const license_checker = require('cmdb-license-checker')
 let license = license_checker.load('./CMDB-API.lic')
