@@ -4,7 +4,7 @@
   "main": "./server.js",
   "scripts": {
     "build": "webpack",
-    "buildAdvanced":"EDITION=advanced webpack",
+    "buildAdvanced": "EDITION=advanced webpack",
     "test": "mocha",
     "start": "node ./server.js",
     "init": "/bin/bash ./script/init.sh",
@@ -32,7 +32,7 @@
     "koa-bodyparser": "^3.2.0",
     "koa-logger": "^2.0.0",
     "koa-mount": "^2.0.0",
-    "koa-neo4j": "^1.1.0",
+    "koa-neo4j-middleware": "^1.1.1",
     "koa-passport": "^2.2.2",
     "koa-router": "^7.0.1",
     "koa-socket": "^4.4.0",

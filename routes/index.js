@@ -3,7 +3,6 @@ const config = require('config');
 const hook = require('../hooks');
 const schema = require('../schema');
 const search = require('../search');
-const KoaNeo4jApp = require('koa-neo4j');
 const routesDef = require('./def');
 const logger = require('../logger')
 const IO = require( 'koa-socket' )
@@ -23,25 +22,7 @@ const customized_routes = (routesDef)=>{
 
 const none_checker=()=>true
 
-module.exports = ()=>{
-    const neo4jConfig = config.get('config.neo4j')
-    const app = new KoaNeo4jApp({
-        neo4j: {
-            boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
-            user: neo4jConfig.user,
-            password: neo4jConfig.password
-        },
-        logger:logger,
-        exceptionWrapper:(error)=>{
-            return JSON.stringify({
-                status:"error",
-                message:{
-                    content: String(error),
-                    displayAs:"modal"
-                }
-            });
-        }
-    })
+module.exports = (app)=>{
     customized_routes(routesDef)
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     _.each(routesDef,(val, key)=>{
@@ -103,6 +84,12 @@ module.exports = ()=>{
         method: 'DEL',
         route: '/api/items',
         cypherQueryFile: './cypher/deleteItems.cyp'
+    });
+
+    /*License*/
+    app.router.get('/api/license', function (ctx, next) {
+        ctx.body = ctx.state.license;
+        return next();
     });
 
     const socketio = new IO('importer')

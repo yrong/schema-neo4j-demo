@@ -30,13 +30,15 @@ if(process.env.EDITION === 'advanced'){
     packages = [...packages,{from:'script/init.sh',to:'script/init.sh'},{from:'script/execute_cypher.sh',to:'script/execute_cypher.sh'},{from:'script/jq-linux64',to:'script/jq-linux64'}]
 }
 
+var releaseDir = process.env.ReleaseDir||path.join(__dirname, 'release')
+
 var plugins = [
     new webpack.optimize.UglifyJsPlugin({
         sourceMap: devtool && (devtool.indexOf("sourcemap") >= 0 || devtool.indexOf("source-map") >= 0)
     }),
     new CopyWebpackPlugin(packages, {ignore: ['*.gitignore']}),
     new CleanWebpackPlugin(['build']),
-    new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildEnd:['/bin/bash ./postbuild.sh']})
+    new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildEnd:[`/bin/bash ./postbuild.sh --dir=${releaseDir}`]})
 ];
 
 var config = {

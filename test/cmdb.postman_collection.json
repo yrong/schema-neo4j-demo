@@ -33,7 +33,8 @@
 				"3e848e84-e97c-9775-fe6a-8689e33d89c7",
 				"d97bce68-0281-4c9c-55c0-18e952d1aeeb",
 				"e0ee0756-adf3-d95f-d879-b0d32a29c457",
-				"09907106-b171-fa5c-1f5a-592a23c137d9"
+				"09907106-b171-fa5c-1f5a-592a23c137d9",
+				"ea252b3f-6026-febf-73a3-122ba79d36e5"
 			]
 		},
 		{
@@ -767,7 +768,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1490773656292,
+			"time": 1490845762672,
 			"name": "add cabinet ",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
@@ -858,11 +859,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1490284880007,
+			"time": 1490888244154,
 			"name": "patch incident flow 1 status to solved",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"solved\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"solved\",\n       \"user\": \"a\"\n    }\n  }\n}"
 		},
 		{
 			"id": "b8dbc57c-f42c-12e4-5d06-034e4037b83f",
@@ -1025,6 +1026,23 @@
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
 			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"term\": {\"model\": \"a10\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+		},
+		{
+			"id": "ea252b3f-6026-febf-73a3-122ba79d36e5",
+			"headers": "",
+			"url": "{{url}}/license",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"expiration find\"] = jsonData.expiration",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1490883097639,
+			"name": "get license",
+			"description": "",
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
 			"id": "f171f45a-a57a-a128-d02c-7a6509b09ce9",

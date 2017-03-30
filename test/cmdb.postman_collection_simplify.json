@@ -538,7 +538,8 @@
       "data": {
         "category": "IncidentFlow",
         "fields": {
-          "status": "solved"
+          "status": "solved",
+          "user": "a"
         }
       }
     }
@@ -627,6 +628,11 @@
         ]
       }
     }
+  },
+  {
+    "name": "get license",
+    "method": "GET",
+    "url": "http://localhost:3001/api/license"
   },
   {
     "name": "add ITService Dns",
