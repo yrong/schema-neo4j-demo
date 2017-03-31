@@ -12,9 +12,8 @@ var es_client = new elasticsearch.Client({
     host: esConfig.host + ":" + esConfig.port
 });
 
-var indexName = esConfig.index
-
-var hidden_fields = ['fields','cyphers','method','data','token','fields_old','change','url','id']
+var utils = require('../helper/utils')
+var hidden_fields = utils.globalHiddenFields
 
 var schema = require('../schema')
 
@@ -24,7 +23,7 @@ var validate = require('uuid-validate')
 
 const file_upload = require('koa2-file-upload-local')
 
-const store = file_upload(config.get('config.upload')).store
+const store = file_upload(config.get('config.upload')[schema.cmdbTypeName.ProcessFlow]).store
 
 var pre_process = function(params) {
     if(params.attachment&&validate(params.attachment, 1)){
@@ -33,12 +32,26 @@ var pre_process = function(params) {
     return params
 }
 
+const ConfigurationItemIndex = 'cmdb',ProcessFlowIndex = 'processflow'
+
+var getIndexName = function(category) {
+    let indexName;
+    if(schema.cmdbConfigurationItemTypes.includes(category)||category===schema.cmdbTypeName.ConfigurationItem)
+        indexName = ConfigurationItemIndex
+    else if(schema.cmdbProcessFlowTypes.includes(category)||category===schema.cmdbTypeName.ProcessFlow)
+        indexName = ProcessFlowIndex
+    else
+        throw new Error('can not find index in es:'+category)
+    return indexName
+}
+
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
+    let indexName = getIndexName(params.category),typeName = _.last(schema.cmdbTypeLabels[params.category])
     let index_obj = {
         index: indexName,
-        type: _.last(schema.cmdbTypeLabels[params.category]),
-        id:params.uuid,
+        type: typeName,
+        id: params.uuid,
         body: _.omit(params,hidden_fields),
         refresh:esConfig.refresh
     }
@@ -46,15 +59,17 @@ var addItem = function(result, params, ctx) {
     return es_client.index(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        throw error;
+        params.error = 'ElasticSearch:' + String(error)
+        return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
+    let indexName = getIndexName(params.category),typeName = _.last(schema.cmdbTypeLabels[params.category])
     let index_obj = {
         index: indexName,
-        type: _.last(schema.cmdbTypeLabels[params.category]),
+        type: typeName,
         id:params.uuid,
         body: {doc:_.omit(params,hidden_fields)},
         refresh:esConfig.refresh
@@ -63,15 +78,17 @@ var patchItem = function(result, params, ctx) {
     return es_client.update(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        throw error;
+        params.error = 'ElasticSearch:' + String(error)
+        return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 
-var delItem = function(result, params, ctx) {
+var deleteItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
+    let indexName = getIndexName(params.category),typeName = params.category
     var delObj = {
         index: indexName,
-        type: hook.getCategoryFromUrl(ctx.url),
+        type: typeName,
         body: {
             query: queryObj
         },
@@ -81,8 +98,16 @@ var delItem = function(result, params, ctx) {
     return es_client.deleteByQuery(delObj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        throw error;
+        params.error = 'ElasticSearch:' + String(error)
+        return hook.cudItem_postProcess(result, params, ctx);
     });
+}
+
+/**
+ * just for integration test purpose
+ */
+var deleteAll = function(result,params,ctx) {
+    return es_client.deleteByQuery({index:[ConfigurationItemIndex,ProcessFlowIndex],body:{query:{match_all:{}}}})
 }
 
 
@@ -99,9 +124,10 @@ var searchItem = function(params, ctx) {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
+    let typeName = hook.getCategoryFromUrl(ctx.url),indexName = getIndexName(typeName)
     var searchObj = _.assign({
         index: indexName,
-        type: hook.getCategoryFromUrl(ctx.url),
+        type: typeName,
         _source:_source
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
@@ -116,4 +142,4 @@ var checkStatus = ()=> {
     })
 }
 
-module.exports = {searchItem,delItem,patchItem,addItem,checkStatus}
+module.exports = {searchItem,deleteItem,patchItem,addItem,checkStatus,deleteAll}

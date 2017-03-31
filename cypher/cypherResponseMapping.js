@@ -1,20 +1,32 @@
 var _ = require('lodash');
 var cache = require('../cache')
+var utils = require('../helper/utils')
+var schema = require('../schema')
 
-const hidden_properties = ['id','_id','_index','_type','passwd','change']
-const removeInternalPropertys = (val) => {
+const removeInternalProperties = (val) => {
+    for (let prop in val) {
+        for(let hidden_prop of utils.globalHiddenFields){
+            if (prop === hidden_prop)
+                delete val[prop];
+        }
+    }
+    return recursivelyRemoveInternalProperties(val)
+}
+
+const recursivelyRemoveInternalProperties =  (val) => {
     if (_.isArray(val)) {
         val = _.map(val, function (val) {
-            return removeInternalPropertys(val);
+            return recursivelyRemoveInternalProperties(val);
         });
     } else {
         for (let prop in val) {
-            for(let hidden_prop of hidden_properties){
+            for(let hidden_prop of utils.globalHiddenFieldsInAllLevel){
                 if (prop === hidden_prop)
                     delete val[prop];
             }
             if (typeof val[prop] === 'object')
-                removeInternalPropertys(val[prop]);
+                if(prop !== 'status')//not remove 'fields' in field 'status'
+                    recursivelyRemoveInternalProperties(val[prop]);
         }
     }
     return val;
@@ -26,23 +38,32 @@ const referencedMapper = (val) => {
             return referencedMapper(val);
         });
     } else {
-        for (let val_key in val) {
-            let val_val = val[val_key]
-            if(val_key == 'asset_location'){
-                val.asset_location = _.isString(val_val)?JSON.parse(val_val):val_val
-            }
-            if(val_val){
-                if(val_key == 'responsibility'||val_key == 'committer'||val_key == 'executor'||val_key == 'cabinet'||val_key == 'position'||val_key == 'group'){
-                    val[val_key] = cache.get(val_val)
+        for (let key in val) {
+            let val_val = val[key]
+            for(let field of utils.objectFields){
+                if(key === field){
+                    if(_.isString(val_val)){
+                        try{
+                            val[key] = JSON.parse(val_val)
+                        }catch(error){
+                        }
+                    }
                 }
-                if(val_key == 'it_service'){
-                    val.it_service=_.map(val[val_key],(val_val)=>{
-                        return cache.get(val_val)
+            }
+            for(let field of utils.referencedFields) {
+                if (key === field) {
+                    val[key] = cache.get(val_val)
+                }
+            }
+            for(let field of utils.referencedArrayFields) {
+                if (key === field) {
+                    val[key] = _.map(val_val,(id)=>{
+                        return cache.get(id)
                     })
                 }
-                if (typeof val_val === 'object'){
-                    referencedMapper(val_val);
-                }
+            }
+            if (typeof val_val === 'object'){
+                val[key] = referencedMapper(val_val);
             }
         }
     }
@@ -55,7 +76,6 @@ var timelineMapper = (result)=>{
         change_log = {}
         change_log.user = segment.start.committer
         change_log.time = segment.start.lastUpdated
-        change_log.action = (index == segments.length - 1 ? 'created' : 'updated')
         change_log.object = {
             start: segment.start,
             end: segment.end,
@@ -68,12 +88,14 @@ var timelineMapper = (result)=>{
 }
 
 module.exports = {
-    removeInternalPropertys: removeInternalPropertys,
+    removeInternalPropertys: removeInternalProperties,
     resultMapper: (result, params) => {
-        if (params.url&&params.url.includes('/timeline')) {
+        if (params.url&&utils.isChangeTimelineQuery(params.url)) {
             result = timelineMapper(result)
         }
-        return params.getReferencedObj?referencedMapper(result):result
+        if(params.category === schema.cmdbTypeName.ConfigurationItem || params.category === schema.cmdbTypeName.ProcessFlow)
+            return referencedMapper(result)
+        return result
     }
 }
 

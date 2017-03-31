@@ -6,6 +6,7 @@ const xslxHelper = require('../../helper/xslxHelper')
 const mappingDefinition = require('./mappingDef')
 const schema = require('../../schema/index')
 
+
 const configurationItemMapping = async (type, sheet, line)=>{
     let configurationItem = {},value,raw_value
     let configurationItemMappingDefinition = mappingDefinition[type]
@@ -32,58 +33,66 @@ const configurationItemMapping = async (type, sheet, line)=>{
         }
     }
     for(var process of configurationItemMappingDefinition.postProcess){
-         configurationItem = await process(configurationItem)
+        configurationItem = await process(configurationItem)
     }
     return configurationItem;
 }
 
-let error_book={}
-const xlsxFilePrefix = '.xlsx',ConfigurationItemFileName = schema.cmdbTypeName.ConfigurationItem+xlsxFilePrefix
+class Importer {
+    constructor(socketIOContext,configurationItemFileName) {
+        this.error_book= {}
+        this.configurationItemFileName = configurationItemFileName||schema.cmdbTypeName.ConfigurationItem+'.xlsx'
+        this.socketIOContext = socketIOContext
+        this.categories = process.env.IMPORT_CATEGORIES||_.keys(xslxHelper.initSheets(this.configurationItemFileName))
+    }
 
-const importConfigurationItem = async (category)=>{
-    let configurationItemMappingDefinition = mappingDefinition[category]
-    let src_sheet = xslxHelper.initSheet(ConfigurationItemFileName,category)
-    src_sheet.data_range = configurationItemMappingDefinition.range
-    let src_range = xslxHelper.getSheetRange(src_sheet)
-    let start_line = configurationItemMappingDefinition.range.s.r,line = start_line,configurationItem,errors=0,success=0,error_line,exception,exceptions=[],error_sheet={}
-    await xslxHelper.generateHeaderInErrorSheet(src_sheet,error_sheet)
-    while (line<=src_range.e.r) {
-        try{
-            configurationItem = await configurationItemMapping(category,src_sheet,line)
-            await apiInvoker.addItem(category,configurationItem)
-            success++
-        }catch(error){
-            error_line = errors + start_line
-            error_sheet = xslxHelper.generateLineInErrorSheet(src_sheet,line,error_sheet,error_line,error.message)
-            errors ++
-            exception = {srcLine:line+1,error:error.message}
-            exceptions.push(exception)
+    async importer()  {
+        let results = {}
+        for (let category of this.categories){
+            let result = await this.importConfigurationItem(category)
+            results[category] = result
+            if(this.socketIOContext)
+                this.socketIOContext.socket.emit('importConfigurationItemResponse',{category:category,finished:true})
         }
-        line ++
+        await xslxHelper.dumpErrorBook(this.error_book,this.configurationItemFileName)
+        return results
     }
-    error_book = await xslxHelper.writeErrorBook(src_sheet,error_sheet,category,errors,error_book)
-    return {success_num:success,exception_num:errors,exceptions:exceptions}
-}
 
-const importer = async()=>{
-    let categories = process.env.IMPORT_CATEGORIES,results = {}
-    if(categories)
-        categories = categories.split(',')
-    else
-        categories = _.keys(xslxHelper.initSheets(ConfigurationItemFileName))
-    for (let category of categories){
-        let result = await importConfigurationItem(category)
-        results[category] = result
+    async importConfigurationItem(category) {
+        let configurationItemMappingDefinition = mappingDefinition[category]
+        let src_sheet = xslxHelper.initSheet(this.configurationItemFileName,category)
+        src_sheet.data_range = configurationItemMappingDefinition.range
+        let src_range = xslxHelper.getSheetRange(src_sheet)
+        let start_line = configurationItemMappingDefinition.range.s.r,line = start_line,configurationItem,errors=0,success=0,error_line,exception,exceptions=[],error_sheet={}
+        await xslxHelper.generateHeaderInErrorSheet(src_sheet,error_sheet)
+        let total = src_range.e.r
+        while (line<=total) {
+            try{
+                configurationItem = await configurationItemMapping(category,src_sheet,line)
+                await apiInvoker.addItem(category,configurationItem)
+                success++
+            }catch(error){
+                error_line = errors + start_line
+                error_sheet = xslxHelper.generateLineInErrorSheet(src_sheet,line,error_sheet,error_line,error.message)
+                errors ++
+                exception = {srcLine:line+1,error:error.message}
+                exceptions.push(exception)
+            }
+            line ++
+            if(line % 10 == 0)
+                if(this.socketIOContext)
+                    this.socketIOContext.socket.emit('importConfigurationItemResponse',{category:category,total:total,finished:line})
+        }
+        this.error_book = await xslxHelper.writeErrorBook(src_sheet,error_sheet,category,errors,this.error_book)
+        return {success_num:success,exception_num:errors,exceptions:exceptions}
     }
-    await xslxHelper.dumpErrorBook(error_book,schema.cmdbTypeName.ConfigurationItem)
-    return results
 }
 
 if (require.main === module) {
-    importer()
+    new Importer().importer().then((result)=>console.log(JSON.stringify(result,null,'\t')))
 }
 
-module.exports = importer
+module.exports = Importer
 
 
 

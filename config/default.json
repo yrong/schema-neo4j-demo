@@ -17,7 +17,7 @@
         }
       ],
       "replaceConsole": true,
-      "defaultLevel":"DEBUG",
+      "defaultLevel":"INFO",
       "defaultCategory":"cmdb-api"
     },
     "neo4j": {
@@ -27,31 +27,36 @@
       "user": "neo4j",
       "password": "neo4j"
     },
-    "mysql": {
-      "host": "localhost",
-      "port": 3306,
-      "user": "root",
-      "password": "root",
-      "database": "test"
-    },
     "elasticsearch":{
       "host": "localhost",
       "port": 9200,
-      "index": "cmdb",
       "refresh": false
     },
     "export":{
       "storeDir": "./export_data"
     },
     "import":{
-      "storeDir": "./import_data"
+      "storeDir": "./public/upload/ConfigurationItem"
     },
-    "upload":{
-      "url": "/api/upload/processFlows/attachment",
-      "storeDir": "ProcessFlowAttachment",
-      "provider": "local",
-      "folder": "public/upload",
-      "mimetypes": ["text/plain"]
+    "upload": {
+      "ProcessFlow": {
+        "url": "/api/upload/processFlows/attachment",
+        "storeDir": "ProcessFlowAttachment",
+        "provider": "local",
+        "folder": "public/upload",
+        "mimetypes": [
+          "text/plain"
+        ]
+      },
+      "ConfigurationItem": {
+        "url": "/api/upload/configurationItem/xslx",
+        "storeDir": "ConfigurationItem",
+        "provider": "local",
+        "folder": "public/upload",
+        "mimetypes": [
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ]
+      }
     }
   }
 }

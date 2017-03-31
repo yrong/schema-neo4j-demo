@@ -49,11 +49,11 @@ module.exports = {
         }
         return error_book
     },
-    dumpErrorBook:(errorbook,bookType)=>{
+    dumpErrorBook:(errorbook,fileName)=>{
         let importFileBaseDir = config.get('config.import.storeDir')
         let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
         fs.mkdirSync(exceptionFileBaseDir)
-        XLSX.writeFile(errorbook, path.join(exceptionFileBaseDir,bookType+(new Date).getTime() + '.xlsx'))
+        XLSX.writeFile(errorbook, path.join(exceptionFileBaseDir,fileName + '.xlsx'))
     },
     generateHeaderInErrorSheet:(src_sheet,error_sheet)=>{
         let src_cell,dst_cell

@@ -4,6 +4,7 @@ const path = require('path')
 const fs = require('file-system')
 const apiInvoker = require('../../helper/apiInvoker')
 const schema = require('../../schema')
+const search = require('../../search')
 
 const sortItemsDependentFirst = (items)=>{
     let dependent_items = []
@@ -33,33 +34,66 @@ const itemPreprocess = (item)=>{
     if(_.includes(schema.cmdbConfigurationItemTypes,item.category)){
         if(_.isString(item.geo_location))
             item.geo_location = {name:item.geo_location}
+        if(_.isString(item.status))
+            item.status = JSON.parse(item.status)
+        if(item.asset_location&&item.asset_location.location){
+            item.asset_location.position = item.asset_location.location
+            delete item.asset_location.location
+        }
     }
     return item
 }
 
-const importer = async ()=>{
-    let date_dir = process.env.IMPORT_FOLDER
-    let categories = schema.cmdbTypesAll
-    let filesImported = []
-    for(let category of categories){
-        let filePath = path.join(date_dir,category + '.json')
-        if(fs.existsSync(filePath)){
-            let items = jsonfile.readFileSync(filePath)
-            items = sortItemsDependentFirst(items)
-            for (let item of items) {
-                await apiInvoker.addItem(item.category,itemPreprocess(item))
-            }
-            filesImported.push(filePath)
-        }
+class Importer {
+    constructor() {
     }
-    return filesImported
+
+    async importer()  {
+        let date_dir = process.env.IMPORT_FOLDER
+        if(!date_dir)
+            throw new Error(`env 'IMPORT_FOLDER' not defined`)
+        let importStrategy = process.env.IMPORT_STRATEGY||'api'
+        let categories = schema.cmdbTypesAll
+        let result = {}
+        for(let category of categories){
+            let filePath = path.join(date_dir,category + '.json')
+            let errorFolder = path.join(date_dir,'exception')
+            let errorFilePath = path.join(errorFolder,category + '.json')
+            let errorItems = []
+            if(fs.existsSync(filePath)){
+                let items = jsonfile.readFileSync(filePath)
+                items = sortItemsDependentFirst(items)
+                for (let item of items) {
+                    if(!item.category&&schema.cmdbConfigurationItemAuxiliaryTypes.includes(category))
+                        item.category = category
+                    try {
+                        item = itemPreprocess(item)
+                        if(importStrategy === 'api')
+                            await apiInvoker.addItem(item.category, item)
+                        else if(importStrategy === 'search')
+                            await search.addItem({},item)
+                    }catch(error){
+                        item.error = String(error)
+                        errorItems.push(item)
+                    }
+                }
+                if(errorItems.length){
+                    if (!fs.existsSync(errorFolder))
+                        fs.mkdirSync(errorFolder)
+                    jsonfile.writeFileSync(errorFilePath, errorItems, {spaces: 2})
+                }
+            }
+            result[category] = {errorItems}
+        }
+        return result
+    }
 }
 
 if (require.main === module) {
-    importer()
+    new Importer().importer().then((result)=>console.log(JSON.stringify(result,null,'\t')))
 }
 
-module.exports = importer
+module.exports = Importer
 
 
 

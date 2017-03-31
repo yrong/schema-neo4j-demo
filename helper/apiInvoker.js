@@ -30,6 +30,8 @@ module.exports = {
         }else if(_.includes(schema.cmdbProcessFlowTypes,category)){
             route = routesDefinition.ProcessFlow.route
         }
+        if(!route)
+            throw new Error(`${category} api route not found`)
         var options = {
             method: 'POST',
             uri: base_url  + route,

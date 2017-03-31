@@ -3,52 +3,27 @@ const config = require('config');
 const hook = require('../hooks');
 const schema = require('../schema');
 const search = require('../search');
-const KoaNeo4jApp = require('koa-neo4j');
 const routesDef = require('./def');
 const logger = require('../logger')
+const IO = require( 'koa-socket' )
+const excelImporter = require('../import/excel')
 
-const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
+const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
 const customized_routes = (routesDef)=>{
     routesDef.ConfigurationItem.customizedHook = {
-        Add:{postProcess:search.addItem},
-        Modify:{postProcess:search.patchItem},
-        Delete:{postProcess: search.delItem},
         Search:{procedure:search.searchItem}
     }
-    routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,"Search"]
+    routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,'Search']
     routesDef.ProcessFlow.customizedHook = {
-        Add:{postProcess:search.addItem},
-        Modify:{postProcess:search.patchItem},
-        Delete:{postProcess: search.delItem},
-        FindAll:{procedure:search.searchItem},
-        FindOne:{procedure:search.searchItem}
+        Search:{procedure:search.searchItem}
     }
-    routesDef.ProcessFlow.allowed_methods = [...allowed_methods,"FindChanges"]
+    routesDef.ProcessFlow.allowed_methods = [...allowed_methods,'Search']
 }
 
 const none_checker=()=>true
 
-module.exports = ()=>{
-    const neo4jConfig = config.get('config.neo4j')
-    const app = new KoaNeo4jApp({
-        neo4j: {
-            boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
-            user: neo4jConfig.user,
-            password: neo4jConfig.password
-        },
-        logger:logger,
-        exceptionWrapper:(error)=>{
-            return JSON.stringify({
-                status:"error",
-                message:{
-                    content: String(error),
-                    displayAs:"modal"
-                }
-            });
-        }
-    })
+module.exports = (app)=>{
     customized_routes(routesDef)
-    search.checkStatus()
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     _.each(routesDef,(val, key)=>{
         methods = val.allowed_methods||allowed_methods
@@ -56,7 +31,7 @@ module.exports = ()=>{
             procedure=null
             http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
             route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='Search'?'/api/search'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid'))
-            checker = method==='Add'?[schema.checkSchema,search.checkStatus]:(method==='Modify'||method==='Delete')?search.checkStatus:none_checker
+            checker = method==='Add'?[schema.checkSchema]:(method==='Modify'||method==='Delete')?none_checker:none_checker
             preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
                 preProcess = val.customizedHook[method].preProcess
@@ -108,32 +83,34 @@ module.exports = ()=>{
     app.defineAPI({
         method: 'DEL',
         route: '/api/items',
-        cypherQueryFile: './cypher/deleteItems.cyp',
-        postProcess: search.delItem
+        cypherQueryFile: './cypher/deleteItems.cyp'
     });
 
-    /* file upload for demo purpose */
-    app.router.get('/upload_demo', (ctx,next)=>{
-        ctx.body = `
-                  <!DOCTYPE html>
-                  <html>
-                    <head>
-                      <meta charset="utf-8">
-                      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                      <title>test</title>
-                      <meta name="description" content="">
-                      <meta name="viewport" content="width=device-width, initial-scale=1">
-                    </head>
-                    <body>
-                    <form method="POST" action="/api/upload/processFlows/attachment" enctype="multipart/form-data">
-                      <input type="file" multiple name="file" />
-                      <br />
-                      <input type="submit" value="submit"/>
-                    </form>
-                    </body>
-                  </html>
-                  `
-        return next()
+    /*License*/
+    app.router.get('/api/license', function (ctx, next) {
+        ctx.body = ctx.state.license;
+        return next();
+    });
+
+    const socketio = new IO('importer')
+    socketio.attach(app)
+    socketio.on( 'importConfigurationItem', ( ctx, data ) => {
+        logger.info("receive importConfigurationItem request from socket")
+        let importerInstance
+        try{
+            importerInstance = new excelImporter(socketio,data.fileId)
+        }catch(error){
+            logger.error("excelImporter initialized failed:" + String(error))
+            ctx.socket.emit('importConfigurationItemError',error.message)
+            return
+        }
+        importerInstance.importer().then((result)=>{
+            logger.info("importConfigurationItem success:" + JSON.stringify(result))
+            ctx.socket.emit('importConfigurationItemResponse',result)
+        }).catch((error)=>{
+            logger.error("importConfigurationItemError:" + String(error))
+            ctx.socket.emit('importConfigurationItemError',error.message)
+        })
     })
     return app
 }

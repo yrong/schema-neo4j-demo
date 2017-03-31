@@ -22,18 +22,13 @@
               "type": "geo_point"
             }
           }
-        }
-      }
-    },
-    "ProcessFlow": {
-      "properties": {
-        "uuid": {
-          "type": "string",
-          "index": "not_analyzed"
         },
-        "pfid": {
-          "type": "string",
-          "index": "not_analyzed"
+        "status": {
+          "properties": {
+            "status": {
+              "type": "string"
+            }
+          }
         }
       }
     }

@@ -8,18 +8,15 @@ const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('../../schema/index')
 const apiInvoker = require('../../helper/apiInvoker')
 const routeDef = require('../../routes/def')
+const utils = require('../../helper/utils')
 
 const exportItems = async ()=>{
-    let categories = process.env.EXPORT_CATEGORIES,categories_original,containsProcessFlow = true
+    let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')
-        categories_original = _.assign({},categories)
-        categories = _.without(categories,schema.cmdbProcessFlowTypes,schema.cmdbProcessFlowAbstractTypes)
-        containsProcessFlow = categories.length != categories_original.length
     }
     else{
-        categories = [...schema.cmdbConfigurationItemAuxiliaryTypes,schema.cmdbTypeName.ConfigurationItem]
-        categories_original = [...categories,schema.cmdbTypeName.ProcessFlow]
+        categories = [...schema.cmdbConfigurationItemAuxiliaryTypes,schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let directory = path.join(config.get('config.export.storeDir'), timestamp)
@@ -33,8 +30,13 @@ const exportItems = async ()=>{
             return item.row[0]
         })
         items = _.map(items,(item)=>{
-            if(item.asset_location)
-                item.asset_location = JSON.parse(item.asset_location)
+            for(let field of utils.objectFields){
+                if(_.isString(item[field]))
+                    try {
+                        item[field] = JSON.parse(item[field])
+                    }catch(error){//just for geo_location legacy string format compatibility,do nothing
+                    }
+            }
             return item
         })
         if (items && items.length) {
@@ -42,18 +44,11 @@ const exportItems = async ()=>{
             jsonfile.writeFileSync(filePath, items, {spaces: 2});
         }
     }
-    if(containsProcessFlow){
-        items = await apiInvoker.apiGetter(routeDef.ProcessFlow.route)
-        if(items&&items.data&&items.data.results){
-            filePath = path.join(directory, `ProcessFlow.json`)
-            jsonfile.writeFileSync(filePath, items.data.results, {spaces: 2});
-        }
-    }
-    return {directory,categories:categories_original}
+    return {directory,categories}
 }
 
 if (require.main === module) {
-    exportItems().then(console.log)
+    exportItems().then((result)=>console.log(JSON.stringify(result,null,'\t')))
 }
 
 module.exports = exportItems
