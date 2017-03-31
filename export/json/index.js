@@ -48,7 +48,7 @@ const exportItems = async ()=>{
 }
 
 if (require.main === module) {
-    exportItems().then(console.log)
+    exportItems().then((result)=>console.log(JSON.stringify(result,null,'\t')))
 }
 
 module.exports = exportItems

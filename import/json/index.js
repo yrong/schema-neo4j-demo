@@ -90,7 +90,7 @@ class Importer {
 }
 
 if (require.main === module) {
-    new Importer().importer().then(console.log)
+    new Importer().importer().then((result)=>console.log(JSON.stringify(result,null,'\t')))
 }
 
 module.exports = Importer
