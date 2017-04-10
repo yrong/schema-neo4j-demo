@@ -8,6 +8,8 @@ var cache = require('../cache')
 var logger = require('../logger')
 var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
+var path = require('path')
+var QRCode = require('qrcode')
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -129,7 +131,6 @@ var cudItem_callback = (params,update)=>{
         params.fields.lastUpdated = Date.now()
     }else{
         params.fields.category = params.data.category
-        params.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
         params.fields.created = Date.now()
     }
     cudItem_params_stringify(params,utils.objectFields)
@@ -140,11 +141,26 @@ module.exports = {
     cudItem_preProcess: function (params, ctx) {
         params.method = ctx.method,params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
-            if (params.data.category === schema.cmdbTypeName.IncidentFlow)
+            let item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
+            params.data.fields.uuid = item_uuid
+            if (params.data.category === schema.cmdbTypeName.IncidentFlow) {
                 return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true).then((result) => {
                     params.data.fields.pfid = 'IR' + result[0]
                     return cudItem_callback(params)
                 })
+            } else if(schema.cmdbConfigurationItemTypes.includes(params.category)){
+                return new Promise((resolve,reject)=>{
+                    QRCode.toFile(path.resolve(`./public/upload/ConfigurationItem/${item_uuid}.png`), params.data.fields.name, function (err) {
+                        if (err)
+                            reject(err)
+                        else{
+                            params.data.fields.qrcode_url = `/upload/ConfigurationItem/${item_uuid}.png`
+                            resolve(cudItem_callback(params))
+                        }
+                    })
+                })
+
+            }
             else
                 return cudItem_callback(params)
         }

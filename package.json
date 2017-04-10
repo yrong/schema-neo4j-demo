@@ -41,6 +41,7 @@
     "log4js": "^1.1.1",
     "moment": "^2.17.1",
     "node-cache": "^4.1.1",
+    "qrcode": "^0.8.1",
     "request-promise": "^4.1.1",
     "uuid": "^3.0.1",
     "uuid-validate": "0.0.2",
