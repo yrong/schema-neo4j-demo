@@ -10,6 +10,8 @@ var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
 var path = require('path')
 var QRCode = require('qrcode')
+var JsBarcode = require('jsbarcode');
+var Canvas = require('canvas')
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -149,15 +151,12 @@ module.exports = {
                     return cudItem_callback(params)
                 })
             } else if(schema.cmdbConfigurationItemTypes.includes(params.category)){
-                return new Promise((resolve,reject)=>{
-                    QRCode.toFile(path.resolve(`./public/upload/ConfigurationItem/${item_uuid}.png`), params.data.fields.name, function (err) {
-                        if (err)
-                            reject(err)
-                        else{
-                            params.data.fields.qrcode_url = `/upload/ConfigurationItem/${item_uuid}.png`
-                            resolve(cudItem_callback(params))
-                        }
-                    })
+                return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.ConfigurationItem), params, true).then((result) => {
+                    let barcode_id = result[0]
+                    let canvas = new Canvas();
+                    JsBarcode(canvas, barcode_id);
+                    params.data.fields.barcode = {id:barcode_id,url:canvas.toDataURL()}
+                    return cudItem_callback(params)
                 })
 
             }
