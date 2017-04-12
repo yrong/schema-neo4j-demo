@@ -6,6 +6,7 @@ const search = require('../search');
 const routesDef = require('./def');
 const logger = require('../logger')
 const IO = require( 'koa-socket' )
+const path = require('path')
 const excelImporter = require('../import/excel')
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
@@ -98,7 +99,7 @@ module.exports = (app)=>{
         logger.info("receive importConfigurationItem request from socket")
         let importerInstance
         try{
-            importerInstance = new excelImporter(socketio,data.fileId)
+            importerInstance = new excelImporter(socketio,path.basename(data.fileId))
         }catch(error){
             logger.error("excelImporter initialized failed:" + String(error))
             ctx.socket.emit('importConfigurationItemError',error.message)
