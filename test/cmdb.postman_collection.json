@@ -26,15 +26,17 @@
 			"name": "1-auxiliary",
 			"description": "",
 			"order": [
-				"4db5551d-ca12-bfab-143f-a0f33e0579ba",
-				"88e68a8e-5a71-4967-23bc-ad22c6e77d3f",
+				"45e70433-2480-78a5-6a1f-f6e6edef312f",
+				"09cbab13-8182-4e8d-04ea-f5e59e401d54",
 				"90f552d0-8984-9950-562f-46dd0cc68eed",
 				"88540d0d-4441-cc1f-0a87-b3427ce6a8d5",
 				"3e848e84-e97c-9775-fe6a-8689e33d89c7",
 				"d97bce68-0281-4c9c-55c0-18e952d1aeeb",
 				"e0ee0756-adf3-d95f-d879-b0d32a29c457",
 				"09907106-b171-fa5c-1f5a-592a23c137d9",
-				"ea252b3f-6026-febf-73a3-122ba79d36e5"
+				"ea252b3f-6026-febf-73a3-122ba79d36e5",
+				"4db5551d-ca12-bfab-143f-a0f33e0579ba",
+				"88e68a8e-5a71-4967-23bc-ad22c6e77d3f"
 			]
 		},
 		{
@@ -166,6 +168,23 @@
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Position\",\n    \"fields\":{\n      \"name\":\"position\",\n      \"description\":\"position\"\n    }\n  }\n}"
+		},
+		{
+			"id": "09cbab13-8182-4e8d-04ea-f5e59e401d54",
+			"headers": "",
+			"url": "{{url}}/rooms",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one room found\"] = jsonData.data.results.length >=1\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1492239104458,
+			"name": "query server room",
+			"description": "",
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
 			"folder": "ff06c913-9b46-3abb-1b12-c50ccb257895",
@@ -389,6 +408,24 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
+		},
+		{
+			"id": "45e70433-2480-78a5-6a1f-f6e6edef312f",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/rooms",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"room_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1492238709122,
+			"name": "add server_room",
+			"description": "",
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"server_room\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "63da411c-66ce-5e82-8fda-48fa456332aa",
@@ -693,11 +730,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"cabinet_1_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1490284440454,
+			"time": 1492238944679,
 			"name": "add cabinet 1",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet-1\",\n      \"description\":\"cabinet-1\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet-1\",\n      \"description\":\"cabinet-1\",\n      \"room_id\": \"{{room_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "63da411c-66ce-5e82-8fda-48fa456332aa",
@@ -768,11 +805,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1490845762672,
+			"time": 1492238845909,
 			"name": "add cabinet ",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\",\n      \"room_id\":\"{{room_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"id": "95c685ea-9606-506c-9e72-d0514af30b23",
@@ -804,11 +841,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1490434193885,
+			"time": 1492175873392,
 			"name": "add router",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router5\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
 		},
 		{
 			"id": "a01a5e86-28aa-0e05-0708-e0ecc5657b6e",
@@ -937,22 +974,20 @@
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
-			"folder": "63da411c-66ce-5e82-8fda-48fa456332aa",
 			"id": "d97bce68-0281-4c9c-55c0-18e952d1aeeb",
-			"name": "query cabinet by keyword",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
 			"url": "{{url}}/cabinets?keyword=cabinet&page=1&per_page=2",
 			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"query cabinet by keyword found\"] = jsonData.data.results.length === 1;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
+			"time": 1492239362166,
+			"name": "query cabinet by keyword",
+			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{

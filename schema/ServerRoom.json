@@ -1,5 +1,5 @@
 {
-  "id": "/Cabinet",
+  "id": "/ServerRoom",
   "type": "object",
   "properties": {
     "name": {
@@ -7,10 +7,7 @@
     },
     "description": {
       "type": "string"
-    },
-    "room_id":{
-      "type":"string","format":"uuid"
     }
   },
-  "required": ["name","room_id"]
+  "required": ["name"]
 }

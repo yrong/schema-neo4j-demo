@@ -37,6 +37,11 @@
     }
   },
   {
+    "name": "query server room",
+    "method": "GET",
+    "url": "http://localhost:3001/api/rooms"
+  },
+  {
     "name": "query all it service",
     "method": "GET",
     "url": "http://localhost:3001/api/it_services/service"
@@ -185,6 +190,21 @@
     "name": "query it service groups by keyword",
     "method": "GET",
     "url": "http://localhost:3001/api/it_services/group?keyword=Messaging"
+  },
+  {
+    "name": "add server_room",
+    "method": "POST",
+    "url": "http://localhost:3001/api/rooms",
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "data": {
+        "category": "ServerRoom",
+        "fields": {
+          "name": "server_room",
+          "description": "server_room"
+        }
+      }
+    }
   },
   {
     "name": "query User",
@@ -392,7 +412,8 @@
         "category": "Cabinet",
         "fields": {
           "name": "cabinet-1",
-          "description": "cabinet-1"
+          "description": "cabinet-1",
+          "room_id": "{{room_id}}"
         }
       }
     }
@@ -422,7 +443,8 @@
         "category": "Cabinet",
         "fields": {
           "name": "cabinet",
-          "description": "cabinet"
+          "description": "cabinet",
+          "room_id": "{{room_id}}"
         }
       }
     }
@@ -464,7 +486,7 @@
       "data": {
         "category": "Router",
         "fields": {
-          "name": "router5",
+          "name": "router",
           "status": {
             "status": "In_Use",
             "fields": {
@@ -483,7 +505,8 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
+            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3",
+            "test": "test"
           },
           "geo_location": {
             "name": "beijing",

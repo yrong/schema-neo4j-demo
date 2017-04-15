@@ -28,7 +28,8 @@ const cmdbTypeName = {
     Firewall:'Firewall',
     ProcessFlow:'ProcessFlow',
     IncidentFlow:'IncidentFlow',
-    ProcessFlowLegacy:'processFlow'
+    ProcessFlowLegacy:'processFlow',
+    ServerRoom:'ServerRoom'
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {
@@ -70,7 +71,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService,cmdbTypeName.ServerRoom];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
