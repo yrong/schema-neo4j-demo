@@ -40,6 +40,10 @@ var createOrUpdateCypherGenerator = (params)=>{
         params.cyphers = cypherBuilder.generateITServiceCyphers(params);
     }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
         params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
+    }else if(params.category === schema.cmdbTypeName.Cabinet){
+        params.cyphers = cypherBuilder.generateCabinetCyphers(params);
+    }else if(params.category === schema.cmdbTypeName.Shelf){
+        params.cyphers = cypherBuilder.generateShelfCyphers(params);
     }else{
         params.cypher = cypherBuilder.generateAddNodeCypher(params);
     }

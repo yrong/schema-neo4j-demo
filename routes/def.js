@@ -6,5 +6,7 @@ module.exports = {
     ITService:{route:'/it_services/service'},
     ITServiceGroup:{route:'/it_services/group'},
     ProcessFlow: {route: '/processFlows'},
-    ServerRoom: {route: '/rooms'}
+    ServerRoom: {route: '/serverRooms'},
+    WareHouse: {route:'/wareHouses'},
+    Shelf:{route:'/shelves'}
 }

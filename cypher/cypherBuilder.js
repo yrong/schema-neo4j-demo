@@ -1,7 +1,32 @@
 var _ = require('lodash')
 var schema = require('./../schema')
 
-/*ConfigurationItem*/
+
+const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uuid}})
+                                    ON CREATE SET n = {fields}
+                                    ON MATCH SET n = {fields}`
+/**
+ * Cabinet
+ */
+const cmdb_delRelsExistInCabinet_cypher = `MATCH (n:Cabinet{uuid: {uuid}})-[r:LocatedAt]-()
+DELETE r`
+const cmdb_addCabinetServerRoomRel_cypher = `MATCH (n:Cabinet{uuid:{uuid}})
+MATCH (sr:ServerRoom {uuid:{server_room_id}})
+CREATE (n)-[r:LocatedAt]->(sr)`
+
+/**
+ * Shelf
+ */
+const cmdb_delRelsExistInShelf_cypher = `MATCH (n:Shelf{uuid: {uuid}})-[r:LocatedAt]-()
+DELETE r`
+const cmdb_addShelfWareHouseRel_cypher = `MATCH (n:Shelf{uuid:{uuid}})
+MATCH (wh:WareHouse {uuid:{warehouse_id}})
+CREATE (n)-[r:LocatedAt]->(wh)`
+
+
+/**
+ * ConfigurationItem
+ */
 const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH (n:ConfigurationItem{uuid: {uuid}})-[r:RESPONSIBLE_FOR|LOCATED|SUPPORT_SERVICE]-()
 DELETE r`
 
@@ -22,7 +47,9 @@ const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (p:Position {uuid:{as
 MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(p)`
 
-/*ITService*/
+/**
+ * ITService
+ */
 const cmdb_delRelsExistInITService_cypher = `MATCH (n:ITService{uuid: {uuid}})-[r:ParentOf|DependsOn|BelongsTo]-()
 DELETE r`
 
@@ -78,7 +105,10 @@ WITH
 SKIP {skip} LIMIT {limit}
 RETURN { count: cnt, results:collect(group_with_services) }`
 
-/*ProcessFlow*/
+
+/**
+ * ProcessFlow
+ */
 const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]-()
 DELETE r`
 
@@ -100,10 +130,10 @@ MATCH (n:ProcessFlow{uuid:{uuid}})
 MATCH (rn:ProcessFlow{uuid:reference_id})
 CREATE (n)-[:REFERENCED_PROCESSFLOW]->(rn)`
 
-const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uuid}})
-                                    ON CREATE SET n = {fields}
-                                    ON MATCH SET n = {fields}`
 
+/**
+ * Queries
+ */
 
 const generateQueryITServiceByUuidsCypher = (params)=>`MATCH (s1:ITService)
 WHERE s1.uuid IN {uuids}
@@ -160,8 +190,6 @@ const generateQueryNodeCypher = (params) => {
                             RETURN n`;
 }
 
-// var user_attributes = ['uuid','userid','alias','lang','name','surname']
-
 const cmdb_findNodes_Cypher_template = (label) => `MATCH
             (n:${label})
             WITH
@@ -200,6 +228,14 @@ const generateSequence=(name)=>
 
 
 module.exports = {
+    generateCabinetCyphers: (params)=>{
+        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInCabinet_cypher,cmdb_addCabinetServerRoomRel_cypher]
+        return cyphers_todo
+    },
+    generateShelfCyphers: (params)=>{
+        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInShelf_cypher,cmdb_addShelfWareHouseRel_cypher]
+        return cyphers_todo
+    },
     generateCmdbCyphers: (params)=>{
         let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInConfigurationItem_cypher]
         if(params.it_service&&params.it_service.length){

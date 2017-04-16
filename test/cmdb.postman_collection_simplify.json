@@ -22,24 +22,9 @@
     "url": "http://localhost:3001/api/it_services/service?search=Messaging"
   },
   {
-    "name": "add position",
-    "method": "POST",
-    "url": "http://localhost:3001/api/positions",
-    "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
-      "data": {
-        "category": "Position",
-        "fields": {
-          "name": "position",
-          "description": "position"
-        }
-      }
-    }
-  },
-  {
     "name": "query server room",
     "method": "GET",
-    "url": "http://localhost:3001/api/rooms"
+    "url": "http://localhost:3001/api/serverRooms"
   },
   {
     "name": "query all it service",
@@ -194,7 +179,7 @@
   {
     "name": "add server_room",
     "method": "POST",
-    "url": "http://localhost:3001/api/rooms",
+    "url": "http://localhost:3001/api/serverRooms",
     "body": {
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
       "data": {
@@ -207,37 +192,9 @@
     }
   },
   {
-    "name": "query User",
-    "method": "GET",
-    "url": "http://localhost:3001/api/users"
-  },
-  {
     "name": "query ConfigurationItem by pagination",
     "method": "GET",
     "url": "http://localhost:3001/api/cfgItems"
-  },
-  {
-    "name": "add user",
-    "method": "POST",
-    "url": "http://localhost:3001/api/users",
-    "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
-      "uuid": 1,
-      "data": {
-        "category": "User",
-        "fields": {
-          "type": 1,
-          "attempt_ip": "10.50.13.69",
-          "userid": 1,
-          "passwd": "098f6bcd4621d373cade4e832627b4f6",
-          "surname": "",
-          "name": "nerds",
-          "alias": "nerds",
-          "theme": "default",
-          "lang": "en_GB"
-        }
-      }
-    }
   },
   {
     "name": "add ServiceGroup Infrastructure",
@@ -280,7 +237,7 @@
   {
     "name": "get articles from kb api",
     "method": "GET",
-    "url": "http://localhost:3000/KB/API/v1/articles"
+    "url": "http://localhost:3000/KB/API/v1/articles?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154"
   },
   {
     "name": "patch router for all attributes",
@@ -413,15 +370,10 @@
         "fields": {
           "name": "cabinet-1",
           "description": "cabinet-1",
-          "room_id": "{{room_id}}"
+          "server_room_id": "{{server_room_id}}"
         }
       }
     }
-  },
-  {
-    "name": "query User By Keyword",
-    "method": "GET",
-    "url": "http://localhost:3001/api/users?keyword=nerds&page=1&per_page=2"
   },
   {
     "name": "query ConfigurationItem Category",
@@ -444,7 +396,7 @@
         "fields": {
           "name": "cabinet",
           "description": "cabinet",
-          "room_id": "{{room_id}}"
+          "server_room_id": "{{server_room_id}}"
         }
       }
     }
@@ -548,9 +500,40 @@
     }
   },
   {
+    "name": "add warehouse",
+    "method": "POST",
+    "url": "http://localhost:3001/api/wareHouses",
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "data": {
+        "category": "WareHouse",
+        "fields": {
+          "name": "warehouse",
+          "description": "warehouse"
+        }
+      }
+    }
+  },
+  {
     "name": "query cfgitem by uuid ",
     "method": "GET",
     "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3"
+  },
+  {
+    "name": "add shelf",
+    "method": "POST",
+    "url": "http://localhost:3001/api/shelves",
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "data": {
+        "category": "Shelf",
+        "fields": {
+          "name": "shelf",
+          "description": "shelf",
+          "warehouse_id": "{{warehouse_id}}"
+        }
+      }
+    }
   },
   {
     "name": "patch incident flow 1 status to solved",

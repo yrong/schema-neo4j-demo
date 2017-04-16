@@ -29,7 +29,9 @@ const cmdbTypeName = {
     ProcessFlow:'ProcessFlow',
     IncidentFlow:'IncidentFlow',
     ProcessFlowLegacy:'processFlow',
-    ServerRoom:'ServerRoom'
+    ServerRoom:'ServerRoom',
+    WareHouse: 'WareHouse',
+    Shelf: 'Shelf'
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {
@@ -71,7 +73,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService,cmdbTypeName.ServerRoom];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService,cmdbTypeName.ServerRoom,cmdbTypeName.WareHouse,cmdbTypeName.Shelf];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
