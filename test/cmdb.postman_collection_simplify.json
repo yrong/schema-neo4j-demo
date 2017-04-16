@@ -231,7 +231,7 @@
     "url": "http://localhost:3002/auth/login",
     "body": {
       "username": "nerds",
-      "password": "098f6bcd4621d373cade4e832627b4f6"
+      "password": "nerds"
     }
   },
   {
@@ -305,8 +305,10 @@
           "product_date": "2016-10-11",
           "warranty_expiration_date": "2016-11-11",
           "asset_location": {
-            "status": "unmounted",
-            "position": "216f3eb0-1203-11e7-9162-e95a680838a3"
+            "status": "on_shelf",
+            "shelf": "{{shelf_id}}",
+            "label": "label",
+            "other": "other"
           },
           "management_ip": [
             "10.10.35.64"
@@ -569,7 +571,7 @@
       "data": {
         "category": "Router",
         "fields": {
-          "name": "router-3",
+          "name": "router",
           "it_service": [
             "222484f0-1203-11e7-9162-e95a680838a3",
             "2260a390-1203-11e7-9162-e95a680838a3"

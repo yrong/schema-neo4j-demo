@@ -43,6 +43,10 @@ const cmdb_addConfigurationItemCabinetRel_cypher = `MATCH (cabinet:Cabinet {uuid
 MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(cabinet)`
 
+const cmdb_addConfigurationItemShelfRel_cypher = `MATCH (shelf:Shelf {uuid:{asset_location}.shelf})
+MATCH (n:Asset {uuid:{uuid}})
+CREATE (n)-[r:LOCATED{asset_location}]->(shelf)`
+
 const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (p:Position {uuid:{asset_location}.position})
 MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(p)`
@@ -249,6 +253,9 @@ module.exports = {
         }
         if(params.asset_location&&params.asset_location.cabinet){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemCabinetRel_cypher]
+        }
+        if(params.asset_location&&params.asset_location.shelf){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemShelfRel_cypher]
         }
         return cyphers_todo;
     },
