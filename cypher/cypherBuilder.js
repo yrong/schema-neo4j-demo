@@ -15,6 +15,18 @@ MATCH (sr:ServerRoom {uuid:{server_room_id}})
 CREATE (n)-[r:LocatedAt]->(sr)`
 
 /**
+ * ServerRoom
+ */
+const cmdb_queryServerRoom_cypher = `
+MATCH
+    (s:ServerRoom)
+OPTIONAL MATCH
+    (c:Cabinet)
+WHERE c.server_room_id=s.uuid
+WITH { server_room: s, cabinets:collect(c) } as server_room_with_cabinets
+RETURN collect(server_room_with_cabinets)`
+
+/**
  * Shelf
  */
 const cmdb_delRelsExistInShelf_cypher = `MATCH (n:Shelf{uuid: {uuid}})-[r:LocatedAt]-()
@@ -22,6 +34,18 @@ DELETE r`
 const cmdb_addShelfWareHouseRel_cypher = `MATCH (n:Shelf{uuid:{uuid}})
 MATCH (wh:WareHouse {uuid:{warehouse_id}})
 CREATE (n)-[r:LocatedAt]->(wh)`
+
+/**
+ * WareHouse
+ */
+const cmdb_queryWareHouse_cypher = `
+MATCH
+    (w:WareHouse)
+OPTIONAL MATCH
+    (s:Shelf)
+WHERE s.warehouse_id=w.uuid
+WITH { warehouse: w, shelves:collect(s) } as warehouse_with_shelves
+RETURN collect(warehouse_with_shelves)`
 
 
 /**
@@ -294,6 +318,10 @@ module.exports = {
         var cypher,label;
         if(params.category === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryITServiceGroup_cypher;
+        }else if(params.category === schema.cmdbTypeName.ServerRoom){
+            cypher = cmdb_queryServerRoom_cypher;
+        }else if(params.category === schema.cmdbTypeName.WareHouse){
+            cypher = cmdb_queryWareHouse_cypher;
         }else{
             label = _.isArray(params.category)?_.last(params.category):params.category
             cypher = cmdb_findNodes_Cypher_template(label);

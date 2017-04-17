@@ -28,13 +28,14 @@
 			"description": "",
 			"order": [
 				"45e70433-2480-78a5-6a1f-f6e6edef312f",
-				"09cbab13-8182-4e8d-04ea-f5e59e401d54",
 				"90f552d0-8984-9950-562f-46dd0cc68eed",
+				"09cbab13-8182-4e8d-04ea-f5e59e401d54",
 				"88540d0d-4441-cc1f-0a87-b3427ce6a8d5",
 				"3e848e84-e97c-9775-fe6a-8689e33d89c7",
 				"d97bce68-0281-4c9c-55c0-18e952d1aeeb",
 				"e0ee0756-adf3-d95f-d879-b0d32a29c457",
 				"a35f4a25-fecd-0615-7d46-54b9c5957068",
+				"43191892-2644-3e98-b740-692703cf0dcf",
 				"ae54234c-26d0-27fb-520f-bf5a10bbae66",
 				"ea252b3f-6026-febf-73a3-122ba79d36e5"
 			],
@@ -175,10 +176,10 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one room found\"] = jsonData.data.results.length >=1\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one room found\"] = jsonData.data.length >=1\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1492330160024,
+			"time": 1492429170173,
 			"name": "query server room",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
@@ -445,6 +446,23 @@
 			"queryParams": null,
 			"headerData": null,
 			"pathVariableData": null,
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
+		},
+		{
+			"id": "43191892-2644-3e98-b740-692703cf0dcf",
+			"headers": "",
+			"url": "{{url}}/wareHouses",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one warehouse found\"] = jsonData.data.length >=1\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1492429190199,
+			"name": "query warehouse",
+			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{

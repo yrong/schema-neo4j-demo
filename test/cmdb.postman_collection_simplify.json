@@ -177,6 +177,11 @@
     "url": "http://localhost:3001/api/it_services/group?keyword=Messaging"
   },
   {
+    "name": "query warehouse",
+    "method": "GET",
+    "url": "http://localhost:3001/api/wareHouses"
+  },
+  {
     "name": "add server_room",
     "method": "POST",
     "url": "http://localhost:3001/api/serverRooms",
