@@ -47,7 +47,7 @@ module.exports = (app)=>{
                     route: route,
                     procedure: procedure
                 })
-            else
+            else {
                 app.defineAPI({
                     method: http_method,
                     route: route,
@@ -55,6 +55,16 @@ module.exports = (app)=>{
                     preProcess: preProcess,
                     postProcess: postProcess
                 })
+                if(method==='Modify'){
+                    app.defineAPI({
+                        method: http_method,
+                        route: '/api/by_name'+val.route,
+                        check: checker,
+                        preProcess: preProcess,
+                        postProcess: postProcess
+                    })
+                }
+            }
         })
     })
 

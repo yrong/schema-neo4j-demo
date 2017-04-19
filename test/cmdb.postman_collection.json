@@ -57,6 +57,8 @@
 				"0d579c0a-b2ac-823c-6db8-f5389b461115",
 				"014d82e1-d00a-811f-fb2a-fe4b8e3d7456",
 				"f171f45a-a57a-a128-d02c-7a6509b09ce9",
+				"e2860cb5-adc9-af33-d7c1-c721d9be06cc",
+				"18f8818b-9cec-cc9f-5f59-1b62556ee41b",
 				"0d9785b2-dc18-f961-c9e5-2374b317fd90",
 				"0c606d57-1965-0e5a-1cdc-3e685c57e85a",
 				"427f31c4-d294-d8c3-3a96-f35362ae1f5f",
@@ -65,7 +67,8 @@
 				"08780915-973c-d030-83bd-a7d3fabc609a",
 				"1a84ead1-85de-35bc-fec4-1c4eb502c223"
 			],
-			"folders_order": []
+			"folders_order": [],
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
 			"owner": "1388965",
@@ -249,6 +252,24 @@
 			"headerData": null,
 			"pathVariableData": null,
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
+		},
+		{
+			"id": "18f8818b-9cec-cc9f-5f59-1b62556ee41b",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/by_name/it_services/service",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1492613766957,
+			"name": "patch ITService Dns by name",
+			"description": "",
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"name\": \"dns\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"description\":\"dns\",\n      \"group\":\"{{group_infrastructure_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "ff06c913-9b46-3abb-1b12-c50ccb257895",
@@ -881,26 +902,22 @@
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Switch\",\n    \"fields\":{\n      \"name\":\"switch\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
 		},
 		{
-			"folder": "a78c8402-2327-65be-d8e4-8dd284bb8ba1",
 			"id": "9c0d9f9b-ff9b-1a77-e500-63e588afab1f",
-			"name": "add router",
-			"dataMode": "raw",
-			"data": [],
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
 			"url": "{{url}}/cfgItems",
 			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"queryParams": null,
-			"headerData": null,
-			"pathVariableData": null,
+			"time": 1492614199977,
+			"name": "add router",
+			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router1\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
 		},
 		{
 			"folder": "04fc395a-ef4b-b585-9afa-556154de2e0c",
@@ -1153,6 +1170,24 @@
 			"headerData": null,
 			"pathVariableData": null,
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
+		},
+		{
+			"id": "e2860cb5-adc9-af33-d7c1-c721d9be06cc",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{url}}/it_services/service/{{service_dns_id}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1492606660840,
+			"name": "patch ITService Dns",
+			"description": "",
+			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"description\":\"dns2\",\n      \"group\":\"{{group_messaging_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "ff06c913-9b46-3abb-1b12-c50ccb257895",

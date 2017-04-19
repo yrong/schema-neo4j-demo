@@ -4,14 +4,14 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "pop3",
           "description": "pop3",
-          "group": "218d4e00-1203-11e7-9162-e95a680838a3",
-          "parent": "21cf11f0-1203-11e7-9162-e95a680838a3"
+          "group": "ab77ece0-2362-11e7-954d-f5dd60678285",
+          "parent": "abde76e0-2362-11e7-954d-f5dd60678285"
         }
       }
     }
@@ -36,13 +36,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "email",
           "description": "email",
-          "group": "218d4e00-1203-11e7-9162-e95a680838a3"
+          "group": "ab77ece0-2362-11e7-954d-f5dd60678285"
         }
       }
     }
@@ -53,21 +53,37 @@
     "url": "http://localhost:3001/api/it_services/group"
   },
   {
+    "name": "patch ITService Dns by name",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/by_name/it_services/service",
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
+      "name": "dns",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "description": "dns",
+          "group": "abac4350-2362-11e7-954d-f5dd60678285"
+        }
+      }
+    }
+  },
+  {
     "name": "query it service by uuids",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?uuids=21cf11f0-1203-11e7-9162-e95a680838a3,222484f0-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/it_services/service?uuids=abde76e0-2362-11e7-954d-f5dd60678285,ac2e92b0-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "add incident flow 2 reference incident flow 1",
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "2260a390-1203-11e7-9162-e95a680838a3"
+            "ac681940-2362-11e7-954d-f5dd60678285"
           ],
           "committer": 1,
           "executor": 1,
@@ -76,7 +92,7 @@
             "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
           ],
           "reference_process_flow": [
-            "26e82780-1203-11e7-9162-e95a680838a3"
+            "afb7b970-2362-11e7-954d-f5dd60678285"
           ],
           "status": "open",
           "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
@@ -92,7 +108,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -115,20 +131,20 @@
   {
     "name": "search it service by group id",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?search=218d4e00-1203-11e7-9162-e95a680838a3,21abf990-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/it_services/service?search=ab77ece0-2362-11e7-954d-f5dd60678285,abac4350-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "add incident flow 4 with attachment referenced",
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "21cf11f0-1203-11e7-9162-e95a680838a3",
-            "222484f0-1203-11e7-9162-e95a680838a3"
+            "abde76e0-2362-11e7-954d-f5dd60678285",
+            "ac2e92b0-2362-11e7-954d-f5dd60678285"
           ],
           "committer": 1,
           "executor": 1,
@@ -155,13 +171,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "email",
           "description": "email",
-          "group": "218d4e00-1203-11e7-9162-e95a680838a3"
+          "group": "ab77ece0-2362-11e7-954d-f5dd60678285"
         }
       }
     }
@@ -169,7 +185,7 @@
   {
     "name": "delete cabinet 1",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/cabinets/20f4b780-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/cabinets/aa6a4d70-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "query it service groups by keyword",
@@ -186,7 +202,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/serverRooms",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ServerRoom",
         "fields": {
@@ -206,7 +222,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/group",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ITServiceGroup",
         "fields": {
@@ -219,9 +235,9 @@
   {
     "name": "patch incident flow 1 status to closed",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3",
+    "url": "http://localhost:3001/api/processFlows/afb7b970-2362-11e7-954d-f5dd60678285",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -233,7 +249,7 @@
   {
     "name": "login",
     "method": "POST",
-    "url": "http://localhost:3002/auth/login",
+    "url": "{{auth_url}}/auth/login",
     "body": {
       "username": "nerds",
       "password": "nerds"
@@ -242,19 +258,19 @@
   {
     "name": "get articles from kb api",
     "method": "GET",
-    "url": "http://localhost:3000/KB/API/v1/articles?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154"
+    "url": "http://localhost:3000/KB/API/v1/articles?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8"
   },
   {
     "name": "patch router for all attributes",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3",
+    "url": "http://localhost:3001/api/cfgItems/ad35f090-2362-11e7-954d-f5dd60678285",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Router",
         "fields": {
           "it_service": [
-            "2260a390-1203-11e7-9162-e95a680838a3"
+            "ac681940-2362-11e7-954d-f5dd60678285"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -265,7 +281,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
+            "cabinet": "aa098fd0-2362-11e7-954d-f5dd60678285"
           }
         }
       }
@@ -284,21 +300,21 @@
   {
     "name": "delete incident flow 3",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/processFlows/27772110-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/processFlows/b04db7e0-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "add physical server",
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "PhysicalServer",
         "fields": {
           "name": "physicalserver",
           "it_service": [
-            "21cf11f0-1203-11e7-9162-e95a680838a3",
-            "222484f0-1203-11e7-9162-e95a680838a3"
+            "abde76e0-2362-11e7-954d-f5dd60678285",
+            "ac2e92b0-2362-11e7-954d-f5dd60678285"
           ],
           "ip_address": [
             "10.10.35.63"
@@ -311,7 +327,7 @@
           "warranty_expiration_date": "2016-11-11",
           "asset_location": {
             "status": "on_shelf",
-            "shelf": "{{shelf_id}}",
+            "shelf": "ab17a470-2362-11e7-954d-f5dd60678285",
             "label": "label",
             "other": "other"
           },
@@ -328,13 +344,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Firewall",
         "fields": {
           "name": "firewall",
           "it_service": [
-            "2260a390-1203-11e7-9162-e95a680838a3"
+            "ac681940-2362-11e7-954d-f5dd60678285"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -345,7 +361,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
+            "cabinet": "aa098fd0-2362-11e7-954d-f5dd60678285"
           }
         }
       }
@@ -364,20 +380,20 @@
   {
     "name": "query process flow timeline by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3/timeline"
+    "url": "http://localhost:3001/api/processFlows/afb7b970-2362-11e7-954d-f5dd60678285/timeline"
   },
   {
     "name": "add cabinet 1",
     "method": "POST",
     "url": "http://localhost:3001/api/cabinets",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Cabinet",
         "fields": {
           "name": "cabinet-1",
           "description": "cabinet-1",
-          "server_room_id": "{{server_room_id}}"
+          "server_room_id": "a9c5f720-2362-11e7-954d-f5dd60678285"
         }
       }
     }
@@ -390,20 +406,20 @@
   {
     "name": "query physical server by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/23dc4710-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/cfgItems/ad98d110-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "add cabinet ",
     "method": "POST",
     "url": "http://localhost:3001/api/cabinets",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Cabinet",
         "fields": {
           "name": "cabinet",
           "description": "cabinet",
-          "server_room_id": "{{server_room_id}}"
+          "server_room_id": "a9c5f720-2362-11e7-954d-f5dd60678285"
         }
       }
     }
@@ -413,13 +429,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Switch",
         "fields": {
           "name": "switch",
           "it_service": [
-            "2260a390-1203-11e7-9162-e95a680838a3"
+            "ac681940-2362-11e7-954d-f5dd60678285"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -430,7 +446,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3"
+            "cabinet": "aa098fd0-2362-11e7-954d-f5dd60678285"
           }
         }
       }
@@ -441,11 +457,11 @@
     "method": "POST",
     "url": "http://localhost:3001/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Router",
         "fields": {
-          "name": "router",
+          "name": "router1",
           "status": {
             "status": "In_Use",
             "fields": {
@@ -453,7 +469,7 @@
             }
           },
           "it_service": [
-            "2260a390-1203-11e7-9162-e95a680838a3"
+            "ac681940-2362-11e7-954d-f5dd60678285"
           ],
           "responsibility": 1,
           "sn": "123456",
@@ -464,7 +480,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "20d6f650-1203-11e7-9162-e95a680838a3",
+            "cabinet": "aa098fd0-2362-11e7-954d-f5dd60678285",
             "test": "test"
           },
           "geo_location": {
@@ -483,13 +499,13 @@
     "method": "POST",
     "url": "http://localhost:3001/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "21cf11f0-1203-11e7-9162-e95a680838a3",
-            "222484f0-1203-11e7-9162-e95a680838a3"
+            "abde76e0-2362-11e7-954d-f5dd60678285",
+            "ac2e92b0-2362-11e7-954d-f5dd60678285"
           ],
           "committer": 1,
           "executor": 1,
@@ -511,7 +527,7 @@
     "method": "POST",
     "url": "http://localhost:3001/api/wareHouses",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "WareHouse",
         "fields": {
@@ -524,20 +540,20 @@
   {
     "name": "query cfgitem by uuid ",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/cfgItems/ad35f090-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "add shelf",
     "method": "POST",
     "url": "http://localhost:3001/api/shelves",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Shelf",
         "fields": {
           "name": "shelf",
           "description": "shelf",
-          "warehouse_id": "{{warehouse_id}}"
+          "warehouse_id": "aacf02b0-2362-11e7-954d-f5dd60678285"
         }
       }
     }
@@ -545,9 +561,9 @@
   {
     "name": "patch incident flow 1 status to solved",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3",
+    "url": "http://localhost:3001/api/processFlows/afb7b970-2362-11e7-954d-f5dd60678285",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -560,7 +576,7 @@
   {
     "name": "query process flow by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows/26e82780-1203-11e7-9162-e95a680838a3"
+    "url": "http://localhost:3001/api/processFlows/afb7b970-2362-11e7-954d-f5dd60678285"
   },
   {
     "name": "query ConfigurationItem Category by filter",
@@ -570,16 +586,16 @@
   {
     "name": "patch router for patial attributes",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3",
+    "url": "http://localhost:3001/api/cfgItems/ad35f090-2362-11e7-954d-f5dd60678285",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "Router",
         "fields": {
           "name": "router",
           "it_service": [
-            "222484f0-1203-11e7-9162-e95a680838a3",
-            "2260a390-1203-11e7-9162-e95a680838a3"
+            "ac2e92b0-2362-11e7-954d-f5dd60678285",
+            "ac681940-2362-11e7-954d-f5dd60678285"
           ],
           "sn": "12345678"
         }
@@ -599,7 +615,7 @@
   {
     "name": "query router timeline",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/236f2d60-1203-11e7-9162-e95a680838a3/timeline"
+    "url": "http://localhost:3001/api/cfgItems/ad35f090-2362-11e7-954d-f5dd60678285/timeline"
   },
   {
     "name": "query Cabinets",
@@ -607,11 +623,26 @@
     "url": "http://localhost:3001/api/cabinets"
   },
   {
+    "name": "patch ITService Dns",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/it_services/service/ac681940-2362-11e7-954d-f5dd60678285",
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "description": "dns2",
+          "group": "ab77ece0-2362-11e7-954d-f5dd60678285"
+        }
+      }
+    }
+  },
+  {
     "name": "add ServiceGroup Messaging",
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/group",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ITServiceGroup",
         "fields": {
@@ -652,15 +683,15 @@
     "method": "POST",
     "url": "http://localhost:3001/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3NmQ4NTNlOS1iNDMzLTQ1YzktODhhMy1jM2Y4MDRjMDUxODAiLCJ1c2VyIjp7ImlkIjoxMDA1LCJwYXNzd2QiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiIsImNyZWF0ZWQiOjE0OTA1MTI3NzU4MDIsInN1cm5hbWUiOiIiLCJuYW1lIjoibmVyZHMiLCJhbGlhcyI6Im5lcmRzIiwidGhlbWUiOiJkZWZhdWx0IiwibGFuZyI6ImVuX0dCIiwidHlwZSI6MSwiY2F0ZWdvcnkiOiJVc2VyIiwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxfSwiaWF0IjoxNDkwNTEzNTQ4fQ.bIeCf3SN02XOCwHVKhbjJGAYRMZWBFNo1lnu6kk9154",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNGU0YjE5ZS02NjY3LTRlMTAtYThjYi02MWEwMGU4M2ZhNzEiLCJ1c2VyIjp7ImlkIjo0NjcsInBlcl9wYWdlIjozMCwiYXZhdGFyIjoiL3VwbG9hZC9hdmF0YXIvY2E5MmQ1NjAtMDVhNi0xMWU3LTk4YmEtZTFkMDhkZjlhMjVmIiwidHlwZSI6MSwiYXR0ZW1wdF9pcCI6IjEwLjUwLjEzLjY5IiwidXNlcmlkIjoxLCJ1dWlkIjoxLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpxZEdraU9pSTBZek5oWVRjMk5pMHhPV0psTFRRek9XWXRZalF5WVMwM09EZGxZMkV3TjJNNVpHVWlMQ0oxYzJWeUlqcDdJbWxrSWpvME5qY3NJbkJoYzNOM1pDSTZJbTVsY21Seklpd2ljM1Z5Ym1GdFpTSTZJaUlzSW01aGJXVWlPaUp1WlhKa2N5SXNJbUZzYVdGeklqb2libVZ5WkhNaUxDSjBhR1Z0WlNJNkltUmxabUYxYkhRaUxDSjBlWEJsSWpveExDSnNZVzVuSWpvaVpXNWZSMElpTENKaGRIUmxiWEIwWDJsd0lqb2lNVEF1TlRBdU1UTXVOamtpTENKMWMyVnlhV1FpT2pFc0luVjFhV1FpT2pGOUxDSnBZWFFpT2pFME9USXpNemd5TVRSOS5fUEhwbUduWFhJb3hIdFNtZ1VoTHllRmpJYk9HVHhYRWdWOTBDRTczNHowIiwicGFzc3dkIjoibmVyZHMiLCJzdXJuYW1lIjoiIiwibmFtZSI6Im5lcmRzIiwiYWxpYXMiOiJuZXJkcyIsInRoZW1lIjoiZGVmYXVsdCIsImxhbmciOiJlbl9HQiJ9LCJpYXQiOjE0OTI0MjkyMzF9.5f7NqsPhKf_AMMC9Kg8FpVSYL7vsXMw78mwYpKecIo8",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "dns",
           "description": "dns",
-          "group": "21abf990-1203-11e7-9162-e95a680838a3",
+          "group": "abac4350-2362-11e7-954d-f5dd60678285",
           "dependendents": [
-            "21cf11f0-1203-11e7-9162-e95a680838a3"
+            "abde76e0-2362-11e7-954d-f5dd60678285"
           ]
         }
       }

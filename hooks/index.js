@@ -10,8 +10,9 @@ var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
 var path = require('path')
 var QRCode = require('qrcode')
-var JsBarcode = require('jsbarcode');
+var JsBarcode = require('jsbarcode')
 var Canvas = require('canvas')
+var cypherInvoker = require('../helper/cypherInvoker')
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -28,7 +29,7 @@ var getCategoryFromUrl = function (url) {
 }
 
 var logCypher = (params)=>{
-    let cypher = params.cyphers?JSON.stringify(params.cyphers,null,'\t'):params.cypher
+    let cypher = params.cyphers||params.cypher
     let cypher_params = _.omit(params,['cypher','cyphers','data','fields','fields_old','method','url','token'])
     logger.debug(`cypher to executed:${JSON.stringify({cypher:cypher,params:cypher_params},null,'\t')}`)
 }
@@ -143,6 +144,18 @@ var cudItem_callback = (params,update)=>{
     return createOrUpdateCypherGenerator(params)
 }
 
+var updateItem = (result,params)=>{
+    if (result && result[0]) {
+        let old_val = _.omit(result[0],'id')
+        params.fields_old = old_val
+        params.fields = _.assign({}, old_val);
+        params.change = params.data.fields
+        return cudItem_callback(params, true)
+    } else {
+        throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
+    }
+}
+
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
         params.method = ctx.method,params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
@@ -150,34 +163,35 @@ module.exports = {
             let item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
             params.data.fields.uuid = item_uuid
             if (params.data.category === schema.cmdbTypeName.IncidentFlow) {
-                return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true).then((result) => {
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow),params,(result,params)=>{
                     params.data.fields.pfid = 'IR' + result[0]
                     return cudItem_callback(params)
                 })
             } else if(schema.cmdbConfigurationItemTypes.includes(params.category)){
-                return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.ConfigurationItem), params, true).then((result) => {
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.ConfigurationItem),params,(result,params)=>{
                     let barcode_id = result[0]
                     let canvas = new Canvas();
                     JsBarcode(canvas, barcode_id);
                     params.data.fields.barcode = {id:barcode_id,url:canvas.toDataURL()}
                     return cudItem_callback(params)
                 })
-
             }
             else
                 return cudItem_callback(params)
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
-            return ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeCypher(params), params, true).then((result) => {
-                if (result && result[0]) {
-                    params.fields_old = result[0]
-                    params.fields = _.assign({}, result[0]);
-                    params.change = params.data.fields
-                    return cudItem_callback(params,true)
-                } else {
-                    throw new Error("no record found to patch,uuid is" + params.uuid);
-                }
-            })
+            if(params.uuid){
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params),params,(result,params)=>{
+                    return updateItem(result,params)
+                })
+            }else if(params.name){
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeByNameCypher(params),params,(result,params)=>{
+                    return updateItem(result,params)
+                })
+            }else{
+                throw new Error("uuid or name missing when modify");
+            }
+
         } else if (params.method === 'DELETE') {
             return deleteCypherGenerator(params);
         }

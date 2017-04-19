@@ -218,6 +218,13 @@ const generateQueryNodeCypher = (params) => {
                             RETURN n`;
 }
 
+const generateQueryNodeByNameCypher = (params) => {
+    let label = _.isArray(params.category)?_.last(params.category):params.category
+    return `MATCH (n:${label})
+                            WHERE n.name = {name}
+                            RETURN n`;
+}
+
 const cmdb_findNodes_Cypher_template = (label) => `MATCH
             (n:${label})
             WITH
@@ -351,5 +358,6 @@ module.exports = {
     generateDelNodeCypher,
     generateQueryNodeChangeTimelineCypher,
     generateSequence,
-    generateAddPrevNodeRelCypher
+    generateAddPrevNodeRelCypher,
+    generateQueryNodeByNameCypher
 }
