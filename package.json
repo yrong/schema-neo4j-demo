@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack",
     "buildAdvanced": "EDITION=advanced webpack",
-    "test": "mocha",
+    "test": "mocha --harmony",
     "start": "node ./server.js",
     "init": "/bin/bash ./script/init.sh",
     "backup": "/bin/bash ./script/backup.sh",
@@ -29,6 +29,7 @@
     "file-system": "^2.2.2",
     "jsbarcode": "^3.5.9",
     "jsonfile": "^2.4.0",
+    "jsonpath": "^0.2.11",
     "kcors": "^2.1.1",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",

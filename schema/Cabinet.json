@@ -8,9 +8,9 @@
     "description": {
       "type": "string"
     },
-    "server_room_id":{
-      "type":"string","format":"uuid"
+    "server_room":{
+      "type":"string"
     }
   },
-  "required": ["name","server_room_id"]
+  "required": ["name","server_room"]
 }

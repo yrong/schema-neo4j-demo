@@ -1,4 +1,0 @@
-MATCH (n)
-WHERE NOT n:User
-DETACH
-DELETE n

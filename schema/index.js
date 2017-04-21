@@ -31,7 +31,33 @@ const cmdbTypeName = {
     ProcessFlowLegacy:'processFlow',
     ServerRoom:'ServerRoom',
     WareHouse: 'WareHouse',
-    Shelf: 'Shelf'
+    Shelf: 'Shelf',
+    All: 'All'
+}
+
+const nameConverterDef = {
+    ITService: [
+        {attr: 'group', schema: cmdbTypeName.ITServiceGroup},
+        {attr: 'parent', schema: cmdbTypeName.ITService},
+        {attr: 'children', type:'array',schema: cmdbTypeName.ITService},
+        {attr: 'dependencies', type:'array',schema: cmdbTypeName.ITService},
+        {attr: 'dependendents', type:'array',schema: cmdbTypeName.ITService}
+    ],
+    ConfigurationItem: [
+        {attr: 'it_service', type:'array',schema: cmdbTypeName.ITService},
+        {attr: 'responsibility', schema: cmdbTypeName.User},
+        {attr: 'asset_location.cabinet', schema: cmdbTypeName.Cabinet},
+        {attr: 'asset_location.shelf', schema: cmdbTypeName.Shelf},
+        {attr: 'asset_location.position', schema: cmdbTypeName.Position}
+    ],
+    ProcessFlow:[
+        {attr: 'it_service', type:'array',schema: cmdbTypeName.ITService},
+        {attr: 'committer', schema: cmdbTypeName.User},
+        {attr: 'executor', schema: cmdbTypeName.User},
+        {attr: 'reference_process_flow',type:'array'}
+    ],
+    Cabinet:[{attr: 'server_room', schema: cmdbTypeName.ServerRoom}],
+    Shelf:[{attr: 'warehouse', schema: cmdbTypeName.WareHouse}]
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {
@@ -73,7 +99,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService,cmdbTypeName.ServerRoom,cmdbTypeName.WareHouse,cmdbTypeName.Shelf];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.ServerRoom,cmdbTypeName.WareHouse,cmdbTypeName.Shelf,cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
@@ -150,5 +176,23 @@ var extendSchema = function(schema) {
     return schema;
 }
 
+var getApiCategory = (category) => {
+    return _.last(cmdbTypeLabels[category])||category
+}
 
-module.exports = {checkSchema,getSchema,cmdbConfigurationItemTypes,cmdbConfigurationItemAuxiliaryTypes,cmdbTypeLabels,cmdbTypeName,cmdbConfigurationItemInheritanceRelationship,cmdbProcessFlowTypes,cmdbTypesAll,cmdbProcessFlowAbstractTypes}
+var isConfigurationItem = (category) => {
+    return cmdbConfigurationItemTypes.includes(category)||category===cmdbTypeName.ConfigurationItem
+}
+
+var isProcessFlow = (category) => {
+    return cmdbProcessFlowTypes.includes(category)||category===cmdbTypeName.ProcessFlow
+}
+
+var isAuxiliaryTypes  = (category) => {
+    return cmdbConfigurationItemAuxiliaryTypes.includes(category)
+}
+
+
+module.exports = {checkSchema,getSchema,cmdbConfigurationItemTypes,cmdbConfigurationItemAuxiliaryTypes, cmdbTypeLabels,
+cmdbTypeName,cmdbConfigurationItemInheritanceRelationship,cmdbProcessFlowTypes,cmdbTypesAll,cmdbProcessFlowAbstractTypes,
+nameConverterDef,getApiCategory,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}

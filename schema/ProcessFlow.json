@@ -4,23 +4,17 @@
   "properties": {
     "it_service": {
       "type": "array",
-      "items": { "type": "string","format":"uuid"},
+      "items": { "type": "string"},
       "uniqueItems": true
     },
     "reference_process_flow":{
       "type": "array",
-      "items": { "type": "string","format":"uuid" },
+      "items": { "type": "string" },
       "uniqueItems": true
-    },
-    "committer":{
-      "type": "integer"
-    },
-    "executor":{
-      "type": "integer"
     },
     "reference_kb":{
       "type": "array",
-      "items": { "type": "string","format":"uuid" },
+      "items": { "type": "string"},
       "uniqueItems": true
     },
     "status":{
@@ -43,5 +37,5 @@
       "type":"string"
     }
   },
-  "required": ["it_service","committer"]
+  "required": ["it_service"]
 }

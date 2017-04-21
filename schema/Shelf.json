@@ -8,9 +8,9 @@
     "description": {
       "type": "string"
     },
-    "warehouse_id":{
-      "type":"string","format":"uuid"
+    "warehouse":{
+      "type":"string"
     }
   },
-  "required": ["name","warehouse_id"]
+  "required": ["name","warehouse"]
 }

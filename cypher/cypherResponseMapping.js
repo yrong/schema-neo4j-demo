@@ -87,6 +87,15 @@ var timelineMapper = (result)=>{
     return change_logs
 }
 
+var propertiesCombine = (results)=>{
+    return _.map(results,(result)=>{
+        if(result.self&&result.members){
+            result = _.merge(result.self,{members:result.members})
+            return result
+        }
+    })
+}
+
 module.exports = {
     removeInternalPropertys: removeInternalProperties,
     resultMapper: (result, params) => {
@@ -95,6 +104,8 @@ module.exports = {
         }
         if(params.category === schema.cmdbTypeName.ConfigurationItem || params.category === schema.cmdbTypeName.ProcessFlow)
             return referencedMapper(result)
+        if(params.category === schema.cmdbTypeName.ITServiceGroup || params.category === schema.cmdbTypeName.WareHouse || params.category === schema.cmdbTypeName.ServerRoom)
+            return propertiesCombine(result)
         return result
     }
 }

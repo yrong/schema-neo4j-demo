@@ -9,10 +9,12 @@ var logger = require('../logger')
 var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
 var path = require('path')
-var QRCode = require('qrcode')
 var JsBarcode = require('jsbarcode')
 var Canvas = require('canvas')
 var cypherInvoker = require('../helper/cypherInvoker')
+var uuid_validator = require('uuid-validate')
+var converter = require('../helper/converter')
+var jp = require('jsonpath');
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -23,6 +25,8 @@ var getCategoryFromUrl = function (url) {
             break
         }
     }
+    if(url.includes('/api/items'))
+        category = schema.cmdbTypeName.All
     if(!category)
         throw new Error('can not find category from url:'+url)
     return category;
@@ -55,7 +59,10 @@ var createOrUpdateCypherGenerator = (params)=>{
 }
 
 var deleteCypherGenerator = (params)=>{
-    params.cypher = cypherBuilder.generateDelNodeCypher();
+    if(params.uuid)
+        params.cypher = cypherBuilder.generateDelNodeCypher();
+    else if(params.category === schema.cmdbTypeName.All)
+        params.cypher = cypherBuilder.generateDelAllCypher();
     logCypher(params)
     return params;
 }
@@ -64,23 +71,27 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
     DISPLAY_AS_TOAST='toast';
 
+const ID_TYPE_UUID = 'uuid',ID_TYPE_NAME = 'name'
+
 var paginationParamsGenerator = function (params) {
-    var params_pagination = {"skip":0,"limit":config.get('config.perPageSize')};
-    if(params.page&&params.per_page){
-        var skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
+    var params_pagination = {"skip":0,"limit":config.get('config.perPageSize')},skip;
+    if(params.page){
+        params.per_page = params.per_page || config.get('config.perPageSize')
+        skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
-        if(params.uuids || params.uuid || params.search){
-            throw new Error("search query not support pagination temporarily");
+        if(schema.isAuxiliaryTypes(params.category)){
+            throw new Error(`${params.category} not support pagination`);
+        }
+        if(schema.isConfigurationItem(params.category)||schema.isProcessFlow(params.category)){
+            params.pagination = true
         }
     }
     return _.assign(params,params_pagination);
 }
 
 var queryParamsCypherGenerator = function (params) {
-    if(params.keyword){
-        params.cypher = cypherBuilder.generateQueryNodesByKeyWordCypher(params);
-    }else if(params.uuid){
-        params.cypher = cypherBuilder.generateQueryNodeCypher(params);
+    if(params.uuid){
+        params.cypher = cypherBuilder.generateQueryNodeCypher(params,ID_TYPE_UUID);
         if(utils.isChangeTimelineQuery(params.url))
             params.cypher = cypherBuilder.generateQueryNodeChangeTimelineCypher(params)
     }
@@ -132,6 +143,32 @@ var cudItem_params_stringify = (params, list) => {
     }
 }
 
+
+var cudItem_params_name2IdConverter = (params)=>{
+    var convert = (val)=>{
+        let params_val = jp.query(params, `$.${val.attr}`)[0]
+        let converted_val = converter[val.schema](params_val)
+        jp.value(params, `$.${val.attr}`,converted_val)
+        jp.value(params, `$.fields.${val.attr}`,converted_val)
+    }
+    let category = schema.getApiCategory(params.category)
+    _.each(schema.nameConverterDef[category],(val)=>{
+        val.schema = val.schema || category
+        let params_val = jp.query(params, `$.${val.attr}`)[0]
+        if(val.type === 'array' && _.isArray(params_val)){
+            if(params_val[0]&&!uuid_validator(params_val[0])){
+                convert(val)
+            }
+        }
+        else if(_.isString(params_val)){
+            if(!uuid_validator(params_val)){
+                convert(val)
+            }
+        }
+    })
+    return params
+}
+
 var cudItem_callback = (params,update)=>{
     params.fields = _.assign(params.fields, params.data.fields)
     if(update){
@@ -140,6 +177,8 @@ var cudItem_callback = (params,update)=>{
         params.fields.category = params.data.category
         params.fields.created = Date.now()
     }
+    params = _.assign(params, params.fields)
+    cudItem_params_name2IdConverter(params)
     cudItem_params_stringify(params,utils.objectFields)
     return createOrUpdateCypherGenerator(params)
 }
@@ -181,11 +220,11 @@ module.exports = {
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
             if(params.uuid){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params),params,(result,params)=>{
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params,ID_TYPE_UUID),params,(result,params)=>{
                     return updateItem(result,params)
                 })
             }else if(params.name){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeByNameCypher(params),params,(result,params)=>{
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params,ID_TYPE_NAME),params,(result,params)=>{
                     return updateItem(result,params)
                 })
             }else{
@@ -193,7 +232,7 @@ module.exports = {
             }
 
         } else if (params.method === 'DELETE') {
-            return deleteCypherGenerator(params);
+            return deleteCypherGenerator(params)
         }
     },
     cudItem_postProcess:function (result,params,ctx) {
@@ -205,22 +244,21 @@ module.exports = {
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
             if(!params.uuid||!params.fields)
                 throw new Error('added obj without uuid')
-            cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid})
+            cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
+            response_wrapped.uuid = params.uuid
         }
-        if(params.method==='DEL'){
-            if(params.uuid)
+        if(params.method==='DELETE'){
+            if(params.uuid){
                 cache.del(params.uuid)
-            if(params.url.includes('items'))
-                cache.flushAll()
-            if(params.uuid && (result.length != 1&&result.total!=1))
-                response_wrapped = {
-                    "status":STATUS_WARNING,
-                    "content": CONTENT_NO_RECORD,
-                    "displayAs":DISPLAY_AS_TOAST
+                response_wrapped.uuid = params.uuid
+                if(result.length != 1&&result.total!=1){
+                    response_wrapped.status = STATUS_WARNING
+                    response_wrapped.content = CONTENT_NO_RECORD
                 }
+            }
+            if(params.category===schema.cmdbTypeName.All)
+                cache.flushAll()
         }
-        if(params.uuid)
-            response_wrapped.uuid = params.uuid;
         return　response_wrapped;
     },
     queryItems_preProcess:function (params,ctx) {

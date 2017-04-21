@@ -94,7 +94,8 @@ module.exports = (app)=>{
     app.defineAPI({
         method: 'DEL',
         route: '/api/items',
-        cypherQueryFile: './cypher/deleteItems.cyp'
+        preProcess: hook.cudItem_preProcess,
+        postProcess: hook.cudItem_postProcess
     });
 
     /*License*/
