@@ -1,5 +1,6 @@
 var _ = require('lodash')
 var schema = require('./../schema')
+var uuid_validator = require('uuid-validate')
 
 
 /*********************************************crud cyphers**************************************************************/
@@ -17,22 +18,28 @@ const generateAddNodeCypher=(params)=>{
     return cmdb_addNode_Cypher_template(labels);
 }
 
-const generateDelNodeCypher = (params)=>`MATCH (n)
-                            WHERE n.uuid = {uuid}
-                            DETACH
-                            DELETE n
-                            return n`;
+const ID_TYPE_UUID = 'uuid',ID_TYPE_NAME = 'name'
+
+const generateDelNodeCypher = (params)=>{
+    let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
+    return `MATCH (n)
+            WHERE n.${id_type} = {uuid}
+            DETACH
+            DELETE n
+            return n`
+}
 
 const generateDelAllCypher = (params)=>`MATCH (n)
 WHERE NOT n:User
 DETACH
 DELETE n`
 
-const generateQueryNodeCypher = (params,id_type) => {
+const generateQueryNodeCypher = (params) => {
+    let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
     let label = _.isArray(params.category)?_.last(params.category):params.category
     return `MATCH (n:${label})
-                            WHERE n.${id_type} = {${id_type}}
-                            RETURN n`;
+            WHERE n.${id_type} = {uuid}
+            RETURN n`;
 }
 
 const cmdb_findNodes_Cypher_template = (label,condition) => {
@@ -100,6 +107,20 @@ const generateAddPrevNodeRelCypher = (params) => {
                                       DELETE prev_rel)`
 }
 
+/**
+ * query node relations
+ */
+const generateQueryNodeRelations_cypher = (params)=> {
+    let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
+    return `MATCH (n{${id_type}: {uuid}})-[r]-()
+    WITH n as self,collect(r) as rels
+    RETURN self,rels`
+}
+
+/**
+ * dummy operation
+ */
+const generateDummyOperation_cypher = (params) => `WITH 1 as result return result`
 
 /**
  * Cabinet
@@ -320,5 +341,7 @@ module.exports = {
     generateQueryNodeChangeTimelineCypher,
     generateSequence,
     generateAddPrevNodeRelCypher,
-    generateDelAllCypher
+    generateDelAllCypher,
+    generateQueryNodeRelations_cypher,
+    generateDummyOperation_cypher
 }

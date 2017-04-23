@@ -97,12 +97,6 @@
         "category": "IncidentFlow",
         "fields": {
           "it_service": [],
-          "committer": 1,
-          "executor": 1,
-          "reference_kb": [
-            "6cff283b-6878-4f78-b22d-52c9271b4994",
-            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
-          ],
           "status": "open",
           "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
           "note": "note",
@@ -167,11 +161,6 @@
     }
   },
   {
-    "name": "delete cabinet 1",
-    "method": "DELETE",
-    "url": "http://localhost:3001/api/cabinets/e9270bf0-2657-11e7-ae58-e9032e6f306d"
-  },
-  {
     "name": "query it service groups by keyword",
     "method": "GET",
     "url": "http://localhost:3001/api/it_services/group?keyword=Messaging"
@@ -215,6 +204,11 @@
         }
       }
     }
+  },
+  {
+    "name": "delete email service fail",
+    "method": "DELETE",
+    "url": "http://localhost:3001/api/it_services/service/ea711820-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "patch incident flow 1 status to closed",
@@ -365,22 +359,6 @@
     "name": "query process flow timeline by uuid",
     "method": "GET",
     "url": "http://localhost:3001/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d/timeline"
-  },
-  {
-    "name": "add cabinet 1",
-    "method": "POST",
-    "url": "http://localhost:3001/api/cabinets",
-    "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
-      "data": {
-        "category": "Cabinet",
-        "fields": {
-          "name": "cabinet-1",
-          "description": "cabinet-1",
-          "server_room": "e8a38410-2657-11e7-ae58-e9032e6f306d"
-        }
-      }
-    }
   },
   {
     "name": "query ConfigurationItem Category",
@@ -597,9 +575,24 @@
     "url": "http://localhost:3001/api/processFlows?keyword=attachment&_source=status,uuid"
   },
   {
-    "name": "query cabinet by keyword",
+    "name": "patch ITService Dns by name",
+    "method": "PATCH",
+    "url": "http://localhost:3001/api/it_services/service/dns",
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "description": "dns3",
+          "group": "Infrastructure"
+        }
+      }
+    }
+  },
+  {
+    "name": "query cabinet by uuid as name",
     "method": "GET",
-    "url": "http://localhost:3001/api/cabinets?keyword=cabinet"
+    "url": "http://localhost:3001/api/cabinets/cabinet"
   },
   {
     "name": "query router timeline",

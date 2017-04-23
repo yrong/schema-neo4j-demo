@@ -59,19 +59,14 @@ var createOrUpdateCypherGenerator = (params)=>{
 }
 
 var deleteCypherGenerator = (params)=>{
-    if(params.uuid)
-        params.cypher = cypherBuilder.generateDelNodeCypher();
-    else if(params.category === schema.cmdbTypeName.All)
-        params.cypher = cypherBuilder.generateDelAllCypher();
+    params.cypher = cypherBuilder.generateDelNodeCypher(params);
     logCypher(params)
     return params;
 }
 
 const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
-    DISPLAY_AS_TOAST='toast';
-
-const ID_TYPE_UUID = 'uuid',ID_TYPE_NAME = 'name'
+    CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast';
 
 var paginationParamsGenerator = function (params) {
     var params_pagination = {"skip":0,"limit":config.get('config.perPageSize')},skip;
@@ -91,7 +86,7 @@ var paginationParamsGenerator = function (params) {
 
 var queryParamsCypherGenerator = function (params) {
     if(params.uuid){
-        params.cypher = cypherBuilder.generateQueryNodeCypher(params,ID_TYPE_UUID);
+        params.cypher = cypherBuilder.generateQueryNodeCypher(params);
         if(utils.isChangeTimelineQuery(params.url))
             params.cypher = cypherBuilder.generateQueryNodeChangeTimelineCypher(params)
     }
@@ -220,19 +215,30 @@ module.exports = {
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
             if(params.uuid){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params,ID_TYPE_UUID),params,(result,params)=>{
-                    return updateItem(result,params)
-                })
-            }else if(params.name){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params,ID_TYPE_NAME),params,(result,params)=>{
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params),params,(result,params)=>{
                     return updateItem(result,params)
                 })
             }else{
-                throw new Error("uuid or name missing when modify");
+                throw new Error('missing uuid when modify')
             }
 
         } else if (params.method === 'DELETE') {
-            return deleteCypherGenerator(params)
+            if(params.uuid){
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeRelations_cypher(params),params,(result,params)=>{
+                    if(result&&result[0]&&result[0].rels&&result[0].rels.length&&result[0].self&&result[0].self.category&&schema.isAuxiliaryTypes(result[0].self.category)){
+                        params.used = true
+                        params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
+                        return params
+                    }else{
+                        return deleteCypherGenerator(params)
+                    }
+                })
+            }else if(params.category === schema.cmdbTypeName.All){
+                params.cypher = cypherBuilder.generateDelAllCypher();
+                return params
+            }else{
+                throw new Error('missing uuid when delete')
+            }
         }
     },
     cudItem_postProcess:function (result,params,ctx) {
@@ -251,7 +257,11 @@ module.exports = {
             if(params.uuid){
                 cache.del(params.uuid)
                 response_wrapped.uuid = params.uuid
-                if(result.length != 1&&result.total!=1){
+                if(params.used){
+                    response_wrapped.status = STATUS_WARNING
+                    response_wrapped.content = CONTENT_NODE_USED
+                }
+                else if(result.length != 1&&result.total!=1){
                     response_wrapped.status = STATUS_WARNING
                     response_wrapped.content = CONTENT_NO_RECORD
                 }
