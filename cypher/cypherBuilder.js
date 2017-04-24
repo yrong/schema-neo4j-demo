@@ -128,7 +128,7 @@ const generateDummyOperation_cypher = (params) => `WITH 1 as result return resul
 const cmdb_delRelsExistInCabinet_cypher = `MATCH (n:Cabinet{uuid: {uuid}})-[r:LocatedAt]-()
 DELETE r`
 const cmdb_addCabinetServerRoomRel_cypher = `MATCH (n:Cabinet{uuid:{uuid}})
-MATCH (sr:ServerRoom {uuid:{server_room}})
+MATCH (sr:ServerRoom {uuid:{server_room_id}})
 CREATE (n)-[r:LocatedAt]->(sr)`
 
 
@@ -139,7 +139,7 @@ CREATE (n)-[r:LocatedAt]->(sr)`
 const cmdb_delRelsExistInShelf_cypher = `MATCH (n:Shelf{uuid: {uuid}})-[r:LocatedAt]-()
 DELETE r`
 const cmdb_addShelfWareHouseRel_cypher = `MATCH (n:Shelf{uuid:{uuid}})
-MATCH (wh:WareHouse {uuid:{warehouse}})
+MATCH (wh:WareHouse {uuid:{warehouse_id}})
 CREATE (n)-[r:LocatedAt]->(wh)`
 
 

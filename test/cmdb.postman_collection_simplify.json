@@ -386,7 +386,7 @@
         "fields": {
           "name": "cabinet",
           "description": "cabinet",
-          "server_room": "e8a38410-2657-11e7-ae58-e9032e6f306d"
+          "server_room_id": "e8a38410-2657-11e7-ae58-e9032e6f306d"
         }
       }
     }
@@ -520,7 +520,7 @@
         "fields": {
           "name": "shelf",
           "description": "shelf",
-          "warehouse": "warehouse"
+          "warehouse_id": "warehouse"
         }
       }
     }

@@ -56,8 +56,8 @@ const nameConverterDef = {
         {attr: 'executor', schema: cmdbTypeName.User},
         {attr: 'reference_process_flow',type:'array'}
     ],
-    Cabinet:[{attr: 'server_room', schema: cmdbTypeName.ServerRoom}],
-    Shelf:[{attr: 'warehouse', schema: cmdbTypeName.WareHouse}]
+    Cabinet:[{attr: 'server_room_id', schema: cmdbTypeName.ServerRoom}],
+    Shelf:[{attr: 'warehouse_id', schema: cmdbTypeName.WareHouse}]
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {

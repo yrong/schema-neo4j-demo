@@ -8,9 +8,9 @@
     "description": {
       "type": "string"
     },
-    "server_room":{
+    "server_room_id":{
       "type":"string"
     }
   },
-  "required": ["name","server_room"]
+  "required": ["name","server_room_id"]
 }

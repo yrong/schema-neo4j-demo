@@ -807,11 +807,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1492756674605,
+			"time": 1493034579452,
 			"name": "add cabinet ",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\",\n      \"server_room\":\"{{server_room_id}}\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\",\n      \"server_room_id\":\"{{server_room_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "a78c8402-2327-65be-d8e4-8dd284bb8ba1",
@@ -927,11 +927,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"shelf_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1492741948028,
+			"time": 1493034585270,
 			"name": "add shelf",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Shelf\",\n    \"fields\":{\n      \"name\":\"shelf\",\n      \"description\":\"shelf\",\n      \"warehouse\": \"warehouse\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Shelf\",\n    \"fields\":{\n      \"name\":\"shelf\",\n      \"description\":\"shelf\",\n      \"warehouse_id\": \"warehouse\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "04fc395a-ef4b-b585-9afa-556154de2e0c",
