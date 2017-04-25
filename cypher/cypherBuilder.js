@@ -320,9 +320,9 @@ module.exports = {
         if(params.category === schema.cmdbTypeName.ITServiceGroup){
             cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ITServiceGroup,schema.cmdbTypeName.ITService,'group',condition)
         }else if(params.category === schema.cmdbTypeName.ServerRoom){
-            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ServerRoom,schema.cmdbTypeName.Cabinet,'server_room',condition)
+            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ServerRoom,schema.cmdbTypeName.Cabinet,'server_room_id',condition)
         }else if(params.category === schema.cmdbTypeName.WareHouse){
-            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.WareHouse,schema.cmdbTypeName.Shelf,'warehouse',condition);
+            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.WareHouse,schema.cmdbTypeName.Shelf,'warehouse_id',condition);
         }else{
             label = _.isArray(params.category)?_.last(params.category):params.category
             if(params.pagination){
