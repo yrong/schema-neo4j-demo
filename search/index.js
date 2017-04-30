@@ -59,7 +59,8 @@ var addItem = function(result, params, ctx) {
     return es_client.index(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        throw error;
+        params.error = 'ElasticSearch:' + String(error)
+        return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 
@@ -77,7 +78,8 @@ var patchItem = function(result, params, ctx) {
     return es_client.update(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        throw error;
+        params.error = 'ElasticSearch:' + String(error)
+        return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 
@@ -96,7 +98,8 @@ var deleteItem = function(result, params, ctx) {
     return es_client.deleteByQuery(delObj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        throw error;
+        params.error = 'ElasticSearch:' + String(error)
+        return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 

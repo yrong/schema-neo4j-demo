@@ -22,8 +22,6 @@ const customized_routes = (routesDef)=>{
         Add:{postProcess:search.addItem},
         Modify:{postProcess:search.patchItem},
         Delete:{postProcess: search.deleteItem},
-        FindAll:{procedure:search.searchItem},
-        FindOne:{procedure:search.searchItem},
         Search:{procedure:search.searchItem}
     }
     routesDef.ProcessFlow.allowed_methods = [...allowed_methods,'Search']
@@ -59,7 +57,7 @@ module.exports = ()=>{
             procedure=null
             http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
             route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='Search'?'/api/search'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid'))
-            checker = method==='Add'?[schema.checkSchema,search.checkStatus]:(method==='Modify'||method==='Delete')?search.checkStatus:none_checker
+            checker = method==='Add'?[schema.checkSchema]:(method==='Modify'||method==='Delete')?none_checker:none_checker
             preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
                 preProcess = val.customizedHook[method].preProcess

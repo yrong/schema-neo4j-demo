@@ -165,6 +165,11 @@ module.exports = {
         }
     },
     cudItem_postProcess:function (result,params,ctx) {
+        let response_wrapped = {
+            "status":STATUS_INFO,
+            "content": CONTENT_OPERATION_SUCESS,
+            "displayAs":DISPLAY_AS_TOAST
+        }
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
             if(!params.uuid||!params.fields)
                 throw new Error('added obj without uuid')
@@ -175,13 +180,6 @@ module.exports = {
                 cache.del(params.uuid)
             if(params.url.includes('items'))
                 cache.flushAll()
-        }
-        let response_wrapped = {
-            "status":STATUS_INFO,
-            "content": CONTENT_OPERATION_SUCESS,
-            "displayAs":DISPLAY_AS_TOAST
-        }
-        if(params.method == 'DEL'){
             if(params.uuid && (result.length != 1&&result.total!=1))
                 response_wrapped = {
                     "status":STATUS_WARNING,
@@ -189,6 +187,8 @@ module.exports = {
                     "displayAs":DISPLAY_AS_TOAST
                 }
         }
+        if(params.error)
+            response_wrapped.additional = params.error
         if(params.uuid)
             response_wrapped.uuid = params.uuid;
         return　response_wrapped;
