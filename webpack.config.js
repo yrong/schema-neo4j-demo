@@ -6,6 +6,7 @@ var fs = require("file-system");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
 
 var mods = {};
 fs.readdirSync("node_modules")
@@ -38,6 +39,7 @@ var plugins = [
     }),
     new CopyWebpackPlugin(packages, {ignore: ['*.gitignore']}),
     new CleanWebpackPlugin(['build']),
+    new GitRevisionPlugin(),
     new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildEnd:[`/bin/bash ./postbuild.sh --dir=${releaseDir}`]})
 ];
 

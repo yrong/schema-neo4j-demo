@@ -6,6 +6,7 @@ const search = require('../search');
 const routesDef = require('./def');
 const logger = require('../logger')
 const IO = require( 'koa-socket' )
+const path = require('path')
 const excelImporter = require('../import/excel')
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
@@ -46,7 +47,7 @@ module.exports = (app)=>{
                     route: route,
                     procedure: procedure
                 })
-            else
+            else {
                 app.defineAPI({
                     method: http_method,
                     route: route,
@@ -54,6 +55,16 @@ module.exports = (app)=>{
                     preProcess: preProcess,
                     postProcess: postProcess
                 })
+                if(method==='Modify'){
+                    app.defineAPI({
+                        method: http_method,
+                        route: '/api/by_name'+val.route,
+                        check: checker,
+                        preProcess: preProcess,
+                        postProcess: postProcess
+                    })
+                }
+            }
         })
     })
 
@@ -83,7 +94,8 @@ module.exports = (app)=>{
     app.defineAPI({
         method: 'DEL',
         route: '/api/items',
-        cypherQueryFile: './cypher/deleteItems.cyp'
+        preProcess: hook.cudItem_preProcess,
+        postProcess: hook.cudItem_postProcess
     });
 
     /*License*/
@@ -98,7 +110,7 @@ module.exports = (app)=>{
         logger.info("receive importConfigurationItem request from socket")
         let importerInstance
         try{
-            importerInstance = new excelImporter(socketio,data.fileId)
+            importerInstance = new excelImporter(socketio,path.basename(data.fileId))
         }catch(error){
             logger.error("excelImporter initialized failed:" + String(error))
             ctx.socket.emit('importConfigurationItemError',error.message)

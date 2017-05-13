@@ -30,7 +30,7 @@ for(let option of _.values(config.get('config.upload'))){
 middlewares.push(convert(staticFile(path.join(__dirname, 'public'))))
 
 /*app init*/
-const KoaNeo4jApp = require('koa-neo4j-middleware');
+const KoaNeo4jApp = require('koa-neo4j');
 const neo4jConfig = config.get('config.neo4j')
 const app = new KoaNeo4jApp({
     neo4j: {

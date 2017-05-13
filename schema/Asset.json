@@ -26,29 +26,20 @@
         },
         "asset_location":{
           "type":"object",
-          "oneOf":[
-            {"properties" :
-              {
-                "status":{"type":"string"},
-                "cabinet":{"type":"string","format":"uuid"},
-                "date_mounted" : {
-                  "type" : "string",
-                  "format": "date"
-                },
-                "u" : {
-                  "type" : "integer"
-                }
-              },
-              "required":["status","u"]
+          "properties" : {
+            "status":{"type":"string","enum": ["mounted", "unmounted","on_shelf","other"]},
+            "cabinet":{"type":"string"},
+            "date_mounted" : {
+              "type" : "string",
+              "format": "date"
             },
-            {"properties" :
-              {
-                "status":{"type":"string"},
-                "position":{"type":"string","format":"uuid"}
-              },
-              "required":["status","position"]
-            }
-          ]
+            "u" : {
+              "type" : "integer"
+            },
+            "shelf":{"type":"string"},
+            "label":{"type":"string"}
+          },
+          "required": ["status"]
         },
         "model":{
           "type": "string"

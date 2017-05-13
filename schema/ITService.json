@@ -9,33 +9,28 @@
       "type": "string"
     },
     "group":{
-      "type": "string",
-      "format": "uuid"
+      "type": "string"
     },
     "dependendents": {
       "type": "array",
       "items": {
-        "type": "string",
-        "format": "uuid"
+        "type": "string"
       }
     },
     "dependencies": {
       "type": "array",
       "items": {
-        "type": "string",
-        "format": "uuid"
+        "type": "string"
       }
     },
     "children": {
       "type": "array",
       "items": {
-        "type": "string",
-        "format": "uuid"
+        "type": "string"
       }
     },
     "parent":{
-      "type": "string",
-      "format": "uuid"
+      "type": "string"
     }
   },
   "required": ["name"]

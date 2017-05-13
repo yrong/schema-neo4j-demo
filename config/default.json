@@ -46,7 +46,8 @@
         "folder": "public/upload",
         "mimetypes": [
           "text/plain"
-        ]
+        ],
+        "urlPath": "upload"
       },
       "ConfigurationItem": {
         "url": "/api/upload/configurationItem/xslx",
@@ -55,7 +56,8 @@
         "folder": "public/upload",
         "mimetypes": [
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ]
+        ],
+        "urlPath": "upload"
       }
     }
   }

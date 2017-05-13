@@ -24,7 +24,7 @@ const exportItems = async ()=>{
     let category,cypher,result,items,filePath
     for(category of categories){
         cypher = `MATCH (n) WHERE n:${category} RETURN n`
-        result = await cypherInvoker(cypher, {})
+        result = await cypherInvoker.fromRestful(cypher, {})
         items = result.results[0].data
         items = _.map(items,(item)=>{
             return item.row[0]

@@ -7,15 +7,12 @@
     },
     "it_service": {
       "type": "array",
-      "items": { "type": "string","format":"uuid" },
+      "items": { "type": "string" },
       "uniqueItems": true
     },
     "monitored": {
       "type": "boolean",
       "default": false
-    },
-    "responsibility": {
-      "type": "integer"
     },
     "updated_by":{
       "type": "integer"

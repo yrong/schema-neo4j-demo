@@ -1,5 +1,5 @@
 {
-  "id": "/Cabinet",
+  "id": "/WareHouse",
   "type": "object",
   "properties": {
     "name": {
@@ -7,10 +7,7 @@
     },
     "description": {
       "type": "string"
-    },
-    "server_room_id":{
-      "type":"string"
     }
   },
-  "required": ["name","server_room_id"]
+  "required": ["name"]
 }
