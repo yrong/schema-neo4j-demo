@@ -25,11 +25,11 @@ const normalizeScript = (script)=>{
 }
 
 const getAgents = async (hosts)=>{
-    let hosts_condition = hosts?`AND n.name IN ${hosts}`:''
+    let hosts_condition = hosts?`AND n.name IN {hosts}`:''
     let cypher = `MATCH (n)
         WHERE n:PhysicalServer OR n:VirtualServer ${hosts_condition}
         RETURN n`
-    let results = await cypherInvoker.fromRestful(cypher)
+    let results = await cypherInvoker.fromRestful(cypher,{hosts:hosts})
     results = results.results[0].data
     results = _.map(results,(result)=>{
         return result.row[0]
