@@ -32,7 +32,7 @@ var pre_process = function(params) {
     return params
 }
 
-const ConfigurationItemIndex = 'cmdb',ProcessFlowIndex = 'processflow'
+const ConfigurationItemIndex = 'cmdb',ProcessFlowIndex = 'processflow',OpsControllerIndex = 'opscontroller',OpsControllerCommandType = 'command'
 
 var getIndexName = function(category) {
     let indexName;
@@ -43,6 +43,16 @@ var getIndexName = function(category) {
     else
         throw new Error('can not find index in es:'+category)
     return indexName
+}
+
+var addOpsCommand = (command)=>{
+    let index_obj = {
+        index: OpsControllerIndex,
+        type: OpsControllerCommandType,
+        body: command
+    }
+    logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
+    es_client.index(index_obj)
 }
 
 var addItem = function(result, params, ctx) {
@@ -142,4 +152,4 @@ var checkStatus = ()=> {
     })
 }
 
-module.exports = {searchItem,deleteItem,patchItem,addItem,checkStatus,deleteAll}
+module.exports = {searchItem,deleteItem,patchItem,addItem,checkStatus,deleteAll,addOpsCommand}

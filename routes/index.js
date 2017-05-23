@@ -4,10 +4,7 @@ const hook = require('../hooks');
 const schema = require('../schema');
 const search = require('../search');
 const routesDef = require('./def');
-const logger = require('../logger')
-const IO = require( 'koa-socket' )
-const path = require('path')
-const excelImporter = require('../import/excel')
+const ws = require('./ws')
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
 const customized_routes = (routesDef)=>{
@@ -104,25 +101,8 @@ module.exports = (app)=>{
         return next();
     });
 
-    const socketio = new IO('importer')
-    socketio.attach(app)
-    socketio.on( 'importConfigurationItem', ( ctx, data ) => {
-        logger.info("receive importConfigurationItem request from socket")
-        let importerInstance
-        try{
-            importerInstance = new excelImporter(socketio,path.basename(data.fileId))
-        }catch(error){
-            logger.error("excelImporter initialized failed:" + String(error))
-            ctx.socket.emit('importConfigurationItemError',error.message)
-            return
-        }
-        importerInstance.importer().then((result)=>{
-            logger.info("importConfigurationItem success:" + JSON.stringify(result))
-            ctx.socket.emit('importConfigurationItemResponse',result)
-        }).catch((error)=>{
-            logger.error("importConfigurationItemError:" + String(error))
-            ctx.socket.emit('importConfigurationItemError',error.message)
-        })
-    })
+    /*websocket routes*/
+    ws(app)
+
     return app
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Koa-Socket Example</title>
+    <title>cmdb-api example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -35,85 +35,59 @@
 </head>
 <body>
 <div class="container">
-    <div class="row form-group">
-        <div class="col col-md-6">
-            <input type="file" id="configurationItem" name="configurationItem" />
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col col-md-4">
-            <div class="form-group">
-                <h4><label class="label label-default">FileName:</label></h4>
-                <span id="uploaded_fileName" class="label label-success"></span>
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a  href="#import_component" data-toggle="tab">import configuration</a>
+        </li>
+        <li>
+            <a href="#script_component" data-toggle="tab">execute vbscript</a>
+        </li>
+    </ul>
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="import_component">
+            <div class="row form-group">
+                <div class="col col-md-6">
+                    <input type="file" id="configurationItem" name="configurationItem" />
+                </div>
             </div>
-            <div class="form-group">
-                <h4><label class="label label-default">FileId:</label></h4>
-                <span id="uploaded_fileId" class="label label-success"></span>
+            <div class="row form-group">
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <h4><label class="label label-default">FileName:</label></h4>
+                        <span id="uploaded_fileName" class="label label-success"></span>
+                    </div>
+                    <div class="form-group">
+                        <h4><label class="label label-default">FileId:</label></h4>
+                        <span id="uploaded_fileId" class="label label-success"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-4">
+                    <button type="submit" class="btn btn-primary js-importBtn hidden">
+                        <span class="fa fa-cloud-upload"></span> Import ConfigurationItem
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row form-group">
-        <div class="col col-md-4">
-            <button type="submit" class="btn btn-primary js-importBtn hidden">
-                <span class="fa fa-cloud-upload"></span> Import ConfigurationItem
-            </button>
+        <div class="tab-pane" id="script_component">
+            <div class="row form-group">
+                <div class="col col-md-4">
+                    <textarea id="script_txt" cols="60" rows="10">
+                        for i = 1 to 10
+                        WScript.echo i
+                        WScript.sleep 200
+                        next
+                    </textarea>
+                    <button type="submit" class="btn btn-primary js-executeScriptBtn">
+                        <span class="fa fa-play-circle"></span> Execute script
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<script>
-    $("#configurationItem").fileinput({
-        uploadUrl: '/api/upload/configurationItem/xslx',
-        allowedFileExtensions: ['xlsx'],
-        overwriteInitial: false,
-        maxFilesNum: 1,
-        maxFileCount: 1,
-        allowedFileTypes: ['object']
-    });
-    var importerBtn = $('.js-importBtn')
-    $('#configurationItem').on('fileuploaded', function(event, data, previewId, index) {
-        var form = data.form, files = data.files, extra = data.extra,
-            response = data.response, reader = data.reader;
-        var fileId = response[data.filenames[0]]
-        $('#uploaded_fileName').text(data.filenames[0])
-        $('#uploaded_fileId').text(fileId)
-        importerBtn.removeClass('hidden')
-    });
-    var importerSocket = io( '/importer' ),notify
-    importerBtn.click(function(event){
-        var fileId = $('#uploaded_fileId').text()
-        if(fileId){
-            $.notifyDefaults({
-                delay: 3000,
-                placement: {
-                    from: "bottom",
-                    align: "left"
-                },
-                allow_dismiss: false
-            });
-            $.notify('start import,waiting...')
-            importerSocket.emit( 'importConfigurationItem', {fileId:fileId} )
-        }
-    })
-    importerSocket.on( 'importConfigurationItemResponse', function( event ) {
-        var error_exist = _.some(_.values(event),function(rec) {
-            return rec.exception_num>0
-        })
-        var type = error_exist?'warning':'success'
-        var options = {message:JSON.stringify(event,null,'\t')}
-        var settings = {
-            icon: 'fa fa-paw',
-            type: type
-        }
-        var fileId = $('#uploaded_fileId').text()
-        if(error_exist){
-            options = _.assign(options,{url:`/upload/ConfigurationItem/exception/${fileId}.xlsx`})
-            settings = _.assign(settings,{allow_dismiss: true,delay:0})
-        }
-        $.notify(options,settings);
-    })
-    importerSocket.on( 'importConfigurationItemError', function( event ) {
-        $.notify({message:JSON.stringify(event,null,'\t')},{type:'danger',allow_dismiss: true,delay:0});
-    })
-</script>
+<script type="text/javascript" src="import_cfg.js"></script>
+<script type="text/javascript" src="opscontroller.js"></script>
 </body>
 </html>
