@@ -73,12 +73,23 @@
         <div class="tab-pane" id="script_component">
             <div class="row form-group">
                 <div class="col col-md-4">
-                    <textarea id="script_txt" cols="60" rows="10">
-                        for i = 1 to 10
+                    <label for="hostlist">hosts:</label>
+                    <input type="text" class="form-control" id="hostlist" placeholder="192.168.0.108,192.168.0.109" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-4">
+                    <label for="script_txt">script:</label>
+                    <textarea id="script_txt" class="form-control">
+                        for i = 1 to 5
                         WScript.echo i
                         WScript.sleep 200
                         next
                     </textarea>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-4">
                     <button type="submit" class="btn btn-primary js-executeScriptBtn">
                         <span class="fa fa-play-circle"></span> Execute script
                     </button>

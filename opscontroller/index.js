@@ -7,6 +7,7 @@ const logger = require('../logger')
 const search = require('../search')
 const uuid = require('uuid')
 const moment = require('moment')
+const apiInvoker = require('../helper/apiInvoker')
 
 const normalizeScript = (script)=>{
     var seperator = /\r\n/.exec(script)?'\r\n':'\n'
@@ -24,18 +25,6 @@ const normalizeScript = (script)=>{
     return arr.join(' : ');
 }
 
-const getAgents = async (hosts)=>{
-    let hosts_condition = hosts?`AND n.name IN {hosts}`:''
-    let cypher = `MATCH (n)
-        WHERE n:PhysicalServer OR n:VirtualServer ${hosts_condition}
-        RETURN n`
-    let results = await cypherInvoker.fromRestful(cypher,{hosts:hosts})
-    results = results.results[0].data
-    results = _.map(results,(result)=>{
-        return result.row[0]
-    })
-    return results
-}
 
 class OpsController {
 
@@ -47,15 +36,15 @@ class OpsController {
     }
 
     async execute()  {
-        let promises = [],hosts = await getAgents(this.hosts),normalized_script = normalizeScript(this.script),
+        let promises = [],hosts = await apiInvoker.getAgents(this.hosts),normalized_script = normalizeScript(this.script),
             src_address = this.ctx.socket.socket.handshake.address
+        logger.info(`agents found:${hosts.length}`)
         hosts.forEach((host)=>promises.push(throttle(async()=>{
             let ws_url = `ws://${host.ip_address[0]}:8081`
             const ws = new WebSocket(ws_url);
             let commandId = uuid.v1(),command,IN=1,OUT=-1
             ws.on('open', ()=> {
-                logger.info(`ws connection from ${src_address}`)
-                logger.info(`script after normalized:
+                logger.info(`ws connection to ${ws_url} built and normalized script to execute is:
                 ${normalized_script}`)
                 ws.send(normalized_script);
                 command = {cid:commandId,ts:moment().unix(),dir:IN,
@@ -75,7 +64,7 @@ class OpsController {
                 }
             });
             ws.on('close',()=>{
-                logger.info('ws connection closed')
+                logger.info(`ws connection to ${ws_url} closed`)
             })
             ws.on('error',(error)=>{
                 logger.error('ws connection error happened:' + String(error))
