@@ -51,6 +51,11 @@ module.exports = {
         results = hosts&&hosts.length?_.filter(results,(host)=>{
             return _.includes(hosts, host.ip_address[0])||_.includes(hosts, host.name)
         }):results
-        return results
+        if(results.length)
+            return results
+        else
+            return _.map(hosts,(host)=>{
+                return {ip_address:[host],name:host}
+            })
     }
 }

@@ -9,22 +9,6 @@ const uuid = require('uuid')
 const moment = require('moment')
 const apiInvoker = require('../helper/apiInvoker')
 
-const normalizeScript = (script)=>{
-    var seperator = /\r\n/.exec(script)?'\r\n':'\n'
-    var arr = script.split(seperator);
-    for (var i=0; i<arr.length; i++) {
-        if (arr[i].search(/ _$/) != -1) {
-            arr[i] = arr[i].replace(/ _$/, '');
-            arr[i] += arr[i+1];
-            arr.splice(i+1, 1);
-            i--;
-            continue;
-        }
-        arr[i] = arr[i].replace(/^\s+|^\s*(?:'|\brem\b).*$|(?:'|\brem\b)[^(?:\"|_$)].*$|\s+$/gi, '');
-    }
-    return arr.join(' : ');
-}
-
 
 class OpsController {
 
@@ -32,23 +16,23 @@ class OpsController {
         this.socket_io= socket_io
         this.hosts = data.hosts
         this.script = data.script
+        this.script_type = data.script_type
         this.ctx = ctx
     }
 
     async execute()  {
-        let promises = [],hosts = await apiInvoker.getAgents(this.hosts),normalized_script = normalizeScript(this.script),
-            src_address = this.ctx.socket.socket.handshake.address
-        logger.info(`agents found:${hosts.length}`)
-        hosts.forEach((host)=>promises.push(throttle(async()=>{
-            let ws_url = `ws://${host.ip_address[0]}:8081`
+        let promises = [],hosts = await apiInvoker.getAgents(this.hosts), src_address = this.ctx.socket.socket.handshake.address,
+        host_ips = _.map(hosts,(host)=>host.ip_address[0])
+        logger.info(`agents:${host_ips.join()},script:${this.script}`)
+        host_ips.forEach((host)=>promises.push(throttle(async()=>{
+            let ws_url = `ws://${host}:8081`
             const ws = new WebSocket(ws_url);
             let commandId = uuid.v1(),command,IN=1,OUT=-1
             ws.on('open', ()=> {
-                logger.info(`ws connection to ${ws_url} built and normalized script to execute is:
-                ${normalized_script}`)
-                ws.send(normalized_script);
+                logger.info(`ws connection to ${ws_url} built`)
+                ws.send(this.script);
                 command = {cid:commandId,ts:moment().unix(),dir:IN,
-                    script:this.script,agent:host.name,agent_ip:host.ip_address[0],remote_ip:src_address,
+                    script:this.script,agent_ip:host,remote_ip:src_address,
                 }
                 search.addOpsCommand(command)
             });
@@ -58,7 +42,7 @@ class OpsController {
                     if(this.socket_io)
                         this.socket_io.socket.emit('executeScriptResponse',data)
                     command = {cid:commandId,ts:moment().unix(),dir:OUT,
-                        response:data,agent:host.name,agent_ip:host.ip_address[0],remote_ip:src_address,
+                        response:data,agent_ip:host,remote_ip:src_address,
                     }
                     search.addOpsCommand(command)
                 }
