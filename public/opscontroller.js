@@ -10,7 +10,7 @@ opscontrollerBtn.click(function(event){
         allow_dismiss: false
     });
     $.notify('start execute script,waiting...')
-    let data = {script:$('#script_txt').text()}
+    var data = {script:$('#script_txt').text()}
     if($('#hostlist').val())
         data = {script:$('#script_txt').text(),hosts:$('#hostlist').val().split(',')}
     opscontrollerSocket.emit( 'executeScript', data)
