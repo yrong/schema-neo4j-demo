@@ -1,3 +1,5 @@
+"use strict"
+
 var opscontrollerSocket = io( '/opscontroller' )
 var opscontrollerBtn = $('.js-executeScriptBtn')
 opscontrollerBtn.click(function(event){

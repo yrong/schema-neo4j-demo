@@ -1,3 +1,5 @@
+"use strict"
+
 $("#configurationItem").fileinput({
     uploadUrl: '/api/upload/configurationItem/xslx',
     allowedFileExtensions: ['xlsx'],
