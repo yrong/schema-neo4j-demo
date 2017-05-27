@@ -9,6 +9,7 @@ const uuid = require('uuid')
 const moment = require('moment')
 const apiInvoker = require('../helper/apiInvoker')
 
+const IN=0,OUT=1,ERROR=2
 
 class OpsController {
 
@@ -25,24 +26,25 @@ class OpsController {
         host_ips = _.map(hosts,(host)=>host.ip_address[0])
         logger.info(`agents:${host_ips.join()},script:${this.script}`)
         host_ips.forEach((host)=>promises.push(throttle(async()=>{
-            let ws_url = `ws://${host}:8081`
-            const ws = new WebSocket(ws_url);
-            let commandId = uuid.v1(),command,IN=1,OUT=-1
+            let ws_url = `ws://${host}:8081`,command
+            const ws = new WebSocket(ws_url)
             ws.on('open', ()=> {
                 logger.info(`ws connection to ${ws_url} built`)
                 ws.send(this.script);
-                command = {cid:commandId,ts:moment().unix(),dir:IN,
-                    script:this.script,agent_ip:host,remote_ip:src_address,
+                command = {script:this.script,ts:moment().unix(),dir:IN,
+                    agent_ip:host,remote_ip:src_address,
                 }
                 search.addOpsCommand(command)
             });
             ws.on('message', (data)=> {
                 if(data&&data.length){
                     logger.info('recv message from ws connection:' + data)
-                    if(this.socket_io)
-                        this.socket_io.socket.emit('executeScriptResponse',data)
-                    command = {cid:commandId,ts:moment().unix(),dir:OUT,
-                        response:data,agent_ip:host,remote_ip:src_address,
+                    let data_json = JSON.parse(data)
+                    command = {script:this.script,pid:data_json.pid,ts:moment().unix(),dir:data_json.type,
+                        response:data_json.message,agent_ip:host,remote_ip:src_address,
+                    }
+                    if(this.socket_io){
+                        this.socket_io.socket.emit('executeScriptResponse',command)
                     }
                     search.addOpsCommand(command)
                 }

@@ -39,15 +39,19 @@ opscontrollerBtn.click(function(event){
     opscontrollerSocket.emit( 'executeScript', data)
 })
 opscontrollerSocket.on( 'executeScriptResponse', function( event ) {
-    var options = {message:JSON.stringify(event,null,'\t')}
     var settings = {
         icon: 'fa fa-paw',
         type: 'success'
     }
-    $.notify(options,settings);
+    if(event.dir === 1){
+        $.notify({message:event.response},settings);
+    }else if(event.dir === 2){
+        $.notify({message:event.response},{type:'danger',allow_dismiss: true,delay:0});
+    }
+
 })
 importerSocket.on( 'executeScriptError', function( event ) {
-    $.notify({message:JSON.stringify(event,null,'\t')},{type:'danger',allow_dismiss: true,delay:0});
+    $.notify({message:event},{type:'danger',allow_dismiss: true,delay:0});
 })
 
 
