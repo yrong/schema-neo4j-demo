@@ -237,7 +237,7 @@ OPTIONAL MATCH (s1)<-[:ParentOf]-(s3)
 OPTIONAL MATCH (s1)-[:DependsOn]->(s4)
 OPTIONAL MATCH (s1)<-[:DependsOn]-(s5)
 WITH {service:s1,group:sg,children:(collect(distinct(s2))),parent:s3,dependencies:(collect(distinct(s4))),dependendents:(collect(distinct(s5)))} as service
-RETURN COLLECT(service)`
+RETURN COLLECT(distinct service)`
 
 const generateAdvancedSearchITServiceCypher = (params)=>`OPTIONAL MATCH (s1:ITService)
 WHERE s1.uuid IN {search} or s1.group IN {search}
@@ -247,8 +247,16 @@ OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
 WHERE s1.name = keyword or sg.name = keyword
 WITH services_byIds+collect(distinct(s1.uuid)) as services
 UNWIND services AS service
-RETURN COLLECT( distinct service)`
+RETURN COLLECT(distinct service)`
 
+const generateMountedConfigurationItemCypher = (params)=> `MATCH (:ConfigurationItem)-[r:LOCATED]->(:Cabinet)
+return COLLECT(distinct r)
+`
+
+const generateITServiceGroupHostsCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
+WHERE n:PhysicalServer or n:VirtualServer and sg.name IN {group_names}
+return collect(distinct n)
+`
 
 module.exports = {
     generateCabinetCyphers: (params)=>{
@@ -343,5 +351,7 @@ module.exports = {
     generateAddPrevNodeRelCypher,
     generateDelAllCypher,
     generateQueryNodeRelations_cypher,
-    generateDummyOperation_cypher
+    generateDummyOperation_cypher,
+    generateMountedConfigurationItemCypher,
+    generateITServiceGroupHostsCypher
 }

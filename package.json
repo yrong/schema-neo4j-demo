@@ -6,7 +6,7 @@
     "build": "webpack",
     "buildAdvanced": "EDITION=advanced webpack",
     "test": "mocha --harmony",
-    "start": "node ./server.js",
+    "start": "node  --harmony ./server.js",
     "init": "/bin/bash ./script/init.sh",
     "backup": "/bin/bash ./script/backup.sh",
     "restore": "/bin/bash ./script/restore.sh",

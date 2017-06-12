@@ -7,5 +7,6 @@ module.exports = {
     globalHiddenFieldsInAllLevel:['passwd','id'],
     objectFields:['asset_location','geo_location','status','barcode'],
     referencedFields:['responsibility','committer','executor','cabinet','position','group'],
-    referencedArrayFields:['it_service']
+    referencedArrayFields:['it_service'],
+    cutomized_route:{cfgItems_cabinets_mounted:'/cfgItems/assoc/cabinets',itservice_group_host:'/cfgItems/assoc/group'}
 }

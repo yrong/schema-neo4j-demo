@@ -93,6 +93,7 @@ var propertiesCombine = (results)=>{
             result = _.merge(result.self,{members:result.members})
             return result
         }
+        return result
     })
 }
 

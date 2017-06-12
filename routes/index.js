@@ -5,6 +5,7 @@ const schema = require('../schema');
 const search = require('../search');
 const routesDef = require('./def');
 const ws = require('./ws')
+const utils = require('../helper/utils')
 
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
 const customized_routes = (routesDef)=>{
@@ -81,8 +82,15 @@ module.exports = (app)=>{
     /* get mounted location relationship between configurationItem and Cabinet(for cabinet_u unique check purpose when import*/
     app.defineAPI({
         method: 'GET',
-        route: '/api/relationship/located/mounted',
-        cypherQueryFile: './cypher/QueryMountedCabinet.cyp',
+        route: '/api' + utils.cutomized_route.cfgItems_cabinets_mounted,
+        preProcess: hook.queryItems_preProcess,
+        postProcess: hook.queryItems_postProcess
+    });
+
+    app.defineAPI({
+        method: 'GET',
+        route: '/api' + utils.cutomized_route.itservice_group_host,
+        preProcess: hook.queryItems_preProcess,
         postProcess: hook.queryItems_postProcess
     });
 
@@ -103,6 +111,9 @@ module.exports = (app)=>{
 
     /*websocket routes*/
     ws(app)
+
+    /*init schema*/
+    hook.initialize(app)
 
     return app
 }

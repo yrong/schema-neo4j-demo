@@ -93,6 +93,9 @@ var queryParamsCypherGenerator = function (params) {
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
+    /**
+     * customized cypher query
+     */
     if(params.category === schema.cmdbTypeName.ITService){
         if(params.uuids){
             params.uuids = params.uuids.split(",");
@@ -100,6 +103,15 @@ var queryParamsCypherGenerator = function (params) {
         }else if(params.search){
             params.search = params.search.split(",");
             params.cypher = cypherBuilder.generateAdvancedSearchITServiceCypher(params);
+        }
+    } else if(params.category === schema.cmdbTypeName.ConfigurationItem){
+        if(params.url.includes(utils.cutomized_route.cfgItems_cabinets_mounted)){
+            params.cypher = cypherBuilder.generateMountedConfigurationItemCypher(params);
+        }else if(params.url.includes(utils.cutomized_route.itservice_group_host)){
+            if(!params.group_names)
+                throw new Error('missing param group_names')
+            params.group_names = params.group_names.split(",")
+            params.cypher = cypherBuilder.generateITServiceGroupHostsCypher(params);
         }
     }
     logCypher(params)
@@ -188,6 +200,15 @@ var updateItem = (result,params)=>{
     } else {
         throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
     }
+}
+
+var initialize = (app)=>{
+    app.neo4jConnection.initialized.then(()=>{
+            cache.loadAll();
+        }).catch((error)=>{
+            logger.fatal('neo4j is not reachable,' + String(error))
+            process.exit(-1)
+        })
 }
 
 module.exports = {
@@ -312,6 +333,7 @@ module.exports = {
         }
         return response_wrapped;
     },
-    getCategoryFromUrl:getCategoryFromUrl
+    getCategoryFromUrl:getCategoryFromUrl,
+    initialize
 }
 

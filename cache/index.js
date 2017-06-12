@@ -4,8 +4,6 @@ const cache = new NodeCache()
 const _ = require('lodash')
 const routesDef = require('../routes/def')
 const schema = require('../schema')
-var initialized = false
-var utils = require('../helper/utils')
 
 var loadAll = async ()=>{
     let promises = []
@@ -23,7 +21,6 @@ var loadAll = async ()=>{
             }
         })
     })
-    initialized = true
 }
 
 var getByCategoryAndName = (category,name)=>{
@@ -59,7 +56,5 @@ var flushAll = ()=>{
     }
 }
 
-if(!initialized)
-    loadAll()
 
-module.exports = {get,set,del,getByCategoryAndName,flushAll}
+module.exports = {loadAll,get,set,del,getByCategoryAndName,flushAll}

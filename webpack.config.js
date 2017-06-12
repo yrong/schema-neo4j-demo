@@ -20,7 +20,6 @@ var devtool = 'source-map'
 var entry = {server:'./server.js'}
 var packages = [
     {from:'config',to:'config'},{from:'cypher/initSchema.cyp',to:'cypher/initSchema.cyp'},
-    {from:'public',to:'public'},{from:'cypher/QueryMountedCabinet.cyp',to:'cypher/QueryMountedCabinet.cyp'},
     {from:'test/*.json'},{from:'node_modules',to:'node_modules'},
     {from:'search',to:'search',ignore:['*.js']}
 ]
