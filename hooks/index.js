@@ -276,13 +276,15 @@ module.exports = {
         }
         if(params.method==='DELETE'){
             if(params.uuid){
-                cache.del(params.uuid)
                 response_wrapped.uuid = params.uuid
-                if(params.used){
-                    response_wrapped.status = STATUS_WARNING
-                    response_wrapped.content = CONTENT_NODE_USED
-                }
-                else if(result.length != 1&&result.total!=1){
+                if(result.length==1){
+                    if(params.used){
+                        response_wrapped.status = STATUS_WARNING
+                        response_wrapped.content = CONTENT_NODE_USED
+                    }else{
+                        cache.del(params.uuid)
+                    }
+                }else{
                     response_wrapped.status = STATUS_WARNING
                     response_wrapped.content = CONTENT_NO_RECORD
                 }
