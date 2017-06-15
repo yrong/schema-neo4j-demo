@@ -2,16 +2,16 @@
   {
     "name": "add ITService Pop3",
     "method": "POST",
-    "url": "http://localhost:3001/api/it_services/service",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "pop3",
           "description": "pop3",
-          "group": "ea00ca20-2657-11e7-ae58-e9032e6f306d",
-          "parent": "ea711820-2657-11e7-ae58-e9032e6f306d"
+          "group": "{{group_messaging_id}}",
+          "parent": "{{service_email_id}}"
         }
       }
     }
@@ -19,30 +19,30 @@
   {
     "name": "search it service by group name",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?search=Messaging"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=Messaging"
   },
   {
     "name": "query server room",
     "method": "GET",
-    "url": "http://localhost:3001/api/serverRooms"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms"
   },
   {
     "name": "query all it service",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service"
   },
   {
     "name": "add ITService Email With Name Conflict",
     "method": "POST",
-    "url": "http://localhost:3001/api/it_services/service",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "email",
           "description": "email",
-          "group": "ea00ca20-2657-11e7-ae58-e9032e6f306d"
+          "group": "{{group_messaging_id}}"
         }
       }
     }
@@ -50,36 +50,33 @@
   {
     "name": "query all it service groups",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/group"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group"
   },
   {
     "name": "query it service by uuids",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?uuids=ea711820-2657-11e7-ae58-e9032e6f306d,eadde3b0-2657-11e7-ae58-e9032e6f306d"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?uuids=ea711820-2657-11e7-ae58-e9032e6f306d,eadde3b0-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "add incident flow 2 reference incident flow 1",
     "method": "POST",
-    "url": "http://localhost:3001/api/processFlows",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "eb1e4810-2657-11e7-ae58-e9032e6f306d"
+            "{{service_dns_id}}"
           ],
-          "committer": 1,
-          "executor": 1,
-          "reference_kb": [
-            "6cff283b-6878-4f78-b22d-52c9271b4994",
-            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
-          ],
+          "committer": "{{auth_user_id}}",
+          "executor": "{{auth_user_id}}",
+          "reference_kb": "{{article_uuids}}",
           "reference_process_flow": [
-            "ee105ef0-2657-11e7-ae58-e9032e6f306d"
+            "{{incident_flow_1_id}}"
           ],
           "status": "open",
-          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "description": "{{process_flow_desc}}",
           "note": "note",
           "attachment": "attachment",
           "title": "title"
@@ -90,15 +87,15 @@
   {
     "name": "add incident flow 3 with it_service empty",
     "method": "POST",
-    "url": "http://localhost:3001/api/processFlows",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [],
           "status": "open",
-          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "description": "{{process_flow_desc}}",
           "note": "note",
           "attachment": "attachment",
           "title": "title"
@@ -109,47 +106,24 @@
   {
     "name": "search it service by group id",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?search=ea379190-2657-11e7-ae58-e9032e6f306d"
-  },
-  {
-    "name": "add incident flow 4 with attachment referenced",
-    "method": "POST",
-    "url": "http://localhost:3001/api/processFlows",
-    "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
-      "data": {
-        "category": "IncidentFlow",
-        "fields": {
-          "it_service": [
-            "ea711820-2657-11e7-ae58-e9032e6f306d",
-            "eadde3b0-2657-11e7-ae58-e9032e6f306d"
-          ],
-          "committer": 1,
-          "executor": 1,
-          "reference_kb": [
-            "6cff283b-6878-4f78-b22d-52c9271b4994",
-            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
-          ],
-          "status": "open",
-          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
-          "note": "note",
-          "attachment": "da91c9f0-ed21-11e6-bb79-374a320b0637",
-          "title": "title"
-        }
-      }
-    }
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=ea379190-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "clear all items in db",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/items"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items"
+  },
+  {
+    "name": "query ConfigurationItem mounted",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/assoc/cabinets"
   },
   {
     "name": "add ITService Email",
     "method": "POST",
-    "url": "http://localhost:3001/api/it_services/service",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITService",
         "fields": {
@@ -163,19 +137,19 @@
   {
     "name": "query it service groups by keyword",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/group?keyword=Messaging"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
   },
   {
     "name": "query warehouse",
     "method": "GET",
-    "url": "http://localhost:3001/api/wareHouses"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses"
   },
   {
     "name": "add server_room",
     "method": "POST",
-    "url": "http://localhost:3001/api/serverRooms",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ServerRoom",
         "fields": {
@@ -188,14 +162,14 @@
   {
     "name": "query ConfigurationItems",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems"
   },
   {
     "name": "add ServiceGroup Infrastructure",
     "method": "POST",
-    "url": "http://localhost:3001/api/it_services/group",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITServiceGroup",
         "fields": {
@@ -206,16 +180,16 @@
     }
   },
   {
-    "name": "delete email service fail",
+    "name": "delete already referenced email service fail",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/it_services/service/ea711820-2657-11e7-ae58-e9032e6f306d"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/ea711820-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "patch incident flow 1 status to closed",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -227,75 +201,53 @@
   {
     "name": "login",
     "method": "POST",
-    "url": "http://localhost:3002/auth/login",
+    "url": "http://{{auth_api_host}}:{{auth_api_port}}/auth/login",
     "body": {
-      "username": "nerds",
-      "password": "nerds"
+      "username": "{{auth_user}}",
+      "password": "{{auth_passwd}}"
     }
+  },
+  {
+    "name": "query it service groups related cmdb servers",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/assoc/group?group_names=Messaging,Infrastructure"
   },
   {
     "name": "get articles from kb api",
     "method": "GET",
-    "url": "http://localhost:3000/KB/API/v1/articles?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA"
-  },
-  {
-    "name": "patch router for all attributes",
-    "method": "PATCH",
-    "url": "http://localhost:3001/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d",
-    "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
-      "data": {
-        "category": "Router",
-        "fields": {
-          "it_service": [
-            "eb1e4810-2657-11e7-ae58-e9032e6f306d"
-          ],
-          "responsibility": 1,
-          "sn": "123456",
-          "model": "a10",
-          "product_date": "2016-08-11",
-          "warranty_expiration_date": "2016-11-11",
-          "asset_location": {
-            "status": "mounted",
-            "u": 42,
-            "date_mounted": "2016-06-28",
-            "cabinet": "e8da99a0-2657-11e7-ae58-e9032e6f306d"
-          }
-        }
-      }
-    }
+    "url": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA"
   },
   {
     "name": "search configurationItem by keyword",
     "method": "POST",
-    "url": "http://localhost:3001/api/search/cfgItems?keyword=a10"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?keyword=a10"
   },
   {
     "name": "search it service by name",
     "method": "GET",
-    "url": "http://localhost:3001/api/it_services/service?search=email,pop3"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=email,pop3"
   },
   {
     "name": "delete incident flow 3",
     "method": "DELETE",
-    "url": "http://localhost:3001/api/processFlows/eeb41900-2657-11e7-ae58-e9032e6f306d"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/eeb41900-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "add physical server",
     "method": "POST",
-    "url": "http://localhost:3001/api/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "PhysicalServer",
         "fields": {
-          "name": "physicalserver2",
+          "name": "physicalserver",
           "it_service": [
-            "ea711820-2657-11e7-ae58-e9032e6f306d",
-            "eadde3b0-2657-11e7-ae58-e9032e6f306d"
+            "{{service_email_id}}",
+            "{{service_pop3_id}}"
           ],
           "ip_address": [
-            "10.10.35.63"
+            "192.168.0.108"
           ],
           "technical_support_info": "010-123456",
           "operating_system": "ubuntu",
@@ -310,7 +262,7 @@
             "other": "other"
           },
           "management_ip": [
-            "10.10.35.64"
+            "192.168.0.108"
           ],
           "monitored": true
         }
@@ -320,24 +272,24 @@
   {
     "name": "add firewall",
     "method": "POST",
-    "url": "http://localhost:3001/api/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "Firewall",
         "fields": {
           "name": "firewall",
           "it_service": [
-            "eb1e4810-2657-11e7-ae58-e9032e6f306d"
+            "{{service_dns_id}}"
           ],
-          "responsibility": 1,
+          "responsibility": "{{auth_user_id}}",
           "sn": "123456",
           "model": "b10",
           "product_date": "2016-10-11",
           "warranty_expiration_date": "2016-11-11",
           "asset_location": {
             "status": "on_shelf",
-            "shelf": "e9bce350-2657-11e7-ae58-e9032e6f306d",
+            "shelf": "{{shelf_id}}",
             "label": "label",
             "other": "other"
           }
@@ -348,45 +300,45 @@
   {
     "name": "query process flow by keyword full text match",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows?keyword=henry"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows?keyword=henry"
   },
   {
     "name": "query json schema of router ",
     "method": "GET",
-    "url": "http://localhost:3001/api/schema/Router"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router"
   },
   {
     "name": "query process flow timeline by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d/timeline"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d/timeline"
   },
   {
     "name": "query ConfigurationItem Category",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/categories/all"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/all"
   },
   {
     "name": "query physical server by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/ec2a39d0-2657-11e7-ae58-e9032e6f306d"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/ec2a39d0-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "query ConfigurationItems paginated",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems?page=1&per_page=2"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?page=1&per_page=2"
   },
   {
     "name": "add cabinet ",
     "method": "POST",
-    "url": "http://localhost:3001/api/cabinets",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "Cabinet",
         "fields": {
           "name": "cabinet",
           "description": "cabinet",
-          "server_room_id": "e8a38410-2657-11e7-ae58-e9032e6f306d"
+          "server_room_id": "{{server_room_id}}"
         }
       }
     }
@@ -394,17 +346,17 @@
   {
     "name": "add switch",
     "method": "POST",
-    "url": "http://localhost:3001/api/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "Switch",
         "fields": {
           "name": "switch",
           "it_service": [
-            "eb1e4810-2657-11e7-ae58-e9032e6f306d"
+            "{{service_dns_id}}"
           ],
-          "responsibility": 1,
+          "responsibility": "{{auth_user_id}}",
           "sn": "123456",
           "model": "a10",
           "product_date": "2016-10-11",
@@ -413,7 +365,7 @@
             "status": "mounted",
             "u": 42,
             "date_mounted": "2016-06-28",
-            "cabinet": "e8da99a0-2657-11e7-ae58-e9032e6f306d"
+            "cabinet": "{{cabinet_id}}"
           }
         }
       }
@@ -422,9 +374,9 @@
   {
     "name": "add router",
     "method": "POST",
-    "url": "http://localhost:3001/api/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "Router",
         "fields": {
@@ -464,24 +416,21 @@
   {
     "name": "add incident flow 1",
     "method": "POST",
-    "url": "http://localhost:3001/api/processFlows",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "IncidentFlow",
         "fields": {
           "it_service": [
-            "ea711820-2657-11e7-ae58-e9032e6f306d",
-            "eadde3b0-2657-11e7-ae58-e9032e6f306d"
+            "{{service_email_id}}",
+            "{{service_pop3_id}}"
           ],
-          "committer": 1,
-          "executor": 1,
-          "reference_kb": [
-            "6cff283b-6878-4f78-b22d-52c9271b4994",
-            "7309a5b2-4e65-4cb5-adea-c9c4cdc20319"
-          ],
+          "committer": "{{auth_user_id}}",
+          "executor": "{{auth_user_id}}",
+          "reference_kb": "{{article_uuids}}",
           "status": "open",
-          "description": "Enter KING HENRY, LORD JOHN OF LANCASTER, the EARL of WESTMORELAND, SIR WALTER BLUNT, and others",
+          "description": "{{process_flow_desc}}",
           "note": "note",
           "attachment": "attachment",
           "title": "title"
@@ -492,9 +441,9 @@
   {
     "name": "add warehouse",
     "method": "POST",
-    "url": "http://localhost:3001/api/wareHouses",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "WareHouse",
         "fields": {
@@ -507,14 +456,14 @@
   {
     "name": "query cfgitem by uuid ",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "add shelf",
     "method": "POST",
-    "url": "http://localhost:3001/api/shelves",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/shelves",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "Shelf",
         "fields": {
@@ -528,9 +477,9 @@
   {
     "name": "patch incident flow 1 status to solved",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "IncidentFlow",
         "fields": {
@@ -543,25 +492,25 @@
   {
     "name": "query process flow by uuid",
     "method": "GET",
-    "url": "http://localhost:3001/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/ee105ef0-2657-11e7-ae58-e9032e6f306d"
   },
   {
     "name": "query ConfigurationItem Category by filter",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/categories/Asset"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset"
   },
   {
     "name": "patch router for patial attributes",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "Router",
         "fields": {
           "it_service": [
-            "eadde3b0-2657-11e7-ae58-e9032e6f306d",
-            "eb1e4810-2657-11e7-ae58-e9032e6f306d"
+            "{{service_pop3_id}}",
+            "{{service_dns_id}}"
           ],
           "sn": "12345678",
           "responsibility": 1
@@ -570,46 +519,26 @@
     }
   },
   {
-    "name": "query process flow by keyword and with attributes filter",
-    "method": "GET",
-    "url": "http://localhost:3001/api/processFlows?keyword=attachment&_source=status,uuid"
-  },
-  {
-    "name": "patch ITService Dns by name",
-    "method": "PATCH",
-    "url": "http://localhost:3001/api/it_services/service/dns",
-    "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
-      "data": {
-        "category": "ITService",
-        "fields": {
-          "description": "dns3",
-          "group": "Infrastructure"
-        }
-      }
-    }
-  },
-  {
     "name": "query cabinet by uuid as name",
     "method": "GET",
-    "url": "http://localhost:3001/api/cabinets/cabinet"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/cabinet"
   },
   {
     "name": "query router timeline",
     "method": "GET",
-    "url": "http://localhost:3001/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d/timeline"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d/timeline"
   },
   {
     "name": "query Cabinets",
     "method": "GET",
-    "url": "http://localhost:3001/api/cabinets"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets"
   },
   {
     "name": "patch ITService Dns",
     "method": "PATCH",
-    "url": "http://localhost:3001/api/it_services/service/eb1e4810-2657-11e7-ae58-e9032e6f306d",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/eb1e4810-2657-11e7-ae58-e9032e6f306d",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITService",
         "fields": {
@@ -622,9 +551,9 @@
   {
     "name": "add ServiceGroup Messaging",
     "method": "POST",
-    "url": "http://localhost:3001/api/it_services/group",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITServiceGroup",
         "fields": {
@@ -637,7 +566,7 @@
   {
     "name": "search configurationItem",
     "method": "POST",
-    "url": "http://localhost:3001/api/search/cfgItems?page=1&per_page=2",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=2",
     "body": {
       "body": {
         "query": {
@@ -658,20 +587,20 @@
   {
     "name": "get license",
     "method": "GET",
-    "url": "http://localhost:3001/api/license"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license"
   },
   {
     "name": "add ITService Dns",
     "method": "POST",
-    "url": "http://localhost:3001/api/it_services/service",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
     "body": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA",
+      "token": "{{token}}",
       "data": {
         "category": "ITService",
         "fields": {
           "name": "dns",
           "description": "dns",
-          "group": "ea379190-2657-11e7-ae58-e9032e6f306d",
+          "group": "{{group_infrastructure_id}}",
           "dependendents": [
             "email"
           ]
