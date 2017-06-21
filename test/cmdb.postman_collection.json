@@ -86,7 +86,6 @@
 				"bbe0392b-4002-2398-a819-4a49c35ee39f",
 				"7e9b97e8-23de-8f2e-cfa6-7188494279b3",
 				"89bda392-f9e0-2e4a-e024-f403e844a262",
-				"743f00c9-c2ce-c87c-ec98-ab8f2291bd18",
 				"e43d847a-b274-a29a-e22b-b6543241e953",
 				"dbf07fde-b168-16d9-553a-9157f09f6590",
 				"39a64bf6-aefa-7da5-98c7-22cc32381efd",
@@ -721,34 +720,6 @@
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
 		},
 		{
-			"id": "743f00c9-c2ce-c87c-ec98-ab8f2291bd18",
-			"headers": "",
-			"headerData": [],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?keyword=a10",
-			"queryParams": [
-				{
-					"key": "keyword",
-					"value": "a10",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
-			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "POST",
-			"data": null,
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration item by matched keyword found\"] = jsonData.data.count == 2;  \n}\n",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1497513751166,
-			"name": "search configurationItem by keyword",
-			"description": "",
-			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5"
-		},
-		{
 			"id": "7594ffda-40a0-0103-af8e-2970bbe550dd",
 			"headers": "",
 			"headerData": [],
@@ -1073,11 +1044,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497510258744,
+			"time": 1497934800688,
 			"name": "add router",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":\"nerds\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
 		},
 		{
 			"id": "a01a5e86-28aa-0e05-0708-e0ecc5657b6e",
@@ -1429,14 +1400,14 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count == 2; \n}\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497513760054,
+			"time": 1497944893740,
 			"name": "search configurationItem",
 			"description": "",
 			"collectionId": "2ea9b38d-fbb6-d22a-ed93-9f92572662d5",
-			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"term\": {\"model\": \"a10\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"match\": {\"category\": \"PhysicalServer\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"id": "ea252b3f-6026-febf-73a3-122ba79d36e5",

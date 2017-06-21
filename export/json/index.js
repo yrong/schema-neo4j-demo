@@ -19,7 +19,7 @@ const exportItems = async ()=>{
         categories = [...schema.cmdbConfigurationItemAuxiliaryTypes,schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
-    let directory = path.join(config.get('config.export.storeDir'), timestamp)
+    let directory = path.join(config.get('export.storeDir'), timestamp)
     fs.mkdirSync(directory)
     let category,cypher,result,items,filePath
     for(category of categories){

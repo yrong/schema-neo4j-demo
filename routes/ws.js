@@ -2,7 +2,7 @@ const IO = require( 'koa-socket' )
 const path = require('path')
 const importer_io = new IO('importer')
 const opscontroller_io = new IO('opscontroller')
-const logger = require('../logger')
+const logger = require('log4js_wrapper').getLogger()
 const excelImporter = require('../import/excel')
 const OpsController = require('../opscontroller')
 

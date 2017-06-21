@@ -218,11 +218,6 @@
     "url": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxZDZiNjI2NS1kNzU3LTRlZjItYjRmZC1mYzViN2UzMjRkOTQiLCJ1c2VyIjp7ImlkIjo0NjcsInBhc3N3ZCI6Im5lcmRzIiwic3VybmFtZSI6IiIsIm5hbWUiOiJuZXJkcyIsImFsaWFzIjoibmVyZHMiLCJ0aGVtZSI6ImRlZmF1bHQiLCJjYXRlZ29yeSI6IlVzZXIiLCJ0eXBlIjoxLCJsYW5nIjoiZW5fR0IiLCJhdHRlbXB0X2lwIjoiMTAuNTAuMTMuNjkiLCJ1c2VyaWQiOjEsInV1aWQiOjF9LCJpYXQiOjE0OTI3NTQ0NjV9.jipAs6v6HspqV3peEsrmOiKoE589725W5p51X9kBRmA"
   },
   {
-    "name": "search configurationItem by keyword",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?keyword=a10"
-  },
-  {
     "name": "search it service by name",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=email,pop3"
@@ -390,7 +385,7 @@
           "it_service": [
             "dns"
           ],
-          "responsibility": "nerds",
+          "responsibility": "{{auth_user}}",
           "sn": "123456",
           "model": "a10",
           "product_date": "2016-08-11",
@@ -570,8 +565,8 @@
     "body": {
       "body": {
         "query": {
-          "term": {
-            "model": "a10"
+          "match": {
+            "category": "PhysicalServer"
           }
         },
         "sort": [

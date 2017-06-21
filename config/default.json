@@ -1,64 +1,61 @@
 {
-  "config": {
-    "port":3001,
-    "additionalPropertyCheck":false,
-    "perPageSize":2000,
-    "logger":{
-      "appenders": [
-        {
-          "type": "console"
-        },
-        {
-          "type": "file",
-          "filename": "cmdb-api.log",
-          "maxLogSize": 20480,
-          "numBackups": 5,
-          "category": "cmdb-api"
-        }
-      ],
-      "replaceConsole": true,
-      "defaultLevel":"INFO",
-      "defaultCategory":"cmdb-api"
-    },
-    "neo4j": {
-      "host": "localhost",
-      "port": 7687,
-      "http_port":7474,
-      "user": "neo4j",
-      "password": "neo4j"
-    },
-    "elasticsearch":{
-      "host": "localhost",
-      "port": 9200,
-      "refresh": false
-    },
-    "export":{
-      "storeDir": "./export_data"
-    },
-    "import":{
-      "storeDir": "./public/upload/ConfigurationItem"
-    },
-    "upload": {
-      "ProcessFlow": {
-        "url": "/api/upload/processFlows/attachment",
-        "storeDir": "ProcessFlowAttachment",
-        "provider": "local",
-        "folder": "public/upload",
-        "mimetypes": [
-          "text/plain"
-        ],
-        "urlPath": "upload"
+  "name":"cmdb-api",
+  "port":3001,
+  "additionalPropertyCheck":false,
+  "perPageSize":2000,
+  "logger":{
+    "appenders": [
+      {
+        "type": "console"
       },
-      "ConfigurationItem": {
-        "url": "/api/upload/configurationItem/xslx",
-        "storeDir": "ConfigurationItem",
-        "provider": "local",
-        "folder": "public/upload",
-        "mimetypes": [
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ],
-        "urlPath": "upload"
+      {
+        "type": "file",
+        "filename": "cmdb-api.log",
+        "maxLogSize": 20480,
+        "numBackups": 5
       }
+    ],
+    "replaceConsole": true,
+    "defaultLevel":"DEBUG"
+  },
+  "neo4j": {
+    "host": "localhost",
+    "port": 7687,
+    "http_port":7474,
+    "user": "neo4j",
+    "password": "neo4j"
+  },
+  "elasticsearch":{
+    "host": "localhost",
+    "port": 9200,
+    "refresh": false
+  },
+  "export":{
+    "storeDir": "./export_data"
+  },
+  "import":{
+    "storeDir": "./public/upload/ConfigurationItem"
+  },
+  "upload": {
+    "ProcessFlow": {
+      "url": "/api/upload/processFlows/attachment",
+      "storeDir": "ProcessFlowAttachment",
+      "provider": "local",
+      "folder": "public/upload",
+      "mimetypes": [
+        "text/plain"
+      ],
+      "urlPath": "upload"
+    },
+    "ConfigurationItem": {
+      "url": "/api/upload/configurationItem/xslx",
+      "storeDir": "ConfigurationItem",
+      "provider": "local",
+      "folder": "public/upload",
+      "mimetypes": [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      ],
+      "urlPath": "upload"
     }
   }
 }

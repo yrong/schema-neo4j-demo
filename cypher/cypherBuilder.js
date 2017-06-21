@@ -254,7 +254,7 @@ return COLLECT(distinct r)
 `
 
 const generateITServiceGroupHostsCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
-WHERE n:PhysicalServer or n:VirtualServer and sg.name IN {group_names}
+WHERE (n:PhysicalServer or n:VirtualServer) and sg.name IN {group_names}
 return collect(distinct n)
 `
 

@@ -7,10 +7,9 @@ const _ = require('lodash')
 const fs = require("fs");
 
 /*logger init*/
-const logDir = path.join(__dirname, 'logs')
-const log4js = require('log4js')
-log4js.configure(config.get('config.logger'), { cwd: logDir })
-const logger = require('./logger')
+const LOGGER = require('log4js_wrapper')
+LOGGER.initialize(config.get('logger'))
+const logger = LOGGER.getLogger()
 
 /*license check*/
 const license_checker = require('cmdb-license-checker')
@@ -22,16 +21,16 @@ let middlewares = []
 const getLicense = require('./middleware/getLicense')
 middlewares.push(getLicense)
 /*fileUploader*/
-const file_uploader = require('koa2-file-upload-local')
-for(let option of _.values(config.get('config.upload'))){
+const file_uploader = require('koa-file-upload-fork')
+for(let option of _.values(config.get('upload'))){
     middlewares.push(mount(option.url,file_uploader(option).handler))
 }
 /*staticFile*/
 middlewares.push(convert(staticFile(path.join(__dirname, 'public'))))
 
 /*app init*/
-const KoaNeo4jApp = require('koa-neo4j');
-const neo4jConfig = config.get('config.neo4j')
+const KoaNeo4jApp = require('koa-neo4j-fork');
+const neo4jConfig = config.get('neo4j')
 const app = new KoaNeo4jApp({
     neo4j: {
         boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
@@ -56,7 +55,7 @@ const initAppRoutes = require("./routes")
 initAppRoutes(app)
 
 /*start listen*/
-app.listen(config.get('config.port'), function () {
+app.listen(config.get('port'), function () {
     console.log(`App started`);
 });
 
