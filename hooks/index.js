@@ -3,9 +3,8 @@ var uuid = require('uuid')
 var schema = require('../schema')
 var config = require('config')
 var cypherBuilder = require('../cypher/cypherBuilder')
-var cypherResponseMapping = require('../cypher/cypherResponseMapping')
 var cache = require('../cache')
-var logger = require('../logger')
+var logger = require('log4js_wrapper').getLogger()
 var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
 var path = require('path')
@@ -69,9 +68,9 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast';
 
 var paginationParamsGenerator = function (params) {
-    var params_pagination = {"skip":0,"limit":config.get('config.perPageSize')},skip;
+    var params_pagination = {"skip":0,"limit":config.get('perPageSize')},skip;
     if(params.page){
-        params.per_page = params.per_page || config.get('config.perPageSize')
+        params.per_page = params.per_page || config.get('perPageSize')
         skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
         if(schema.isAuxiliaryTypes(params.category)){
@@ -312,11 +311,13 @@ module.exports = {
         result = _.isArray(result)&&result.length>0?result[0]:result;
         if(!result||result.total==0||result.count==0||result.length==0){
             response_wrapped.message.content = CONTENT_NO_RECORD;
-            response_wrapped.status = STATUS_WARNING;
             return response_wrapped;
         }
-        result = cypherResponseMapping.resultMapper(result,params);
-        result = cypherResponseMapping.removeInternalPropertys(result);
+        if(params.search&&result.count>0&&_.isArray(result.results)){
+            result.results = utils.resultMapper(result.results,params);
+        }else{
+            result = utils.resultMapper(result,params);
+        }
         response_wrapped.data = result;
         return response_wrapped;
     },

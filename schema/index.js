@@ -6,7 +6,7 @@ var ajv = new Ajv({ useDefaults: true });
 
 var config = require('config');
 
-var additionalPropertyCheck = config.get('config.additionalPropertyCheck');
+var additionalPropertyCheck = config.get('additionalPropertyCheck');
 
 const cmdbTypeName = {
     VirtualServer:'VirtualServer',

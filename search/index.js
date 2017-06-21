@@ -2,7 +2,7 @@ var config = require('config');
 
 var _ = require('lodash');
 
-var esConfig = config.get('config.elasticsearch');
+var esConfig = config.get('elasticsearch');
 
 var hook = require('../hooks');
 
@@ -17,18 +17,10 @@ var hidden_fields = utils.globalHiddenFields
 
 var schema = require('../schema')
 
-var logger = require('../logger')
+var logger = require('log4js_wrapper').getLogger()
 
-var validate = require('uuid-validate')
-
-const file_upload = require('koa2-file-upload-local')
-
-const store = file_upload(config.get('config.upload')[schema.cmdbTypeName.ProcessFlow]).store
 
 var pre_process = function(params) {
-    if(params.attachment&&validate(params.attachment, 1)){
-        params.attachment = store.get(params.attachment)
-    }
     return params
 }
 
@@ -128,16 +120,16 @@ var responseWrapper = function(response){
 var searchItem = function(params, ctx) {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
-    var params_pagination = {"from":0,"size":config.get('config.perPageSize')},from;
+    var params_pagination = {"from":0,"size":config.get('perPageSize')},from;
     if(params.page&&params.per_page){
         from = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-    let typeName = hook.getCategoryFromUrl(ctx.url),indexName = getIndexName(typeName)
+    params.category =  hook.getCategoryFromUrl(ctx.url),params.search = true
     var searchObj = _.assign({
-        index: indexName,
-        type: typeName,
+        index: getIndexName(params.category),
+        type: params.category,
         _source:_source
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
