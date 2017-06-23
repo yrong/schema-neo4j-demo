@@ -30,6 +30,11 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/ea711820-2657-11e7-ae58-e9032e6f306d"
   },
   {
+    "name": "query ConfigurationItems by subcategory",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer"
+  },
+  {
     "name": "query cfgitem by uuid ",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/ebda1e00-2657-11e7-ae58-e9032e6f306d"

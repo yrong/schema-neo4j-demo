@@ -111,6 +111,9 @@ var queryParamsCypherGenerator = function (params) {
                 throw new Error('missing param group_names')
             params.group_names = params.group_names.split(",")
             params.cypher = cypherBuilder.generateITServiceGroupHostsCypher(params);
+        }else if(params.subcategory){
+            params.subcategory = params.subcategory.split(",");
+            params.cypher = cypherBuilder.generateQueryConfigurationItemBySubCategoryCypher(params);
         }
     }
     logCypher(params)

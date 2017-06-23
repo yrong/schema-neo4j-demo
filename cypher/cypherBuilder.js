@@ -258,6 +258,15 @@ WHERE (n:PhysicalServer or n:VirtualServer) and sg.name IN {group_names}
 return collect(distinct n)
 `
 
+const generateQueryConfigurationItemBySubCategoryCypher = (params) => {
+    let condition = _.map(params.subcategory, (subcategory) => {
+        return `n:${subcategory}`
+    }).join(' OR ')
+    return `MATCH (n) WHERE (${condition})
+    return collect(distinct n)
+    `
+}
+
 module.exports = {
     generateCabinetCyphers: (params)=>{
         let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInCabinet_cypher,cmdb_addCabinetServerRoomRel_cypher]
@@ -353,5 +362,6 @@ module.exports = {
     generateQueryNodeRelations_cypher,
     generateDummyOperation_cypher,
     generateMountedConfigurationItemCypher,
-    generateITServiceGroupHostsCypher
+    generateITServiceGroupHostsCypher,
+    generateQueryConfigurationItemBySubCategoryCypher
 }
