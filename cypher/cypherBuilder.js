@@ -249,12 +249,17 @@ WITH services_byIds+collect(distinct(s1.uuid)) as services
 UNWIND services AS service
 RETURN COLLECT(distinct service)`
 
-const generateMountedConfigurationItemCypher = (params)=> `MATCH (:ConfigurationItem)-[r:LOCATED]->(:Cabinet)
+const generateMountedConfigurationItemRelsCypher = (params)=> `MATCH (:ConfigurationItem)-[r:LOCATED]->(:Cabinet)
 return COLLECT(distinct r)
 `
 
-const generateITServiceGroupHostsCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
+const generateCfgHostsByITServiceGroupCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
 WHERE (n:PhysicalServer or n:VirtualServer) and sg.name IN {group_names}
+return collect(distinct n)
+`
+
+const generateCfgHostsByITServiceCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(s:ITService)
+WHERE (n:PhysicalServer or n:VirtualServer) and s.name IN {service_names}
 return collect(distinct n)
 `
 
@@ -361,7 +366,8 @@ module.exports = {
     generateDelAllCypher,
     generateQueryNodeRelations_cypher,
     generateDummyOperation_cypher,
-    generateMountedConfigurationItemCypher,
-    generateITServiceGroupHostsCypher,
-    generateQueryConfigurationItemBySubCategoryCypher
+    generateMountedConfigurationItemRelsCypher,
+    generateCfgHostsByITServiceGroupCypher,
+    generateQueryConfigurationItemBySubCategoryCypher,
+    generateCfgHostsByITServiceCypher
 }

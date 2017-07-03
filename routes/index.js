@@ -79,22 +79,6 @@ module.exports = (app)=>{
         return next();
     });
 
-    /* get mounted location relationship between configurationItem and Cabinet(for cabinet_u unique check purpose when import*/
-    app.defineAPI({
-        method: 'GET',
-        route: '/api' + utils.cutomized_route.cfgItems_cabinets_mounted,
-        preProcess: hook.queryItems_preProcess,
-        postProcess: hook.queryItems_postProcess
-    });
-
-    app.defineAPI({
-        method: 'GET',
-        route: '/api' + utils.cutomized_route.itservice_group_host,
-        preProcess: hook.queryItems_preProcess,
-        postProcess: hook.queryItems_postProcess
-    });
-
-
     /* Delete all Items(for test purpose) */
     app.defineAPI({
         method: 'DEL',

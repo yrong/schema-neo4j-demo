@@ -349,7 +349,7 @@
   {
     "name": "query it service groups related cmdb servers",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/assoc/group?group_names=Messaging,Infrastructure"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?cfgHostsByITServiceGroup=Messaging"
   },
   {
     "name": "add ITService Dns",
@@ -374,6 +374,11 @@
     "name": "query it service by uuids",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?uuids=ea711820-2657-11e7-ae58-e9032e6f306d,eadde3b0-2657-11e7-ae58-e9032e6f306d"
+  },
+  {
+    "name": "query it service related cmdb servers",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?cfgHostsByITService=email"
   },
   {
     "name": "add switch",
@@ -406,7 +411,7 @@
   {
     "name": "query ConfigurationItem mounted",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/assoc/cabinets"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?mounted_rels=true"
   },
   {
     "name": "search configurationItem",
@@ -416,7 +421,7 @@
       "body": {
         "query": {
           "match": {
-            "category": "PhysicalServer"
+            "category": "Router"
           }
         },
         "sort": [

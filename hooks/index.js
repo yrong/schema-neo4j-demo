@@ -104,14 +104,16 @@ var queryParamsCypherGenerator = function (params) {
             params.cypher = cypherBuilder.generateAdvancedSearchITServiceCypher(params);
         }
     } else if(params.category === schema.cmdbTypeName.ConfigurationItem){
-        if(params.url.includes(utils.cutomized_route.cfgItems_cabinets_mounted)){
-            params.cypher = cypherBuilder.generateMountedConfigurationItemCypher(params);
-        }else if(params.url.includes(utils.cutomized_route.itservice_group_host)){
-            if(!params.group_names)
-                throw new Error('missing param group_names')
-            params.group_names = params.group_names.split(",")
-            params.cypher = cypherBuilder.generateITServiceGroupHostsCypher(params);
-        }else if(params.subcategory){
+        if(params.mounted_rels){
+            params.cypher = cypherBuilder.generateMountedConfigurationItemRelsCypher(params);
+        }else if(params.cfgHostsByITServiceGroup){
+            params.group_names = params.cfgHostsByITServiceGroup.split(",")
+            params.cypher = cypherBuilder.generateCfgHostsByITServiceGroupCypher(params);
+        }else if(params.cfgHostsByITService){
+            params.service_names = params.cfgHostsByITService.split(",")
+            params.cypher = cypherBuilder.generateCfgHostsByITServiceCypher(params);
+        }
+        else if(params.subcategory){
             params.subcategory = params.subcategory.split(",");
             params.cypher = cypherBuilder.generateQueryConfigurationItemBySubCategoryCypher(params);
         }

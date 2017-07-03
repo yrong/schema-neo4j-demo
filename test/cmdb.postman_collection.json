@@ -66,7 +66,7 @@
 		{
 			"owner": "2263720",
 			"lastUpdatedBy": "2263720",
-			"lastRevision": 1705767289,
+			"lastRevision": 1720135278,
 			"folder": null,
 			"id": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"name": "3-configurationItem",
@@ -88,7 +88,8 @@
 				"b17a0229-80d6-13f7-13aa-4a3f2c770eb5",
 				"b40f5077-1070-55d8-adb2-93c8b96be5dc",
 				"af0f689f-d648-a8c1-f8c8-9cad33c0284f",
-				"a0a371d6-c099-c0a6-553e-2db4835aa7a6"
+				"a0a371d6-c099-c0a6-553e-2db4835aa7a6",
+				"abe120c0-9bee-adee-50a3-b05b4a63ae5f"
 			]
 		},
 		{
@@ -264,10 +265,22 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
+			"name": "query ConfigurationItems by subcategory",
+			"dataMode": "params",
+			"data": null,
+			"rawModeData": null,
+			"descriptionFormat": null,
+			"description": "",
 			"headers": "",
-			"headerData": [],
+			"method": "GET",
+			"pathVariables": {},
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer",
+			"preRequestScript": null,
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length >= 1",
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "subcategory",
@@ -277,20 +290,10 @@
 					"enabled": true
 				}
 			],
-			"preRequestScript": null,
-			"pathVariables": {},
+			"headerData": [],
 			"pathVariableData": [],
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length === 4",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1498188405975,
-			"name": "query ConfigurationItems by subcategory",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": []
+			"responses": [],
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
@@ -1044,31 +1047,8 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "a0a371d6-c099-c0a6-553e-2db4835aa7a6",
-			"name": "query it service groups related cmdb servers",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Cookie: token={{token}}\n",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/assoc/group?group_names=Messaging,Infrastructure",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"server found\"] = jsonData.data.length >=1",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [
-				{
-					"key": "group_names",
-					"value": "Messaging,Infrastructure",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
 			"headerData": [
 				{
 					"key": "Cookie",
@@ -1077,9 +1057,30 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?cfgHostsByITServiceGroup=Messaging",
+			"queryParams": [
+				{
+					"key": "cfgHostsByITServiceGroup",
+					"value": "Messaging",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"server found\"] = jsonData.data.length >=1",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499066879720,
+			"name": "query it service groups related cmdb servers",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -1143,6 +1144,42 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
+			"id": "abe120c0-9bee-adee-50a3-b05b4a63ae5f",
+			"headers": "Cookie: token={{token}}\n",
+			"headerData": [
+				{
+					"key": "Cookie",
+					"value": "token={{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?cfgHostsByITService=email",
+			"queryParams": [
+				{
+					"key": "cfgHostsByITService",
+					"value": "email",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"server found\"] = jsonData.data.length >=1",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499067072616,
+			"name": "query it service related cmdb servers",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
+		},
+		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "ae16ba2c-d0ef-27d7-4747-c9875653586a",
 			"name": "add switch",
@@ -1173,27 +1210,33 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "af0f689f-d648-a8c1-f8c8-9cad33c0284f",
-			"name": "query ConfigurationItem mounted",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/assoc/cabinets",
+			"headerData": [],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?mounted_rels=true",
+			"queryParams": [
+				{
+					"key": "mounted_rels",
+					"value": "true",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"mount configurationItems\"] = jsonData.data.length ",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1499067398285,
+			"name": "query ConfigurationItem mounted",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
@@ -1201,7 +1244,7 @@
 			"name": "search configurationItem",
 			"dataMode": "raw",
 			"data": [],
-			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"match\": {\"category\": \"PhysicalServer\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n",
+			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"match\": {\"category\": \"Router\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n",
 			"descriptionFormat": null,
 			"description": "",
 			"headers": "Content-Type: application/json\n",

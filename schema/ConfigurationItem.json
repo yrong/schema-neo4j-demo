@@ -14,9 +14,6 @@
       "type": "boolean",
       "default": false
     },
-    "responsibility":{
-      "type": "integer"
-    },
     "updated_by":{
       "type": "integer"
     },
