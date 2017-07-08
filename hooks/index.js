@@ -3,7 +3,6 @@ var uuid = require('uuid')
 var schema = require('../schema')
 var config = require('config')
 var cypherBuilder = require('../cypher/cypherBuilder')
-var cache = require('../cache')
 var logger = require('log4js_wrapper').getLogger()
 var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
@@ -14,6 +13,7 @@ var cypherInvoker = require('../helper/cypherInvoker')
 var uuid_validator = require('uuid-validate')
 var converter = require('../helper/converter')
 var jp = require('jsonpath');
+var cmdb_cache = require('cmdb-cache')
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -208,7 +208,7 @@ var updateItem = (result,params)=>{
 
 var initialize = (app)=>{
     app.neo4jConnection.initialized.then(()=>{
-            cache.loadAll();
+            cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
         }).catch((error)=>{
             logger.fatal('neo4j is not reachable,' + String(error))
             process.exit(-1)
@@ -275,7 +275,7 @@ module.exports = {
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
             if(!params.uuid||!params.fields)
                 throw new Error('added obj without uuid')
-            cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
+            cmdb_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
             response_wrapped.uuid = params.uuid
         }
         if(params.method==='DELETE'){
@@ -286,7 +286,7 @@ module.exports = {
                         response_wrapped.status = STATUS_WARNING
                         response_wrapped.content = CONTENT_NODE_USED
                     }else{
-                        cache.del(params.uuid)
+                        cmdb_cache.del(params.uuid)
                     }
                 }else{
                     response_wrapped.status = STATUS_WARNING
@@ -294,7 +294,7 @@ module.exports = {
                 }
             }
             if(params.category===schema.cmdbTypeName.All)
-                cache.flushAll()
+                cmdb_cache.flushAll()
         }
         return　response_wrapped;
     },

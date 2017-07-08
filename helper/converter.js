@@ -1,14 +1,14 @@
 var _ = require('lodash')
 var routesDefinition = require('../routes/def')
 var schema = require('../schema')
-var cache = require('../cache')
+var cmdb_cache = require('cmdb-cache')
 
 var name2IdConverter = {}
 
 
 _.each(routesDefinition,(value,key)=>{
     let single_converter = (name)=>{
-        let uuid,cached_val = cache.getByCategoryAndName(key,name)
+        let uuid,cached_val = cmdb_cache.getItemByCategoryAndName(key,name)
         if(cached_val)
             uuid = cached_val.uuid
         else
