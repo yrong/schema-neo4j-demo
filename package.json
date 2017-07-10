@@ -8,6 +8,7 @@
     "test": "mocha --harmony",
     "start": "node  --harmony ./server.js",
     "init": "/bin/bash ./script/init.sh",
+    "initES": "/bin/bash ./script/init_es.sh",
     "backup": "/bin/bash ./script/backup.sh",
     "restore": "/bin/bash ./script/restore.sh",
     "exportToJson": "node ./exportJSON.js",

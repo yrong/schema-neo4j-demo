@@ -228,10 +228,10 @@ module.exports = {
                 })
             } else if(schema.cmdbConfigurationItemTypes.includes(params.category)){
                 return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.ConfigurationItem),params,(result,params)=>{
-                    let barcode_id = result[0]
+                    let barcode_id = String(result[0])
                     let canvas = new Canvas();
                     JsBarcode(canvas, barcode_id);
-                    params.data.fields.barcode = {id:barcode_id,url:canvas.toDataURL()}
+                    params.data.fields.barcode = {cfg_id:barcode_id,url:canvas.toDataURL()}
                     return cudItem_callback(params)
                 })
             }
@@ -295,6 +295,10 @@ module.exports = {
             }
             if(params.category===schema.cmdbTypeName.All)
                 cmdb_cache.flushAll()
+        }
+        if(params.error){
+            response_wrapped.status = STATUS_WARNING
+            response_wrapped.error = params.error
         }
         return　response_wrapped;
     },

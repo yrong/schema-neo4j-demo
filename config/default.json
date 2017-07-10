@@ -16,7 +16,7 @@
       }
     ],
     "replaceConsole": true,
-    "defaultLevel":"DEBUG"
+    "defaultLevel":"INFO"
   },
   "neo4j": {
     "host": "localhost",
@@ -28,7 +28,8 @@
   "elasticsearch":{
     "host": "localhost",
     "port": 9200,
-    "refresh": false
+    "requestTimeout":3000,
+    "mode": "strict"
   },
   "export":{
     "storeDir": "./export_data"

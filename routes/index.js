@@ -6,23 +6,40 @@ const search = require('../search');
 const routesDef = require('./def');
 const ws = require('./ws')
 const utils = require('../helper/utils')
-
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
+const es_config = config.get('elasticsearch')
+
 const customized_routes = (routesDef)=>{
     routesDef.ConfigurationItem.customizedHook = {
+        Add:{postProcess:search.addItem},
+        Modify:{postProcess:search.patchItem},
+        Delete:{postProcess: search.deleteItem},
         Search:{procedure:search.searchItem}
     }
     routesDef.ConfigurationItem.allowed_methods = [...allowed_methods,'Search']
     routesDef.ProcessFlow.customizedHook = {
+        Add:{postProcess:search.addItem},
+        Modify:{postProcess:search.patchItem},
+        Delete:{postProcess: search.deleteItem},
         Search:{procedure:search.searchItem}
     }
     routesDef.ProcessFlow.allowed_methods = [...allowed_methods,'Search']
 }
 
-const none_checker=()=>true
+const es_checker=(params)=>{
+    if(es_config.mode === 'strict')
+        return search.checkStatus(params)
+    return none_checker(params)
+}
+
+const schema_checker = (params)=>{return schema.checkSchema(params)}
+
+const none_checker = (params)=>true
 
 module.exports = (app)=>{
     customized_routes(routesDef)
+    if(es_config.mode === 'strict')
+        search.checkStatus()
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     _.each(routesDef,(val, key)=>{
         methods = val.allowed_methods||allowed_methods
@@ -30,7 +47,7 @@ module.exports = (app)=>{
             procedure=null
             http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
             route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='Search'?'/api/search'+val.route:(method==='FindChanges'?'/api'+val.route+'/:uuid/timeline':'/api'+val.route+'/:uuid'))
-            checker = method==='Add'?[schema.checkSchema]:(method==='Modify'||method==='Delete')?none_checker:none_checker
+            checker = method==='Add'?[schema_checker,es_checker]:(method==='Modify'||method==='Delete')?es_checker:none_checker
             preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
                 preProcess = val.customizedHook[method].preProcess

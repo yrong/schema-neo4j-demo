@@ -9,7 +9,8 @@ var hook = require('../hooks');
 var elasticsearch = require('elasticsearch');
 
 var es_client = new elasticsearch.Client({
-    host: esConfig.host + ":" + esConfig.port
+    host: esConfig.host + ":" + esConfig.port,
+    requestTimeout: esConfig.requestTimeout
 });
 
 var utils = require('../helper/utils')
@@ -55,7 +56,7 @@ var addItem = function(result, params, ctx) {
         type: typeName,
         id: params.uuid,
         body: _.omit(params,hidden_fields),
-        refresh:esConfig.refresh
+        refresh:true
     }
     logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
     return es_client.index(index_obj).then(function (response) {
