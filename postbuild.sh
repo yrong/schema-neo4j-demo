@@ -1,8 +1,10 @@
 #! /bin/bash
 
 chmod +x ./build/script/*
-git_commit=$(git rev-parse HEAD)
-tar -zcvf ./cmdb-api-$git_commit.tar.gz ./build
+git_commit_id=$(git rev-parse HEAD)
+git_commit_date=$(git show -s --format=%ci HEAD |tail |awk '{print $1}')
+filename="$git_commit_date-$git_commit_id"
+tar -zcvf ./cmdb-api-$filename.tar.gz ./build
 
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
@@ -20,4 +22,4 @@ while [ "$1" != "" ]; do
     shift
 done
 echo "move build file to $releaseDir"
-mv ./cmdb-api-$git_commit.tar.gz $releaseDir
+mv ./cmdb-api-$filename.tar.gz $releaseDir
