@@ -5,9 +5,8 @@ const schema = require('../schema')
 const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
     , objectFields = ['asset_location', 'geo_location', 'status', 'barcode']
-    , referencedFields = ['responsibility', 'committer', 'executor', 'cabinet', 'position', 'group']
+    , referencedFields = ['responsibility', 'committer', 'executor']
     , referencedArrayFields = ['it_service']
-    , cutomized_route = {cfgItems_cabinets_mounted:'/cfgItems/assoc/cabinets',itservice_group_host:'/cfgItems/assoc/group'}
 
 const removeInternalProperties = (val) => {
     for (let prop in val) {
@@ -38,6 +37,18 @@ const recursivelyRemoveInternalProperties =  (val) => {
     return val;
 }
 
+const referencedMapper_assetLocation = (val)=>{
+    let asset_val
+    if(val['cabinet']){
+        asset_val = val['cabinet']=cmdb_cache.get(val['cabinet'])
+    }
+    if(val['shelf']){
+        asset_val = val['shelf']=cmdb_cache.get(val['shelf'])
+    }
+    if(asset_val['parent'])
+        asset_val['parent']=cmdb_cache.get(asset_val['parent'])
+}
+
 const referencedMapper = (val) => {
     if (_.isArray(val)) {
         val = _.map(val, function (val) {
@@ -53,6 +64,9 @@ const referencedMapper = (val) => {
                             val[key] = JSON.parse(val_val)
                         }catch(error){
                         }
+                    }
+                    if(key === 'asset_location'&&val[key]){
+                        referencedMapper_assetLocation(val[key])
                     }
                 }
             }
@@ -121,6 +135,5 @@ module.exports = {
     isChangeTimelineQuery,
     resultMapper,
     objectFields,
-    globalHiddenFields,
-    cutomized_route
+    globalHiddenFields
 }

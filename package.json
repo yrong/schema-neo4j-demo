@@ -26,7 +26,7 @@
     "ajv": "^4.9.0",
     "async-throttle": "^1.1.0",
     "canvas": "^1.6.5",
-    "cmdb-cache": "1.0.0-beta.3",
+    "cmdb-cache": "1.0.0-beta.5",
     "cmdb-license-checker": "^1.0.4",
     "config": "^1.24.0",
     "elasticsearch": "^12.1.3",
