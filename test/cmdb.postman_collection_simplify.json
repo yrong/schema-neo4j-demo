@@ -108,6 +108,11 @@
     }
   },
   {
+    "name": "delete itservice",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_test_id}}"
+  },
+  {
     "name": "query all it service groups",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group"
@@ -178,6 +183,21 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=ea379190-2657-11e7-ae58-e9032e6f306d"
   },
   {
+    "name": "add ITService",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "test1",
+          "description": "test"
+        }
+      }
+    }
+  },
+  {
     "name": "add firewall",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -218,8 +238,7 @@
             "{{service_pop3_id}}",
             "{{service_dns_id}}"
           ],
-          "sn": "12345678",
-          "responsibility": 1
+          "sn": "12345678"
         }
       }
     }
