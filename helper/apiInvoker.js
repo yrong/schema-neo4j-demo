@@ -20,7 +20,7 @@ module.exports = {
         }
         return await rp(options)
     },
-    addItem: async(category,item) =>{
+    addItem: async(category,item,update) =>{
         let route;
         if(routesDefinition[category]){
             route = routesDefinition[category].route
@@ -36,6 +36,10 @@ module.exports = {
             uri: base_url  + route,
             body: wrapRequest(category,item),
             json: true
+        }
+        if(update){
+            options.method = 'PATCH'
+            options.uri = options.uri + "/" + item.uuid
         }
         return await rp(options)
     },
