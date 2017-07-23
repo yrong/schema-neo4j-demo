@@ -38,15 +38,15 @@ const recursivelyRemoveInternalProperties =  (val) => {
 }
 
 const referencedMapper_assetLocation = (val)=>{
-    let asset_val
+    let asset_val = {}
     if(val['cabinet']){
-        asset_val = val['cabinet']=cmdb_cache.get(val['cabinet'])
+        asset_val = val['cabinet']=cmdb_cache.get(val['cabinet'])||val['cabinet']
     }
     if(val['shelf']){
-        asset_val = val['shelf']=cmdb_cache.get(val['shelf'])
+        asset_val = val['shelf']=cmdb_cache.get(val['shelf'])||val['shelf']
     }
     if(asset_val['parent'])
-        asset_val['parent']=cmdb_cache.get(asset_val['parent'])
+        asset_val['parent']=cmdb_cache.get(asset_val['parent'])||val['parent']
 }
 
 const referencedMapper = (val) => {

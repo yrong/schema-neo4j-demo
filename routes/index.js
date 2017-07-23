@@ -113,8 +113,5 @@ module.exports = (app)=>{
     /*websocket routes*/
     ws(app)
 
-    /*init schema*/
-    hook.initialize(app)
-
     return app
 }

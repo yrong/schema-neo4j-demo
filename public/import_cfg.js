@@ -19,8 +19,8 @@ $('#configurationItem').on('fileuploaded', function(event, data, previewId, inde
 });
 var importerSocket = io( '/importer' )
 importerBtn.click(function(event){
-    var fileId = $('#uploaded_fileId').text()
-    if(fileId){
+    var filePath = $('#uploaded_fileId').text()
+    if(filePath){
         $.notifyDefaults({
             delay: 3000,
             placement: {
@@ -30,7 +30,7 @@ importerBtn.click(function(event){
             allow_dismiss: false
         });
         $.notify('start import,waiting...')
-        importerSocket.emit( 'importConfigurationItem', {fileId:fileId} )
+        importerSocket.emit( 'importConfigurationItem', {fileId:filePath} )
     }
 })
 importerSocket.on( 'importConfigurationItemResponse', function( event ) {
@@ -43,9 +43,10 @@ importerSocket.on( 'importConfigurationItemResponse', function( event ) {
         icon: 'fa fa-paw',
         type: type
     }
-    var fileId = $('#uploaded_fileId').text()
+    var filePath = $('#uploaded_fileId').text()
+    var fileName = filePath.split('/').pop()
     if(error_exist){
-        options = _.assign(options,{url:`/upload/ConfigurationItem/exception/${fileId}.xlsx`})
+        options = _.assign(options,{url:`/upload/ConfigurationItem/exception/${fileName}`})
         settings = _.assign(settings,{allow_dismiss: true,delay:0})
     }
     $.notify(options,settings);

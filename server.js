@@ -4,7 +4,9 @@ const staticFile = require('koa-static')
 const mount = require('koa-mount')
 const path = require('path')
 const _ = require('lodash')
-const fs = require("fs");
+const fs = require("fs")
+const check_token = require('koa-token-checker')
+const cmdb_cache = require('cmdb-cache')
 
 /*logger init*/
 const LOGGER = require('log4js_wrapper')
@@ -27,6 +29,8 @@ for(let option of _.values(config.get('upload'))){
 }
 /*staticFile*/
 middlewares.push(convert(staticFile(path.join(__dirname, 'public'))))
+/*check token*/
+middlewares.push(check_token(config.get('auth')))
 
 /*app init*/
 const KoaNeo4jApp = require('koa-neo4j-fork');
@@ -52,7 +56,16 @@ const app = new KoaNeo4jApp({
 
 /*route init*/
 const initAppRoutes = require("./routes")
-initAppRoutes(app)
+initAppRoutes(app);
+
+(function(app) {
+    app.neo4jConnection.initialized.then(()=>{
+        cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
+    }).catch((error)=>{
+        logger.fatal('neo4j is not reachable,' + String(error))
+        process.exit(-1)
+    })
+})(app)
 
 /*start listen*/
 app.listen(config.get('port'), function () {

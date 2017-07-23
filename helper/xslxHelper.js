@@ -1,6 +1,6 @@
 const XLSX = require('xlsx')
 const config = require('config')
-const fs = require('file-system')
+const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
@@ -52,8 +52,9 @@ module.exports = {
     dumpErrorBook:(errorbook,fileName)=>{
         let importFileBaseDir = config.get('import.storeDir')
         let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
-        fs.mkdirSync(exceptionFileBaseDir)
-        XLSX.writeFile(errorbook, path.join(exceptionFileBaseDir,fileName + '.xlsx'))
+        if (!fs.existsSync(exceptionFileBaseDir))
+            fs.mkdirSync(exceptionFileBaseDir)
+        XLSX.writeFile(errorbook, path.join(exceptionFileBaseDir,fileName))
     },
     generateHeaderInErrorSheet:(src_sheet,error_sheet)=>{
         let src_cell,dst_cell

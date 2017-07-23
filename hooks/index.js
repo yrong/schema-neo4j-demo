@@ -12,7 +12,7 @@ var Canvas = require('canvas')
 var cypherInvoker = require('../helper/cypherInvoker')
 var uuid_validator = require('uuid-validate')
 var converter = require('../helper/converter')
-var jp = require('jsonpath');
+var jp = require('jsonpath')
 var cmdb_cache = require('cmdb-cache')
 
 var getCategoryFromUrl = function (url) {
@@ -206,15 +206,6 @@ var updateItem = (result,params)=>{
     }
 }
 
-var initialize = (app)=>{
-    app.neo4jConnection.initialized.then(()=>{
-            cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
-        }).catch((error)=>{
-            logger.fatal('neo4j is not reachable,' + String(error))
-            process.exit(-1)
-        })
-}
-
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
         params.method = ctx.method,params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
@@ -345,7 +336,6 @@ module.exports = {
         }
         return response_wrapped;
     },
-    getCategoryFromUrl:getCategoryFromUrl,
-    initialize
+    getCategoryFromUrl:getCategoryFromUrl
 }
 

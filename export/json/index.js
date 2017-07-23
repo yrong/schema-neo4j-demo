@@ -1,13 +1,12 @@
 const config = require('config')
 const jsonfile = require('jsonfile')
-const fs = require('file-system')
+const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
 const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('../../schema/index')
 const apiInvoker = require('../../helper/apiInvoker')
-const routeDef = require('../../routes/def')
 const utils = require('../../helper/utils')
 
 const exportItems = async ()=>{
@@ -20,7 +19,8 @@ const exportItems = async ()=>{
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let directory = path.join(config.get('export.storeDir'), timestamp)
-    fs.mkdirSync(directory)
+    if (!fs.existsSync(directory))
+        fs.mkdirSync(directory)
     let category,cypher,result,items,filePath
     for(category of categories){
         cypher = `MATCH (n) WHERE n:${category} RETURN n`

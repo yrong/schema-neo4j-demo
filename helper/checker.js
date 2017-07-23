@@ -1,5 +1,5 @@
-var _ = require('lodash')
-var apiInvoker = require('./apiInvoker')
+const _ = require('lodash')
+const apiInvoker = require('./apiInvoker')
 const utils = require('./utils')
 
 module.exports={

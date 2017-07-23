@@ -1,27 +1,20 @@
-const rp = require('request-promise')
-const queryString = require('query-string')
 const config = require('config')
 const _ = require('lodash')
 const routesDefinition = require('../routes/def')
 const schema = require('../schema')
-const token = 'token'
 var wrapRequest = (category,item) => {
-    return {token:token, data:{category:category,fields:item}}
+    return {data:{category:category,fields:item}}
 }
 var base_url=`http://localhost:${config.get('port')}/api`
 const cypherInvoker = require('./cypherInvoker')
+const common = require('scirichon-common')
 
 module.exports = {
     apiGetter: async function(path,params){
-        var options = {
-            method: 'GET',
-            uri: base_url + path + (params?('/?' + queryString.stringify(params)):''),
-            json: true
-        }
-        return await rp(options)
+        return await common.apiInvoker('GET',base_url,path,params)
     },
     addItem: async(category,item,update) =>{
-        let route;
+        let route,method='POST',uri;
         if(routesDefinition[category]){
             route = routesDefinition[category].route
         }else if(_.includes(schema.cmdbConfigurationItemTypes,category)){
@@ -31,17 +24,12 @@ module.exports = {
         }
         if(!route)
             throw new Error(`${category} api route not found`)
-        var options = {
-            method: 'POST',
-            uri: base_url  + route,
-            body: wrapRequest(category,item),
-            json: true
-        }
+        uri = base_url  + route
         if(update){
-            options.method = 'PATCH'
-            options.uri = options.uri + "/" + item.uuid
+            method = 'PATCH'
+            uri = uri + "/" + item.uuid
         }
-        return await rp(options)
+        return await common.apiInvoker(method,uri,'','',wrapRequest(category,item))
     },
     getAgents: async (hosts)=>{
         let cypher = `MATCH (n)
