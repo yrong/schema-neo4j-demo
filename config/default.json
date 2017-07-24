@@ -61,5 +61,8 @@
   },
   "auth":{
     "check_token_url":"http://localhost:3002/auth/check"
+  },
+  "notifier":{
+    "base_url":"http://localhost:3004/api/notifications"
   }
 }

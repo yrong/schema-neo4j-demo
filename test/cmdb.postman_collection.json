@@ -13,8 +13,8 @@
 			"name": "0-prepare",
 			"description": "",
 			"order": [
-				"7d9d07e7-ac92-6126-de20-970f1b4114ad",
 				"86a95049-3e88-092d-d2df-880309c1521e",
+				"7d9d07e7-ac92-6126-de20-970f1b4114ad",
 				"9f34a8c1-40fb-30d0-c64a-d1c1880502c9"
 			]
 		},
@@ -88,7 +88,6 @@
 				"8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
 				"168a351e-1498-85a0-5916-5895591e900e",
 				"b17a0229-80d6-13f7-13aa-4a3f2c770eb5",
-				"b40f5077-1070-55d8-adb2-93c8b96be5dc",
 				"af0f689f-d648-a8c1-f8c8-9cad33c0284f",
 				"a0a371d6-c099-c0a6-553e-2db4835aa7a6",
 				"abe120c0-9bee-adee-50a3-b05b4a63ae5f"
@@ -111,7 +110,6 @@
 				"7ef2e855-211e-c157-6ca8-a0171c79f734",
 				"489b09b6-35bc-952b-ec7a-904ba5b4ba4c",
 				"93a8e1ba-573a-9bf7-984a-aef1a2df7366",
-				"824dd132-fe5b-1350-4a75-46face91c6f6",
 				"07c40b56-89c6-d9c2-efcc-d9fa500b797c"
 			]
 		}
@@ -121,114 +119,129 @@
 	"public": false,
 	"requests": [
 		{
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 			"id": "06154b5d-279e-03c2-f728-7ec469325e03",
-			"name": "query warehouse",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one warehouse found\"] = jsonData.data.length >=1\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557255421,
+			"name": "query warehouse",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "07c40b56-89c6-d9c2-efcc-d9fa500b797c",
-			"name": "delete incident flow 3",
-			"dataMode": "params",
-			"data": [],
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
-			"headers": "",
-			"method": "DELETE",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}",
+			"queryParams": [],
 			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
 			"tests": "\n\n\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557684410,
+			"name": "delete incident flow 3",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "168a351e-1498-85a0-5916-5895591e900e",
-			"name": "query physical server by uuid",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.uuid === environment['physical_server_id']",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557503827,
+			"name": "query physical server by uuid",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 			"id": "17f90d8e-687f-8650-aec4-1ee249664cda",
-			"name": "query Cabinets",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 cabinet found\"] = jsonData.data.length === 1",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557233743,
+			"name": "query Cabinets",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "1d78a669-3539-4cb1-3cf0-2eb168cd3cf7",
-			"name": "query it service groups by keyword",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 it service group found\"] = jsonData.data.length === 1",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "keyword",
@@ -238,51 +251,61 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 it service group found\"] = jsonData.data.length === 1",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557309214,
+			"name": "query it service groups by keyword",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "1d81138e-82bd-2c79-18fc-1e518ac904b0",
-			"name": "delete already referenced email service fail",
-			"dataMode": "params",
-			"data": [],
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
-			"headers": "",
-			"method": "DELETE",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}",
+			"queryParams": [],
 			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"node already referenced\"] = jsonData.status==='warning'\n\n\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557376519,
+			"name": "delete already referenced email service fail",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
-			"name": "query ConfigurationItems by subcategory",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length >= 1",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "subcategory",
@@ -292,102 +315,132 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length >= 1",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557447362,
+			"name": "query ConfigurationItems by subcategory",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "3045cd2f-ad11-6f2b-fa65-d5ce379d7c10",
-			"name": "query cfgitem by uuid ",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.uuid === environment['router_id']",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557420457,
+			"name": "query cfgitem by uuid ",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 			"id": "38103bec-f789-1a92-ec26-a00a3a3f2c55",
-			"name": "query server room",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one room found\"] = jsonData.data.length >=1\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557187015,
+			"name": "query server room",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "38596695-56bb-9d4e-f166-510c8599de9c",
-			"name": "query ConfigurationItem Category by filter",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Asset as root\"] = jsonData.data.name === 'Asset'",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557487444,
+			"name": "query ConfigurationItem Category by filter",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "3a23b38e-196c-849a-d295-c667ff0ed022",
-			"name": "query ConfigurationItem Category",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/all",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"ConfigurationItem as root\"] = jsonData.data.name === 'ConfigurationItem'",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557477130,
+			"name": "query ConfigurationItem Category",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
@@ -420,45 +473,45 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "456720bc-7790-a016-d60d-fbd7d4f81cac",
-			"name": "query ConfigurationItems",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length === 4",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557433361,
+			"name": "query ConfigurationItems",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "489b09b6-35bc-952b-ec7a-904ba5b4ba4c",
-			"name": "query process flow by keyword full text match",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows?keyword={{matched_word}}",
-			"preRequestScript": "\n",
-			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data.count){\n    tests[\"process flow by matched keyword found\"] = jsonData.data.count == 4;\n}",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "keyword",
@@ -468,10 +521,20 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": "\n",
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data.count){\n    tests[\"process flow by matched keyword found\"] = jsonData.data.count == 4;\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557637513,
+			"name": "query process flow by keyword full text match",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -505,8 +568,15 @@
 		},
 		{
 			"id": "56263ac7-d25f-f6fe-c6fc-f4025b435e01",
-			"headers": "",
-			"headerData": [],
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_test_id}}",
 			"queryParams": [],
 			"preRequestScript": "",
@@ -518,41 +588,39 @@
 			"tests": "\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500294765016,
+			"time": 1500557398018,
 			"name": "delete itservice",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": []
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "59d86f92-c730-3f8c-d911-701d0b17abb1",
-			"name": "query all it service groups",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "Cookie: token={{token}}\n",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service groups found\"] = jsonData.data.length === 2",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
+			"headers": "token: {{token}}\n",
 			"headerData": [
 				{
-					"key": "Cookie",
-					"value": "token={{token}}",
+					"key": "token",
+					"value": "{{token}}",
 					"description": "",
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service groups found\"] = jsonData.data.length === 2",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557282637,
+			"name": "query all it service groups",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
@@ -615,22 +683,10 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "63559db1-50bd-322e-82fb-bca01def1b22",
-			"name": "get articles from kb api",
-			"dataMode": "params",
-			"data": [],
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "Cookie: token={{token}}\n",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "",
+			"headerData": [],
 			"url": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles?token={{token}}",
-			"preRequestScript": "",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"articles found\"] = jsonData.data.count>0 \nvar article_uuids = [];\njsonData.data.rows.forEach(function(article){\n    article_uuids.push(article.uuid);\n})\npostman.setEnvironmentVariable(\"article_uuids\", JSON.stringify(article_uuids));",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "token",
@@ -640,17 +696,20 @@
 					"enabled": true
 				}
 			],
-			"headerData": [
-				{
-					"key": "Cookie",
-					"value": "token={{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
+			"preRequestScript": "",
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"articles found\"] = jsonData.data.count>0 \nvar article_uuids = [];\njsonData.data.rows.forEach(function(article){\n    article_uuids.push(article.uuid);\n})\npostman.setEnvironmentVariable(\"article_uuids\", JSON.stringify(article_uuids));",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557618570,
+			"name": "get articles from kb api",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
@@ -683,22 +742,17 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "6aa08657-2ed4-da84-034e-f1820d3e9d5a",
-			"name": "search it service by group id",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search={{group_infrastructure_id}}",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 it service instance found\"] = jsonData.data.length === 1;",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "search",
@@ -708,10 +762,20 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 it service instance found\"] = jsonData.data.length === 1;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557320989,
+			"name": "search it service by group id",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"id": "6d76cb6e-2634-94a7-33b7-9196ea55f2a0",
@@ -802,27 +866,32 @@
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\"\n    }\n  }\n}"
 		},
 		{
-			"folder": "51f3bb65-9a3d-6ea2-1e59-34b30b350234",
 			"id": "7d9d07e7-ac92-6126-de20-970f1b4114ad",
-			"name": "clear all items in db",
-			"dataMode": "params",
-			"data": [],
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
-			"headers": "",
-			"method": "DELETE",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items",
+			"queryParams": [],
 			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
 			"tests": "\n\n\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557147920,
+			"name": "clear all items in db",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
@@ -855,45 +924,17 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
-			"id": "824dd132-fe5b-1350-4a75-46face91c6f6",
-			"name": "query process flow timeline by uuid",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}/timeline",
-			"preRequestScript": "\n",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow timeline change found\"] = jsonData.data.length == 2;",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
-		},
-		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "840c11c0-e417-9033-690d-d723da302a63",
-			"name": "search it service by group name",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=Messaging",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length === 2;",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "search",
@@ -903,10 +944,20 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length === 2;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557343085,
+			"name": "search it service by group name",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
@@ -999,50 +1050,60 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
-			"name": "query json schema of router ",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Router schema found\"] = jsonData.id === '/Router'",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557495771,
+			"name": "query json schema of router ",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "93a8e1ba-573a-9bf7-984a-aef1a2df7366",
-			"name": "query process flow by uuid",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
+			"queryParams": [],
 			"preRequestScript": "\n",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"process flow by uuid found\"] = jsonData.data.uuid;\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557648207,
+			"name": "query process flow by uuid",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -1075,35 +1136,40 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "51f3bb65-9a3d-6ea2-1e59-34b30b350234",
 			"id": "9f34a8c1-40fb-30d0-c64a-d1c1880502c9",
-			"name": "get license",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"expiration find\"] = jsonData.expiration",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557166569,
+			"name": "get license",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"id": "a0a371d6-c099-c0a6-553e-2db4835aa7a6",
-			"headers": "Cookie: token={{token}}\n",
+			"headers": "token: {{token}}\n",
 			"headerData": [
 				{
-					"key": "Cookie",
-					"value": "token={{token}}",
+					"key": "token",
+					"value": "{{token}}",
 					"description": "",
 					"enabled": true
 				}
@@ -1127,7 +1193,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"server found\"] = jsonData.data.length >=1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499066879720,
+			"time": 1500557569101,
 			"name": "query it service groups related cmdb servers",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1164,22 +1230,17 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "a68f40e0-ebfa-2320-1e83-bfdfefc58296",
-			"name": "query it service by uuids",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?uuids={{service_email_id}},{{service_pop3_id}}",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length >= 1;",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "uuids",
@@ -1189,18 +1250,28 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length >= 1;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557361176,
+			"name": "query it service by uuids",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"id": "abe120c0-9bee-adee-50a3-b05b4a63ae5f",
-			"headers": "Cookie: token={{token}}\n",
+			"headers": "token: {{token}}\n",
 			"headerData": [
 				{
-					"key": "Cookie",
-					"value": "token={{token}}",
+					"key": "token",
+					"value": "{{token}}",
 					"description": "",
 					"enabled": true
 				}
@@ -1224,7 +1295,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"server found\"] = jsonData.data.length >=1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499067072616,
+			"time": 1500557603814,
 			"name": "query it service related cmdb servers",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1262,8 +1333,15 @@
 		},
 		{
 			"id": "af0f689f-d648-a8c1-f8c8-9cad33c0284f",
-			"headers": "",
-			"headerData": [],
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?mounted_rels=true",
 			"queryParams": [
 				{
@@ -1283,29 +1361,30 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"mount configurationItems\"] = jsonData.data.length ",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499067398285,
+			"time": 1500557558285,
 			"name": "query ConfigurationItem mounted",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "b17a0229-80d6-13f7-13aa-4a3f2c770eb5",
-			"name": "search configurationItem",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"match\": {\"category\": \"Router\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n",
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
+			"headers": "Content-Type: application/json\ntoken: {{token}}\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=2",
-			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
-			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "page",
@@ -1322,40 +1401,21 @@
 					"enabled": true
 				}
 			],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
-		},
-		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
-			"id": "b40f5077-1070-55d8-adb2-93c8b96be5dc",
-			"name": "query router timeline",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
+			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
 			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}/timeline",
-			"preRequestScript": "\n",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"router timeline change found\"] = jsonData.data.length >= 1;",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557523117,
+			"name": "search configurationItem",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n          \"match\": {\"category\": \"Router\"}\n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"id": "b58e5d7b-e57f-67c4-ffe6-2b05e93a8200",
@@ -1379,7 +1439,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499697911205,
+			"time": 1500875097683,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1417,27 +1477,32 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "bd468ca9-baf6-8538-423c-89838a439085",
-			"name": "query all it service",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+			"queryParams": [],
 			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"it services found\"] = jsonData.data.length >=3",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557297858,
+			"name": "query all it service",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -1470,27 +1535,32 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 			"id": "c6104544-8252-2301-5ebc-725abd1daaa3",
-			"name": "query cabinet by uuid as name",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/cabinet",
+			"queryParams": [],
 			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"query cabinet by keyword found\"] = jsonData.data",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
-			"headerData": [],
-			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"helperAttributes": {},
+			"time": 1500557202124,
+			"name": "query cabinet by uuid as name",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
@@ -1583,22 +1653,17 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "de7d2c32-4869-44d1-41a2-e35e4784448a",
-			"name": "search it service by name",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=email,pop3",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length === 2;",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "search",
@@ -1608,10 +1673,20 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length === 2;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557333847,
+			"name": "search it service by name",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -1644,22 +1719,17 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "ed5b9337-e1f9-d89c-997b-3671bf334185",
-			"name": "query ConfigurationItems paginated",
-			"dataMode": "params",
-			"data": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": "",
-			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?page=1&per_page=2",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 Configuration Item found\"] = jsonData.data.results.length === 2",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
 			"queryParams": [
 				{
 					"key": "page",
@@ -1676,29 +1746,24 @@
 					"enabled": true
 				}
 			],
-			"headerData": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
-			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 Configuration Item found\"] = jsonData.data.results.length === 2",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500557467242,
+			"name": "query ConfigurationItems paginated",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 			"id": "f10aabec-ee82-e635-2801-ca329bcb1992",
-			"name": "add server_room",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"server_room\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid);\n",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1707,9 +1772,23 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500300742155,
+			"name": "add server_room",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"server_room\"\n    }\n  }\n}"
 		}
 	]
 }

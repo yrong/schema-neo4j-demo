@@ -263,11 +263,6 @@
     }
   },
   {
-    "name": "query process flow timeline by uuid",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}/timeline"
-  },
-  {
     "name": "search it service by group name",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=Messaging"
@@ -452,11 +447,6 @@
         ]
       }
     }
-  },
-  {
-    "name": "query router timeline",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}/timeline"
   },
   {
     "name": "add router",

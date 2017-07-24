@@ -7,13 +7,13 @@ var logger = require('log4js_wrapper').getLogger()
 var routesDef = require('../routes/def')
 var utils = require('../helper/utils')
 var path = require('path')
-var JsBarcode = require('jsbarcode')
-var Canvas = require('canvas')
 var cypherInvoker = require('../helper/cypherInvoker')
 var uuid_validator = require('uuid-validate')
 var converter = require('../helper/converter')
 var jp = require('jsonpath')
 var cmdb_cache = require('cmdb-cache')
+const common = require('scirichon-common')
+const notifier_api_config = config.get('notifier')
 
 var getCategoryFromUrl = function (url) {
     let category,key,val
@@ -37,28 +37,24 @@ var logCypher = (params)=>{
     logger.debug(`cypher to executed:${JSON.stringify({cypher:cypher,params:cypher_params},null,'\t')}`)
 }
 
-var createOrUpdateCypherGenerator = (params)=>{
-    if(schema.cmdbConfigurationItemTypes.includes(params.category)){
-        params.cyphers = cypherBuilder.generateCmdbCyphers(params);
-    }else if(params.category === schema.cmdbTypeName.ITService){
-        params.cyphers = cypherBuilder.generateITServiceCyphers(params);
-    }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
-        params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
-    }else if(params.category === schema.cmdbTypeName.Cabinet){
-        params.cyphers = cypherBuilder.generateCabinetCyphers(params);
-    }else if(params.category === schema.cmdbTypeName.Shelf){
-        params.cyphers = cypherBuilder.generateShelfCyphers(params);
-    }else{
-        params.cypher = cypherBuilder.generateAddNodeCypher(params);
+const cudCypherGenerator = (params)=>{
+    if(params.method === 'POST' || params.method === 'PUT' || params.method === 'PATCH'){
+        if(schema.cmdbConfigurationItemTypes.includes(params.category)){
+            params.cyphers = cypherBuilder.generateCmdbCyphers(params);
+        }else if(params.category === schema.cmdbTypeName.ITService){
+            params.cyphers = cypherBuilder.generateITServiceCyphers(params);
+        }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
+            params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
+        }else if(params.category === schema.cmdbTypeName.Cabinet){
+            params.cyphers = cypherBuilder.generateCabinetCyphers(params);
+        }else if(params.category === schema.cmdbTypeName.Shelf){
+            params.cyphers = cypherBuilder.generateShelfCyphers(params);
+        }else{
+            params.cypher = cypherBuilder.generateAddNodeCypher(params);
+        }
     }
-    if(params.method == 'PUT'||params.method =='PATCH')
-        params.cyphers = [...params.cyphers,cypherBuilder.generateAddPrevNodeRelCypher(params)];
-    logCypher(params)
-    return params;
-}
-
-var deleteCypherGenerator = (params)=>{
-    params.cypher = cypherBuilder.generateDelNodeCypher(params);
+    else if(params.method === 'DELETE')
+        params.cypher = cypherBuilder.generateDelNodeCypher(params)
     logCypher(params)
     return params;
 }
@@ -180,49 +176,49 @@ var cudItem_params_name2IdConverter = (params)=>{
     return params
 }
 
-var cudItem_callback = (params,update)=>{
-    params.fields = _.assign(params.fields, params.data.fields)
-    if(update){
-        params.fields.lastUpdated = Date.now()
-    }else{
-        params.fields.category = params.data.category
-        params.fields.created = Date.now()
+var cudItem_callback = (params)=>{
+    if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
+        params = _.assign(params, params.fields)
+        cudItem_params_name2IdConverter(params)
+        cudItem_params_stringify(params,utils.objectFields)
     }
-    params = _.assign(params, params.fields)
-    cudItem_params_name2IdConverter(params)
-    cudItem_params_stringify(params,utils.objectFields)
-    return createOrUpdateCypherGenerator(params)
+    let notification_obj = {type:params.category,user:params.user,token:params.token}
+    if(params.method === 'POST'){
+        notification_obj.action = 'CREATE'
+        notification_obj.new = params.fields
+    }
+    else if(params.method === 'PUT' || params.method === 'PATCH'){
+        notification_obj.action = 'UPDATE'
+        notification_obj.new = params.fields
+        notification_obj.old = params.fields_old
+        notification_obj.update = params.change
+    }else if(params.method === 'DELETE'){
+        notification_obj.action = 'DELETE'
+        notification_obj.old = params.fields_old
+    }
+    common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
+    return cudCypherGenerator(params)
 }
 
-var updateItem = (result,params)=>{
-    if (result && result[0]) {
-        let old_val = _.omit(result[0],'id')
-        params.fields_old = old_val
-        params.fields = _.assign({}, old_val);
-        params.change = params.data.fields
-        return cudItem_callback(params, true)
-    } else {
-        throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
-    }
-}
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
-        params.method = ctx.method,params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
+        params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar']),params.token = ctx.token,
+            params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
             let item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
             params.data.fields.uuid = item_uuid
+            params.fields = _.assign({}, params.data.fields)
+            params.fields.category = params.data.category
+            params.fields.created = Date.now()
             if (params.data.category === schema.cmdbTypeName.IncidentFlow) {
                 return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow),params,(result,params)=>{
-                    params.data.fields.pfid = 'IR' + result[0]
+                    params.fields.pfid = 'IR' + result[0]
                     return cudItem_callback(params)
                 })
             } else if(schema.cmdbConfigurationItemTypes.includes(params.category)){
                 return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.ConfigurationItem),params,(result,params)=>{
-                    let barcode_id = String(result[0])
-                    let canvas = new Canvas();
-                    JsBarcode(canvas, barcode_id);
-                    params.data.fields.barcode = {cfg_id:barcode_id,url:canvas.toDataURL()}
+                    params.fields.barcode_id = String(result[0])
                     return cudItem_callback(params)
                 })
             }
@@ -232,7 +228,15 @@ module.exports = {
         else if (params.method === 'PUT' || params.method === 'PATCH') {
             if(params.uuid){
                 return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params),params,(result,params)=>{
-                    return updateItem(result,params)
+                    if (result && result[0]) {
+                        params.fields_old = _.omit(result[0],'id')
+                        params.fields = _.assign({}, params.fields_old,params.data.fields)
+                        params.fields.lastUpdated = Date.now()
+                        params.change = params.data.fields
+                        return cudItem_callback(params, true)
+                    } else {
+                        throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
+                    }
                 })
             }else{
                 throw new Error('missing uuid when modify')
@@ -241,12 +245,18 @@ module.exports = {
         } else if (params.method === 'DELETE') {
             if(params.uuid){
                 return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeRelations_cypher(params),params,(result,params)=>{
-                    if(result&&result[0]&&result[0].rels&&result[0].rels.length&&result[0].self&&result[0].self.category&&schema.isAuxiliaryTypes(result[0].self.category)){
-                        params.used = true
-                        params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
-                        return params
+                    if(result&&result[0]&&result[0].self&&result[0].self.category){
+                        params.category = result[0].self.category
+                        params.fields_old = _.omit(result[0].self,'id')
+                        if(result[0].rels&&result[0].rels.length&&schema.isAuxiliaryTypes(result[0].self.category)){
+                            params.used = true
+                            params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
+                            return params
+                        }else{
+                            return cudItem_callback(params)
+                        }
                     }else{
-                        return deleteCypherGenerator(params)
+                        throw new Error("no record found to delete,uuid or name:" + params.uuid||params.name);
                     }
                 })
             }else if(params.category === schema.cmdbTypeName.All){
