@@ -60,9 +60,10 @@
 				"de7d2c32-4869-44d1-41a2-e35e4784448a",
 				"840c11c0-e417-9033-690d-d723da302a63",
 				"a68f40e0-ebfa-2320-1e83-bfdfefc58296",
-				"1d81138e-82bd-2c79-18fc-1e518ac904b0",
 				"6d76cb6e-2634-94a7-33b7-9196ea55f2a0",
-				"56263ac7-d25f-f6fe-c6fc-f4025b435e01"
+				"56263ac7-d25f-f6fe-c6fc-f4025b435e01",
+				"1a1f6666-28ec-e52a-9976-b83e69ecc5f2",
+				"90c31095-4ad3-efd7-cbe8-217cfa1a071e"
 			]
 		},
 		{
@@ -110,7 +111,8 @@
 				"7ef2e855-211e-c157-6ca8-a0171c79f734",
 				"489b09b6-35bc-952b-ec7a-904ba5b4ba4c",
 				"93a8e1ba-573a-9bf7-984a-aef1a2df7366",
-				"07c40b56-89c6-d9c2-efcc-d9fa500b797c"
+				"07c40b56-89c6-d9c2-efcc-d9fa500b797c",
+				"1d81138e-82bd-2c79-18fc-1e518ac904b0"
 			]
 		}
 	],
@@ -231,6 +233,35 @@
 			"responses": []
 		},
 		{
+			"id": "1a1f6666-28ec-e52a-9976-b83e69ecc5f2",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"sg_test_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500886498110,
+			"name": "add ITService group",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITServiceGroup\",\n    \"fields\":{\n      \"name\":\"test4\",\n      \"description\":\"test\"\n    }\n  }\n}"
+		},
+		{
 			"id": "1d78a669-3539-4cb1-3cf0-2eb168cd3cf7",
 			"headers": "token: {{token}}\n",
 			"headerData": [
@@ -292,7 +323,10 @@
 			"name": "delete already referenced email service fail",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": []
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "1d81138e-82bd-2c79-18fc-1e518ac904b0",
+			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363"
 		},
 		{
 			"id": "2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
@@ -588,7 +622,7 @@
 			"tests": "\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500557398018,
+			"time": 1501071933715,
 			"name": "delete itservice",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -796,15 +830,15 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_test_id\", jsonData.uuid);",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"service_test_id\", jsonData.uuid); \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500296173478,
+			"time": 1501072115543,
 			"name": "add ITService",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"test1\",\n      \"description\":\"test\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"description\":\"test\",\n      \"group\":\"Messaging\"\n    }\n  }\n}"
 		},
 		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
@@ -1073,6 +1107,34 @@
 			"helperAttributes": {},
 			"time": 1500557495771,
 			"name": "query json schema of router ",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
+		},
+		{
+			"id": "90c31095-4ad3-efd7-cbe8-217cfa1a071e",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group/{{sg_test_id}}",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_test_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1500886678462,
+			"name": "delete ITService group",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": []
@@ -1623,23 +1685,8 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 			"id": "d44d0711-0398-3f7c-c24a-79367c099840",
-			"name": "add cabinet ",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\",\n      \"server_room_id\":\"{{server_room_id}}\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);\n",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1648,9 +1695,23 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n    postman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);\n}\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1501072865777,
+			"name": "add cabinet ",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\",\n      \"server_room_id\":\"{{server_room_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"id": "de7d2c32-4869-44d1-41a2-e35e4784448a",
@@ -1780,10 +1841,10 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid);\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500300742155,
+			"time": 1501072846238,
 			"name": "add server_room",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",

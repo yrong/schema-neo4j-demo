@@ -110,12 +110,13 @@ const generateAddPrevNodeRelCypher = (params) => {
 /**
  * query node and relations
  */
-const generateQueryNodeRelations_cypher = (params)=> {
+const generateQueryNodeWithRelationToConfigurationItem_cypher = (params)=> {
     let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
     return `MATCH (n{${id_type}: {uuid}})
-    OPTIONAL MATCH (n)-[r]-()
-    WITH n as self,collect(r) as rels
-    RETURN self,rels`
+    OPTIONAL MATCH (n)-[]-(c)
+    WHERE c:ConfigurationItem or c:ProcessFlow
+    WITH n as self,collect(c) as items
+    RETURN self,items`
 }
 
 /**
@@ -365,7 +366,7 @@ module.exports = {
     generateSequence,
     generateAddPrevNodeRelCypher,
     generateDelAllCypher,
-    generateQueryNodeRelations_cypher,
+    generateQueryNodeWithRelationToConfigurationItem_cypher,
     generateDummyOperation_cypher,
     generateMountedConfigurationItemRelsCypher,
     generateCfgHostsByITServiceGroupCypher,

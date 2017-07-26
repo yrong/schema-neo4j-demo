@@ -20,6 +20,21 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets"
   },
   {
+    "name": "add ITService group",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ITServiceGroup",
+        "fields": {
+          "name": "test4",
+          "description": "test"
+        }
+      }
+    }
+  },
+  {
     "name": "query it service groups by keyword",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
@@ -191,8 +206,9 @@
       "data": {
         "category": "ITService",
         "fields": {
-          "name": "test1",
-          "description": "test"
+          "name": "test",
+          "description": "test",
+          "group": "Messaging"
         }
       }
     }
@@ -334,6 +350,11 @@
     "name": "query json schema of router ",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router"
+  },
+  {
+    "name": "delete ITService group",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group/{{sg_test_id}}"
   },
   {
     "name": "query process flow by uuid",

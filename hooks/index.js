@@ -244,11 +244,11 @@ module.exports = {
 
         } else if (params.method === 'DELETE') {
             if(params.uuid){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeRelations_cypher(params),params,(result,params)=>{
+                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeWithRelationToConfigurationItem_cypher(params),params,(result, params)=>{
                     if(result&&result[0]&&result[0].self&&result[0].self.category){
                         params.category = result[0].self.category
                         params.fields_old = _.omit(result[0].self,'id')
-                        if(result[0].rels&&result[0].rels.length&&schema.isAuxiliaryTypes(result[0].self.category)){
+                        if(result[0].items&&result[0].items.length&&schema.isAuxiliaryTypes(result[0].self.category)){
                             params.used = true
                             params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
                             return params
