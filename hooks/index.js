@@ -182,21 +182,6 @@ var cudItem_callback = (params)=>{
         cudItem_params_name2IdConverter(params)
         cudItem_params_stringify(params,utils.objectFields)
     }
-    let notification_obj = {type:params.category,user:params.user,token:params.token}
-    if(params.method === 'POST'){
-        notification_obj.action = 'CREATE'
-        notification_obj.new = params.fields
-    }
-    else if(params.method === 'PUT' || params.method === 'PATCH'){
-        notification_obj.action = 'UPDATE'
-        notification_obj.new = params.fields
-        notification_obj.old = params.fields_old
-        notification_obj.update = params.change
-    }else if(params.method === 'DELETE'){
-        notification_obj.action = 'DELETE'
-        notification_obj.old = params.fields_old
-    }
-    common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
     return cudCypherGenerator(params)
 }
 
@@ -249,7 +234,7 @@ module.exports = {
                         params.category = result[0].self.category
                         params.fields_old = _.omit(result[0].self,'id')
                         if(result[0].items&&result[0].items.length&&schema.isAuxiliaryTypes(result[0].self.category)){
-                            params.used = true
+                            params.error = CONTENT_NODE_USED
                             params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
                             return params
                         }else{
@@ -283,15 +268,11 @@ module.exports = {
             if(params.uuid){
                 response_wrapped.uuid = params.uuid
                 if(result.length==1){
-                    if(params.used){
-                        response_wrapped.status = STATUS_WARNING
-                        response_wrapped.content = CONTENT_NODE_USED
-                    }else{
+                    if(!params.error){
                         cmdb_cache.del(params.uuid)
                     }
                 }else{
-                    response_wrapped.status = STATUS_WARNING
-                    response_wrapped.content = CONTENT_NO_RECORD
+                    params.error = CONTENT_NO_RECORD
                 }
             }
             if(params.category===schema.cmdbTypeName.All)
@@ -299,7 +280,23 @@ module.exports = {
         }
         if(params.error){
             response_wrapped.status = STATUS_WARNING
-            response_wrapped.error = params.error
+            response_wrapped.content = params.error
+        }else{
+            let notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
+            if(params.method === 'POST'){
+                notification_obj.action = 'CREATE'
+                notification_obj.new = params.fields
+            }
+            else if(params.method === 'PUT' || params.method === 'PATCH'){
+                notification_obj.action = 'UPDATE'
+                notification_obj.new = params.fields
+                notification_obj.old = params.fields_old
+                notification_obj.update = params.change
+            }else if(params.method === 'DELETE'){
+                notification_obj.action = 'DELETE'
+                notification_obj.old = params.fields_old
+            }
+            common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
         }
         return　response_wrapped;
     },
