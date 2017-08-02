@@ -18,12 +18,22 @@ class OpsController {
         this.hosts = data.hosts
         this.script = data.script
         this.script_type = data.script_type
+        this.cutomized_cmd = data.cutomized_cmd
         this.ctx = ctx
     }
 
     async execute()  {
         let promises = [],hosts = await apiInvoker.getAgents(this.hosts), src_address = this.ctx.socket.socket.handshake.address,
         host_ips = _.map(hosts,(host)=>host.ip_address[0])
+        if(!host_ips.length){
+            if(this.socket_io)
+                this.socket_io.socket.emit('executeScriptError',`hosts ${this.hosts} not found in cmdb`)
+            return
+        }
+        if(this.cutomized_cmd === 'local-ping'){
+            this.script = `ping -w 3 ${host_ips[0]}`
+            host_ips = ['localhost']
+        }
         logger.info(`agents:${host_ips.join()},script:${this.script}`)
         host_ips.forEach((host)=>promises.push(throttle(async()=>{
             let ws_url = `ws://${host}:8081`,command

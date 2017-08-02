@@ -8,6 +8,7 @@ var wrapRequest = (category,item) => {
 var base_url=`http://localhost:${config.get('port')}/api`
 const cypherInvoker = require('./cypherInvoker')
 const common = require('scirichon-common')
+const net = require('net')
 
 module.exports = {
     apiGetter: async function(path,params){
@@ -40,14 +41,14 @@ module.exports = {
         results = _.map(results,(result)=>{
             return result.row[0]
         })
-        results = hosts&&hosts.length?_.filter(results,(host)=>{
+        results = _.filter(results,(host)=>{
             return _.includes(hosts, host.ip_address[0])||_.includes(hosts, host.name)
-        }):results
-        if(results.length)
-            return results
-        else
-            return _.map(hosts,(host)=>{
-                return {ip_address:[host],name:host}
+        })
+        if(!results.length)
+            _.each(hosts,(host)=>{
+                if(net.isIP(host))
+                    results.push({ip_address:[host],name:host})
             })
+        return results
     }
 }
