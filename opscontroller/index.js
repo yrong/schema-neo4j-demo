@@ -23,26 +23,41 @@ class OpsController {
     }
 
     async execute()  {
-        let promises = [],hosts = await apiInvoker.getAgents(this.hosts), src_address = this.ctx.socket.socket.handshake.address,
-        host_ips = _.map(hosts,(host)=>host.ip_address[0])
-        if(!host_ips.length){
+        let promises = [],hosts = await apiInvoker.getAgents(this.hosts), src_address = this.ctx.socket.socket.handshake.address,script_tasks = []
+        if(hosts&&hosts.length){
+            _.each(hosts,(host)=>{
+                if(host.ip_address&&host.ip_address.length)
+                    script_tasks.push({ip:host.ip_address[0],script:this.script})
+                else{
+                    if(this.socket_io)
+                        this.socket_io.socket.emit('executeScriptError',`${host.name} found in cmdb invalid without ip address`)
+                }
+            })
+        }else{
             if(this.socket_io)
                 this.socket_io.socket.emit('executeScriptError',`hosts ${this.hosts} not found in cmdb`)
             return
         }
-        if(this.cutomized_cmd === 'local-ping'){
-            this.script = `ping -w 3 ${host_ips[0]}`
-            host_ips = ['localhost']
+        if(!script_tasks.length){
+            if(this.socket_io)
+                this.socket_io.socket.emit('executeScriptError',`no script task need to be executed`)
+            return
         }
-        logger.info(`agents:${host_ips.join()},script:${this.script}`)
-        host_ips.forEach((host)=>promises.push(throttle(async()=>{
-            let ws_url = `ws://${host}:8081`,command
+        if(this.cutomized_cmd === 'local-ping'){
+            script_tasks = _.map(script_tasks,(task)=>{
+                task.script = `ping -w 3 ${task.ip}`
+                task.ip = 'localhost'
+                return task
+            })
+        }
+        script_tasks.forEach((task)=>promises.push(throttle(async()=>{
+            let agent_ip=task.ip,ws_url = `ws://${agent_ip}:8081`,command
             const ws = new WebSocket(ws_url)
             ws.on('open', ()=> {
                 logger.info(`ws connection to ${ws_url} built`)
-                ws.send(this.script);
-                command = {script:this.script,ts:moment().unix(),dir:IN,
-                    agent_ip:host,remote_ip:src_address,
+                ws.send(task.script);
+                command = {script:task.script,ts:moment().unix(),dir:IN,
+                    agent_ip,remote_ip:src_address,
                 }
                 search.addOpsCommand(command)
             });
@@ -50,8 +65,8 @@ class OpsController {
                 if(data&&data.length){
                     logger.info('recv message from ws connection:' + data)
                     let data_json = JSON.parse(data)
-                    command = {script:this.script,pid:data_json.pid,ts:moment().unix(),dir:data_json.type,
-                        response:data_json.message,agent_ip:host,remote_ip:src_address,
+                    command = {script:task.script,pid:data_json.pid,ts:moment().unix(),dir:data_json.type,
+                        response:data_json.message,agent_ip,remote_ip:src_address,
                     }
                     if(this.socket_io){
                         this.socket_io.socket.emit('executeScriptResponse',command)

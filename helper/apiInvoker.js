@@ -34,7 +34,7 @@ module.exports = {
     },
     getAgents: async (hosts)=>{
         let cypher = `MATCH (n)
-        WHERE n:PhysicalServer OR n:VirtualServer
+        WHERE n:ConfigurationItem
         RETURN n`
         let results = await cypherInvoker.fromRestful(cypher)
         results = results.results[0].data
@@ -42,7 +42,12 @@ module.exports = {
             return result.row[0]
         })
         results = _.filter(results,(host)=>{
-            return _.includes(hosts, host.ip_address[0])||_.includes(hosts, host.name)
+            let name_exist,ip_exist
+            if(host&&host.name)
+                name_exist = _.includes(hosts, host.name)
+            if(host.ip_address&&host.ip_address.length)
+                ip_exist = _.includes(hosts, host.ip_address[0])
+            return name_exist||ip_exist
         })
         if(!results.length)
             _.each(hosts,(host)=>{
