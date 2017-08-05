@@ -8,5 +8,6 @@ module.exports = {
     ProcessFlow: {route: '/processFlows'},
     ServerRoom: {route: '/serverRooms'},
     WareHouse: {route:'/wareHouses'},
-    Shelf:{route:'/shelves'}
+    Shelf:{route:'/shelves'},
+    OperatingSystem:{route:'/operatingSystems'}
 }

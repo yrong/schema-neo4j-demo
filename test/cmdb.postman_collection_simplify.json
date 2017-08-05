@@ -45,6 +45,21 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}"
   },
   {
+    "name": "add operating system",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "OperatingSystem",
+        "fields": {
+          "name": "windows10",
+          "description": "windows10"
+        }
+      }
+    }
+  },
+  {
     "name": "query ConfigurationItems by subcategory",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer"
@@ -642,5 +657,10 @@
         }
       }
     }
+  },
+  {
+    "name": "query operating system",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems"
   }
 ]

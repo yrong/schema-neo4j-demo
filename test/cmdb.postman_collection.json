@@ -16,7 +16,8 @@
 				"86a95049-3e88-092d-d2df-880309c1521e",
 				"7d9d07e7-ac92-6126-de20-970f1b4114ad",
 				"9f34a8c1-40fb-30d0-c64a-d1c1880502c9"
-			]
+			],
+			"folders_order": []
 		},
 		{
 			"owner": "2263720",
@@ -34,8 +35,12 @@
 				"17f90d8e-687f-8650-aec4-1ee249664cda",
 				"5be9b26b-8ea7-26b2-40c8-501e1cffc6bc",
 				"ce75e47a-c83d-55b2-ac8d-fe71107d7f0a",
-				"06154b5d-279e-03c2-f728-7ec469325e03"
-			]
+				"06154b5d-279e-03c2-f728-7ec469325e03",
+				"29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
+				"f6bd7de0-64cb-11bc-0351-e2eccc92716f"
+			],
+			"folders_order": [],
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
 			"owner": "2263720",
@@ -64,7 +69,8 @@
 				"56263ac7-d25f-f6fe-c6fc-f4025b435e01",
 				"1a1f6666-28ec-e52a-9976-b83e69ecc5f2",
 				"90c31095-4ad3-efd7-cbe8-217cfa1a071e"
-			]
+			],
+			"folders_order": []
 		},
 		{
 			"owner": "2263720",
@@ -92,7 +98,8 @@
 				"af0f689f-d648-a8c1-f8c8-9cad33c0284f",
 				"a0a371d6-c099-c0a6-553e-2db4835aa7a6",
 				"abe120c0-9bee-adee-50a3-b05b4a63ae5f"
-			]
+			],
+			"folders_order": []
 		},
 		{
 			"owner": "2263720",
@@ -113,8 +120,16 @@
 				"93a8e1ba-573a-9bf7-984a-aef1a2df7366",
 				"07c40b56-89c6-d9c2-efcc-d9fa500b797c",
 				"1d81138e-82bd-2c79-18fc-1e518ac904b0"
-			]
+			],
+			"folders_order": []
 		}
+	],
+	"folders_order": [
+		"51f3bb65-9a3d-6ea2-1e59-34b30b350234",
+		"ea73b714-3f7c-d6a7-823a-17d56ab3965b",
+		"ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
+		"62ced1ec-7033-2bc4-d382-58eef18b81f6",
+		"0fdc7538-565a-e2cd-a999-d8ada7d69363"
 	],
 	"timestamp": 0,
 	"owner": "2263720",
@@ -146,7 +161,9 @@
 			"name": "query warehouse",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": []
+			"responses": [],
+			"folderId": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
+			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b"
 		},
 		{
 			"id": "07c40b56-89c6-d9c2-efcc-d9fa500b797c",
@@ -327,6 +344,39 @@
 			"isFromCollection": true,
 			"collectionRequestId": "1d81138e-82bd-2c79-18fc-1e518ac904b0",
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363"
+		},
+		{
+			"id": "29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"warehouse_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1501903374099,
+			"name": "add operating system",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
+			"folderId": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
+			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"OperatingSystem\",\n    \"fields\":{\n      \"name\":\"windows10\",\n      \"description\":\"windows10\"\n    }\n  }\n}"
 		},
 		{
 			"id": "2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
@@ -1501,7 +1551,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500875097683,
+			"time": 1501729826396,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1850,6 +1900,34 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"server_room\"\n    }\n  }\n}"
+		},
+		{
+			"id": "f6bd7de0-64cb-11bc-0351-e2eccc92716f",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one warehouse found\"] = jsonData.data.length >=1\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1501903445491,
+			"name": "query operating system",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		}
 	]
 }

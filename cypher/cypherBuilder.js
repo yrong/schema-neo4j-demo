@@ -364,7 +364,6 @@ module.exports = {
     generateDelNodeCypher,
     generateQueryNodeChangeTimelineCypher,
     generateSequence,
-    generateAddPrevNodeRelCypher,
     generateDelAllCypher,
     generateQueryNodeWithRelationToConfigurationItem_cypher,
     generateDummyOperation_cypher,

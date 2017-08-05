@@ -32,6 +32,7 @@ const cmdbTypeName = {
     ServerRoom:'ServerRoom',
     WareHouse: 'WareHouse',
     Shelf: 'Shelf',
+    OperatingSystem:'OperatingSystem',
     All: 'All'
 }
 
@@ -61,24 +62,27 @@ const nameConverterDef = {
 }
 
 const cmdbConfigurationItemInheritanceRelationship = {
-    name:cmdbTypeName.ConfigurationItem,
+    name: cmdbTypeName.ConfigurationItem,
     children: [
         {
-            name:cmdbTypeName.AbstractServer,
-            children:[
-                {name:cmdbTypeName.PhysicalServer},
-                {name:cmdbTypeName.VirtualServer}]
+            name: cmdbTypeName.AbstractServer,
+            children: [
+                {name: cmdbTypeName.PhysicalServer},
+                {name: cmdbTypeName.VirtualServer}]
         },
         {
-            name:cmdbTypeName.Asset,
-            children:[
-                {name:cmdbTypeName.Hardware,
-                children:[
-                    {name:cmdbTypeName.Storage},
-                    {name:cmdbTypeName.NetworkDevice,
-                    children:[{name:cmdbTypeName.Router},{name:cmdbTypeName.Switch},{name:cmdbTypeName.Firewall}]},
-                    {name:cmdbTypeName.Camera},
-                    {name:cmdbTypeName.PhysicalServer}
+            name: cmdbTypeName.Asset,
+            children: [
+                {
+                    name: cmdbTypeName.Hardware,
+                    children: [
+                        {name: cmdbTypeName.Storage},
+                        {
+                            name: cmdbTypeName.NetworkDevice,
+                            children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
+                        },
+                        {name: cmdbTypeName.Camera},
+                        {name: cmdbTypeName.PhysicalServer}
                     ]
                 }]
         }]
@@ -99,7 +103,7 @@ const cmdbTypeLabels= {
 const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall];
 
 //ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.ServerRoom,cmdbTypeName.WareHouse,cmdbTypeName.Shelf,cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService];
+const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.ServerRoom,cmdbTypeName.WareHouse,cmdbTypeName.Shelf,cmdbTypeName.Cabinet,cmdbTypeName.Position,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService,cmdbTypeName.OperatingSystem];
 
 //ConfigurationItem abstract types
 const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
