@@ -4,7 +4,6 @@ const staticFile = require('koa-static')
 const mount = require('koa-mount')
 const path = require('path')
 const _ = require('lodash')
-const fs = require("fs")
 const check_token = require('koa-token-checker')
 const cmdb_cache = require('cmdb-cache')
 
@@ -17,7 +16,8 @@ const logger = LOGGER.getLogger()
 const license_checker = require('cmdb-license-checker')
 let license = license_checker.load('./CMDB-API.lic')
 logger.info('cmdb-api license:' + JSON.stringify(license))
-/*middlewares*/
+
+/*middlewares init*/
 let middlewares = []
 /*getLisense*/
 const getLicense = require('./middleware/getLicense')

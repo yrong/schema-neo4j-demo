@@ -172,6 +172,10 @@ const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (p:Position {uuid:{as
 MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(p)`
 
+const cmdb_addConfigurationItemOperationSystemRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
+MATCH (os:OperatingSystem{uuid:{operating_system}})
+CREATE (n)<-[r:RUNS_ON]-(os)`
+
 
 /**
  * ITService
@@ -300,6 +304,9 @@ module.exports = {
         if(params.asset_location&&params.asset_location.shelf){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemShelfRel_cypher]
         }
+        if(params.operating_system){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemOperationSystemRel_cypher]
+        }
         return cyphers_todo;
     },
     generateITServiceCyphers:(params)=> {
@@ -370,5 +377,6 @@ module.exports = {
     generateMountedConfigurationItemRelsCypher,
     generateCfgHostsByITServiceGroupCypher,
     generateQueryConfigurationItemBySubCategoryCypher,
-    generateCfgHostsByITServiceCypher
+    generateCfgHostsByITServiceCypher,
+    cmdb_addConfigurationItemOperationSystemRel_cypher
 }

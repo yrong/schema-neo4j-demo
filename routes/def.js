@@ -1,13 +1,7 @@
-module.exports = {
+const cmdb_cache = require('cmdb-cache')
+
+module.exports = Object.assign({
     ConfigurationItem: {route: '/cfgItems'},
-    Cabinet:{route: '/cabinets'},
-    Position:{route: '/positions'},
-    User:{route:'/users'},
-    ITService:{route:'/it_services/service'},
-    ITServiceGroup:{route:'/it_services/group'},
-    ProcessFlow: {route: '/processFlows'},
-    ServerRoom: {route: '/serverRooms'},
-    WareHouse: {route:'/wareHouses'},
-    Shelf:{route:'/shelves'},
-    OperatingSystem:{route:'/operatingSystems'}
-}
+    ProcessFlow: {route: '/processFlows'}
+}, cmdb_cache.cmdb_auxiliary_type_routes)
+

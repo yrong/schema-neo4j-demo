@@ -49,7 +49,8 @@ const nameConverterDef = {
         {attr: 'responsibility', schema: cmdbTypeName.User},
         {attr: 'asset_location.cabinet', schema: cmdbTypeName.Cabinet},
         {attr: 'asset_location.shelf', schema: cmdbTypeName.Shelf},
-        {attr: 'asset_location.position', schema: cmdbTypeName.Position}
+        {attr: 'asset_location.position', schema: cmdbTypeName.Position},
+        {attr: 'operating_system', schema: cmdbTypeName.OperatingSystem}
     ],
     ProcessFlow:[
         {attr: 'it_service', type:'array',schema: cmdbTypeName.ITService},
