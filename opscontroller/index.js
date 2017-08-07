@@ -45,7 +45,7 @@ class OpsController {
         }
         if(this.cutomized_cmd === 'local-ping'){
             script_tasks = _.map(script_tasks,(task)=>{
-                task.script = `ping -w 3 ${task.ip}`
+                task.script = `ping -c 3 -W 1 ${task.ip}`
                 task.ip = 'localhost'
                 return task
             })
