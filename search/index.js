@@ -18,7 +18,8 @@ var hidden_fields = utils.globalHiddenFields
 
 var schema = require('../schema')
 
-var logger = require('log4js_wrapper').getLogger()
+const LOGGER = require('log4js_wrapper')
+const logger = LOGGER.getLogger()
 
 
 var pre_process = function(params) {
