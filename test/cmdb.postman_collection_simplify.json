@@ -47,14 +47,15 @@
   {
     "name": "add operating system",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
       "token": "{{token}}",
       "data": {
-        "category": "OperatingSystem",
+        "category": "Software",
         "fields": {
-          "name": "windows10",
-          "description": "windows10"
+          "name": "windows xp",
+          "description": "Microsoft Windows XP",
+          "subtype": "OperatingSystem"
         }
       }
     }
@@ -316,7 +317,10 @@
             "192.168.0.108"
           ],
           "technical_support_info": "010-123456",
-          "operating_system": "ubuntu",
+          "operating_system": "windows xp",
+          "applications": [
+            "反垃圾邮件网关"
+          ],
           "storage_info": "hp-disk1",
           "model": "b10",
           "product_date": "2016-10-11",
@@ -587,6 +591,11 @@
     }
   },
   {
+    "name": "query operating systems",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=OperatingSystem"
+  },
+  {
     "name": "add ITService Email With Name Conflict",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
@@ -659,8 +668,41 @@
     }
   },
   {
-    "name": "query operating system",
+    "name": "query softwares",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software"
+  },
+  {
+    "name": "add application",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Software",
+        "fields": {
+          "subtype": "AntispamGateway",
+          "name": "反垃圾邮件网关",
+          "provider": "网际思安",
+          "version": "1234",
+          "key": "1234",
+          "quantity": 1,
+          "contact_id": "1234",
+          "status": {
+            "status": "In_Use",
+            "fields": {
+              "a": 1
+            }
+          },
+          "it_service": [
+            "email"
+          ],
+          "responsibility": "{{auth_user}}",
+          "sn": "123456",
+          "product_date": "2016-08-11",
+          "warranty_expiration_date": "2016-11-11"
+        }
+      }
+    }
   }
 ]

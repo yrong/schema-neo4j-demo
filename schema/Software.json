@@ -1,0 +1,14 @@
+{
+  "id": "/Software",
+  "allOf": [
+    {"$ref": "/ConfigurationItem"},
+    {
+      "properties": {
+        "subtype": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "required": ["subtype"]
+}

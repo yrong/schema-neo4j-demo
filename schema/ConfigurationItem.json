@@ -29,5 +29,5 @@
       }
     }
   },
-  "required": ["name","monitored"]
+  "required": ["name"]
 }

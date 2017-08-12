@@ -1,12 +1,9 @@
-var _ = require('lodash')
-var routesDefinition = require('../routes/def')
-var schema = require('../schema')
-var cmdb_cache = require('cmdb-cache')
-
+const _ = require('lodash')
+const schema = require('../schema/')
+const cmdb_cache = require('cmdb-cache')
 var name2IdConverter = {}
 
-
-_.each(routesDefinition,(value,key)=>{
+_.each(schema.cmdbTypeName,(value,key)=>{
     let single_converter = (name)=>{
         let uuid,cached_val = cmdb_cache.getItemByCategoryAndName(key,name)
         if(cached_val)
@@ -28,6 +25,7 @@ _.each(routesDefinition,(value,key)=>{
             return single_converter(value)
     }
 })
+
 
 module.exports = name2IdConverter
 

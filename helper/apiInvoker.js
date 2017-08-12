@@ -1,6 +1,7 @@
 const config = require('config')
 const _ = require('lodash')
-const routesDefinition = require('../routes/def')
+const cmdb_cache = require('cmdb-cache')
+const routesDefinition = cmdb_cache.cmdb_type_routes
 const schema = require('../schema')
 var wrapRequest = (category,item) => {
     return {data:{category:category,fields:item}}

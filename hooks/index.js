@@ -1,21 +1,21 @@
-var _ = require('lodash')
-var uuid = require('uuid')
-var schema = require('../schema')
-var config = require('config')
-var cypherBuilder = require('../cypher/cypherBuilder')
+const _ = require('lodash')
+const uuid = require('uuid')
+const schema = require('../schema')
+const config = require('config')
+const cypherBuilder = require('../cypher/cypherBuilder')
 const LOGGER = require('log4js_wrapper')
 const logger = LOGGER.getLogger()
-var routesDef = require('../routes/def')
-var utils = require('../helper/utils')
-var cypherInvoker = require('../helper/cypherInvoker')
-var uuid_validator = require('uuid-validate')
-var converter = require('../helper/converter')
-var jp = require('jsonpath')
-var cmdb_cache = require('cmdb-cache')
+const cmdb_cache = require('cmdb-cache')
+const routesDef = cmdb_cache.cmdb_type_routes
+const utils = require('../helper/utils')
+const cypherInvoker = require('../helper/cypherInvoker')
+const uuid_validator = require('uuid-validate')
+const converter = require('../helper/converter')
+const jp = require('jsonpath')
 const common = require('scirichon-common')
 const notifier_api_config = config.get('notifier')
 
-var getCategoryFromUrl = function (url) {
+const getCategoryFromUrl = function (url) {
     let category,key,val
     for (key in routesDef){
         val = routesDef[key]
@@ -31,7 +31,7 @@ var getCategoryFromUrl = function (url) {
     return category;
 }
 
-var logCypher = (params)=>{
+const logCypher = (params)=>{
     let cypher = params.cyphers||params.cypher
     let cypher_params = _.omit(params,['cypher','cyphers','data','fields','fields_old','method','url','token'])
     logger.debug(`cypher to executed:${JSON.stringify({cypher:cypher,params:cypher_params},null,'\t')}`)
@@ -63,7 +63,7 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
     CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
     CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast';
 
-var paginationParamsGenerator = function (params) {
+const paginationParamsGenerator = function (params) {
     var params_pagination = {"skip":0,"limit":config.get('perPageSize')},skip;
     if(params.page){
         params.per_page = params.per_page || config.get('perPageSize')
@@ -79,7 +79,7 @@ var paginationParamsGenerator = function (params) {
     return _.assign(params,params_pagination);
 }
 
-var queryParamsCypherGenerator = function (params) {
+const queryParamsCypherGenerator = function (params) {
     if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
         if(utils.isChangeTimelineQuery(params.url))
@@ -118,7 +118,7 @@ var queryParamsCypherGenerator = function (params) {
     return params;
 }
 
-var cudItem_params_stringify = (params, list) => {
+const cudItem_params_stringify = (params, list) => {
     for(let name of list){
         if(_.isObject(params.fields[name])){
             params.fields[name] = JSON.stringify(params.fields[name])
@@ -151,7 +151,7 @@ var cudItem_params_stringify = (params, list) => {
 }
 
 
-var cudItem_params_name2IdConverter = (params)=>{
+const cudItem_params_name2IdConverter = (params)=>{
     var convert = (val)=>{
         let params_val = jp.query(params, `$.${val.attr}`)[0]
         let converted_val = converter[val.schema](params_val)
@@ -176,7 +176,7 @@ var cudItem_params_name2IdConverter = (params)=>{
     return params
 }
 
-var cudItem_callback = (params)=>{
+const cudItem_callback = (params)=>{
     if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
         params = _.assign(params, params.fields)
         cudItem_params_name2IdConverter(params)

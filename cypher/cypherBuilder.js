@@ -13,7 +13,9 @@ const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uui
                                     ON MATCH SET n = {fields}`
 
 const generateAddNodeCypher=(params)=>{
-    let labels = schema.cmdbTypeLabels[params.category];
+    let labels = _.clone(schema.cmdbTypeLabels[params.category]);
+    if(params.category === schema.cmdbTypeName.Software)
+        labels.push(params.fields.subtype)
     labels = _.isArray(labels)?labels.join(":"):params.category;
     return cmdb_addNode_Cypher_template(labels);
 }
@@ -173,8 +175,14 @@ MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(p)`
 
 const cmdb_addConfigurationItemOperationSystemRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
-MATCH (os:OperatingSystem{uuid:{operating_system}})
+MATCH (os:ConfigurationItem{uuid:{operating_system}})
 CREATE (n)<-[r:RUNS_ON]-(os)`
+
+const cmdb_addConfigurationItemApplicationRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
+UNWIND {applications} AS application
+MATCH (app:ConfigurationItem{uuid:application})
+CREATE (n)<-[r:RUNS_ON]-(app)`
+
 
 
 /**
@@ -307,6 +315,9 @@ module.exports = {
         if(params.operating_system){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemOperationSystemRel_cypher]
         }
+        if(params.applications){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemApplicationRel_cypher]
+        }
         return cyphers_todo;
     },
     generateITServiceCyphers:(params)=> {
@@ -378,5 +389,6 @@ module.exports = {
     generateCfgHostsByITServiceGroupCypher,
     generateQueryConfigurationItemBySubCategoryCypher,
     generateCfgHostsByITServiceCypher,
-    cmdb_addConfigurationItemOperationSystemRel_cypher
+    cmdb_addConfigurationItemOperationSystemRel_cypher,
+    cmdb_addConfigurationItemApplicationRel_cypher
 }

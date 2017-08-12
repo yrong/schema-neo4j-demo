@@ -35,9 +35,7 @@
 				"17f90d8e-687f-8650-aec4-1ee249664cda",
 				"5be9b26b-8ea7-26b2-40c8-501e1cffc6bc",
 				"ce75e47a-c83d-55b2-ac8d-fe71107d7f0a",
-				"06154b5d-279e-03c2-f728-7ec469325e03",
-				"29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
-				"f6bd7de0-64cb-11bc-0351-e2eccc92716f"
+				"06154b5d-279e-03c2-f728-7ec469325e03"
 			],
 			"folders_order": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
@@ -82,7 +80,11 @@
 			"description": "",
 			"order": [
 				"b58e5d7b-e57f-67c4-ffe6-2b05e93a8200",
+				"29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
+				"fd933fe4-4837-d00a-2e26-8716634b14d8",
 				"86742358-5d1e-dfd9-f70c-8a6ae287e08d",
+				"f6bd7de0-64cb-11bc-0351-e2eccc92716f",
+				"d35bf486-8d8f-4918-d5e5-de334a8c5014",
 				"ae16ba2c-d0ef-27d7-4747-c9875653586a",
 				"781018c3-ca01-b278-6c87-a1bcd8cf91d6",
 				"79e45a07-ffb0-6282-a668-e42bcd310bf9",
@@ -99,7 +101,8 @@
 				"a0a371d6-c099-c0a6-553e-2db4835aa7a6",
 				"abe120c0-9bee-adee-50a3-b05b4a63ae5f"
 			],
-			"folders_order": []
+			"folders_order": [],
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
 			"owner": "2263720",
@@ -347,16 +350,22 @@
 		},
 		{
 			"id": "29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
-			"headers": "Content-Type: application/json\n",
+			"headers": "Content-Type: application/json\ntoken: {{token}}\n",
 			"headerData": [
 				{
 					"key": "Content-Type",
 					"value": "application/json",
 					"description": "",
 					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -364,19 +373,15 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"warehouse_id\", jsonData.uuid);\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1501903374099,
+			"time": 1502464221044,
 			"name": "add operating system",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"isFromCollection": true,
-			"collectionRequestId": "29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
-			"folderId": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
-			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"OperatingSystem\",\n    \"fields\":{\n      \"name\":\"windows10\",\n      \"description\":\"windows10\"\n    }\n  }\n}"
+			"rawModeData": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"windows xp\",\r      \"description\":\"Microsoft Windows XP\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
 		},
 		{
 			"id": "2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
@@ -575,10 +580,10 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length === 4",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length >= 4",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500557433361,
+			"time": 1502465025212,
 			"name": "query ConfigurationItems",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1044,23 +1049,8 @@
 			"responses": []
 		},
 		{
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "86742358-5d1e-dfd9-f70c-8a6ae287e08d",
-			"name": "add physical server",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1069,9 +1059,23 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502524760704,
+			"name": "add physical server",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true\n    }\n  }\n}"
 		},
 		{
 			"folder": "51f3bb65-9a3d-6ea2-1e59-34b30b350234",
@@ -1548,10 +1552,10 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n// var skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\n// if(skipAdditionalPropertyCheck){\n//   postman.setNextRequest(\"add physical server\"); \n// }\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1501729826396,
+			"time": 1502523841312,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1703,6 +1707,42 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+		},
+		{
+			"id": "d35bf486-8d8f-4918-d5e5-de334a8c5014",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=OperatingSystem",
+			"queryParams": [
+				{
+					"key": "subcategory",
+					"value": "OperatingSystem",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one software found\"] = jsonData.data.length >=1\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502524918170,
+			"name": "query operating systems",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -1912,22 +1952,65 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/operatingSystems",
-			"queryParams": [],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software",
+			"queryParams": [
+				{
+					"key": "subcategory",
+					"value": "Software",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
 			"preRequestScript": null,
 			"pathVariables": {},
 			"pathVariableData": [],
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one warehouse found\"] = jsonData.data.length >=1\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"at least one software found\"] = jsonData.data.length >=1\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1501903445491,
-			"name": "query operating system",
+			"time": 1502464857199,
+			"name": "query softwares",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": []
+		},
+		{
+			"id": "fd933fe4-4837-d00a-2e26-8716634b14d8",
+			"headers": "Content-Type: application/json\ntoken: {{token}}\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502525316567,
+			"name": "add application",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"subtype\":\"AntispamGateway\",\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"email\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
 		}
 	]
 }
