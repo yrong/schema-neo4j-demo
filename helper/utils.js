@@ -2,7 +2,7 @@ const _ = require('lodash');
 const cmdb_cache = require('cmdb-cache')
 const schema = require('../schema')
 
-const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type']
+const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type','user']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
     , objectFields = ['asset_location', 'geo_location', 'status', 'barcode']
     , referencedFields = ['responsibility', 'committer', 'executor']
