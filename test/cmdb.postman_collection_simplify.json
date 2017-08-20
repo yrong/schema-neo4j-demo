@@ -525,6 +525,15 @@
               "lat": 39.98,
               "lon": 116.3
             }
+          },
+          "used_user": {
+            "dn": "cn=ron yang,ou=users,dc=test,dc=com",
+            "uidNumber": "1000",
+            "uid": "ryang"
+          },
+          "used_dept": {
+            "dn": "ou=groups,dc=test,dc=com",
+            "ou": "groups"
           }
         }
       }

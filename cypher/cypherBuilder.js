@@ -1,6 +1,8 @@
-var _ = require('lodash')
-var schema = require('./../schema')
-var uuid_validator = require('uuid-validate')
+const _ = require('lodash')
+const schema = require('./../schema')
+const uuid_validator = require('uuid-validate')
+const config = require('config')
+const ldap_uuid_type = config.get('ldap_uuid_type')
 
 
 /*********************************************crud cyphers**************************************************************/
@@ -170,10 +172,6 @@ const cmdb_addConfigurationItemShelfRel_cypher = `MATCH (shelf:Shelf {uuid:{asse
 MATCH (n:Asset {uuid:{uuid}})
 CREATE (n)-[r:LOCATED{asset_location}]->(shelf)`
 
-const cmdb_addConfigurationItemPositionRel_cypher = `MATCH (p:Position {uuid:{asset_location}.position})
-MATCH (n:Asset {uuid:{uuid}})
-CREATE (n)-[r:LOCATED{asset_location}]->(p)`
-
 const cmdb_addConfigurationItemOperationSystemRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
 MATCH (os:ConfigurationItem{uuid:{operating_system}})
 CREATE (n)<-[r:RUNS_ON]-(os)`
@@ -182,6 +180,15 @@ const cmdb_addConfigurationItemApplicationRel_cypher = `MATCH (n:ConfigurationIt
 UNWIND {applications} AS application
 MATCH (app:ConfigurationItem{uuid:application})
 CREATE (n)<-[r:RUNS_ON]-(app)`
+
+
+const cmdb_addConfigurationItemLdapUserRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
+MERGE (u:LdapUser{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET u={used_user} ON MATCH SET u={used_user}
+CREATE (n)-[:UsedByUser]->(u)`
+
+const cmdb_addConfigurationItemLdapOrgUnitRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
+MERGE (ou:LdapDept{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET ou={used_dept} ON MATCH SET ou={used_dept}
+CREATE (n)-[:UsedByDept]->(ou)`
 
 
 
@@ -303,9 +310,6 @@ module.exports = {
         if(params.responsibility){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemUserRel_cypher]
         }
-        if(params.asset_location&&params.asset_location.position){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemPositionRel_cypher]
-        }
         if(params.asset_location&&params.asset_location.cabinet){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemCabinetRel_cypher]
         }
@@ -317,6 +321,12 @@ module.exports = {
         }
         if(params.applications){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemApplicationRel_cypher]
+        }
+        if(params.used_user){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapUserRel_cypher(params.used_user)]
+        }
+        if(params.used_dept){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapOrgUnitRel_cypher(params.used_dept)]
         }
         return cyphers_todo;
     },
@@ -390,5 +400,7 @@ module.exports = {
     generateQueryConfigurationItemBySubCategoryCypher,
     generateCfgHostsByITServiceCypher,
     cmdb_addConfigurationItemOperationSystemRel_cypher,
-    cmdb_addConfigurationItemApplicationRel_cypher
+    cmdb_addConfigurationItemApplicationRel_cypher,
+    cmdb_addConfigurationItemLdapUserRel_cypher,
+    cmdb_addConfigurationItemLdapOrgUnitRel_cypher
 }

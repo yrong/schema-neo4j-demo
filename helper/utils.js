@@ -4,7 +4,7 @@ const schema = require('../schema')
 
 const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type','user']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
-    , objectFields = ['asset_location', 'geo_location', 'status', 'barcode']
+    , objectFields = ['asset_location', 'geo_location', 'status', 'barcode','used_user','used_dept']
     , referencedFields = ['responsibility', 'committer', 'executor']
     , referencedArrayFields = ['it_service']
 

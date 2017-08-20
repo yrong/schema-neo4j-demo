@@ -64,5 +64,6 @@
   },
   "notifier":{
     "base_url":"http://localhost:3004/api/notifications"
-  }
+  },
+  "ldap_uuid_type":"dn"
 }
