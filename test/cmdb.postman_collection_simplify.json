@@ -526,12 +526,12 @@
               "lon": 116.3
             }
           },
-          "used_user": {
+          "used_by_user": {
             "dn": "cn=ron yang,ou=users,dc=test,dc=com",
             "uidNumber": "1000",
             "uid": "ryang"
           },
-          "used_dept": {
+          "used_by_dept": {
             "dn": "ou=groups,dc=test,dc=com",
             "ou": "groups"
           }

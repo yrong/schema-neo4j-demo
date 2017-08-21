@@ -183,11 +183,11 @@ CREATE (n)<-[r:RUNS_ON]-(app)`
 
 
 const cmdb_addConfigurationItemLdapUserRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
-MERGE (u:LdapUser{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET u={used_user} ON MATCH SET u={used_user}
+MERGE (u:LdapUser{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET u={used_by_user} ON MATCH SET u={used_by_user}
 CREATE (n)-[:UsedByUser]->(u)`
 
 const cmdb_addConfigurationItemLdapOrgUnitRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
-MERGE (ou:LdapDept{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET ou={used_dept} ON MATCH SET ou={used_dept}
+MERGE (ou:LdapDept{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET ou={used_by_dept} ON MATCH SET ou={used_by_dept}
 CREATE (n)-[:UsedByDept]->(ou)`
 
 
@@ -322,11 +322,11 @@ module.exports = {
         if(params.applications){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemApplicationRel_cypher]
         }
-        if(params.used_user){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapUserRel_cypher(params.used_user)]
+        if(params.used_by_user){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapUserRel_cypher(params.used_by_user)]
         }
-        if(params.used_dept){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapOrgUnitRel_cypher(params.used_dept)]
+        if(params.used_by_dept){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapOrgUnitRel_cypher(params.used_by_dept)]
         }
         return cyphers_todo;
     },
