@@ -40,6 +40,7 @@
     "koa-socket": "^4.4.0",
     "koa-static": "^2.1.0",
     "koa-token-checker": "1.0.2-beta.4",
+    "qr-image": "^3.2.0",
     "scirichon-common": "1.0.0-beta.7",
     "ws": "^3.0.0",
     "xlsx": "^0.8.1"

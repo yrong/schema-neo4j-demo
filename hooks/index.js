@@ -14,6 +14,9 @@ const converter = require('../helper/converter')
 const jp = require('jsonpath')
 const common = require('scirichon-common')
 const notifier_api_config = config.get('notifier')
+const qr = require('qr-image')
+const fs = require('fs')
+const path = require('path')
 
 const getCategoryFromUrl = function (url) {
     let category,key,val
@@ -201,11 +204,6 @@ module.exports = {
                     params.fields.pfid = 'IR' + result[0]
                     return cudItem_callback(params)
                 })
-            } else if(schema.cmdbConfigurationItemTypes.includes(params.category)){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.ConfigurationItem),params,(result,params)=>{
-                    params.fields.barcode_id = String(result[0])
-                    return cudItem_callback(params)
-                })
             }
             else
                 return cudItem_callback(params)
@@ -263,6 +261,12 @@ module.exports = {
                 throw new Error('added obj without uuid')
             cmdb_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
             response_wrapped.uuid = params.uuid
+            if(params.fields.asset_id){
+                let qr_code = qr.image(params.fields.asset_id,{ type: 'png' })
+                let qr_image = path.join('public/upload/QRImage',params.fields.asset_id+'.png')
+                let qr_output = fs.createWriteStream(qr_image)
+                qr_code.pipe(qr_output)
+            }
         }
         if(params.method==='DELETE'){
             if(params.uuid){
