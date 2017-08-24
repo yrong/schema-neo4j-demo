@@ -18,7 +18,8 @@
     "generate_simplified_postman_collection": "postman_simplify ./test/cmdb.postman_collection.json",
     "rebuildITServiceBelongsToGroupRelation": "/bin/bash ./script/execute_cypher.sh ./cypher/rebuildITServiceBelongsToGroupRelation.cyp",
     "generateLicense": "generateLicense",
-    "findOrphanItems": "/bin/bash ./script/execute_cypher.sh ./cypher/findOrphanItems.cyp"
+    "findOrphanItems": "/bin/bash ./script/execute_cypher.sh ./cypher/findOrphanItems.cyp",
+    "build": "webpack"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
