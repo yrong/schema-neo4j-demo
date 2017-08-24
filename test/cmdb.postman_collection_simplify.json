@@ -276,6 +276,47 @@
     }
   },
   {
+    "name": "add virtual server",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "VirtualServer",
+        "fields": {
+          "name": "virtualserver",
+          "it_service": [
+            "{{service_email_id}}",
+            "{{service_pop3_id}}"
+          ],
+          "ip_address": [
+            "192.168.0.108"
+          ],
+          "technical_support_info": "010-123456",
+          "operating_system": "windows xp",
+          "applications": [
+            "反垃圾邮件网关"
+          ],
+          "storage_info": "hp-disk1",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "on_shelf",
+            "shelf": "shelf",
+            "label": "label",
+            "other": "other"
+          },
+          "management_ip": [
+            "192.168.0.108"
+          ],
+          "monitored": true,
+          "host_server": "physicalserver"
+        }
+      }
+    }
+  },
+  {
     "name": "clear all items in db",
     "method": "DELETE",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items"
@@ -534,7 +575,8 @@
           "used_by_dept": {
             "dn": "ou=groups,dc=test,dc=com",
             "ou": "groups"
-          }
+          },
+          "asset_id": "test"
         }
       }
     }

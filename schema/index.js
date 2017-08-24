@@ -51,7 +51,8 @@ const nameConverterDef = {
         {attr: 'asset_location.shelf', schema: cmdbTypeName.Shelf},
         {attr: 'asset_location.position', schema: cmdbTypeName.Position},
         {attr: 'operating_system', schema: cmdbTypeName.Software},
-        {attr: 'applications', type:'array',schema: cmdbTypeName.Software}
+        {attr: 'applications', type:'array',schema: cmdbTypeName.Software},
+        {attr: 'host_server',schema:cmdbTypeName.PhysicalServer}
     ],
     ProcessFlow:[
         {attr: 'it_service', type:'array',schema: cmdbTypeName.ITService},

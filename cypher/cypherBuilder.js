@@ -190,6 +190,10 @@ const cmdb_addConfigurationItemLdapOrgUnitRel_cypher = (ldap_obj)=>`MATCH (n:Con
 MERGE (ou:LdapDept{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET ou={used_by_dept} ON MATCH SET ou={used_by_dept}
 CREATE (n)-[:UsedByDept]->(ou)`
 
+const cmdb_addConfigurationItemHostServerRel_cypher = `MATCH (vs:VirtualServer{uuid:{uuid}})
+MATCH (ps:PhysicalServer{uuid:{host_server}})
+CREATE (vs)-[:HOSTED_ON]->(ps)`
+
 
 
 /**
@@ -328,6 +332,9 @@ module.exports = {
         if(params.used_by_dept){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapOrgUnitRel_cypher(params.used_by_dept)]
         }
+        if(params.host_server){
+            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemHostServerRel_cypher]
+        }
         return cyphers_todo;
     },
     generateITServiceCyphers:(params)=> {
@@ -402,5 +409,6 @@ module.exports = {
     cmdb_addConfigurationItemOperationSystemRel_cypher,
     cmdb_addConfigurationItemApplicationRel_cypher,
     cmdb_addConfigurationItemLdapUserRel_cypher,
-    cmdb_addConfigurationItemLdapOrgUnitRel_cypher
+    cmdb_addConfigurationItemLdapOrgUnitRel_cypher,
+    cmdb_addConfigurationItemHostServerRel_cypher
 }
