@@ -46,7 +46,8 @@ const app = new KoaNeo4jApp({
         return JSON.stringify({
             status:"error",
             message:{
-                content: String(error),
+                content:"unexpected error",
+                additional: String(error),
                 displayAs:"modal"
             }
         });
