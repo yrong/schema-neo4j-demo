@@ -5,7 +5,8 @@
     {
       "properties": {
         "subtype": {
-          "type": "string"
+          "type": "string",
+          "enum": ["OperatingSystem","AntispamGateway","Database","Exchange","Others"]
         }
       }
     }
