@@ -948,12 +948,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499440102349,
+			"time": 1504171226095,
 			"name": "patch router for patial attributes",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
 		},
 		{
 			"id": "7be04e5b-b2f0-9f63-e7ca-0fb36af38ca3",
@@ -1569,8 +1569,8 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1583,12 +1583,16 @@
 			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n// var skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\n// if(skipAdditionalPropertyCheck){\n//   postman.setNextRequest(\"add physical server\"); \n// }\n\n",
 			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1503317754719,
+			"helperAttributes": "{}",
+			"time": 1504171001818,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "b58e5d7b-e57f-67c4-ffe6-2b05e93a8200",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"descriptionFormat": null,
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\":{\"dn\":\"cn=ron yang,ou=users,dc=test,dc=com\",\"uidNumber\": \"1000\",\"uid\": \"ryang\"},\n      \"used_by_dept\":{\"dn\": \"ou=groups,dc=test,dc=com\",\"ou\": \"groups\"},\n      \"asset_id\": \"test\"\n    }\n  }\n}"
 		},
 		{
@@ -2034,7 +2038,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1502525316567,
+			"time": 1503997480214,
 			"name": "add application",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",

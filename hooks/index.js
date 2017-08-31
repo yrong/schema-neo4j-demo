@@ -191,7 +191,7 @@ const cudItem_callback = (params)=>{
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
-        params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar']),params.token = ctx.token,
+        params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar','roles']),params.token = ctx.token,
             params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
             let item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()

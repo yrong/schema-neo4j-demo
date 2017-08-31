@@ -270,7 +270,8 @@
             "{{service_pop3_id}}",
             "{{service_dns_id}}"
           ],
-          "sn": "12345678"
+          "sn": "12345678",
+          "responsibility": "{{auth_user_id}}"
         }
       }
     }

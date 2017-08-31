@@ -4,7 +4,6 @@ const staticFile = require('koa-static')
 const mount = require('koa-mount')
 const path = require('path')
 const _ = require('lodash')
-const check_token = require('koa-token-checker')
 const cmdb_cache = require('cmdb-cache')
 
 /*logger init*/
@@ -30,7 +29,11 @@ for(let option of _.values(config.get('upload'))){
 /*staticFile*/
 middlewares.push(convert(staticFile(path.join(__dirname, 'public'))))
 /*check token*/
+const check_token = require('koa-token-checker')
 middlewares.push(check_token(config.get('auth')))
+/*check role*/
+const acl_checker = require('scirichon-acl-checker')
+middlewares.push(acl_checker.middleware)
 
 /*app init*/
 const KoaNeo4jApp = require('koa-neo4j-fork');
