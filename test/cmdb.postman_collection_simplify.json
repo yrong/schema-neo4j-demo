@@ -15,6 +15,22 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}"
   },
   {
+    "name": "add operating system ubuntu",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Software",
+        "fields": {
+          "name": "ubuntu",
+          "description": "ubuntu",
+          "subtype": "OperatingSystem"
+        }
+      }
+    }
+  },
+  {
     "name": "query Cabinets",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets"
@@ -45,7 +61,7 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}"
   },
   {
-    "name": "add operating system",
+    "name": "add operating system winxp",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
@@ -258,7 +274,7 @@
     }
   },
   {
-    "name": "patch router for patial attributes",
+    "name": "patch router with ubuntu",
     "method": "PATCH",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
     "body": {
@@ -271,6 +287,7 @@
             "{{service_dns_id}}"
           ],
           "sn": "12345678",
+          "operating_system": "ubuntu",
           "responsibility": "{{auth_user_id}}"
         }
       }
@@ -558,6 +575,7 @@
             "dns"
           ],
           "responsibility": "{{auth_user}}",
+          "operating_system": "windows xp",
           "sn": "123456",
           "model": "a10",
           "product_date": "2016-08-11",
@@ -681,6 +699,26 @@
     "name": "search it service by name",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=email,pop3"
+  },
+  {
+    "name": "patch router with winxp",
+    "method": "PATCH",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Router",
+        "fields": {
+          "it_service": [
+            "{{service_pop3_id}}",
+            "{{service_dns_id}}"
+          ],
+          "sn": "12345678",
+          "operating_system": "windows xp",
+          "responsibility": "{{auth_user_id}}"
+        }
+      }
+    }
   },
   {
     "name": "add ServiceGroup Infrastructure",

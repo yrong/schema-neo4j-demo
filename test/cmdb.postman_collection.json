@@ -80,6 +80,7 @@
 			"description": "",
 			"order": [
 				"29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
+				"17dd9f76-085c-f1ed-40e8-6759b8dd69ad",
 				"fd933fe4-4837-d00a-2e26-8716634b14d8",
 				"b58e5d7b-e57f-67c4-ffe6-2b05e93a8200",
 				"86742358-5d1e-dfd9-f70c-8a6ae287e08d",
@@ -89,6 +90,7 @@
 				"ae16ba2c-d0ef-27d7-4747-c9875653586a",
 				"781018c3-ca01-b278-6c87-a1bcd8cf91d6",
 				"79e45a07-ffb0-6282-a668-e42bcd310bf9",
+				"e511510d-c68d-b0d5-a064-eeb189fb74c8",
 				"3045cd2f-ad11-6f2b-fa65-d5ce379d7c10",
 				"456720bc-7790-a016-d60d-fbd7d4f81cac",
 				"2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
@@ -226,6 +228,42 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6"
+		},
+		{
+			"id": "17dd9f76-085c-f1ed-40e8-6759b8dd69ad",
+			"headers": "Content-Type: application/json\ntoken: {{token}}\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504835904938,
+			"name": "add operating system ubuntu",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"rawModeData": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"ubuntu\",\r      \"description\":\"ubuntu\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
 		},
 		{
 			"id": "17f90d8e-687f-8650-aec4-1ee249664cda",
@@ -379,11 +417,11 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"os_id\", jsonData.uuid);\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"winxp_os_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504834205058,
-			"name": "add operating system",
+			"time": 1504835897292,
+			"name": "add operating system winxp",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
@@ -966,12 +1004,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504835098227,
-			"name": "patch router for patial attributes",
+			"time": 1504835999039,
+			"name": "patch router with ubuntu",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"operating_system\": \"ubuntu\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
 		},
 		{
 			"id": "7be04e5b-b2f0-9f63-e7ca-0fb36af38ca3",
@@ -1601,11 +1639,12 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"enabled": true,
-					"description": ""
+					"description": "",
+					"enabled": true
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1615,16 +1654,13 @@
 			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"time": 1504171001818,
+			"helperAttributes": {},
+			"time": 1504836025300,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"isFromCollection": true,
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
-			"descriptionFormat": null,
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"operating_system\": \"windows xp\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
 		},
 		{
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
@@ -1908,6 +1944,36 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf"
+		},
+		{
+			"id": "e511510d-c68d-b0d5-a064-eeb189fb74c8",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1504836403207,
+			"name": "patch router with winxp",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"operating_system\": \"windows xp\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
