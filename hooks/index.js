@@ -165,14 +165,16 @@ const cudItem_params_name2IdConverter = (params)=>{
     _.each(schema.nameConverterDef[category],(val)=>{
         val.schema = val.schema || category
         let params_val = jp.query(params, `$.${val.attr}`)[0]
-        if(val.type === 'array' && _.isArray(params_val)){
-            if(params_val[0]&&!uuid_validator(params_val[0])){
-                convert(val)
+        if(params_val){
+            if(val.type === 'array' && _.isArray(params_val)){
+                if(params_val[0]&&!uuid_validator(params_val[0])){
+                    convert(val)
+                }
             }
-        }
-        else if(_.isString(params_val)){
-            if(!uuid_validator(params_val)){
-                convert(val)
+            else if(_.isString(params_val)){
+                if(!uuid_validator(params_val)){
+                    convert(val)
+                }
             }
         }
     })
