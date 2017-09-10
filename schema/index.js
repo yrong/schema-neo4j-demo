@@ -88,6 +88,17 @@ const cmdbConfigurationItemInheritanceRelationship = {
                         {name: cmdbTypeName.PhysicalServer}
                     ]
                 }]
+        },
+        {
+
+            name: cmdbTypeName.Software,
+            children: [
+                {name: "OperatingSystem"},
+                {name: "Database"},
+                {name: "Exchange"},
+                {name: "AntispamGateway"},
+                {name: "Others"}
+            ]
         }]
 }
 
