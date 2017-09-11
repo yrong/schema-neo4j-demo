@@ -6,8 +6,8 @@ const uuid_validator = require('uuid-validate')
 const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type','user']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
     , objectFields = ['asset_location', 'geo_location', 'status', 'barcode','used_by_user','used_by_dept']
-    , referencedFields = ['responsibility', 'committer', 'executor','host_server']
-    , referencedArrayFields = ['it_service']
+    , referencedFields = ['responsibility', 'committer', 'executor','host_server','operating_system']
+    , referencedArrayFields = ['it_service','applications']
 
 const removeInternalProperties = (val) => {
     for (let prop in val) {
