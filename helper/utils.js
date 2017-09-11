@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const cmdb_cache = require('cmdb-cache')
 const schema = require('../schema')
+const uuid_validator = require('uuid-validate')
 
 const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type','user']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
@@ -39,13 +40,13 @@ const recursivelyRemoveInternalProperties =  (val) => {
 
 const referencedMapper_assetLocation = (val)=>{
     let asset_val = {}
-    if(val['cabinet']){
+    if(uuid_validator(val['cabinet'])){
         asset_val = val['cabinet']=cmdb_cache.get(val['cabinet'])||val['cabinet']
     }
-    if(val['shelf']){
+    if(uuid_validator(val['shelf'])){
         asset_val = val['shelf']=cmdb_cache.get(val['shelf'])||val['shelf']
     }
-    if(asset_val['parent'])
+    if(uuid_validator(asset_val['parent']))
         asset_val['parent']=cmdb_cache.get(asset_val['parent'])||val['parent']
 }
 
