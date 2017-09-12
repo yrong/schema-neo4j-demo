@@ -64,43 +64,42 @@ const nameConverterDef = {
     Shelf:[{attr: 'warehouse_id', schema: cmdbTypeName.WareHouse}]
 }
 
-const cmdbConfigurationItemInheritanceRelationship = {
-    name: cmdbTypeName.ConfigurationItem,
-    children: [
-        {
-            name: cmdbTypeName.AbstractServer,
-            children: [
-                {name: cmdbTypeName.PhysicalServer},
-                {name: cmdbTypeName.VirtualServer}]
-        },
-        {
-            name: cmdbTypeName.Asset,
-            children: [
+let cmdbConfigurationItemInheritanceRelationship =
+    {
+        name: cmdbTypeName.ConfigurationItem,
+        children:
+            [
                 {
-                    name: cmdbTypeName.Hardware,
+                    name: cmdbTypeName.AbstractServer,
                     children: [
-                        {name: cmdbTypeName.Storage},
+                        {name: cmdbTypeName.PhysicalServer},
+                        {name: cmdbTypeName.VirtualServer}]
+                },
+                {
+                    name: cmdbTypeName.Asset,
+                    children: [
                         {
-                            name: cmdbTypeName.NetworkDevice,
-                            children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
+                            name: cmdbTypeName.Hardware,
+                            children: [
+                                {name: cmdbTypeName.Storage},
+                                {
+                                    name: cmdbTypeName.NetworkDevice,
+                                    children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
+                                },
+                                {name: cmdbTypeName.Camera},
+                                {name: cmdbTypeName.PhysicalServer}
+                            ]
                         },
-                        {name: cmdbTypeName.Camera},
-                        {name: cmdbTypeName.PhysicalServer}
-                    ]
-                }]
-        },
-        {
+                        {
 
-            name: cmdbTypeName.Software,
-            children: [
-                {name: "OperatingSystem"},
-                {name: "Database"},
-                {name: "Exchange"},
-                {name: "AntispamGateway"},
-                {name: "Others"}
+                            name: cmdbTypeName.Software,
+                            children: [
+                            ]
+                        }]
+                }
             ]
-        }]
-}
+    }
+
 
 const cmdbTypeLabels= {
     VirtualServer:[cmdbTypeName.VirtualServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem],

@@ -1,12 +1,12 @@
 {
   "id": "/Software",
   "allOf": [
-    {"$ref": "/ConfigurationItem"},
+    {"$ref": "/Asset"},
     {
       "properties": {
         "subtype": {
           "type": "string",
-          "enum": ["OperatingSystem","AntispamGateway","Database","Exchange","Others"]
+          "minLength": 1
         }
       }
     }

@@ -194,6 +194,14 @@ const cmdb_addConfigurationItemHostServerRel_cypher = `MATCH (vs:VirtualServer{u
 MATCH (ps:PhysicalServer{uuid:{host_server}})
 CREATE (vs)-[:HOSTED_ON]->(ps)`
 
+const cmdb_addSoftwareSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:"Software"})
+MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
+MERGE (subtype)-[:INHERIT]->(sw)`
+
+const cmdb_querySoftwareSubType_cypher = `MATCH (sw:ConfigurationItemLabel{category:"Software"})
+MATCH (subtype)-[:INHERIT]->(sw)
+RETURN subtype`
+
 
 
 /**
@@ -335,6 +343,9 @@ module.exports = {
         if(params.host_server){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemHostServerRel_cypher]
         }
+        if(params.category==schema.cmdbTypeName.Software&&params.subtype){
+            cyphers_todo = [...cyphers_todo,cmdb_addSoftwareSubTypeRel_cypher]
+        }
         return cyphers_todo;
     },
     generateITServiceCyphers:(params)=> {
@@ -410,5 +421,6 @@ module.exports = {
     cmdb_addConfigurationItemApplicationRel_cypher,
     cmdb_addConfigurationItemLdapUserRel_cypher,
     cmdb_addConfigurationItemLdapOrgUnitRel_cypher,
-    cmdb_addConfigurationItemHostServerRel_cypher
+    cmdb_addConfigurationItemHostServerRel_cypher,
+    cmdb_querySoftwareSubType_cypher
 }

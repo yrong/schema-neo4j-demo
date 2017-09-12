@@ -334,20 +334,25 @@ module.exports = {
         response_wrapped.data = result;
         return response_wrapped;
     },
-    configurationItemCategoryProcess:function(params) {
-        let response_wrapped = {
-            "status":STATUS_OK, //ok, info, warning, error,
-            "message":{
-                "content":CONTENT_QUERY_SUCESS,
-                "displayAs":DISPLAY_AS_TOAST//toast, modal, console, alert
-            },
-            "data":{}
-        };
-        response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship;
-        if(params.filter == schema.cmdbTypeName.Asset){
-            response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
-        }
-        return response_wrapped;
+    configurationItemCategoryProcess:function(params,ctx) {
+        return new Promise((resolve,reject)=>{
+            let response_wrapped = {
+                "status":STATUS_OK, //ok, info, warning, error,
+                "message":{
+                    "content":CONTENT_QUERY_SUCESS,
+                    "displayAs":DISPLAY_AS_TOAST//toast, modal, console, alert
+                },
+                "data":{}
+            };
+            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.cmdb_querySoftwareSubType_cypher,params,(result, params)=>{
+                schema.cmdbConfigurationItemInheritanceRelationship.children[1].children[1].children = _.map(result,(subtype)=>subtype.category)
+                response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship;
+                if(params.filter == schema.cmdbTypeName.Asset){
+                    response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
+                }
+                resolve(response_wrapped)
+            })
+        })
     },
     getCategoryFromUrl:getCategoryFromUrl
 }
