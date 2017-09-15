@@ -1,5 +1,5 @@
 {
-  "id": "/ITServiceGroup",
+  "id": "ITServiceGroup",
   "type": "object",
   "properties": {
     "name": {
@@ -9,5 +9,6 @@
       "type": "string"
     }
   },
-  "required": ["name"]
+  "required": ["name"],
+  "category":"auxiliary"
 }

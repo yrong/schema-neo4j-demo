@@ -1,5 +1,5 @@
 {
-  "id": "/ConfigurationItem",
+  "id": "ConfigurationItem",
   "type": "object",
   "properties": {
     "name": {
@@ -8,14 +8,20 @@
     "it_service": {
       "type": "array",
       "items": { "type": "string" },
-      "uniqueItems": true
+      "uniqueItems": true,
+      "schema":"ITService"
     },
     "monitored": {
       "type": "boolean",
       "default": false
     },
+    "responsibility":{
+        "type": "integer",
+        "schema":"User"
+    },
     "updated_by":{
-      "type": "integer"
+      "type": "integer",
+      "schema":"User"
     },
     "technical_support_info": {
       "type": "string"

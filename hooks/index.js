@@ -18,6 +18,7 @@ const qr = require('qr-image')
 const fs = require('fs')
 const path = require('path')
 
+const CATEGORY_ALL = 'All'
 const getCategoryFromUrl = function (url) {
     let category,key,val
     for (key in routesDef){
@@ -28,7 +29,7 @@ const getCategoryFromUrl = function (url) {
         }
     }
     if(url.includes('/api/items'))
-        category = schema.cmdbTypeName.All
+        category = CATEGORY_ALL
     if(!category)
         throw new Error('can not find category from url:'+url)
     return category;
@@ -42,12 +43,12 @@ const logCypher = (params)=>{
 
 const cudCypherGenerator = (params)=>{
     if(params.method === 'POST' || params.method === 'PUT' || params.method === 'PATCH'){
-        if(schema.cmdbConfigurationItemTypes.includes(params.category)){
+        if(schema.isConfigurationItem(params.category)){
             params.cyphers = cypherBuilder.generateCmdbCyphers(params);
+        }else if(schema.isProcessFlow(params.category)){
+            params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
         }else if(params.category === schema.cmdbTypeName.ITService){
             params.cyphers = cypherBuilder.generateITServiceCyphers(params);
-        }else if(schema.cmdbProcessFlowTypes.includes(params.category)){
-            params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
         }else if(params.category === schema.cmdbTypeName.Cabinet){
             params.cyphers = cypherBuilder.generateCabinetCyphers(params);
         }else if(params.category === schema.cmdbTypeName.Shelf){
@@ -157,13 +158,11 @@ const cudItem_params_stringify = (params, list) => {
 const cudItem_params_name2IdConverter = (params)=>{
     var convert = (val)=>{
         let params_val = jp.query(params, `$.${val.attr}`)[0]
-        let converted_val = converter[val.schema](params_val)
+        let converted_val = converter(val.schema,params_val)
         jp.value(params, `$.${val.attr}`,converted_val)
         jp.value(params, `$.fields.${val.attr}`,converted_val)
     }
-    let category = schema.getApiCategory(params.category)
-    _.each(schema.nameConverterDef[category],(val)=>{
-        val.schema = val.schema || category
+    _.each(schema.refSchemaDef(params.category),(val)=>{
         let params_val = jp.query(params, `$.${val.attr}`)[0]
         if(params_val){
             if(val.type === 'array' && _.isArray(params_val)){
@@ -190,6 +189,15 @@ const cudItem_callback = (params)=>{
     return cudCypherGenerator(params)
 }
 
+const constructResponse = (status,content,displayAs)=>{
+     return {
+        "status":status,
+        "message":{
+            "content":content,
+            "displayAs":displayAs
+        }
+    }
+}
 
 module.exports = {
     cudItem_preProcess: function (params, ctx) {
@@ -234,7 +242,7 @@ module.exports = {
                         params.category = result[0].self.category
                         params.fields_old = _.omit(result[0].self,'id')
                         if(result[0].items&&result[0].items.length&&schema.isAuxiliaryTypes(result[0].self.category)){
-                            params.error = CONTENT_NODE_USED
+                            params[STATUS_WARNING] = CONTENT_NODE_USED
                             params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
                             return params
                         }else{
@@ -244,7 +252,7 @@ module.exports = {
                         throw new Error("no record found to delete,uuid or name:" + params.uuid||params.name);
                     }
                 })
-            }else if(params.category === schema.cmdbTypeName.All){
+            }else if(params.category === CATEGORY_ALL){
                 params.cypher = cypherBuilder.generateDelAllCypher();
                 return params
             }else{
@@ -253,11 +261,7 @@ module.exports = {
         }
     },
     cudItem_postProcess:function (result,params,ctx) {
-        let response_wrapped = {
-            "status":STATUS_INFO,
-            "content": CONTENT_OPERATION_SUCESS,
-            "displayAs":DISPLAY_AS_TOAST
-        }
+        let response_wrapped = constructResponse(STATUS_INFO,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
             if(!params.uuid||!params.fields)
                 throw new Error('added obj without uuid')
@@ -273,20 +277,20 @@ module.exports = {
         if(params.method==='DELETE'){
             if(params.uuid){
                 response_wrapped.uuid = params.uuid
-                if(result.length==1){
-                    if(!params.error){
+                if(result.length==1||result.deleted==1){
+                    if(!params[STATUS_WARNING]){
                         cmdb_cache.del(params.uuid)
                     }
                 }else{
-                    params.error = CONTENT_NO_RECORD
+                    params[STATUS_WARNING] = CONTENT_NO_RECORD
                 }
             }
-            if(params.category===schema.cmdbTypeName.All)
+            if(params.category===CATEGORY_ALL)
                 cmdb_cache.flushAll()
         }
-        if(params.error){
+        if(params[STATUS_WARNING]){
             response_wrapped.status = STATUS_WARNING
-            response_wrapped.content = params.error
+            response_wrapped.content = params[STATUS_WARNING]
         }else{
             let notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
             if(params.method === 'POST'){
@@ -302,7 +306,8 @@ module.exports = {
                 notification_obj.action = 'DELETE'
                 notification_obj.old = params.fields_old
             }
-            common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
+            if(params.category!==CATEGORY_ALL)
+                common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
         }
         return　response_wrapped;
     },
@@ -313,14 +318,7 @@ module.exports = {
         return params;
     },
     queryItems_postProcess:function (result,params,ctx) {
-        let response_wrapped = {
-            "status":STATUS_OK, //ok, info, warning, error,
-            "message":{
-                "content":CONTENT_QUERY_SUCESS,
-                "displayAs":DISPLAY_AS_TOAST//toast, modal, console, alert
-            },
-            "data":{}
-        };
+        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
         result = _.isArray(result)&&result.length>0?result[0]:result;
         if(!result||result.total==0||result.count==0||result.length==0){
             response_wrapped.message.content = CONTENT_NO_RECORD;
@@ -336,24 +334,20 @@ module.exports = {
     },
     configurationItemCategoryProcess:function(params,ctx) {
         return new Promise((resolve,reject)=>{
-            let response_wrapped = {
-                "status":STATUS_OK, //ok, info, warning, error,
-                "message":{
-                    "content":CONTENT_QUERY_SUCESS,
-                    "displayAs":DISPLAY_AS_TOAST//toast, modal, console, alert
-                },
-                "data":{}
-            };
+            let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
             cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.cmdb_querySoftwareSubType_cypher,params,(result, params)=>{
-                schema.cmdbConfigurationItemInheritanceRelationship.children[1].children[1].children = _.map(result,(subtype)=>subtype.category)
-                response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship;
-                if(params.filter == schema.cmdbTypeName.Asset){
-                    response_wrapped.data = schema.cmdbConfigurationItemInheritanceRelationship.children[1];
-                }
+                // schema.cmdbConfigurationItemInheritanceRelationship.children[1].children[1].children = _.map(result,(subtype)=>subtype.category)
+                response_wrapped.data = {parents:schema.getParentCategories(params.category),references:schema.getSchemaRefProperties((params.category))}
                 resolve(response_wrapped)
             })
         })
     },
-    getCategoryFromUrl:getCategoryFromUrl
+    getCategoryFromUrl:getCategoryFromUrl,
+    getSchemaPropertiesProcess:function(params,ctx) {
+        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
+        response_wrapped.data = schema.getSchemaProperties(params.category)
+        return response_wrapped
+    },
+    STATUS_WARNING
 }
 

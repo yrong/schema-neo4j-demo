@@ -1,5 +1,5 @@
 {
-  "id": "/User",
+  "id": "User",
   "type": "object",
   "properties": {
     "alias": {
@@ -29,5 +29,6 @@
     "passwd":{
       "type":"string"
     }
-  }
+  },
+  "category":"auxiliary"
 }

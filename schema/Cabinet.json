@@ -1,5 +1,5 @@
 {
-  "id": "/Cabinet",
+  "id": "Cabinet",
   "type": "object",
   "properties": {
     "name": {
@@ -9,8 +9,10 @@
       "type": "string"
     },
     "server_room_id":{
-      "type":"string"
+      "type":"string",
+      "schema":"ServerRoom"
     }
   },
-  "required": ["name","server_room_id"]
+  "required": ["name","server_room_id"],
+  "category":"auxiliary"
 }

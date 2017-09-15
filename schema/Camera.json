@@ -1,6 +1,6 @@
 {
-  "id": "/Camera",
+  "id": "Camera",
   "allOf": [
-    {"$ref": "/Hardware"}
+    {"$ref": "Hardware"}
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "id": "/Firewall",
+  "id": "Firewall",
   "allOf": [
-    {"$ref": "/NetworkDevice"}
+    {"$ref": "NetworkDevice"}
   ]
 }

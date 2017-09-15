@@ -19,9 +19,9 @@ module.exports = {
         let route,method='POST',uri;
         if(routesDefinition[category]){
             route = routesDefinition[category].route
-        }else if(_.includes(schema.cmdbConfigurationItemTypes,category)){
+        }else if(schema.isConfigurationItem(category)){
             route = routesDefinition.ConfigurationItem.route
-        }else if(_.includes(schema.cmdbProcessFlowTypes,category)){
+        }else if(schema.isProcessFlow(category)){
             route = routesDefinition.ProcessFlow.route
         }
         if(!route)

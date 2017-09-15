@@ -1,216 +1,155 @@
-var Ajv = require('ajv');
+const Ajv = require('ajv')
+const _ = require('lodash')
+const ajv = new Ajv({ useDefaults: true })
+const config = require('config')
+const fs = require('fs')
 
-var _ = require('lodash');
+let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {}
 
-var ajv = new Ajv({ useDefaults: true });
-
-var config = require('config');
-
-var additionalPropertyCheck = config.get('additionalPropertyCheck');
-
-const cmdbTypeName = {
-    VirtualServer:'VirtualServer',
-    PhysicalServer:'PhysicalServer',
-    Router:'Router',
-    Camera:'Camera',
-    Storage:'Storage',
-    ConfigurationItem:'ConfigurationItem',
-    AbstractServer:'AbstractServer',
-    Asset:'Asset',
-    Hardware:'Hardware',
-    NetworkDevice:'NetworkDevice',
-    Cabinet:'Cabinet',
-    Position:'Position',
-    User:'User',
-    ITService:'ITService',
-    ITServiceGroup:'ITServiceGroup',
-    Switch:'Switch',
-    Firewall:'Firewall',
-    ProcessFlow:'ProcessFlow',
-    IncidentFlow:'IncidentFlow',
-    ProcessFlowLegacy:'processFlow',
-    ServerRoom:'ServerRoom',
-    WareHouse: 'WareHouse',
-    Shelf: 'Shelf',
-    Software: 'Software',
-    All: 'All'
-}
-
-const nameConverterDef = {
-    ITService: [
-        {attr: 'group', schema: cmdbTypeName.ITServiceGroup},
-        {attr: 'parent', schema: cmdbTypeName.ITService},
-        {attr: 'children', type:'array',schema: cmdbTypeName.ITService},
-        {attr: 'dependencies', type:'array',schema: cmdbTypeName.ITService},
-        {attr: 'dependendents', type:'array',schema: cmdbTypeName.ITService}
-    ],
-    ConfigurationItem: [
-        {attr: 'it_service', type:'array',schema: cmdbTypeName.ITService},
-        {attr: 'responsibility', schema: cmdbTypeName.User},
-        {attr: 'asset_location.cabinet', schema: cmdbTypeName.Cabinet},
-        {attr: 'asset_location.shelf', schema: cmdbTypeName.Shelf},
-        {attr: 'asset_location.position', schema: cmdbTypeName.Position},
-        {attr: 'operating_system', schema: cmdbTypeName.Software},
-        {attr: 'applications', type:'array',schema: cmdbTypeName.Software},
-        {attr: 'host_server',schema:cmdbTypeName.PhysicalServer}
-    ],
-    ProcessFlow:[
-        {attr: 'it_service', type:'array',schema: cmdbTypeName.ITService},
-        {attr: 'committer', schema: cmdbTypeName.User},
-        {attr: 'executor', schema: cmdbTypeName.User},
-        {attr: 'reference_process_flow',type:'array'}
-    ],
-    Cabinet:[{attr: 'server_room_id', schema: cmdbTypeName.ServerRoom}],
-    Shelf:[{attr: 'warehouse_id', schema: cmdbTypeName.WareHouse}]
-}
-
-let cmdbConfigurationItemInheritanceRelationship =
-    {
-        name: cmdbTypeName.ConfigurationItem,
-        children:
-            [
-                {
-                    name: cmdbTypeName.AbstractServer,
-                    children: [
-                        {name: cmdbTypeName.PhysicalServer},
-                        {name: cmdbTypeName.VirtualServer}]
-                },
-                {
-                    name: cmdbTypeName.Asset,
-                    children: [
-                        {
-                            name: cmdbTypeName.Hardware,
-                            children: [
-                                {name: cmdbTypeName.Storage},
-                                {
-                                    name: cmdbTypeName.NetworkDevice,
-                                    children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
-                                },
-                                {name: cmdbTypeName.Camera},
-                                {name: cmdbTypeName.PhysicalServer}
-                            ]
-                        },
-                        {
-
-                            name: cmdbTypeName.Software,
-                            children: [
-                            ]
-                        }]
-                }
-            ]
-    }
-
-
-const cmdbTypeLabels= {
-    VirtualServer:[cmdbTypeName.VirtualServer,cmdbTypeName.AbstractServer,cmdbTypeName.ConfigurationItem],
-    PhysicalServer: [cmdbTypeName.PhysicalServer,cmdbTypeName.AbstractServer,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    Router:[cmdbTypeName.Router,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    Camera:[cmdbTypeName.Camera,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    Storage:[cmdbTypeName.Storage,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    IncidentFlow:[cmdbTypeName.IncidentFlow,cmdbTypeName.ProcessFlow],
-    Switch:[cmdbTypeName.Switch,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    Firewall:[cmdbTypeName.Firewall,cmdbTypeName.NetworkDevice,cmdbTypeName.Hardware,cmdbTypeName.Asset,cmdbTypeName.ConfigurationItem],
-    Software:[cmdbTypeName.Software,cmdbTypeName.ConfigurationItem]
-}
-
-//ConfigurationItem real types
-const cmdbConfigurationItemTypes = [cmdbTypeName.PhysicalServer,cmdbTypeName.Router,cmdbTypeName.VirtualServer,cmdbTypeName.Camera,cmdbTypeName.Storage,cmdbTypeName.Switch,cmdbTypeName.Firewall,cmdbTypeName.Software];
-
-//ConfigurationItem auxiliary types
-const cmdbConfigurationItemAuxiliaryTypes = [cmdbTypeName.ServerRoom,cmdbTypeName.WareHouse,cmdbTypeName.Shelf,cmdbTypeName.Cabinet,cmdbTypeName.User,cmdbTypeName.ITServiceGroup,cmdbTypeName.ITService];
-
-//ConfigurationItem abstract types
-const cmdbConfigurationItemAbstractTypes =  [cmdbTypeName.ConfigurationItem,cmdbTypeName.AbstractServer,cmdbTypeName.Asset,cmdbTypeName.Hardware,cmdbTypeName.NetworkDevice];
-
-//Processflow real types
-const cmdbProcessFlowTypes = [cmdbTypeName.IncidentFlow];
-
-//Processflow abstract types
-const cmdbProcessFlowAbstractTypes = [cmdbTypeName.ProcessFlow];
-
-//cmdb all types
-const cmdbTypesAll = [...cmdbConfigurationItemAuxiliaryTypes,...cmdbConfigurationItemAbstractTypes,...cmdbConfigurationItemTypes,...cmdbProcessFlowAbstractTypes,...cmdbProcessFlowTypes]
-
-_.forEach(cmdbTypesAll,function(type){
-    ajv.addSchema(require('./'+ type + '.json'));
-});
-
-var checkSchema = function (params) {
-    if(!params.data||!params.data.category){
-        throw new Error("cfgItem does not contain category field!");
-    }
-    var valid = ajv.validate('/'+params.data.category,params.data.fields);
-    if(!valid){
-        throw new Error(ajv.errorsText());
-    }
-    if(additionalPropertyCheck)
-        checkAdditionalProperty(params)
-    return valid;
-};
-
-var _getSchema = function (id) {
-    return ajv.getSchema(id).schema;
-};
-
-
-var getSchema = function(id) {
-    var schema = _getSchema(id);
-    schema = extendSchema(schema);
-    return schema;
-}
-
-var getPropertiesFromSchema = function(properties,schema){
-    for (let prop in schema) {
-        if (prop === 'properties')
-            properties = _.assign(properties,schema[prop])
-        if (typeof schema[prop] === 'object')
-            getPropertiesFromSchema(properties,schema[prop]);
-    }
-    return properties;
-}
-
-var checkAdditionalProperty = function(params){
-    let schema = getSchema('/'+params.data.category)
-    let properties = {}
-    getPropertiesFromSchema(properties,schema)
-    for (let key in params.data.fields){
-        if(!_.has(properties,key)){
-            throw new Error(`additional property:${key}`)
-            break
+const loadSchema = ()=>{
+    let schemas = fs.readdirSync("./schema"),schema,cmdbType
+    for(cmdbType of schemas){
+        if(cmdbType!='index.js'){
+            schema = JSON.parse(fs.readFileSync('./schema/'+ cmdbType, 'utf8'))
+            ajv.addSchema(schema)
+            cmdbSchemas[schema.id] = schema
+            cmdbTypeName[schema.id] = schema.id
+            if(schema.category==='auxiliary')
+                cmdbConfigurationItemAuxiliaryTypes.push(schema.id)
         }
     }
+    _.each(cmdbTypeName,(val,key)=>{
+        schema = dereferenceSchema(key)
+        cmdbDereferencedSchemas[schema.id]=schema
+    })
 }
 
-var extendSchema = function(schema) {
-    if(_.has(schema,"$ref")){
-        schema = _.extend(schema,_getSchema(schema['$ref']));
-        schema = _.omit(schema,"$ref");
+const _getSchema = function (category) {
+    let schema = ajv.getSchema(category)
+    return schema.schema
+};
+
+const extendSchema = function (schema) {
+    if (_.has(schema, "$ref")) {
+        schema = _.extend(schema, _getSchema(schema['$ref']));
+        schema = _.omit(schema, "$ref");
     }
-    if(_.has(schema,"allOf")){
-        schema.allOf = _.map(schema.allOf,function(schema){
+    if (_.has(schema, "allOf")) {
+        schema.allOf = _.map(schema.allOf, function (schema) {
             return extendSchema(schema);
         })
     }
     return schema;
 }
 
-var getApiCategory = (category) => {
-    return _.last(cmdbTypeLabels[category])||category
+const dereferenceSchema = function (category) {
+    let schema = _getSchema(category);
+    schema = extendSchema(schema);
+    return schema;
 }
 
-var isConfigurationItem = (category) => {
-    return cmdbConfigurationItemTypes.includes(category)||category===cmdbTypeName.ConfigurationItem
+const traverseAllProperties = (schema,properties)=>{
+    if(schema.properties){
+        _.assign(properties,schema.properties)
+    }
+    else if(schema.allOf&&schema.allOf.length){
+        _.each(schema.allOf,(sub_schema)=>{
+            if(sub_schema.properties){
+                _.assign(properties,sub_schema.properties)
+            }else if(sub_schema.allOf){
+                traverseAllProperties(sub_schema,properties)
+            }
+        })
+    }
+    return properties
 }
 
-var isProcessFlow = (category) => {
-    return cmdbProcessFlowTypes.includes(category)||category===cmdbTypeName.ProcessFlow
+const getSchemaProperties = (category)=>{
+    let schema = cmdbDereferencedSchemas[category]
+    let properties = {}
+    traverseAllProperties(schema,properties)
+    return properties
 }
 
-var isAuxiliaryTypes  = (category) => {
+const traverseParentCategory = (schema,parents)=>{
+    if(schema.allOf&&schema.allOf.length){
+        _.each(schema.allOf,(sub_schema)=>{
+            if(sub_schema.id){
+                parents.push(sub_schema.id)
+            }
+            if(sub_schema.allOf)
+                traverseParentCategory(sub_schema,parents)
+        })
+    }
+    return parents
+}
+
+const getParentCategories = (category) => {
+    let labels = [category]
+    let schema = cmdbDereferencedSchemas[category]
+    labels = traverseParentCategory(schema,labels)
+    return _.uniq(labels)
+}
+
+const traverseRefProperties = (properties,prefix='',refProperties)=>{
+    _.each(properties,(val,key)=>{
+        if(val.schema){
+            refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.schema,type:val.type})
+        }else if(val.properties){
+            traverseRefProperties(val.properties,key,refProperties)
+        }
+    })
+    return refProperties
+}
+
+const getSchemaRefProperties = (category)=>{
+    let properties = getSchemaProperties(category)
+    let referenced_properties = []
+    traverseRefProperties(properties,'',referenced_properties)
+    return referenced_properties
+}
+
+const refSchemaDef = (category)=> {
+    let referenced_properties = getSchemaRefProperties(category)
+    return referenced_properties
+}
+
+const isConfigurationItem = (category) => {
+    let labels = getParentCategories(category)
+    return labels.includes(cmdbTypeName.ConfigurationItem)||category===cmdbTypeName.ConfigurationItem
+}
+
+const isProcessFlow = (category) => {
+    let labels = getParentCategories(category)
+    return labels.includes(cmdbTypeName.ProcessFlow)||category===cmdbTypeName.ProcessFlow
+}
+
+const checkSchema = function (params) {
+    if(!params.data||!params.data.category){
+        throw new Error("cfgItem does not contain category field!");
+    }
+    var valid = ajv.validate(params.data.category,params.data.fields);
+    if(!valid){
+        throw new Error(ajv.errorsText());
+    }
+    let additionalPropertyCheck = config.get('additionalPropertyCheck');
+    if(additionalPropertyCheck)
+        checkAdditionalProperty(params)
+    return valid;
+}
+
+const checkAdditionalProperty = function(params){
+    let properties = getSchemaProperties(params.data.category)
+    for (let key in params.data.fields){
+        if(!_.has(properties,key)){
+            throw new Error(`additional property:${key}`)
+        }
+    }
+}
+
+const isAuxiliaryTypes  = (category) => {
     return cmdbConfigurationItemAuxiliaryTypes.includes(category)
 }
 
 
-module.exports = {checkSchema,getSchema,cmdbConfigurationItemTypes,cmdbConfigurationItemAuxiliaryTypes, cmdbTypeLabels,
-cmdbTypeName,cmdbConfigurationItemInheritanceRelationship,cmdbProcessFlowTypes,cmdbTypesAll,cmdbProcessFlowAbstractTypes,
-nameConverterDef,getApiCategory,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}
+module.exports = {loadSchema,getSchemaProperties,getSchemaRefProperties,cmdbTypeName,cmdbConfigurationItemAuxiliaryTypes,cmdbSchemas,checkSchema,getParentCategories,refSchemaDef,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}

@@ -1,10 +1,11 @@
 {
-  "id": "/VirtualServer",
+  "id": "VirtualServer",
   "allOf": [
-    {"$ref": "/AbstractServer"},
+    {"$ref": "AbstractServer"},
     {"properties": {
       "host_server":{
-        "type": "string"
+        "type": "string",
+        "schema":"PhysicalServer"
       }
     }
     }

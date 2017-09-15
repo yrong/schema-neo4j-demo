@@ -30,9 +30,11 @@ const ConfigurationItemIndex = 'cmdb',ProcessFlowIndex = 'processflow',OpsContro
 
 var getIndexName = function(category) {
     let indexName;
-    if(schema.cmdbConfigurationItemTypes.includes(category)||category===schema.cmdbTypeName.ConfigurationItem)
+    if(category === 'All')
+        indexName = [ConfigurationItemIndex,ProcessFlowIndex]
+    else if(schema.isConfigurationItem(category))
         indexName = ConfigurationItemIndex
-    else if(schema.cmdbProcessFlowTypes.includes(category)||category===schema.cmdbTypeName.ProcessFlow)
+    else if(schema.isProcessFlow(category))
         indexName = ProcessFlowIndex
     else
         throw new Error('can not find index in es:'+category)
@@ -51,10 +53,10 @@ var addOpsCommand = (command)=>{
 
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
-    let indexName = getIndexName(params.category),typeName = _.last(schema.cmdbTypeLabels[params.category])
+    let indexName = getIndexName(params.category)
     let index_obj = {
         index: indexName,
-        type: typeName,
+        type: params.category,
         id: params.uuid,
         body: _.omit(params,hidden_fields),
         refresh:true
@@ -63,14 +65,14 @@ var addItem = function(result, params, ctx) {
     return es_client.index(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        params.error = 'ElasticSearch:' + String(error)
+        params[hook.STATUS_WARNING] = 'ElasticSearch:' + String(error)
         return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
-    let indexName = getIndexName(params.category),typeName = _.last(schema.cmdbTypeLabels[params.category])
+    let indexName = getIndexName(params.category),typeName = params.category
     let index_obj = {
         index: indexName,
         type: typeName,
@@ -82,17 +84,16 @@ var patchItem = function(result, params, ctx) {
     return es_client.update(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        params.error = 'ElasticSearch:' + String(error)
+        params[hook.STATUS_WARNING] = 'ElasticSearch:' + String(error)
         return hook.cudItem_postProcess(result, params, ctx);
     });
 }
 
 var deleteItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let indexName = getIndexName(params.category),typeName = params.category
+    let indexName = getIndexName(params.category)
     var delObj = {
         index: indexName,
-        type: typeName,
         body: {
             query: queryObj
         },
@@ -102,18 +103,10 @@ var deleteItem = function(result, params, ctx) {
     return es_client.deleteByQuery(delObj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        params.error = 'ElasticSearch:' + String(error)
+        params[hook.STATUS_WARNING] = 'ElasticSearch:' + String(error)
         return hook.cudItem_postProcess(result, params, ctx);
     });
 }
-
-/**
- * just for integration test purpose
- */
-var deleteAll = function(result,params,ctx) {
-    return es_client.deleteByQuery({index:[ConfigurationItemIndex,ProcessFlowIndex],body:{query:{match_all:{}}}})
-}
-
 
 var responseWrapper = function(response){
     return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
@@ -146,4 +139,4 @@ var checkStatus = ()=> {
     })
 }
 
-module.exports = {searchItem,deleteItem,patchItem,addItem,checkStatus,deleteAll,addOpsCommand}
+module.exports = {searchItem,deleteItem,patchItem,addItem,checkStatus,addOpsCommand}

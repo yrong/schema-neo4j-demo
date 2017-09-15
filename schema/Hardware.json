@@ -1,8 +1,8 @@
 {
-  "id": "/Hardware",
+  "id": "Hardware",
   "allOf":
   [
-    {"$ref": "/Asset"},
+    {"$ref": "Asset"},
     {"properties":
     {
       "asset_id": {
@@ -28,7 +28,7 @@
         "type":"object",
         "properties" : {
           "status":{"type":"string","enum": ["mounted", "unmounted","on_shelf","other"]},
-          "cabinet":{"type":"string"},
+          "cabinet":{"type":"string","schema":"Cabinet"},
           "date_mounted" : {
             "type" : "string",
             "format": "date"
@@ -36,7 +36,7 @@
           "u" : {
             "type" : "integer"
           },
-          "shelf":{"type":"string"},
+          "shelf":{"type":"string","schema":"Shelf"},
           "label":{"type":"string"}
         },
         "required": ["status"]

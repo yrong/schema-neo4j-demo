@@ -1,8 +1,8 @@
 {
-  "id": "/IncidentFlow",
+  "id": "IncidentFlow",
   "allOf": [
     {
-      "$ref": "/ProcessFlow"
+      "$ref": "ProcessFlow"
     },
     {
       "properties": {

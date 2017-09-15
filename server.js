@@ -58,13 +58,22 @@ const app = new KoaNeo4jApp({
     middleware:middlewares
 })
 
+/*schema init*/
+const schema = require('./schema')
+schema.loadSchema()
+
 /*route init*/
 const initAppRoutes = require("./routes")
-initAppRoutes(app);
+initAppRoutes(app)
+
+/*cache init*/
+const initCache = ()=>{
+    cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
+}
 
 (function(app) {
     app.neo4jConnection.initialized.then(()=>{
-        cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
+        initCache()
     }).catch((error)=>{
         logger.fatal('neo4j is not reachable,' + String(error))
         process.exit(-1)

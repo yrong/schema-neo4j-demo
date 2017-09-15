@@ -1,11 +1,12 @@
 {
-  "id": "/ProcessFlow",
+  "id": "ProcessFlow",
   "type": "object",
   "properties": {
     "it_service": {
       "type": "array",
       "items": { "type": "string"},
-      "uniqueItems": true
+      "uniqueItems": true,
+      "schema":"ITService"
     },
     "reference_process_flow":{
       "type": "array",

@@ -1,7 +1,7 @@
 {
-  "id": "/Software",
+  "id": "Software",
   "allOf": [
-    {"$ref": "/Asset"},
+    {"$ref": "Asset"},
     {
       "properties": {
         "subtype": {

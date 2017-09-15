@@ -6,7 +6,6 @@ const search = require('../search');
 const cmdb_cache = require('cmdb-cache')
 const routesDef = cmdb_cache.cmdb_type_routes;
 const ws = require('./ws')
-const utils = require('../helper/utils')
 const allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','FindChanges']
 const es_config = config.get('elasticsearch')
 
@@ -39,8 +38,6 @@ const none_checker = (params)=>true
 
 module.exports = (app)=>{
     customized_routes(routesDef)
-    if(es_config.mode === 'strict')
-        search.checkStatus()
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     _.each(routesDef,(val, key)=>{
         methods = val.allowed_methods||allowed_methods
@@ -87,29 +84,30 @@ module.exports = (app)=>{
     /*ConfigurationItemCategory*/
     app.defineAPI({
         method: 'GET',
-        route: '/api/cfgItems/categories/:filter',
+        route: '/api/cfgItems/categories/:category',
         procedure: hook.configurationItemCategoryProcess
-    });
+    })
 
     /*Schema*/
-    app.router.get('/api/schema/:id', function (ctx, next) {
-        ctx.body = schema.getSchema('/'+ctx.params.id);
-        return next();
-    });
+    app.defineAPI({
+        method: 'GET',
+        route: '/api/schema/:category',
+        procedure: hook.getSchemaPropertiesProcess
+    })
 
     /* Delete all Items(for test purpose) */
     app.defineAPI({
         method: 'DEL',
         route: '/api/items',
         preProcess: hook.cudItem_preProcess,
-        postProcess: hook.cudItem_postProcess
-    });
+        postProcess: search.deleteItem
+    })
 
     /*License*/
     app.router.get('/api/license', function (ctx, next) {
         ctx.body = ctx.state.license;
         return next();
-    });
+    })
 
     /*websocket routes*/
     ws(app)

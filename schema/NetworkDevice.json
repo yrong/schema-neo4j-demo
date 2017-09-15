@@ -1,7 +1,7 @@
 {
-  "id": "/NetworkDevice",
+  "id": "NetworkDevice",
   "allOf": [
-    {"$ref": "/Hardware"},
+    {"$ref": "Hardware"},
     {
       "properties": {
         "ip_address": {

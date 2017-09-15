@@ -15,7 +15,7 @@ const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uui
                                     ON MATCH SET n = {fields}`
 
 const generateAddNodeCypher=(params)=>{
-    let labels = _.clone(schema.cmdbTypeLabels[params.category]);
+    let labels = schema.getParentCategories(params.category)
     if(params.category === schema.cmdbTypeName.Software)
         labels.push(params.fields.subtype)
     labels = _.isArray(labels)?labels.join(":"):params.category;
@@ -34,7 +34,7 @@ const generateDelNodeCypher = (params)=>{
 }
 
 const generateDelAllCypher = (params)=>`MATCH (n)
-WHERE NOT n:User
+WHERE NOT n:User and NOT n:Role
 DETACH
 DELETE n`
 
@@ -96,19 +96,6 @@ const generateQueryNodeChangeTimelineCypher = (params)=> {
     return `match p=(current:${label} {uuid:{uuid}})-[:PREV*]->()
             WITH COLLECT(p) AS paths, MAX(length(p)) AS maxLength
             RETURN FILTER(path IN paths WHERE length(path)= maxLength) AS longestPaths`
-}
-
-
-const generateAddPrevNodeRelCypher = (params) => {
-    let label = schema.cmdbTypeLabels[params.category]?_.last(schema.cmdbTypeLabels[params.category]):params.category
-    return `match (current:${label} {uuid:{uuid}})
-                                    optional match (current)-[prev_rel:PREV]->(prev_prev)                                                    
-                                    create (prev:${label}Prev {fields_old})
-                                    create (current)-[:PREV {change}]->(prev)
-                                    FOREACH (o IN CASE WHEN prev_prev IS NOT NULL THEN [prev_prev] ELSE [] END |
-                                      create (prev)-[prev_rel_new:PREV]->(prev_prev)
-                                      set prev_rel_new = properties(prev_rel)
-                                      DELETE prev_rel)`
 }
 
 /**

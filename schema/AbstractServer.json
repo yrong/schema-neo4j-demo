@@ -1,14 +1,20 @@
 {
-  "id": "/AbstractServer",
+  "id": "AbstractServer",
   "allOf": [
-    {"$ref": "/ConfigurationItem"},
+    {"$ref": "ConfigurationItem"},
     {"properties": {
         "ip_address": {
           "type": "array",
           "items": {"type": "string","format":"ipv4"}
         },
         "operating_system": {
-          "type": "string"
+          "type": "string",
+          "schema":"Software"
+        },
+        "applications":{
+            "type": "array",
+            "items": {"type": "string"},
+            "schema":"Software"
         },
         "storage_info":{
           "type": "string"

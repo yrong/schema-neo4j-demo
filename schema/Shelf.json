@@ -1,5 +1,5 @@
 {
-  "id": "/Shelf",
+  "id": "Shelf",
   "type": "object",
   "properties": {
     "name": {
@@ -9,8 +9,10 @@
       "type": "string"
     },
     "warehouse_id":{
-      "type":"string"
+      "type":"string",
+      "schema":"WareHouse"
     }
   },
-  "required": ["name","warehouse_id"]
+  "required": ["name","warehouse_id"],
+  "category":"auxiliary"
 }

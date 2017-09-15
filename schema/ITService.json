@@ -1,5 +1,5 @@
 {
-  "id": "/ITService",
+  "id": "ITService",
   "type": "object",
   "properties": {
     "name": {
@@ -9,29 +9,35 @@
       "type": "string"
     },
     "group":{
-      "type": "string"
+      "type": "string",
+      "schema":"ITServiceGroup"
     },
     "dependendents": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "schema":"ITService"
     },
     "dependencies": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "schema":"ITService"
     },
     "children": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "schema":"ITService"
     },
     "parent":{
-      "type": "string"
+      "type": "string",
+      "schema":"ITService"
     }
   },
-  "required": ["name"]
+  "required": ["name"],
+  "category":"auxiliary"
 }
