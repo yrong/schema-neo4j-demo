@@ -10,12 +10,13 @@ const apiInvoker = require('../../helper/apiInvoker')
 const utils = require('../../helper/utils')
 
 const exportItems = async ()=>{
+    schema.loadSchema()
     let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')
     }
     else{
-        categories = [...schema.cmdbConfigurationItemAuxiliaryTypes,schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
+        categories = [...schema.getAuxiliaryTypes(),schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let directory = path.join(config.get('export.storeDir'), timestamp)

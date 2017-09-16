@@ -28,7 +28,7 @@ const configurationItemMapping = async (type, sheet, line)=>{
                 throw new Error(`required field ${key} missing!`)
         if(value.value!=null){
             if(value.converter)
-                value.value = await converter[value.converter](value.value)
+                value.value = await converter(value.converter,value.value)
             configurationItem[key] = value.value
         }
     }

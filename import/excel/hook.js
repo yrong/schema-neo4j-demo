@@ -7,8 +7,8 @@ module.exports = {
             asset.asset_location = {cabinet:asset.asset_location_cabinet,status:"mounted",u:asset.asset_location_u,date_mounted:asset.asset_location_mounted_date}
             await checker.cabinet_u_unique(asset)
         }
-        else if(asset&&asset.asset_location_position)
-            asset.asset_location = {position:asset.asset_location_position,status:"unmounted"}
+        else if(asset&&asset.asset_location_shelf)
+            asset.asset_location = {shelf:asset.asset_location_shelf,status:"unmounted"}
         if(_.isString(asset.geo_location))
             asset.geo_location = {name:asset.geo_location}
         return asset

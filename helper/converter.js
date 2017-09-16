@@ -1,22 +1,31 @@
 const _ = require('lodash')
 const cmdb_cache = require('cmdb-cache')
+const uuid_validator = require('uuid-validate')
+const schema = require('../schema')
 
-const single_converter = (key,name)=>{
-    let uuid,cached_val = cmdb_cache.getItemByCategoryAndName(key,name)
+const single_converter = (key,value)=>{
+    let uuid,cached_val
+    if(uuid_validator(value)){
+        cached_val = cmdb_cache.getItemByCategoryAndID(key,value)
+    }else if(key===schema.cmdbTypeName.User&&_.isInteger(value)){
+        cached_val = cmdb_cache.getItemByCategoryAndID(key,value)
+    }else{
+        cached_val = cmdb_cache.getItemByCategoryAndName(key,value)
+    }
     if(cached_val)
         uuid = cached_val.uuid
     else
-        throw new Error(`can not find category '${key}' with name '${name}' in cmdb`)
+        throw new Error(`can not find category '${key}' with name or id as '${value}' in cmdb`)
     return uuid
 }
-const array_converter = (key,names)=>{
-    let uuids = _.map(names,(name)=>{
-        return single_converter(key,name)
+const array_converter = (key,values)=>{
+    let uuids = _.map(values,(value)=>{
+        return single_converter(key,value)
     })
     return uuids
 }
 
-const name2IdConverter = (key,value)=>{
+const refConverter = (key,value)=>{
     if(_.isArray(value))
         return array_converter(key,value)
     else
@@ -24,5 +33,5 @@ const name2IdConverter = (key,value)=>{
 }
 
 
-module.exports = name2IdConverter
+module.exports = refConverter
 

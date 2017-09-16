@@ -46,8 +46,8 @@ const referencedMapper_assetLocation = (val)=>{
     if(uuid_validator(val['shelf'])){
         asset_val = val['shelf']=cmdb_cache.get(val['shelf'])||val['shelf']
     }
-    if(uuid_validator(asset_val['parent']))
-        asset_val['parent']=cmdb_cache.get(asset_val['parent'])||val['parent']
+    if(uuid_validator(val['parent']))
+        asset_val['parent']=cmdb_cache.get(val['parent'])||val['parent']
 }
 
 const referencedMapper = (val) => {
@@ -88,23 +88,6 @@ const referencedMapper = (val) => {
     return val;
 }
 
-var timelineMapper = (result)=>{
-    let change_logs = [], change_log, index = 0, segments = result[0].segments
-    for (let segment of segments) {
-        change_log = {}
-        change_log.user = segment.start.committer
-        change_log.time = segment.start.lastUpdated
-        change_log.object = {
-            start: segment.start,
-            end: segment.end,
-            change_fields: _.omit(segment.relationship,'id')
-        }
-        change_logs.push(change_log)
-        index++
-    }
-    return change_logs
-}
-
 var propertiesCombine = (results)=>{
     return _.map(results,(result)=>{
         if(result.self&&result.members){
@@ -115,15 +98,7 @@ var propertiesCombine = (results)=>{
     })
 }
 
-const isChangeTimelineQuery = (url) => {
-    var re = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\/timeline/i;
-    return re.test(url)
-}
-
 const resultMapper = (result, params) => {
-    if (params.url && isChangeTimelineQuery(params.url)) {
-        result = timelineMapper(result)
-    }
     if (params.category === schema.cmdbTypeName.ConfigurationItem || params.category === schema.cmdbTypeName.ProcessFlow)
         result = referencedMapper(result)
     if (params.category === schema.cmdbTypeName.ITServiceGroup || params.category === schema.cmdbTypeName.WareHouse || params.category === schema.cmdbTypeName.ServerRoom)
@@ -133,7 +108,6 @@ const resultMapper = (result, params) => {
 }
 
 module.exports = {
-    isChangeTimelineQuery,
     resultMapper,
     objectFields,
     globalHiddenFields

@@ -9,8 +9,7 @@ const cmdb_cache = require('cmdb-cache')
 const routesDef = cmdb_cache.cmdb_type_routes
 const utils = require('../helper/utils')
 const cypherInvoker = require('../helper/cypherInvoker')
-const uuid_validator = require('uuid-validate')
-const converter = require('../helper/converter')
+const ref_converter = require('../helper/converter')
 const jp = require('jsonpath')
 const common = require('scirichon-common')
 const notifier_api_config = config.get('notifier')
@@ -86,8 +85,6 @@ const paginationParamsGenerator = function (params) {
 const queryParamsCypherGenerator = function (params) {
     if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
-        if(utils.isChangeTimelineQuery(params.url))
-            params.cypher = cypherBuilder.generateQueryNodeChangeTimelineCypher(params)
     }
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
@@ -155,26 +152,16 @@ const cudItem_params_stringify = (params, list) => {
 }
 
 
-const cudItem_params_name2IdConverter = (params)=>{
-    var convert = (val)=>{
-        let params_val = jp.query(params, `$.${val.attr}`)[0]
-        let converted_val = converter(val.schema,params_val)
-        jp.value(params, `$.${val.attr}`,converted_val)
-        jp.value(params, `$.fields.${val.attr}`,converted_val)
+const cudItem_refParamsConverter = (params)=>{
+    var convert = (ref,val)=>{
+        val = ref_converter(ref.schema,val)
+        jp.value(params, `$.${ref.attr}`,val)
+        jp.value(params, `$.fields.${ref.attr}`,val)
     }
-    _.each(schema.refSchemaDef(params.category),(val)=>{
-        let params_val = jp.query(params, `$.${val.attr}`)[0]
-        if(params_val){
-            if(val.type === 'array' && _.isArray(params_val)){
-                if(params_val[0]&&!uuid_validator(params_val[0])){
-                    convert(val)
-                }
-            }
-            else if(_.isString(params_val)){
-                if(!uuid_validator(params_val)){
-                    convert(val)
-                }
-            }
+    _.each(schema.getSchemaRefProperties(params.category),(ref)=>{
+        let val = jp.query(params, `$.${ref.attr}`)[0]
+        if(val){
+            convert(ref,val)
         }
     })
     return params
@@ -183,7 +170,7 @@ const cudItem_params_name2IdConverter = (params)=>{
 const cudItem_callback = (params)=>{
     if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
         params = _.assign(params, params.fields)
-        cudItem_params_name2IdConverter(params)
+        cudItem_refParamsConverter(params)
         cudItem_params_stringify(params,utils.objectFields)
     }
     return cudCypherGenerator(params)
@@ -241,7 +228,7 @@ module.exports = {
                     if(result&&result[0]&&result[0].self&&result[0].self.category){
                         params.category = result[0].self.category
                         params.fields_old = _.omit(result[0].self,'id')
-                        if(result[0].items&&result[0].items.length&&schema.isAuxiliaryTypes(result[0].self.category)){
+                        if(result[0].items&&result[0].items.length){
                             params[STATUS_WARNING] = CONTENT_NODE_USED
                             params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
                             return params
@@ -335,9 +322,12 @@ module.exports = {
     configurationItemCategoryProcess:function(params,ctx) {
         return new Promise((resolve,reject)=>{
             let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
-            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.cmdb_querySoftwareSubType_cypher,params,(result, params)=>{
-                // schema.cmdbConfigurationItemInheritanceRelationship.children[1].children[1].children = _.map(result,(subtype)=>subtype.category)
-                response_wrapped.data = {parents:schema.getParentCategories(params.category),references:schema.getSchemaRefProperties((params.category))}
+            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,params,(result, params)=>{
+                response_wrapped.data = {
+                    parents:schema.getParentCategories(params.category),
+                    references:_.uniq(_.map(schema.getSchemaRefProperties(params.category),(attr)=>attr.schema)),
+                    subtypes:_.map(result,(subtype)=>subtype.category)
+                }
                 resolve(response_wrapped)
             })
         })

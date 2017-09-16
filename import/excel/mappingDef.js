@@ -12,13 +12,13 @@ const configurationItemMapping = {
 
 const abstractServerMapping = {
     name: {col: 6, required: true},
-    it_service: {col: 7, type: 'array', converter: schema.cmdbTypeName.ITService},
+    it_service: {col: 7, type: 'array', converter: 'ITService'},
     monitored: {col: 8, type: 'boolean', required: true},
-    responsibility: {col: 9, converter: schema.cmdbTypeName.User},
+    responsibility: {col: 9, converter: 'User'},
     technical_support_info: {col: 10},
     created_date: {col: 11, type: 'date'},
     last_updated_date: {col: 12, type: 'date'},
-    updated_by: {col: 13, converter: schema.cmdbTypeName.User}
+    updated_by: {col: 13, converter: 'User'}
 }
 
 const assetMapping = {
@@ -26,10 +26,10 @@ const assetMapping = {
     sn: {col: 15},
     geo_location: {col: 16},
     asset_location: {col: 17},
-    asset_location_cabinet: {col: 18, converter: schema.cmdbTypeName.Cabinet},
+    asset_location_cabinet: {col: 18, converter: 'Cabinet'},
     asset_location_u: {col: 19, type: 'integer'},
     asset_location_mounted_date: {col: 20, type: 'date'},
-    asset_location_position: {col: 21, converter: schema.cmdbTypeName.Position},
+    asset_location_shelf: {col: 21, converter: 'Shelf'},
     model: {col: 22, required: true},
     product_date: {col: 23, type: 'date'},
     warranty_expiration_date: {col: 24, type: 'date'},
@@ -41,11 +41,11 @@ const physicalServermapping = {
     postProcess: [hook.buildAssetLocation, hook.omitProperties],
     range:{s:{r:3},e:{c:25}}
 }
-module.exports[schema.cmdbTypeName.PhysicalServer] = physicalServermapping
+module.exports['PhysicalServer'] = physicalServermapping
 
 const virtualServermapping = {
     definition: _.assign({},configurationItemMapping,abstractServerMapping),
     postProcess: [hook.omitProperties],
     range:{s:{r:2},e:{c:13}}
 }
-module.exports[schema.cmdbTypeName.VirtualServer] = virtualServermapping
+module.exports['VirtualServer'] = virtualServermapping

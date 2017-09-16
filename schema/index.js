@@ -7,21 +7,38 @@ const fs = require('fs')
 let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {}
 
 const loadSchema = ()=>{
-    let schemas = fs.readdirSync("./schema"),schema,cmdbType
-    for(cmdbType of schemas){
+    let schemas = fs.readdirSync("./schema"),schema,sortedAuxiliaryTypes=[]
+    for(let cmdbType of schemas){
         if(cmdbType!='index.js'){
             schema = JSON.parse(fs.readFileSync('./schema/'+ cmdbType, 'utf8'))
             ajv.addSchema(schema)
             cmdbSchemas[schema.id] = schema
             cmdbTypeName[schema.id] = schema.id
-            if(schema.category==='auxiliary')
+            if(schema.category==='auxiliary'){
                 cmdbConfigurationItemAuxiliaryTypes.push(schema.id)
+            }
         }
     }
-    _.each(cmdbTypeName,(val,key)=>{
+    for(let key in cmdbTypeName){
         schema = dereferenceSchema(key)
         cmdbDereferencedSchemas[schema.id]=schema
-    })
+    }
+    for(let auxiliaryType of cmdbConfigurationItemAuxiliaryTypes){
+        let no_referenced = true
+        for(let key in cmdbSchemas[auxiliaryType]['properties']){
+            let val = cmdbSchemas[auxiliaryType]['properties'][key]
+            if(val.schema){
+                no_referenced = false
+            }
+        }
+        if(no_referenced)
+            sortedAuxiliaryTypes.push(auxiliaryType)
+    }
+    cmdbConfigurationItemAuxiliaryTypes = _.uniq(_.concat(sortedAuxiliaryTypes,cmdbConfigurationItemAuxiliaryTypes))
+}
+
+const getAuxiliaryTypes = ()=>{
+    return cmdbConfigurationItemAuxiliaryTypes
 }
 
 const _getSchema = function (category) {
@@ -109,11 +126,6 @@ const getSchemaRefProperties = (category)=>{
     return referenced_properties
 }
 
-const refSchemaDef = (category)=> {
-    let referenced_properties = getSchemaRefProperties(category)
-    return referenced_properties
-}
-
 const isConfigurationItem = (category) => {
     let labels = getParentCategories(category)
     return labels.includes(cmdbTypeName.ConfigurationItem)||category===cmdbTypeName.ConfigurationItem
@@ -152,4 +164,4 @@ const isAuxiliaryTypes  = (category) => {
 }
 
 
-module.exports = {loadSchema,getSchemaProperties,getSchemaRefProperties,cmdbTypeName,cmdbConfigurationItemAuxiliaryTypes,cmdbSchemas,checkSchema,getParentCategories,refSchemaDef,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}
+module.exports = {loadSchema,getSchemaProperties,getSchemaRefProperties,cmdbTypeName,getAuxiliaryTypes,checkSchema,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}

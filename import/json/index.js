@@ -11,7 +11,11 @@ const sortItemsDependentFirst = (items)=>{
     for (let item of items){
         if(item.category === schema.cmdbTypeName.ITService && !item.parent &&!item.children&&!item.dependencies&&!item.dependendents){
             dependent_items.push(item)
-        }else if(_.includes(schema.cmdbProcessFlowTypes,item.category) && !item.reference_process_flow){
+        }else if(item.category === schema.cmdbTypeName.Software){
+            dependent_items.push(item)
+        }else if(schema.isProcessFlow(item.category) && !item.reference_process_flow){
+            dependent_items.push(item)
+        }else if(schema.isConfigurationItem(item.category)&&!item.host_server&&!item.operating_system&&!item.applications){
             dependent_items.push(item)
         }
     }
@@ -31,7 +35,7 @@ const sortItemsDependentFirst = (items)=>{
 }
 
 const itemPreprocess = (item)=>{
-    if(_.includes(schema.cmdbConfigurationItemTypes,item.category)){
+    if(schema.isConfigurationItem(item.category)){
         if(_.isString(item.geo_location))
             item.geo_location = {name:item.geo_location}
         if(_.isString(item.status))
@@ -49,11 +53,12 @@ class Importer {
     }
 
     async importer()  {
+        schema.loadSchema()
         let date_dir = process.env.IMPORT_FOLDER
         if(!date_dir)
             throw new Error(`env 'IMPORT_FOLDER' not defined`)
         let importStrategy = process.env.IMPORT_STRATEGY||'api'
-        let categories = schema.cmdbTypesAll
+        let categories = [...schema.getAuxiliaryTypes(),schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
         let result = {}
         for(let category of categories){
             let filePath = path.join(date_dir,category + '.json')
@@ -64,7 +69,7 @@ class Importer {
                 let items = jsonfile.readFileSync(filePath)
                 items = sortItemsDependentFirst(items)
                 for (let item of items) {
-                    if(!item.category&&schema.cmdbConfigurationItemAuxiliaryTypes.includes(category))
+                    if(!item.category)
                         item.category = category
                     try {
                         item = itemPreprocess(item)

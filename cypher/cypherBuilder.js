@@ -181,15 +181,9 @@ const cmdb_addConfigurationItemHostServerRel_cypher = `MATCH (vs:VirtualServer{u
 MATCH (ps:PhysicalServer{uuid:{host_server}})
 CREATE (vs)-[:HOSTED_ON]->(ps)`
 
-const cmdb_addSoftwareSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:"Software"})
+const cmdb_addSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:{category}})
 MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
 MERGE (subtype)-[:INHERIT]->(sw)`
-
-const cmdb_querySoftwareSubType_cypher = `MATCH (sw:ConfigurationItemLabel{category:"Software"})
-MATCH (subtype)-[:INHERIT]->(sw)
-RETURN subtype`
-
-
 
 /**
  * ITService
@@ -292,6 +286,11 @@ const generateQueryConfigurationItemBySubCategoryCypher = (params) => {
     `
 }
 
+const generateQuerySubTypeCypher = `MATCH (sw:ConfigurationItemLabel{category:{category}})
+MATCH (subtype)-[:INHERIT]->(sw)
+RETURN subtype`
+
+
 module.exports = {
     generateCabinetCyphers: (params)=>{
         let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInCabinet_cypher,cmdb_addCabinetServerRoomRel_cypher]
@@ -330,8 +329,8 @@ module.exports = {
         if(params.host_server){
             cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemHostServerRel_cypher]
         }
-        if(params.category==schema.cmdbTypeName.Software&&params.subtype){
-            cyphers_todo = [...cyphers_todo,cmdb_addSoftwareSubTypeRel_cypher]
+        if(params.subtype){
+            cyphers_todo = [...cyphers_todo,cmdb_addSubTypeRel_cypher]
         }
         return cyphers_todo;
     },
@@ -395,7 +394,6 @@ module.exports = {
     generateAddNodeCypher,
     generateQueryNodeCypher,
     generateDelNodeCypher,
-    generateQueryNodeChangeTimelineCypher,
     generateSequence,
     generateDelAllCypher,
     generateQueryNodeWithRelationToConfigurationItem_cypher,
@@ -404,10 +402,5 @@ module.exports = {
     generateCfgHostsByITServiceGroupCypher,
     generateQueryConfigurationItemBySubCategoryCypher,
     generateCfgHostsByITServiceCypher,
-    cmdb_addConfigurationItemOperationSystemRel_cypher,
-    cmdb_addConfigurationItemApplicationRel_cypher,
-    cmdb_addConfigurationItemLdapUserRel_cypher,
-    cmdb_addConfigurationItemLdapOrgUnitRel_cypher,
-    cmdb_addConfigurationItemHostServerRel_cypher,
-    cmdb_querySoftwareSubType_cypher
+    generateQuerySubTypeCypher
 }
