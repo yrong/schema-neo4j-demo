@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const cmdb_cache = require('cmdb-cache')
+const cmdb_cache = require('scirichon-cache')
 const uuid_validator = require('uuid-validate')
 const schema = require('../schema')
 

@@ -4,7 +4,7 @@ const staticFile = require('koa-static')
 const mount = require('koa-mount')
 const path = require('path')
 const _ = require('lodash')
-const cmdb_cache = require('cmdb-cache')
+const cmdb_cache = require('scirichon-cache')
 
 /*logger init*/
 const LOGGER = require('log4js_wrapper')

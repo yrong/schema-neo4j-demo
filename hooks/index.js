@@ -5,7 +5,7 @@ const config = require('config')
 const cypherBuilder = require('../cypher/cypherBuilder')
 const LOGGER = require('log4js_wrapper')
 const logger = LOGGER.getLogger()
-const cmdb_cache = require('cmdb-cache')
+const cmdb_cache = require('scirichon-cache')
 const routesDef = cmdb_cache.cmdb_type_routes
 const utils = require('../helper/utils')
 const cypherInvoker = require('../helper/cypherInvoker')
@@ -119,31 +119,27 @@ const queryParamsCypherGenerator = function (params) {
     return params;
 }
 
-const cudItem_params_stringify = (params, list) => {
-    for(let name of list){
-        if(_.isObject(params.fields[name])){
-            params.fields[name] = JSON.stringify(params.fields[name])
-        }
-        if(params.change&&_.isObject(params.change[name])){
-            params.change[name] = JSON.stringify(params.change[name])
-        }
-    }
+const cudItem_params_stringify = (params) => {
+    let objectFields=schema.getSchemaObjectProperties(params.category)
     for (let key in params.fields){
         if(_.isArray(params.fields[key])){
-            if(_.isObject(params.fields[key][0]))
-                throw new Error('Property values can only be of primitive types or arrays thereof,invalid field:' + key)
-            if(params.fields[key].length ==1&&params.fields[key][0]=='')
-                params.fields[key] = []
+            if(_.isObject(params.fields[key][0])){
+                throw new Error('array field can only be of primitive type,invalid field:' + key)
+            }
         }
         else if(_.isObject(params.fields[key])){
-            throw new Error('Property values can only be of primitive types or arrays thereof,invalid field:' + key)
+            if(_.includes(objectFields,key)){
+                params.fields[key] = JSON.stringify(params.fields[key])
+            }else{
+                throw new Error('object field not defined in schema,invalid field:' + key)
+            }
         }
     }
     params = _.assign(params, params.fields)
-    for(let name of list){
-        if(_.isString(params[name])){
+    for(let key of objectFields){
+        if(_.isString(params[key])){
              try{
-                 params[name] = JSON.parse(params[name])
+                 params[key] = JSON.parse(params[key])
              }catch(error){
                  //same field with different type in different categories(e.g:'status in 'ConfigurationItem' and 'ProcessFlow'),ignore error and just for protection here
              }
@@ -154,7 +150,7 @@ const cudItem_params_stringify = (params, list) => {
 
 const cudItem_refParamsConverter = (params)=>{
     var convert = (ref,val)=>{
-        val = ref_converter(ref.schema,val)
+        val = ref_converter(ref.schema||ref.items.schema,val)
         jp.value(params, `$.${ref.attr}`,val)
         jp.value(params, `$.fields.${ref.attr}`,val)
     }
@@ -171,7 +167,7 @@ const cudItem_callback = (params)=>{
     if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
         params = _.assign(params, params.fields)
         cudItem_refParamsConverter(params)
-        cudItem_params_stringify(params,utils.objectFields)
+        cudItem_params_stringify(params)
     }
     return cudCypherGenerator(params)
 }
@@ -311,10 +307,12 @@ module.exports = {
             response_wrapped.message.content = CONTENT_NO_RECORD;
             return response_wrapped;
         }
-        if(params.search&&result.count>0&&_.isArray(result.results)){
-            result.results = utils.resultMapper(result.results,params);
-        }else{
-            result = utils.resultMapper(result,params);
+        if(!params.origional){
+            if(result.count>0&&_.isArray(result.results)){
+                result.results = utils.resultMapper(result.results,params);
+            }else{
+                result = utils.resultMapper(result,params);
+            }
         }
         response_wrapped.data = result;
         return response_wrapped;

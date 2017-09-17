@@ -1,6 +1,6 @@
 const config = require('config')
 const _ = require('lodash')
-const cmdb_cache = require('cmdb-cache')
+const cmdb_cache = require('scirichon-cache')
 const routesDefinition = cmdb_cache.cmdb_type_routes
 const schema = require('../schema')
 var wrapRequest = (category,item) => {
