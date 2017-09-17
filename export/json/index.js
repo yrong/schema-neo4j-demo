@@ -6,8 +6,6 @@ const moment = require('moment')
 const _ = require('lodash')
 const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('../../schema/index')
-const apiInvoker = require('../../helper/apiInvoker')
-const utils = require('../../helper/utils')
 
 const exportItems = async ()=>{
     schema.loadSchema()
@@ -31,7 +29,7 @@ const exportItems = async ()=>{
             return item.row[0]
         })
         items = _.map(items,(item)=>{
-            for(let field of utils.objectFields){
+            for(let field of schema.getSchemaObjectProperties(item.category)){
                 if(_.isString(item[field]))
                     try {
                         item[field] = JSON.parse(item[field])

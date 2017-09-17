@@ -1,13 +1,10 @@
 const _ = require('lodash');
-const cmdb_cache = require('cmdb-cache')
+const cmdb_cache = require('scirichon-cache')
 const schema = require('../schema')
 const uuid_validator = require('uuid-validate')
 
 const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type','user']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
-    , objectFields = ['asset_location', 'geo_location', 'status', 'barcode','used_by_user','used_by_dept']
-    , referencedFields = ['responsibility', 'committer', 'executor','host_server','operating_system']
-    , referencedArrayFields = ['it_service','applications']
 
 const removeInternalProperties = (val) => {
     for (let prop in val) {
@@ -46,41 +43,36 @@ const referencedMapper_assetLocation = (val)=>{
     if(uuid_validator(val['shelf'])){
         asset_val = val['shelf']=cmdb_cache.get(val['shelf'])||val['shelf']
     }
-    if(uuid_validator(val['parent']))
-        asset_val['parent']=cmdb_cache.get(val['parent'])||val['parent']
+    if(uuid_validator(asset_val['parent']))
+        asset_val['parent']=cmdb_cache.get(asset_val['parent'])||asset_val['parent']
 }
 
 const referencedMapper = (val) => {
+    let properties
     if (_.isArray(val)) {
         val = _.map(val, function (val) {
             return referencedMapper(val);
         });
-    } else {
+    } else if(val.category){
+        properties = schema.getSchemaProperties(val.category)
         for (let key in val) {
-            let val_val = val[key]
-            for(let field of objectFields){
-                if(key === field){
-                    if(_.isString(val_val)){
-                        try{
-                            val[key] = JSON.parse(val_val)
-                        }catch(error){
-                        }
+            if(val[key]&&properties[key]){
+                if(properties[key].schema){
+                    val[key] = cmdb_cache.get(val[key])
+                }
+                else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
+                    val[key] = _.map(val[key],(id)=>{
+                        return cmdb_cache.get(id)
+                    })
+                }
+                else if(properties[key].type==='object'&&_.isString(val[key])){
+                    try{
+                        val[key] = JSON.parse(val[key])
+                    }catch(error){
                     }
                     if(key === 'asset_location'&&val[key]){
                         referencedMapper_assetLocation(val[key])
                     }
-                }
-            }
-            for(let field of referencedFields) {
-                if (key === field) {
-                    val[key] = cmdb_cache.get(val_val)
-                }
-            }
-            for(let field of referencedArrayFields) {
-                if (key === field) {
-                    val[key] = _.map(val_val,(id)=>{
-                        return cmdb_cache.get(id)
-                    })
                 }
             }
         }
@@ -109,6 +101,5 @@ const resultMapper = (result, params) => {
 
 module.exports = {
     resultMapper,
-    objectFields,
     globalHiddenFields
 }
