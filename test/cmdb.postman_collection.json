@@ -62,11 +62,7 @@
 				"6aa08657-2ed4-da84-034e-f1820d3e9d5a",
 				"de7d2c32-4869-44d1-41a2-e35e4784448a",
 				"840c11c0-e417-9033-690d-d723da302a63",
-				"a68f40e0-ebfa-2320-1e83-bfdfefc58296",
-				"6d76cb6e-2634-94a7-33b7-9196ea55f2a0",
-				"56263ac7-d25f-f6fe-c6fc-f4025b435e01",
-				"1a1f6666-28ec-e52a-9976-b83e69ecc5f2",
-				"90c31095-4ad3-efd7-cbe8-217cfa1a071e"
+				"a68f40e0-ebfa-2320-1e83-bfdfefc58296"
 			],
 			"folders_order": []
 		},
@@ -90,13 +86,11 @@
 				"ae16ba2c-d0ef-27d7-4747-c9875653586a",
 				"781018c3-ca01-b278-6c87-a1bcd8cf91d6",
 				"79e45a07-ffb0-6282-a668-e42bcd310bf9",
-				"e511510d-c68d-b0d5-a064-eeb189fb74c8",
 				"3045cd2f-ad11-6f2b-fa65-d5ce379d7c10",
 				"456720bc-7790-a016-d60d-fbd7d4f81cac",
 				"2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
 				"ed5b9337-e1f9-d89c-997b-3671bf334185",
 				"3a23b38e-196c-849a-d295-c667ff0ed022",
-				"38596695-56bb-9d4e-f166-510c8599de9c",
 				"8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
 				"168a351e-1498-85a0-5916-5895591e900e",
 				"b17a0229-80d6-13f7-13aa-4a3f2c770eb5",
@@ -123,7 +117,6 @@
 				"b72c8911-1d98-b47a-1c7f-3f903f53b7d8",
 				"64cc28dc-3dfd-549c-48f1-03a085a32e82",
 				"7ef2e855-211e-c157-6ca8-a0171c79f734",
-				"489b09b6-35bc-952b-ec7a-904ba5b4ba4c",
 				"93a8e1ba-573a-9bf7-984a-aef1a2df7366",
 				"07c40b56-89c6-d9c2-efcc-d9fa500b797c"
 			],
@@ -293,36 +286,6 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
 			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b"
-		},
-		{
-			"id": "1a1f6666-28ec-e52a-9976-b83e69ecc5f2",
-			"headers": "Content-Type: application/json\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"sg_test_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1500886498110,
-			"name": "add ITService group",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITServiceGroup\",\n    \"fields\":{\n      \"name\":\"test4\",\n      \"description\":\"test\"\n    }\n  }\n}"
 		},
 		{
 			"id": "1d78a669-3539-4cb1-3cf0-2eb168cd3cf7",
@@ -523,35 +486,6 @@
 			"folder": "ea73b714-3f7c-d6a7-823a-17d56ab3965b"
 		},
 		{
-			"id": "38596695-56bb-9d4e-f166-510c8599de9c",
-			"headers": "token: {{token}}\n",
-			"headerData": [
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Asset as root\"] = jsonData.data.name === 'Asset'",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1500557487444,
-			"name": "query ConfigurationItem Category by filter",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6"
-		},
-		{
 			"id": "3a23b38e-196c-849a-d295-c667ff0ed022",
 			"headers": "token: {{token}}\n",
 			"headerData": [
@@ -562,7 +496,8 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/all",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Software",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -570,15 +505,14 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"ConfigurationItem as root\"] = jsonData.data.name === 'ConfigurationItem'",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"labels found\"] = jsonData.status === 'ok'",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500557477130,
+			"time": 1505397719525,
 			"name": "query ConfigurationItem Category",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6"
+			"responses": []
 		},
 		{
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
@@ -640,43 +574,6 @@
 			"responses": []
 		},
 		{
-			"id": "489b09b6-35bc-952b-ec7a-904ba5b4ba4c",
-			"headers": "token: {{token}}\n",
-			"headerData": [
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows?keyword={{matched_word}}",
-			"queryParams": [
-				{
-					"key": "keyword",
-					"value": "{{matched_word}}",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
-			"preRequestScript": "\n",
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data.count){\n    tests[\"process flow by matched keyword found\"] = jsonData.data.count == 4;\n}",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1500557637513,
-			"name": "query process flow by keyword full text match",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363"
-		},
-		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "519a6158-bff8-f140-a8a9-f50122644258",
 			"name": "add ITService Email",
@@ -705,35 +602,6 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
-		},
-		{
-			"id": "56263ac7-d25f-f6fe-c6fc-f4025b435e01",
-			"headers": "token: {{token}}\n",
-			"headerData": [
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_test_id}}",
-			"queryParams": [],
-			"preRequestScript": "",
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "DELETE",
-			"data": [],
-			"dataMode": "params",
-			"tests": "\n\n\n",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1501071933715,
-			"name": "delete itservice",
-			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf"
 		},
 		{
 			"id": "59d86f92-c730-3f8c-d911-701d0b17abb1",
@@ -922,36 +790,6 @@
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf"
 		},
 		{
-			"id": "6d76cb6e-2634-94a7-33b7-9196ea55f2a0",
-			"headers": "Content-Type: application/json\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"service_test_id\", jsonData.uuid); \n}\n",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1501072115543,
-			"name": "add ITService",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"description\":\"test\",\n      \"group\":\"Messaging\"\n    }\n  }\n}"
-		},
-		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"id": "781018c3-ca01-b278-6c87-a1bcd8cf91d6",
 			"name": "add firewall",
@@ -1023,6 +861,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1033,13 +872,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"virtual_server_id\", jsonData.uuid); \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1503583926139,
+			"time": 1505632142472,
 			"name": "add virtual server",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}"
 		},
 		{
 			"id": "7d9d07e7-ac92-6126-de20-970f1b4114ad",
@@ -1160,12 +998,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504833597576,
+			"time": 1505367950892,
 			"name": "add physical server",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true\n    }\n  }\n}"
 		},
 		{
 			"folder": "51f3bb65-9a3d-6ea2-1e59-34b30b350234",
@@ -1239,6 +1077,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1246,44 +1085,14 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Router schema found\"] = jsonData.id === '/Router'",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Router schema found\"] = jsonData.status === 'ok'",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500557495771,
+			"time": 1505370935861,
 			"name": "query json schema of router ",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6"
-		},
-		{
-			"id": "90c31095-4ad3-efd7-cbe8-217cfa1a071e",
-			"headers": "token: {{token}}\n",
-			"headerData": [
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group/{{sg_test_id}}",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "DELETE",
-			"data": [],
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_test_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1500886678462,
-			"name": "delete ITService group",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf"
+			"responses": []
 		},
 		{
 			"id": "93a8e1ba-573a-9bf7-984a-aef1a2df7366",
@@ -1655,12 +1464,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504836025300,
+			"time": 1505614847540,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"operating_system\": \"windows xp\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":{{auth_user_id}},\n      \"operating_system\": \"windows xp\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n       },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
 		},
 		{
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
@@ -1946,36 +1755,6 @@
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf"
 		},
 		{
-			"id": "e511510d-c68d-b0d5-a064-eeb189fb74c8",
-			"headers": "Content-Type: application/json\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "PATCH",
-			"data": [],
-			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1504836403207,
-			"name": "patch router with winxp",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"operating_system\": \"windows xp\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
-		},
-		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "ec74e551-29aa-4e50-de68-a5253cf6b527",
 			"name": "add ServiceGroup Infrastructure",
@@ -2146,12 +1925,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"email_gateway_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504834197757,
+			"time": 1505367702745,
 			"name": "add application",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"subtype\":\"AntispamGateway\",\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"email\"],\n      \"responsibility\":\"{{auth_user}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"subtype\":\"AntispamGateway\",\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"email\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
 		}
 	]
 }

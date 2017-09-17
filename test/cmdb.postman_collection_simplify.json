@@ -36,21 +36,6 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets"
   },
   {
-    "name": "add ITService group",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ITServiceGroup",
-        "fields": {
-          "name": "test4",
-          "description": "test"
-        }
-      }
-    }
-  },
-  {
     "name": "query it service groups by keyword",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
@@ -92,14 +77,9 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms"
   },
   {
-    "name": "query ConfigurationItem Category by filter",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset"
-  },
-  {
     "name": "query ConfigurationItem Category",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/all"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Software"
   },
   {
     "name": "add incident flow 2 reference incident flow 1",
@@ -134,11 +114,6 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems"
   },
   {
-    "name": "query process flow by keyword full text match",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows?keyword={{matched_word}}"
-  },
-  {
     "name": "add ITService Email",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
@@ -153,11 +128,6 @@
         }
       }
     }
-  },
-  {
-    "name": "delete itservice",
-    "method": "DELETE",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_test_id}}"
   },
   {
     "name": "query all it service groups",
@@ -228,22 +198,6 @@
     "name": "search it service by group id",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search={{group_infrastructure_id}}"
-  },
-  {
-    "name": "add ITService",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ITService",
-        "fields": {
-          "name": "test",
-          "description": "test",
-          "group": "Messaging"
-        }
-      }
-    }
   },
   {
     "name": "add firewall",
@@ -319,12 +273,6 @@
           "model": "b10",
           "product_date": "2016-10-11",
           "warranty_expiration_date": "2016-11-11",
-          "asset_location": {
-            "status": "on_shelf",
-            "shelf": "shelf",
-            "label": "label",
-            "other": "other"
-          },
           "management_ip": [
             "192.168.0.108"
           ],
@@ -376,7 +324,7 @@
             "192.168.0.108"
           ],
           "technical_support_info": "010-123456",
-          "operating_system": "windows xp",
+          "operating_system": "ubuntu",
           "storage_info": "hp-disk1",
           "model": "b10",
           "product_date": "2016-10-11",
@@ -425,11 +373,6 @@
     "name": "query json schema of router ",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router"
-  },
-  {
-    "name": "delete ITService group",
-    "method": "DELETE",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group/{{sg_test_id}}"
   },
   {
     "name": "query process flow by uuid",
@@ -574,7 +517,7 @@
           "it_service": [
             "dns"
           ],
-          "responsibility": "{{auth_user}}",
+          "responsibility": "{{auth_user_id}}",
           "operating_system": "windows xp",
           "sn": "123456",
           "model": "a10",
@@ -593,6 +536,15 @@
               "lat": 39.98,
               "lon": 116.3
             }
+          },
+          "used_by_user": {
+            "dn": "cn=ron yang,ou=users,dc=test,dc=com",
+            "uidNumber": "1000",
+            "uid": "ryang"
+          },
+          "used_by_dept": {
+            "dn": "ou=groups,dc=test,dc=com",
+            "ou": "groups"
           }
         }
       }
@@ -701,26 +653,6 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=email,pop3"
   },
   {
-    "name": "patch router with winxp",
-    "method": "PATCH",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "Router",
-        "fields": {
-          "it_service": [
-            "{{service_pop3_id}}",
-            "{{service_dns_id}}"
-          ],
-          "sn": "12345678",
-          "operating_system": "windows xp",
-          "responsibility": "{{auth_user_id}}"
-        }
-      }
-    }
-  },
-  {
     "name": "add ServiceGroup Infrastructure",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
@@ -785,7 +717,7 @@
           "it_service": [
             "email"
           ],
-          "responsibility": "{{auth_user}}",
+          "responsibility": "{{auth_user_id}}",
           "sn": "123456",
           "product_date": "2016-08-11",
           "warranty_expiration_date": "2016-11-11"

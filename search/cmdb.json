@@ -33,16 +33,6 @@
               "type": "string"
             }
           }
-        },
-        "barcode":{
-          "properties": {
-            "cfg_id": {
-              "type": "string"
-            },
-            "url":{
-              "type": "string"
-            }
-          }
         }
       }
     }

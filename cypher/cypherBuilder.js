@@ -139,7 +139,7 @@ CREATE (n)-[r:LocatedAt]->(wh)`
 /**
  * ConfigurationItem
  */
-const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH (n:ConfigurationItem{uuid: {uuid}})-[r:RESPONSIBLE_FOR|LOCATED|SUPPORT_SERVICE]-()
+const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH (n:ConfigurationItem{uuid: {uuid}})-[r]-()
 DELETE r`
 
 const cmdb_addConfigurationItemITServiceRel_cypher = `UNWIND {it_service} as service_id

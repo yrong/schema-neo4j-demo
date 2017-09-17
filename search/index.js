@@ -37,8 +37,19 @@ var getIndexName = function(category) {
     else if(schema.isProcessFlow(category))
         indexName = ProcessFlowIndex
     else
-        throw new Error('can not find index in es:'+category)
+        throw new Error('can not find index for category:'+category)
     return indexName
+}
+
+var getTypeName = function(category) {
+    let typeName
+    if(schema.isConfigurationItem(category))
+        typeName = schema.cmdbTypeName.ConfigurationItem
+    else if(schema.isProcessFlow(category))
+        typeName = schema.cmdbTypeName.ProcessFlow
+    else
+        throw new Error('can not find type for category:'+category)
+    return typeName
 }
 
 var addOpsCommand = (command)=>{
@@ -54,9 +65,10 @@ var addOpsCommand = (command)=>{
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
     let indexName = getIndexName(params.category)
+    let typeName = getTypeName(params.category)
     let index_obj = {
         index: indexName,
-        type: params.category,
+        type: typeName,
         id: params.uuid,
         body: _.omit(params,hidden_fields),
         refresh:true
@@ -72,13 +84,14 @@ var addItem = function(result, params, ctx) {
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
-    let indexName = getIndexName(params.category),typeName = params.category
+    let indexName = getIndexName(params.category)
+    let typeName = getTypeName(params.category)
     let index_obj = {
         index: indexName,
         type: typeName,
         id:params.uuid,
         body: {doc:_.omit(params,hidden_fields)},
-        refresh:esConfig.refresh
+        refresh:true
     }
     logger.debug(`patch index in es:${JSON.stringify(index_obj,null,'\t')}`)
     return es_client.update(index_obj).then(function (response) {
@@ -97,7 +110,7 @@ var deleteItem = function(result, params, ctx) {
         body: {
             query: queryObj
         },
-        refresh:esConfig.refresh
+        refresh:true
     }
     logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
     return es_client.deleteByQuery(delObj).then(function (response) {
