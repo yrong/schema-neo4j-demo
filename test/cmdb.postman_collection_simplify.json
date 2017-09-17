@@ -130,6 +130,34 @@
     }
   },
   {
+    "name": "add test",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "test",
+        "fields": {
+          "name": "test",
+          "it_service": [
+            "{{service_dns_id}}"
+          ],
+          "responsibility": "{{auth_user_id}}",
+          "sn": "123456",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "on_shelf",
+            "shelf": "{{shelf_id}}",
+            "label": "label",
+            "other": "other"
+          }
+        }
+      }
+    }
+  },
+  {
     "name": "query all it service groups",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group"

@@ -85,6 +85,7 @@
 				"d35bf486-8d8f-4918-d5e5-de334a8c5014",
 				"ae16ba2c-d0ef-27d7-4747-c9875653586a",
 				"781018c3-ca01-b278-6c87-a1bcd8cf91d6",
+				"54bc86ac-ff88-5d4e-2b21-c9e8fb2c792d",
 				"79e45a07-ffb0-6282-a668-e42bcd310bf9",
 				"3045cd2f-ad11-6f2b-fa65-d5ce379d7c10",
 				"456720bc-7790-a016-d60d-fbd7d4f81cac",
@@ -602,6 +603,36 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+		},
+		{
+			"id": "54bc86ac-ff88-5d4e-2b21-c9e8fb2c792d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"firewall_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1505640246293,
+			"name": "add test",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"test\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"}\n    }\n  }\n}"
 		},
 		{
 			"id": "59d86f92-c730-3f8c-d911-701d0b17abb1",
