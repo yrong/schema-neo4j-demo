@@ -7,10 +7,16 @@ const fs = require('fs')
 let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {}
 
 const loadSchema = ()=>{
-    let schemas = fs.readdirSync("./schema"),schema,sortedAuxiliaryTypes=[]
+    let schemas = fs.readdirSync("./schema"),schema,sortedAuxiliaryTypes=[],property
     for(let cmdbType of schemas){
         if(cmdbType!='index.js'){
             schema = JSON.parse(fs.readFileSync('./schema/'+ cmdbType, 'utf8'))
+            for(let key in schema.properties){
+                property = schema.properties[key]
+                if(property.type==='array'&&property.items.type==='object'){
+                    throw new Error(`array field ${key} in ${cmdbType} can not be object`)
+                }
+            }
             ajv.addSchema(schema)
             cmdbSchemas[schema.id] = schema
             cmdbTypeName[schema.id] = schema.id
@@ -29,6 +35,7 @@ const loadSchema = ()=>{
             let val = cmdbSchemas[auxiliaryType]['properties'][key]
             if(val.schema){
                 no_referenced = false
+                break
             }
         }
         if(no_referenced)
@@ -112,7 +119,9 @@ const traverseRefProperties = (properties,prefix='',refProperties)=>{
     _.each(properties,(val,key)=>{
         if(val.schema){
             refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.schema,type:val.type})
-        }else if(val.properties){
+        }else if(val.type==='array'&&val.items.schema){
+            refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.items.schema,type:val.items.type})
+        }else if(val.type==='object'&&val.properties){
             traverseRefProperties(val.properties,key,refProperties)
         }
     })
@@ -124,6 +133,16 @@ const getSchemaRefProperties = (category)=>{
     let referenced_properties = []
     traverseRefProperties(properties,'',referenced_properties)
     return referenced_properties
+}
+
+const getSchemaObjectProperties = (category)=>{
+    let properties = getSchemaProperties(category),objectFields = []
+    _.each(properties,(val,key)=>{
+        if(val.type==='object'){
+            objectFields.push(key)
+        }
+    })
+    return objectFields
 }
 
 const isConfigurationItem = (category) => {
@@ -164,4 +183,4 @@ const isAuxiliaryTypes  = (category) => {
 }
 
 
-module.exports = {loadSchema,getSchemaProperties,getSchemaRefProperties,cmdbTypeName,getAuxiliaryTypes,checkSchema,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}
+module.exports = {cmdbTypeName,loadSchema,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getAuxiliaryTypes,checkSchema,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes}

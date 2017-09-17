@@ -7,9 +7,8 @@
     },
     "it_service": {
       "type": "array",
-      "items": { "type": "string" },
-      "uniqueItems": true,
-      "schema":"ITService"
+      "items": { "type": "string", "schema":"ITService" },
+      "uniqueItems": true
     },
     "monitored": {
       "type": "boolean",
@@ -30,6 +29,22 @@
       "type":"object",
       "properties":{
         "status":{
+          "type": "string"
+        }
+      }
+    },
+    "used_by_user":{
+      "type":"object",
+      "properties":{
+        "dn":{
+          "type": "string"
+        }
+      }
+    },
+    "used_by_dept":{
+      "type":"object",
+      "properties":{
+        "dn":{
           "type": "string"
         }
       }

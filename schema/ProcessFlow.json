@@ -4,9 +4,8 @@
   "properties": {
     "it_service": {
       "type": "array",
-      "items": { "type": "string"},
-      "uniqueItems": true,
-      "schema":"ITService"
+      "items": { "type": "string","schema":"ITService"},
+      "uniqueItems": true
     },
     "reference_process_flow":{
       "type": "array",

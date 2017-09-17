@@ -13,8 +13,8 @@
         },
         "applications":{
             "type": "array",
-            "items": {"type": "string"},
-            "schema":"Software"
+            "items": {"type": "string","schema":"Software"},
+            "uniqueItems": true
         },
         "storage_info":{
           "type": "string"
