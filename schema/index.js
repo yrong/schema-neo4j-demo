@@ -185,37 +185,16 @@ const isAuxiliaryTypes  = (category) => {
 const getSchemaHierarchy = ()=>{
     let cmdbConfigurationItemInheritanceRelationship =
         {
-            name: cmdbTypeName.ConfigurationItem,
-            children:
-                [
-                    {
-                        name: cmdbTypeName.AbstractServer,
-                        children: [
-                            {name: cmdbTypeName.PhysicalServer},
-                            {name: cmdbTypeName.VirtualServer}]
-                    },
-                    {
-                        name: cmdbTypeName.Asset,
-                        children: [
-                            {
-                                name: cmdbTypeName.Hardware,
-                                children: [
-                                    {name: cmdbTypeName.Storage},
-                                    {
-                                        name: cmdbTypeName.NetworkDevice,
-                                        children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
-                                    },
-                                    {name: cmdbTypeName.Camera},
-                                    {name: cmdbTypeName.PhysicalServer}
-                                ]
-                            },
-                            {
-
-                                name: cmdbTypeName.Software,
-                                children: []
-                            }]
-                    }
-                ]
+            name: cmdbTypeName.Hardware,
+            children: [
+                {name: cmdbTypeName.Storage},
+                {
+                    name: cmdbTypeName.NetworkDevice,
+                    children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
+                },
+                {name: cmdbTypeName.Camera},
+                {name: cmdbTypeName.PhysicalServer}
+            ]
         }
     return cmdbConfigurationItemInheritanceRelationship
 }
