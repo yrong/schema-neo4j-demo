@@ -185,15 +185,20 @@ const isAuxiliaryTypes  = (category) => {
 const getSchemaHierarchy = ()=>{
     let cmdbConfigurationItemInheritanceRelationship =
         {
-            name: cmdbTypeName.Hardware,
+            name: cmdbTypeName.Asset,
             children: [
-                {name: cmdbTypeName.Storage},
                 {
-                    name: cmdbTypeName.NetworkDevice,
-                    children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
-                },
-                {name: cmdbTypeName.Camera},
-                {name: cmdbTypeName.PhysicalServer}
+                    name: cmdbTypeName.Hardware,
+                    children: [
+                        {name: cmdbTypeName.Storage},
+                        {
+                            name: cmdbTypeName.NetworkDevice,
+                            children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
+                        },
+                        {name: cmdbTypeName.Camera},
+                        {name: cmdbTypeName.PhysicalServer}
+                    ]
+                }
             ]
         }
     return cmdbConfigurationItemInheritanceRelationship
