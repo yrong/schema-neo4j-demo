@@ -196,27 +196,19 @@ const isAuxiliaryTypes  = (category) => {
     return cmdbConfigurationItemAuxiliaryTypes.includes(category)
 }
 
-
-const getSchemaHierarchy = ()=>{
-    let cmdbConfigurationItemInheritanceRelationship =
-        {
-            name: cmdbTypeName.Asset,
-            children: [
-                {
-                    name: cmdbTypeName.Hardware,
-                    children: [
-                        {name: cmdbTypeName.Storage},
-                        {
-                            name: cmdbTypeName.NetworkDevice,
-                            children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
-                        },
-                        {name: cmdbTypeName.Camera},
-                        {name: cmdbTypeName.PhysicalServer}
-                    ]
-                }
-            ]
+const getSchemaHierarchy = (category)=>{
+    let result = {name:category}
+    if(cmdbConfigurationItemInheritanceRelationship[category].children){
+        result.children = _.map(cmdbConfigurationItemInheritanceRelationship[category].children,(child)=>{
+            return {name:child}
+        })
+    }
+    _.each(cmdbConfigurationItemInheritanceRelationship[category].children,(child,index)=> {
+        if (cmdbConfigurationItemInheritanceRelationship[child]) {
+            result.children[index] = getSchemaHierarchy(child)
         }
-    return cmdbConfigurationItemInheritanceRelationship
+    })
+    return result
 }
 
 const getApiRoutes = ()=>{
