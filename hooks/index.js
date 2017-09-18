@@ -320,13 +320,22 @@ module.exports = {
     getSchemaHierarchy:function(params,ctx) {
         return new Promise((resolve,reject)=>{
             let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),cmdbConfigurationItemInheritanceRelationship
-            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,params,(result, params)=>{
-                cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy()
-                cmdbConfigurationItemInheritanceRelationship.children[1].children[1].children = _.map(result,(subtype)=>subtype.category)
-                response_wrapped.data = cmdbConfigurationItemInheritanceRelationship;
-                if(params.filter == schema.cmdbTypeName.Asset) {
-                    response_wrapped.data = cmdbConfigurationItemInheritanceRelationship.children[1]
+            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,{category:'Software'},(result)=>{
+                let softwares = _.map(result,(subtype)=>{
+                    return subtype.category
+                })
+                cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category)
+                let addSoftwareRelationship = (relationship)=>{
+                    if(relationship.name === schema.cmdbTypeName.Software){
+                        relationship.children = softwares
+                    }else if(relationship.children){
+                        _.each(relationship.children,(child)=>{
+                            return addSoftwareRelationship(child)
+                        })
+                    }
                 }
+                addSoftwareRelationship(cmdbConfigurationItemInheritanceRelationship)
+                response_wrapped.data = cmdbConfigurationItemInheritanceRelationship;
                 resolve(response_wrapped)
             })
         })

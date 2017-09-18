@@ -14,5 +14,6 @@
     }
   },
   "required": ["name","server_room_id"],
-  "category":"auxiliary"
+  "category":"auxiliary",
+  "route":"/cabinets"
 }

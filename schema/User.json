@@ -30,5 +30,6 @@
       "type":"string"
     }
   },
-  "category":"auxiliary"
+  "category":"auxiliary",
+  "route":"/users"
 }

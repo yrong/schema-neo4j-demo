@@ -4,17 +4,17 @@ const ajv = new Ajv({ useDefaults: true })
 const config = require('config')
 const fs = require('fs')
 
-let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {}
+let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {},cmdbRoutes = {},cmdbConfigurationItemInheritanceRelationship={}
 
 const loadSchema = ()=>{
     let schemas = fs.readdirSync("./schema"),schema,sortedAuxiliaryTypes=[],property
-    for(let cmdbType of schemas){
-        if(cmdbType!='index.js'){
-            schema = JSON.parse(fs.readFileSync('./schema/'+ cmdbType, 'utf8'))
+    for(let schemaFile of schemas){
+        if(schemaFile!='index.js'){
+            schema = JSON.parse(fs.readFileSync('./schema/'+ schemaFile, 'utf8'))
             for(let key in schema.properties){
                 property = schema.properties[key]
                 if(property.type==='array'&&property.items.type==='object'){
-                    throw new Error(`array field ${key} in ${cmdbType} can not be object`)
+                    throw new Error(`array field ${key} in ${schemaFile} can not be object`)
                 }
             }
             ajv.addSchema(schema)
@@ -22,6 +22,20 @@ const loadSchema = ()=>{
             cmdbTypeName[schema.id] = schema.id
             if(schema.category==='auxiliary'){
                 cmdbConfigurationItemAuxiliaryTypes.push(schema.id)
+            }else{
+                _.each(schema.allOf,(parent)=>{
+                    if(parent['$ref']){
+                        cmdbConfigurationItemInheritanceRelationship[parent['$ref']] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]||{}
+                        cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children']||[]
+                        cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'].push(schema.id)
+                    }
+                })
+            }
+            if(schema.route){
+                cmdbRoutes[schema.id] = {route:schema.route}
+                if(schema.searchable){
+                    cmdbRoutes[schema.id].searchable = schema.searchable
+                }
             }
         }
     }
@@ -182,43 +196,24 @@ const isAuxiliaryTypes  = (category) => {
     return cmdbConfigurationItemAuxiliaryTypes.includes(category)
 }
 
-const getSchemaHierarchy = ()=>{
-    let cmdbConfigurationItemInheritanceRelationship =
-        {
-            name: cmdbTypeName.ConfigurationItem,
-            children:
-                [
-                    {
-                        name: cmdbTypeName.AbstractServer,
-                        children: [
-                            {name: cmdbTypeName.PhysicalServer},
-                            {name: cmdbTypeName.VirtualServer}]
-                    },
-                    {
-                        name: cmdbTypeName.Asset,
-                        children: [
-                            {
-                                name: cmdbTypeName.Hardware,
-                                children: [
-                                    {name: cmdbTypeName.Storage},
-                                    {
-                                        name: cmdbTypeName.NetworkDevice,
-                                        children: [{name: cmdbTypeName.Router}, {name: cmdbTypeName.Switch}, {name: cmdbTypeName.Firewall}]
-                                    },
-                                    {name: cmdbTypeName.Camera},
-                                    {name: cmdbTypeName.PhysicalServer}
-                                ]
-                            },
-                            {
-
-                                name: cmdbTypeName.Software,
-                                children: []
-                            }]
-                    }
-                ]
+const getSchemaHierarchy = (category)=>{
+    let result = {name:category}
+    if(cmdbConfigurationItemInheritanceRelationship[category].children){
+        result.children = _.map(cmdbConfigurationItemInheritanceRelationship[category].children,(child)=>{
+            return {name:child}
+        })
+    }
+    _.each(cmdbConfigurationItemInheritanceRelationship[category].children,(child,index)=> {
+        if (cmdbConfigurationItemInheritanceRelationship[child]) {
+            result.children[index] = getSchemaHierarchy(child)
         }
-    return cmdbConfigurationItemInheritanceRelationship
+    })
+    return result
+}
+
+const getApiRoutes = ()=>{
+    return cmdbRoutes
 }
 
 
-module.exports = {cmdbTypeName,loadSchema,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getAuxiliaryTypes,checkSchema,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes,getSchemaHierarchy}
+module.exports = {cmdbTypeName,loadSchema,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getAuxiliaryTypes,checkSchema,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes,getSchemaHierarchy,getApiRoutes}

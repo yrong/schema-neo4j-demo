@@ -40,5 +40,7 @@
       "type": "string"
     }
   },
-  "required": ["it_service"]
+  "required": ["it_service"],
+  "route": "/processFlows",
+  "searchable":true
 }

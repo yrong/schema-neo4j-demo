@@ -50,5 +50,7 @@
       }
     }
   },
-  "required": ["name"]
+  "required": ["name"],
+  "route": "/cfgItems",
+  "searchable":true
 }

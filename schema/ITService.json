@@ -39,5 +39,6 @@
     }
   },
   "required": ["name"],
-  "category":"auxiliary"
+  "category":"auxiliary",
+  "route":"/it_services/service"
 }

@@ -7,8 +7,8 @@
       "management_ip":{
         "type": "array",
         "items": {"type": "string"}
+        }
       }
-    }
     }
   ]
 }
