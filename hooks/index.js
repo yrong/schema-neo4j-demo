@@ -317,6 +317,20 @@ module.exports = {
         response_wrapped.data = result;
         return response_wrapped;
     },
+    getSchemaHierarchy:function(params,ctx) {
+        return new Promise((resolve,reject)=>{
+            let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),cmdbConfigurationItemInheritanceRelationship
+            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,params,(result, params)=>{
+                cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy()
+                cmdbConfigurationItemInheritanceRelationship.children[1].children[1].children = _.map(result,(subtype)=>subtype.category)
+                response_wrapped.data = cmdbConfigurationItemInheritanceRelationship;
+                if(params.filter == schema.cmdbTypeName.Asset) {
+                    response_wrapped.data = cmdbConfigurationItemInheritanceRelationship.children[1]
+                }
+                resolve(response_wrapped)
+            })
+        })
+    },
     configurationItemCategoryProcess:function(params,ctx) {
         return new Promise((resolve,reject)=>{
             let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)

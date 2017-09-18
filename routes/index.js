@@ -85,6 +85,13 @@ module.exports = (app)=>{
     app.defineAPI({
         method: 'GET',
         route: '/api/cfgItems/categories/:category',
+        procedure: hook.getSchemaHierarchy
+    })
+
+    /*ConfigurationItemCategory*/
+    app.defineAPI({
+        method: 'GET',
+        route: '/api/cfgItems/categories/advanced/:category',
         procedure: hook.configurationItemCategoryProcess
     })
 
