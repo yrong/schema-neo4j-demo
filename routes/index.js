@@ -82,12 +82,14 @@ module.exports = (app)=>{
     })
 
     /* Delete all Items(for test purpose) */
-    app.defineAPI({
-        method: 'DEL',
-        route: '/api/items',
-        preProcess: hook.cudItem_preProcess,
-        postProcess: search.deleteItem
-    })
+    if(process.env.NODE_ENV === 'development'){
+        app.defineAPI({
+            method: 'DEL',
+            route: '/api/items',
+            preProcess: hook.cudItem_preProcess,
+            postProcess: search.deleteItem
+        })
+    }
 
     /*License*/
     app.router.get('/api/license', function (ctx, next) {

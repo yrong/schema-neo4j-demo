@@ -6,7 +6,7 @@
     "build": "webpack",
     "buildEssential": "EDITION=essential webpack",
     "test": "mocha --harmony",
-    "start": "node  --harmony ./server.js",
+    "start": "NODE_ENV=production node  --harmony ./server.js",
     "init": "/bin/bash ./script/init.sh",
     "initES": "/bin/bash ./script/init_es.sh",
     "backup": "/bin/bash ./script/backup.sh",
