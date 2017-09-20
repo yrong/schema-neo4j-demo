@@ -41,7 +41,7 @@
     "log4js_wrapper": "1.0.3-beta.2",
     "qr-image": "^3.2.0",
     "scirichon-acl-checker": "1.0.0-beta.8",
-    "scirichon-cache": "1.0.1-beta.7",
+    "scirichon-cache": "1.0.1-beta.8",
     "scirichon-common": "1.0.0-beta.7",
     "ws": "^3.0.0",
     "xlsx": "^0.8.1"

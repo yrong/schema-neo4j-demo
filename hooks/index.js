@@ -247,12 +247,12 @@ module.exports = {
             }
         }
     },
-    cudItem_postProcess:function (result,params,ctx) {
+    cudItem_postProcess:async function (result,params,ctx) {
         let response_wrapped = constructResponse(STATUS_INFO,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
             if(!params.uuid||!params.fields)
                 throw new Error('added obj without uuid')
-            cmdb_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
+            await cmdb_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
             response_wrapped.uuid = params.uuid
             if(params.fields.asset_id){
                 let qr_code = qr.image(params.fields.asset_id,{ type: 'png' })
@@ -266,14 +266,14 @@ module.exports = {
                 response_wrapped.uuid = params.uuid
                 if(result.length==1||result.deleted==1){
                     if(!params[STATUS_WARNING]){
-                        cmdb_cache.del(params.uuid)
+                        await cmdb_cache.del(params.uuid)
                     }
                 }else{
                     params[STATUS_WARNING] = CONTENT_NO_RECORD
                 }
             }
             if(params.category===CATEGORY_ALL)
-                cmdb_cache.flushAll()
+                await cmdb_cache.flushAll()
         }
         if(params[STATUS_WARNING]){
             response_wrapped.status = STATUS_WARNING
@@ -294,7 +294,7 @@ module.exports = {
                 notification_obj.old = params.fields_old
             }
             if(params.category!==CATEGORY_ALL)
-                common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
+               await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
         }
         return　response_wrapped;
     },
