@@ -373,19 +373,11 @@ module.exports = {
         if(params.keyword){
             condition = params.category === schema.cmdbTypeName.User?user_keyword_condition:keyword_condition
         }
-        if(params.category === schema.cmdbTypeName.ITServiceGroup){
-            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ITServiceGroup,schema.cmdbTypeName.ITService,'group',condition)
-        }else if(params.category === schema.cmdbTypeName.ServerRoom){
-            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ServerRoom,schema.cmdbTypeName.Cabinet,'server_room_id',condition)
-        }else if(params.category === schema.cmdbTypeName.WareHouse){
-            cypher = cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.WareHouse,schema.cmdbTypeName.Shelf,'warehouse_id',condition);
+        label = _.isArray(params.category)?_.last(params.category):params.category
+        if(params.pagination){
+            cypher = cmdb_findNodesPaginated_Cypher_template(label,condition)
         }else{
-            label = _.isArray(params.category)?_.last(params.category):params.category
-            if(params.pagination){
-                cypher = cmdb_findNodesPaginated_Cypher_template(label,condition)
-            }else{
-                cypher = cmdb_findNodes_Cypher_template(label,condition);
-            }
+            cypher = cmdb_findNodes_Cypher_template(label,condition);
         }
         return cypher;
     },
@@ -402,5 +394,6 @@ module.exports = {
     generateCfgHostsByITServiceGroupCypher,
     generateQueryConfigurationItemBySubCategoryCypher,
     generateCfgHostsByITServiceCypher,
-    generateQuerySubTypeCypher
+    generateQuerySubTypeCypher,
+    cmdb_queryItemWithMembers_cypher
 }

@@ -92,7 +92,14 @@ const queryParamsCypherGenerator = function (params) {
     /**
      * customized cypher query
      */
-    if(params.category === schema.cmdbTypeName.ITService){
+    let condition = params.keyword?`WHERE n.name = {keyword}`:''
+    if(params.category === schema.cmdbTypeName.ITServiceGroup&&!params.origional){
+        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ITServiceGroup,schema.cmdbTypeName.ITService,'group',condition)
+    }else if(params.category === schema.cmdbTypeName.ServerRoom&&!params.origional){
+        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ServerRoom,schema.cmdbTypeName.Cabinet,'server_room_id',condition)
+    }else if(params.category === schema.cmdbTypeName.WareHouse&&!params.origional){
+        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.WareHouse,schema.cmdbTypeName.Shelf,'warehouse_id',condition);
+    }else if(params.category === schema.cmdbTypeName.ITService){
         if(params.uuids){
             params.uuids = params.uuids.split(",");
             params.cypher = cypherBuilder.generateQueryITServiceByUuidsCypher(params);
@@ -100,7 +107,7 @@ const queryParamsCypherGenerator = function (params) {
             params.search = params.search.split(",");
             params.cypher = cypherBuilder.generateAdvancedSearchITServiceCypher(params);
         }
-    } else if(params.category === schema.cmdbTypeName.ConfigurationItem){
+    }else if(params.category === schema.cmdbTypeName.ConfigurationItem){
         if(params.mounted_rels){
             params.cypher = cypherBuilder.generateMountedConfigurationItemRelsCypher(params);
         }else if(params.cfgHostsByITServiceGroup){
