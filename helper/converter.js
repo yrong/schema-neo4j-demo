@@ -3,14 +3,14 @@ const cmdb_cache = require('scirichon-cache')
 const uuid_validator = require('uuid-validate')
 const schema = require('../schema')
 
-const single_converter = (key,value)=>{
+const single_converter = async (key,value)=>{
     let uuid,cached_val
     if(uuid_validator(value)){
-        cached_val = cmdb_cache.getItemByCategoryAndID(key,value)
+        cached_val = await cmdb_cache.getItemByCategoryAndID(key,value)
     }else if(key===schema.cmdbTypeName.User&&_.isInteger(value)){
-        cached_val = cmdb_cache.getItemByCategoryAndID(key,value)
+        cached_val = await cmdb_cache.getItemByCategoryAndID(key,value)
     }else{
-        cached_val = cmdb_cache.getItemByCategoryAndName(key,value)
+        cached_val = await cmdb_cache.getItemByCategoryAndName(key,value)
     }
     if(cached_val)
         uuid = cached_val.uuid
@@ -18,18 +18,19 @@ const single_converter = (key,value)=>{
         throw new Error(`can not find category '${key}' with name or id as '${value}' in cmdb`)
     return uuid
 }
-const array_converter = (key,values)=>{
-    let uuids = _.map(values,(value)=>{
-        return single_converter(key,value)
-    })
+const array_converter = async (key,values)=>{
+    let uuids = []
+    for(let value of values){
+        uuids.push(await single_converter(key,value))
+    }
     return uuids
 }
 
-const refConverter = (key,value)=>{
+const refConverter = async (key,value)=>{
     if(_.isArray(value))
-        return array_converter(key,value)
+        return await array_converter(key,value)
     else
-        return single_converter(key,value)
+        return await single_converter(key,value)
 }
 
 

@@ -35,35 +35,38 @@ const recursivelyRemoveInternalProperties =  (val) => {
     return val;
 }
 
-const referencedMapper_assetLocation = (val)=>{
+const referencedMapper_assetLocation = async (val)=>{
     let asset_val = {}
     if(uuid_validator(val['cabinet'])){
-        asset_val = val['cabinet']=cmdb_cache.get(val['cabinet'])||val['cabinet']
+        asset_val = val['cabinet']=await cmdb_cache.get(val['cabinet'])||val['cabinet']
     }
     if(uuid_validator(val['shelf'])){
-        asset_val = val['shelf']=cmdb_cache.get(val['shelf'])||val['shelf']
+        asset_val = val['shelf']=await cmdb_cache.get(val['shelf'])||val['shelf']
     }
     if(uuid_validator(asset_val['parent']))
-        asset_val['parent']=cmdb_cache.get(asset_val['parent'])||asset_val['parent']
+        asset_val['parent']=await cmdb_cache.get(asset_val['parent'])||asset_val['parent']
 }
 
-const referencedMapper = (val) => {
-    let properties
+const referencedMapper = async (val) => {
+    let properties,results = []
     if (_.isArray(val)) {
-        val = _.map(val, function (val) {
-            return referencedMapper(val);
-        });
+        for(let single of val){
+            results.push(await referencedMapper(single))
+        }
+        val = results
     } else if(val.category){
         properties = schema.getSchemaProperties(val.category)
         for (let key in val) {
             if(val[key]&&properties[key]){
                 if(properties[key].schema){
-                    val[key] = cmdb_cache.get(val[key])
+                    val[key] = await cmdb_cache.get(val[key])
                 }
                 else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
-                    val[key] = _.map(val[key],(id)=>{
-                        return cmdb_cache.get(id)
-                    })
+                    let objs = []
+                    for(let id of val[key]){
+                        objs.push(await cmdb_cache.get(id))
+                    }
+                    val[key] = objs
                 }
                 else if(properties[key].type==='object'&&_.isString(val[key])){
                     try{
@@ -71,7 +74,7 @@ const referencedMapper = (val) => {
                     }catch(error){
                     }
                     if(key === 'asset_location'&&val[key]){
-                        referencedMapper_assetLocation(val[key])
+                        await referencedMapper_assetLocation(val[key])
                     }
                 }
             }

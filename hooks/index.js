@@ -35,9 +35,7 @@ const getCategoryFromUrl = function (url) {
 }
 
 const logCypher = (params)=>{
-    let cypher = params.cyphers||params.cypher
-    let cypher_params = _.omit(params,['cypher','cyphers','data','fields','fields_old','method','url','token'])
-    logger.debug(`cypher to executed:${JSON.stringify({cypher:cypher,params:cypher_params},null,'\t')}`)
+    logger.debug(`cypher to executed:${JSON.stringify({cypher:params.cyphers||params.cypher,params:_.omit(params,['cypher','cyphers','data','fields_old','method','url','token'])},null,'\t')}`)
 }
 
 const cudCypherGenerator = (params)=>{
@@ -126,7 +124,7 @@ const queryParamsCypherGenerator = function (params) {
     return params;
 }
 
-const cudItem_params_stringify = (params) => {
+const cudItem_params_stringify = async (params) => {
     let objectFields=schema.getSchemaObjectProperties(params.category)
     for (let key in params.fields){
         if(_.isArray(params.fields[key])){
@@ -155,26 +153,29 @@ const cudItem_params_stringify = (params) => {
 }
 
 
-const cudItem_refParamsConverter = (params)=>{
-    var convert = (ref,val)=>{
-        val = ref_converter(ref.schema||ref.items.schema,val)
+const cudItem_refParamsConverter = async (params)=>{
+    var convert = async (ref,val)=>{
+        val = await ref_converter(ref.schema||ref.items.schema,val)
         jp.value(params, `$.${ref.attr}`,val)
         jp.value(params, `$.fields.${ref.attr}`,val)
     }
-    _.each(schema.getSchemaRefProperties(params.category),(ref)=>{
-        let val = jp.query(params, `$.${ref.attr}`)[0]
-        if(val){
-            convert(ref,val)
+    var refs = schema.getSchemaRefProperties(params.category)
+    if(refs){
+        for(let ref of refs){
+            let val = jp.query(params, `$.${ref.attr}`)[0]
+            if(val){
+                await convert(ref,val)
+            }
         }
-    })
+    }
     return params
 }
 
-const cudItem_callback = (params)=>{
+const cudItem_callback = async (params)=>{
     if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
         params = _.assign(params, params.fields)
-        cudItem_refParamsConverter(params)
-        cudItem_params_stringify(params)
+        await cudItem_refParamsConverter(params)
+        await cudItem_params_stringify(params)
     }
     return cudCypherGenerator(params)
 }
@@ -190,58 +191,54 @@ const constructResponse = (status,content,displayAs)=>{
 }
 
 module.exports = {
-    cudItem_preProcess: function (params, ctx) {
+    cudItem_preProcess: async function (params, ctx) {
+        let item_uuid,result
         params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar','roles']),params.token = ctx.token,
             params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
-            let item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
+            item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
             params.data.fields.uuid = item_uuid
             params.fields = _.assign({}, params.data.fields)
             params.fields.category = params.data.category
             params.fields.created = Date.now()
             if (params.data.category === schema.cmdbTypeName.IncidentFlow) {
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow),params,(result,params)=>{
-                    params.fields.pfid = 'IR' + result[0]
-                    return cudItem_callback(params)
-                })
+                result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true)
+                params.fields.pfid = 'IR' + result[0]
             }
-            else
-                return cudItem_callback(params)
+            return await cudItem_callback(params)
         }
         else if (params.method === 'PUT' || params.method === 'PATCH') {
             if(params.uuid){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeCypher(params),params,(result,params)=>{
-                    if (result && result[0]) {
-                        params.fields_old = _.omit(result[0],'id')
-                        params.fields = _.assign({}, params.fields_old,params.data.fields)
-                        params.fields.lastUpdated = Date.now()
-                        params.change = params.data.fields
-                        return cudItem_callback(params, true)
-                    } else {
-                        throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
-                    }
-                })
+                result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeCypher(params), params, true)
+                if (result && result[0]) {
+                    params.fields_old = _.omit(result[0],'id')
+                    params.fields = _.assign({}, params.fields_old,params.data.fields)
+                    params.fields.lastUpdated = Date.now()
+                    params.change = params.data.fields
+                    return await cudItem_callback(params, true)
+                } else {
+                    throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
+                }
             }else{
                 throw new Error('missing uuid when modify')
             }
 
         } else if (params.method === 'DELETE') {
             if(params.uuid){
-                return cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQueryNodeWithRelationToConfigurationItem_cypher(params),params,(result, params)=>{
-                    if(result&&result[0]&&result[0].self&&result[0].self.category){
-                        params.category = result[0].self.category
-                        params.fields_old = _.omit(result[0].self,'id')
-                        if(result[0].items&&result[0].items.length){
-                            params[STATUS_WARNING] = CONTENT_NODE_USED
-                            params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
-                            return params
-                        }else{
-                            return cudItem_callback(params)
-                        }
+                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationToConfigurationItem_cypher(params), params, true)
+                if(result&&result[0]&&result[0].self&&result[0].self.category){
+                    params.category = result[0].self.category
+                    params.fields_old = _.omit(result[0].self,'id')
+                    if(result[0].items&&result[0].items.length){
+                        params[STATUS_WARNING] = CONTENT_NODE_USED
+                        params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
+                        return params
                     }else{
-                        throw new Error("no record found to delete,uuid or name:" + params.uuid||params.name);
+                        return await cudItem_callback(params)
                     }
-                })
+                }else{
+                    throw new Error("no record found to delete,uuid or name:" + params.uuid||params.name);
+                }
             }else if(params.category === CATEGORY_ALL){
                 params.cypher = cypherBuilder.generateDelAllCypher();
                 return params
@@ -307,7 +304,7 @@ module.exports = {
         params = queryParamsCypherGenerator(params);
         return params;
     },
-    queryItems_postProcess:function (result,params,ctx) {
+    queryItems_postProcess:async function (result,params,ctx) {
         let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
         result = _.isArray(result)&&result.length>0?result[0]:result;
         if(!result||result.total==0||result.count==0||result.length==0){
@@ -316,9 +313,9 @@ module.exports = {
         }
         if(!params.origional){
             if(result.count>0&&_.isArray(result.results)){
-                result.results = utils.resultMapper(result.results,params);
+                result.results = await utils.resultMapper(result.results,params);
             }else{
-                result = utils.resultMapper(result,params);
+                result = await utils.resultMapper(result,params);
             }
         }
         response_wrapped.data = result;
