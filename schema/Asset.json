@@ -1,6 +1,31 @@
 {
   "id": "Asset",
   "allOf": [
-    {"$ref": "ConfigurationItem"}
+    {
+      "$ref": "ConfigurationItem"
+    },
+    {
+      "properties": {
+        "geo_location": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "number"
+                },
+                "lon": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   ]
 }

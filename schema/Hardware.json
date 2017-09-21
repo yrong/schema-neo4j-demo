@@ -11,19 +11,6 @@
       "sn": {
         "type": "string"
       },
-      "geo_location": {
-        "type": "object",
-        "properties":{
-          "name":{"type":"string"},
-          "location":{
-            "type":"object",
-            "properties":{
-              "lat":{"type":"number"},
-              "lon":{"type":"number"}
-            }
-          }
-        }
-      },
       "asset_location":{
         "type":"object",
         "properties" : {
