@@ -3,6 +3,7 @@ const schema = require('./../schema')
 const uuid_validator = require('uuid-validate')
 const config = require('config')
 const ldap_uuid_type = config.get('ldap_uuid_type')
+const jp = require('jsonpath')
 
 
 /*********************************************crud cyphers**************************************************************/
@@ -89,16 +90,6 @@ const cmdb_queryItemWithMembers_cypher = (label, member_label, reference_field, 
 }
 
 /**
- * timeline change history
- */
-const generateQueryNodeChangeTimelineCypher = (params)=> {
-    let label = _.isArray(params.category)?_.last(params.category):params.category
-    return `match p=(current:${label} {uuid:{uuid}})-[:PREV*]->()
-            WITH COLLECT(p) AS paths, MAX(length(p)) AS maxLength
-            RETURN FILTER(path IN paths WHERE length(path)= maxLength) AS longestPaths`
-}
-
-/**
  * query node and relations
  */
 const generateQueryNodeWithRelationToConfigurationItem_cypher = (params)=> {
@@ -115,60 +106,6 @@ const generateQueryNodeWithRelationToConfigurationItem_cypher = (params)=> {
  */
 const generateDummyOperation_cypher = (params) => `WITH 1 as result return result`
 
-/**
- * Cabinet
- */
-const cmdb_delRelsExistInCabinet_cypher = `MATCH (n:Cabinet{uuid: {uuid}})-[r:LocatedAt]-()
-DELETE r`
-const cmdb_addCabinetServerRoomRel_cypher = `MATCH (n:Cabinet{uuid:{uuid}})
-MATCH (sr:ServerRoom {uuid:{server_room_id}})
-CREATE (n)-[r:LocatedAt]->(sr)`
-
-
-
-/**
- * Shelf
- */
-const cmdb_delRelsExistInShelf_cypher = `MATCH (n:Shelf{uuid: {uuid}})-[r:LocatedAt]-()
-DELETE r`
-const cmdb_addShelfWareHouseRel_cypher = `MATCH (n:Shelf{uuid:{uuid}})
-MATCH (wh:WareHouse {uuid:{warehouse_id}})
-CREATE (n)-[r:LocatedAt]->(wh)`
-
-
-/**
- * ConfigurationItem
- */
-const cmdb_delRelsExistInConfigurationItem_cypher = `MATCH (n:ConfigurationItem{uuid: {uuid}})-[r]-()
-DELETE r`
-
-const cmdb_addConfigurationItemITServiceRel_cypher = `UNWIND {it_service} as service_id
-MATCH (n:ConfigurationItem {uuid:{uuid}})
-MATCH (s:ITService{uuid:service_id})
-CREATE (n)-[r:SUPPORT_SERVICE]->(s)`
-
-const cmdb_addConfigurationItemUserRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
-MATCH (u:User{userid:{responsibility}})
-CREATE (n)<-[r:RESPONSIBLE_FOR]-(u)`
-
-const cmdb_addConfigurationItemCabinetRel_cypher = `MATCH (cabinet:Cabinet {uuid:{asset_location}.cabinet})
-MATCH (n:Asset {uuid:{uuid}})
-CREATE (n)-[r:LOCATED{asset_location}]->(cabinet)`
-
-const cmdb_addConfigurationItemShelfRel_cypher = `MATCH (shelf:Shelf {uuid:{asset_location}.shelf})
-MATCH (n:Asset {uuid:{uuid}})
-CREATE (n)-[r:LOCATED{asset_location}]->(shelf)`
-
-const cmdb_addConfigurationItemOperationSystemRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
-MATCH (os:ConfigurationItem{uuid:{operating_system}})
-CREATE (n)<-[r:RUNS_ON]-(os)`
-
-const cmdb_addConfigurationItemApplicationRel_cypher = `MATCH (n:ConfigurationItem{uuid:{uuid}})
-UNWIND {applications} AS application
-MATCH (app:ConfigurationItem{uuid:application})
-CREATE (n)<-[r:RUNS_ON]-(app)`
-
-
 const cmdb_addConfigurationItemLdapUserRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
 MERGE (u:LdapUser{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET u={used_by_user} ON MATCH SET u={used_by_user}
 CREATE (n)-[:UsedByUser]->(u)`
@@ -177,71 +114,12 @@ const cmdb_addConfigurationItemLdapOrgUnitRel_cypher = (ldap_obj)=>`MATCH (n:Con
 MERGE (ou:LdapDept{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET ou={used_by_dept} ON MATCH SET ou={used_by_dept}
 CREATE (n)-[:UsedByDept]->(ou)`
 
-const cmdb_addConfigurationItemHostServerRel_cypher = `MATCH (vs:VirtualServer{uuid:{uuid}})
-MATCH (ps:PhysicalServer{uuid:{host_server}})
-CREATE (vs)-[:HOSTED_ON]->(ps)`
-
 const cmdb_addSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:{category}})
 MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
 MERGE (subtype)-[:INHERIT]->(sw)`
 
 /**
- * ITService
- */
-const cmdb_delRelsExistInITService_cypher = `MATCH (n:ITService{uuid: {uuid}})-[r:ParentOf|DependsOn|BelongsTo]-()
-DELETE r`
-
-const cmdb_addITServiceBelongsToGroupRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-MATCH (sg:ITServiceGroup {uuid:{group}})
-CREATE (s)-[r:BelongsTo]->(sg)`
-
-const cmdb_addITServiceParentRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-MATCH (s1:ITService {uuid:{parent}})
-CREATE (s)<-[r:ParentOf]-(s1)`
-
-const cmdb_addITServiceChildrenRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-UNWIND {children} AS child
-MATCH (s1:ITService{uuid:child})
-CREATE (s)-[r:ParentOf]->(s1)`
-
-const cmdb_addITServiceDependenciesRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-UNWIND {dependencies} AS dependency
-MATCH (s1:ITService{uuid:dependency})
-CREATE (s)-[r:DependsOn]->(s1)`
-
-const cmdb_addITServiceDependendentsRel_cypher = `MATCH (s:ITService{uuid:{uuid}})
-UNWIND {dependendents} AS dependendent
-MATCH (s1:ITService{uuid:dependendent})
-CREATE (s)<-[r:DependsOn]-(s1)`
-
-
-/**
- * ProcessFlow
- */
-const cmdb_delRelsExistInProcessFlow_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})-[r:REFERENCED_PROCESSFLOW|REFERENCED_SERVICE|COMMITTED_BY|EXECUTED_BY]-()
-DELETE r`
-
-const cmdb_addProcessFlowITServiceRel_cypher = `UNWIND {it_service} as service_id
-MATCH (n:ProcessFlow{uuid:{uuid}})
-MATCH (s:ITService{uuid:service_id})
-CREATE (n)-[r:REFERENCED_SERVICE]->(s)`
-
-const cmdb_addProcessFlowCommitedByUserRel_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})
-MATCH (u:User{userid:{committer}})
-CREATE (n)-[:COMMITTED_BY]->(u)`
-
-const cmdb_addProcessFlowExecutedByUserRel_cypher = `MATCH (n:ProcessFlow{uuid:{uuid}})
-MATCH (u:User{userid:{executor}})
-CREATE (n)-[:EXECUTED_BY]->(u)`
-
-const cmdb_addProcessFlowSelfReferencedRel_cypher = `UNWIND {reference_process_flow} as reference_id
-MATCH (n:ProcessFlow{uuid:{uuid}})
-MATCH (rn:ProcessFlow{uuid:reference_id})
-CREATE (n)-[:REFERENCED_PROCESSFLOW]->(rn)`
-
-
-/**
- * ITServiceAdvanced
+ * ITService Customized
  */
 const generateQueryITServiceByUuidsCypher = (params)=>`MATCH (s1:ITService)
 WHERE s1.uuid IN {uuids}
@@ -290,80 +168,47 @@ const generateQuerySubTypeCypher = `MATCH (sw:ConfigurationItemLabel{category:{c
 MATCH (subtype)-[:INHERIT]->(sw)
 RETURN subtype`
 
+const generateRelationCypher = (params)=>{
+    let refProperties = schema.getSchemaRefProperties(params.category),val,cypher,rel_part,rel_cyphers = []
+    for(let ref of refProperties){
+        val = jp.query(params, `$.${ref.attr}`)[0]
+        if(val){
+            if(ref.relationship.parentObjectAsRelProperty){
+                cypher = `MATCH (node:${params.category}{uuid:{uuid}})
+                MATCH (ref_node:${ref.schema}{uuid:{${ref.attr.split('.')[0]}}.${ref.attr.split('.')[1]}})
+                `
+            }else if(ref.type === 'array'&&val.length){
+                cypher = `UNWIND {${ref.attr}} as ref_id
+                MATCH (node:${params.category} {uuid:{uuid}})
+                MATCH (ref_node:${ref.schema}{uuid:ref_id})
+                `
+            }else{
+                cypher = `MATCH (node:${params.category}{uuid:{uuid}})
+                MATCH (ref_node:${ref.schema}{uuid:{${ref.attr}}})
+                `
+            }
+            if(ref.relationship.parentObjectAsRelProperty){
+                rel_part =  `[:${ref.relationship.name}{${ref.attr.split('.')[0]}}]`
+            }else{
+                rel_part = `[:${ref.relationship.name}]`
+            }
+            if(ref.relationship.reverse)
+                cypher = cypher + `CREATE (node)<-${rel_part}-(ref_node)`
+            else
+                cypher = cypher + `CREATE (node)-${rel_part}->(ref_node)`
+            rel_cyphers.push(cypher)
+        }
+    }
+    if(params.subtype)
+        rel_cyphers.push(cmdb_addSubTypeRel_cypher)
+    return rel_cyphers
+}
+
 
 module.exports = {
-    generateCabinetCyphers: (params)=>{
-        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInCabinet_cypher,cmdb_addCabinetServerRoomRel_cypher]
+    generateAddOrUpdateCyphers: (params)=>{
+        let cyphers_todo = [generateDelNodeCypher(params),generateAddNodeCypher(params),...generateRelationCypher(params)]
         return cyphers_todo
-    },
-    generateShelfCyphers: (params)=>{
-        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInShelf_cypher,cmdb_addShelfWareHouseRel_cypher]
-        return cyphers_todo
-    },
-    generateCmdbCyphers: (params)=>{
-        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInConfigurationItem_cypher]
-        if(_.isArray(params.it_service)){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemITServiceRel_cypher]
-        }
-        if(params.responsibility){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemUserRel_cypher]
-        }
-        if(params.asset_location&&params.asset_location.cabinet){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemCabinetRel_cypher]
-        }
-        if(params.asset_location&&params.asset_location.shelf){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemShelfRel_cypher]
-        }
-        if(params.operating_system){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemOperationSystemRel_cypher]
-        }
-        if(params.applications){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemApplicationRel_cypher]
-        }
-        if(params.used_by_user){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapUserRel_cypher(params.used_by_user)]
-        }
-        if(params.used_by_dept){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemLdapOrgUnitRel_cypher(params.used_by_dept)]
-        }
-        if(params.host_server){
-            cyphers_todo = [...cyphers_todo,cmdb_addConfigurationItemHostServerRel_cypher]
-        }
-        if(params.subtype){
-            cyphers_todo = [...cyphers_todo,cmdb_addSubTypeRel_cypher]
-        }
-        return cyphers_todo;
-    },
-    generateITServiceCyphers:(params)=> {
-        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInITService_cypher];
-        if(params.group){
-            cyphers_todo = [...cyphers_todo,cmdb_addITServiceBelongsToGroupRel_cypher]
-        }
-        if(params.parent){
-            cyphers_todo = [...cyphers_todo,cmdb_addITServiceParentRel_cypher]
-        }
-        if(_.isArray(params.children)){
-            cyphers_todo = [...cyphers_todo,cmdb_addITServiceChildrenRel_cypher]
-        }
-        if(_.isArray(params.dependencies)){
-            cyphers_todo = [...cyphers_todo,cmdb_addITServiceDependenciesRel_cypher]
-        }
-        if(_.isArray(params.dependendents)){
-            cyphers_todo = [...cyphers_todo,cmdb_addITServiceDependendentsRel_cypher]
-        }
-        return cyphers_todo;
-    },
-    generateProcessFlowCypher:(params)=>{
-        let cyphers_todo = [generateAddNodeCypher(params),cmdb_delRelsExistInProcessFlow_cypher];
-        if(_.isArray(params.it_service))
-            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowITServiceRel_cypher];
-        if(_.isArray(params.reference_process_flow))
-            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowSelfReferencedRel_cypher];
-        if(params.committer)
-            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowCommitedByUserRel_cypher];
-        if(params.executor)
-            cyphers_todo = [...cyphers_todo,cmdb_addProcessFlowExecutedByUserRel_cypher];
-        return cyphers_todo;
     },
     generateQueryNodesCypher:(params)=>{
         let keyword_condition = `WHERE n.name = {keyword}`
@@ -383,7 +228,6 @@ module.exports = {
     },
     generateQueryITServiceByUuidsCypher,
     generateAdvancedSearchITServiceCypher,
-    generateAddNodeCypher,
     generateQueryNodeCypher,
     generateDelNodeCypher,
     generateSequence,

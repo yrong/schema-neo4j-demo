@@ -5,7 +5,8 @@
     {"properties": {
       "host_server":{
         "type": "string",
-        "schema":"PhysicalServer"
+        "schema":"PhysicalServer",
+        "relationship":{"name":"HOSTED_ON"}
       }
     }
     }

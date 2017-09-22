@@ -40,19 +40,7 @@ const logCypher = (params)=>{
 
 const cudCypherGenerator = (params)=>{
     if(params.method === 'POST' || params.method === 'PUT' || params.method === 'PATCH'){
-        if(schema.isConfigurationItem(params.category)){
-            params.cyphers = cypherBuilder.generateCmdbCyphers(params);
-        }else if(schema.isProcessFlow(params.category)){
-            params.cyphers = cypherBuilder.generateProcessFlowCypher(params);
-        }else if(params.category === schema.cmdbTypeName.ITService){
-            params.cyphers = cypherBuilder.generateITServiceCyphers(params);
-        }else if(params.category === schema.cmdbTypeName.Cabinet){
-            params.cyphers = cypherBuilder.generateCabinetCyphers(params);
-        }else if(params.category === schema.cmdbTypeName.Shelf){
-            params.cyphers = cypherBuilder.generateShelfCyphers(params);
-        }else{
-            params.cypher = cypherBuilder.generateAddNodeCypher(params);
-        }
+        params.cyphers = cypherBuilder.generateAddOrUpdateCyphers(params);
     }
     else if(params.method === 'DELETE')
         params.cypher = cypherBuilder.generateDelNodeCypher(params)
@@ -305,7 +293,7 @@ module.exports = {
         return params;
     },
     queryItems_postProcess:async function (result,params,ctx) {
-        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
+        let response_wrapped = constructResponse(STATUS_OK,CONTENT_QUERY_SUCESS,DISPLAY_AS_TOAST)
         result = _.isArray(result)&&result.length>0?result[0]:result;
         if(!result||result.total==0||result.count==0||result.length==0){
             response_wrapped.message.content = CONTENT_NO_RECORD;

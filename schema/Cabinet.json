@@ -10,7 +10,8 @@
     },
     "server_room_id":{
       "type":"string",
-      "schema":"ServerRoom"
+      "schema":"ServerRoom",
+      "relationship":{"name":"LocatedAt"}
     }
   },
   "required": ["name","server_room_id"],

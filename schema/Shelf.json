@@ -10,7 +10,8 @@
     },
     "warehouse_id":{
       "type":"string",
-      "schema":"WareHouse"
+      "schema":"WareHouse",
+      "relationship":{"name":"LocatedAt"}
     }
   },
   "required": ["name","warehouse_id"],

@@ -132,9 +132,9 @@ const getParentCategories = (category) => {
 const traverseRefProperties = (properties,prefix='',refProperties)=>{
     _.each(properties,(val,key)=>{
         if(val.schema){
-            refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.schema,type:val.type})
+            refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.schema,type:val.type,relationship:val.relationship})
         }else if(val.type==='array'&&val.items.schema){
-            refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.items.schema,type:val.items.type})
+            refProperties.push({attr:prefix?prefix+'.'+key:key,schema:val.items.schema,type:val.type,item_type:val.items.type,relationship:val.items.relationship})
         }else if(val.type==='object'&&val.properties){
             traverseRefProperties(val.properties,key,refProperties)
         }

@@ -10,32 +10,37 @@
     },
     "group":{
       "type": "string",
-      "schema":"ITServiceGroup"
+      "schema":"ITServiceGroup",
+      "relationship":{"name":"BelongsTo"}
     },
     "dependendents": {
       "type": "array",
       "items": {
-        "type": "string"
-      },
-      "schema":"ITService"
+        "type": "string",
+        "schema":"ITService",
+        "relationship":{"name":"DependsOn","reverse":true}
+      }
     },
     "dependencies": {
       "type": "array",
       "items": {
-        "type": "string"
-      },
-      "schema":"ITService"
+        "type": "string",
+        "schema":"ITService",
+        "relationship":{"name":"DependsOn"}
+      }
     },
     "children": {
       "type": "array",
       "items": {
-        "type": "string"
-      },
-      "schema":"ITService"
+        "type": "string",
+        "schema":"ITService",
+        "relationship":{"name":"ParentOf"}
+      }
     },
     "parent":{
       "type": "string",
-      "schema":"ITService"
+      "schema":"ITService",
+      "relationship":{"name":"ParentOf","reverse":true}
     }
   },
   "required": ["name"],

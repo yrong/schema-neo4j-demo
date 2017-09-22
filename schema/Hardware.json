@@ -15,7 +15,7 @@
         "type":"object",
         "properties" : {
           "status":{"type":"string","enum": ["mounted", "unmounted","on_shelf","other"]},
-          "cabinet":{"type":"string","schema":"Cabinet"},
+          "cabinet":{"type":"string","schema":"Cabinet","relationship":{"name":"LOCATED","parentObjectAsRelProperty":true}},
           "date_mounted" : {
             "type" : "string",
             "format": "date"
@@ -23,7 +23,7 @@
           "u" : {
             "type" : "integer"
           },
-          "shelf":{"type":"string","schema":"Shelf"},
+          "shelf":{"type":"string","schema":"Shelf","relationship":{"name":"LOCATED","parentObjectAsRelProperty":true}},
           "label":{"type":"string"}
         },
         "required": ["status"]
