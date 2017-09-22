@@ -87,11 +87,13 @@
 				"781018c3-ca01-b278-6c87-a1bcd8cf91d6",
 				"54bc86ac-ff88-5d4e-2b21-c9e8fb2c792d",
 				"79e45a07-ffb0-6282-a668-e42bcd310bf9",
+				"7f9a51eb-c28c-7703-55aa-4314b910cfae",
 				"3045cd2f-ad11-6f2b-fa65-d5ce379d7c10",
 				"456720bc-7790-a016-d60d-fbd7d4f81cac",
 				"2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
 				"ed5b9337-e1f9-d89c-997b-3671bf334185",
 				"3a23b38e-196c-849a-d295-c667ff0ed022",
+				"9c5f03ca-3d4c-1a9d-18a6-e7d415da53e9",
 				"8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
 				"168a351e-1498-85a0-5916-5895591e900e",
 				"b17a0229-80d6-13f7-13aa-4a3f2c770eb5",
@@ -345,15 +347,14 @@
 			"method": "DELETE",
 			"data": [],
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"node already referenced\"] = jsonData.status==='warning'\n\n\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"node already referenced\"] = jsonData.status==='error'\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504834365398,
+			"time": 1506088771992,
 			"name": "delete already referenced email service fail",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folderId": "62ced1ec-7033-2bc4-d382-58eef18b81f6"
+			"responses": []
 		},
 		{
 			"id": "29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
@@ -497,7 +498,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Software",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset",
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
@@ -509,30 +510,15 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"labels found\"] = jsonData.status === 'ok'",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505397719525,
-			"name": "query ConfigurationItem Category",
+			"time": 1505716835213,
+			"name": "query Asset Hierarchy",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": []
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "3b526c53-d79a-a68b-aa86-4cfe038197ea",
-			"name": "add incident flow 2 reference incident flow 1",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"description\":\"{{process_flow_desc}}\",\n      \"note\":\"note\",\n      \"attachment\":\"attachment\",\n      \"title\":\"title\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_2_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -541,9 +527,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_2_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506088060004,
+			"name": "add incident flow 2 reference incident flow 1",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\"\n    }\n  }\n}"
 		},
 		{
 			"id": "456720bc-7790-a016-d60d-fbd7d4f81cac",
@@ -624,15 +625,15 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"firewall_id\", jsonData.uuid);\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"schema validation failed\"] = jsonData.status === \"error\"\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505640246293,
+			"time": 1505698433853,
 			"name": "add test",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"test\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"test\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"},\n      \"a\":{\"b\":1}\n    }\n  }\n}"
 		},
 		{
 			"id": "59d86f92-c730-3f8c-d911-701d0b17abb1",
@@ -694,23 +695,8 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "5d80d3da-460d-2478-ee15-60d478c2df9a",
-			"name": "add incident flow 1",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\",\n      \"description\":\"{{process_flow_desc}}\",\n      \"note\":\"note\",\n      \"attachment\":\"attachment\",\n      \"title\":\"title\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -719,9 +705,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506088049700,
+			"name": "add incident flow 1",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\"\n    }\n  }\n}"
 		},
 		{
 			"id": "63559db1-50bd-322e-82fb-bca01def1b22",
@@ -754,23 +755,8 @@
 			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363"
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "64cc28dc-3dfd-549c-48f1-03a085a32e82",
-			"name": "patch incident flow 1 status to solved",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"solved\",\n       \"user\": \"a\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "PATCH",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -779,9 +765,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
+			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506088091183,
+			"name": "patch incident flow 1 status to solved",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"solved\"\n    }\n  }\n}"
 		},
 		{
 			"id": "6aa08657-2ed4-da84-034e-f1820d3e9d5a",
@@ -873,12 +874,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504835999039,
-			"name": "patch router with ubuntu",
+			"time": 1506074792015,
+			"name": "patch router with it_service",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"operating_system\": \"ubuntu\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
 		},
 		{
 			"id": "7be04e5b-b2f0-9f63-e7ca-0fb36af38ca3",
@@ -970,6 +971,36 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
+			"id": "7f9a51eb-c28c-7703-55aa-4314b910cfae",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PATCH",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506083238526,
+			"name": "patch physical server with os",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}},\n      \"operating_system\": \"ubuntu\"\n    }\n  }\n}"
+		},
+		{
 			"id": "840c11c0-e417-9033-690d-d723da302a63",
 			"headers": "token: {{token}}\n",
 			"headerData": [
@@ -1029,12 +1060,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505367950892,
+			"time": 1506083221515,
 			"name": "add physical server",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"ubuntu\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true\n    }\n  }\n}"
 		},
 		{
 			"folder": "51f3bb65-9a3d-6ea2-1e59-34b30b350234",
@@ -1067,23 +1098,8 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "8e5163c1-7d52-24f3-18e3-9d36a3228957",
-			"name": "add ITService Pop3",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"pop3\",\n      \"description\":\"pop3\",\n      \"group\":\"{{group_messaging_id}}\",\n      \"parent\":\"{{service_email_id}}\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_pop3_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1092,9 +1108,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_pop3_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1505911425279,
+			"name": "add ITService Pop3",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"pop3\",\n      \"description\":\"pop3\",\n      \"group\":\"{{group_messaging_id}}\",\n      \"parent\":\"{{service_email_id}}\"\n    }\n  }\n}"
 		},
 		{
 			"id": "8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
@@ -1185,6 +1216,35 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
+			"id": "9c5f03ca-3d4c-1a9d-18a6-e7d415da53e9",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/advanced/Software",
+			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"labels found\"] = jsonData.status === 'ok'",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1505716853870,
+			"name": "query ConfigurationItem Category advanced",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": []
+		},
+		{
 			"id": "9f34a8c1-40fb-30d0-c64a-d1c1880502c9",
 			"headers": "token: {{token}}\n",
 			"headerData": [
@@ -1251,23 +1311,8 @@
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6"
 		},
 		{
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"id": "a0de0ee1-6e38-91d8-cf68-4b91b1b2ecbd",
-			"name": "add ITService Dns",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\":\"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"dns\",\n      \"description\":\"dns\",\n      \"group\":\"{{group_infrastructure_id}}\",\n      \"dependendents\":[\"email\"]\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_dns_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1276,9 +1321,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"service_dns_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1505918558478,
+			"name": "add ITService Dns",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\":\"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"dns\",\n      \"description\":\"dns\",\n      \"group\":\"{{group_infrastructure_id}}\",\n      \"dependendents\":[\"email\"]\n    }\n  }\n}"
 		},
 		{
 			"id": "a68f40e0-ebfa-2320-1e83-bfdfefc58296",
@@ -1495,31 +1555,16 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505614847540,
+			"time": 1506074278435,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":{{auth_user_id}},\n      \"operating_system\": \"windows xp\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n       },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n       },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
 		},
 		{
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"id": "b72c8911-1d98-b47a-1c7f-3f903f53b7d8",
-			"name": "add incident flow 3 with it_service empty",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[],\n      \"status\": \"open\",\n      \"description\":\"{{process_flow_desc}}\",\n      \"note\":\"note\",\n      \"attachment\":\"attachment\",\n      \"title\":\"title\"\n    }\n  }\n}",
-			"descriptionFormat": null,
-			"description": "",
 			"headers": "Content-Type: application/json\n",
-			"method": "POST",
-			"pathVariables": {},
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
-			"preRequestScript": null,
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_3_id\", jsonData.uuid);",
-			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"queryParams": [],
 			"headerData": [
 				{
 					"key": "Content-Type",
@@ -1528,9 +1573,24 @@
 					"enabled": true
 				}
 			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_3_id\", jsonData.uuid);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506088070980,
+			"name": "add incident flow 3 with it_service empty",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[],\n      \"status\": \"open\"\n    }\n  }\n}"
 		},
 		{
 			"id": "bd468ca9-baf6-8538-423c-89838a439085",

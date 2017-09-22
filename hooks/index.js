@@ -48,7 +48,7 @@ const cudCypherGenerator = (params)=>{
     return params;
 }
 
-const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',
+const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',STATUS_ERROR = 'error',
     CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
     CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast';
 
@@ -216,9 +216,10 @@ module.exports = {
                 result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationToConfigurationItem_cypher(params), params, true)
                 if(result&&result[0]&&result[0].self&&result[0].self.category){
                     params.category = result[0].self.category
+                    params.name = result[0].self.name
                     params.fields_old = _.omit(result[0].self,'id')
                     if(result[0].items&&result[0].items.length){
-                        params[STATUS_WARNING] = CONTENT_NODE_USED
+                        params[STATUS_ERROR] = CONTENT_NODE_USED
                         params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
                         return params
                     }else{
@@ -236,11 +237,13 @@ module.exports = {
         }
     },
     cudItem_postProcess:async function (result,params,ctx) {
-        let response_wrapped = constructResponse(STATUS_INFO,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
+        let response_wrapped = constructResponse(STATUS_INFO,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),notification_obj
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
             if(!params.uuid||!params.fields)
                 throw new Error('added obj without uuid')
             await cmdb_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
+            if(params.name)
+                await cmdb_cache.set(params.category+'_'+params.name,{name:params.fields.name,uuid:params.uuid,category:params.category})
             response_wrapped.uuid = params.uuid
             if(params.fields.asset_id){
                 let qr_code = qr.image(params.fields.asset_id,{ type: 'png' })
@@ -253,8 +256,11 @@ module.exports = {
             if(params.uuid){
                 response_wrapped.uuid = params.uuid
                 if(result.length==1||result.deleted==1){
-                    if(!params[STATUS_WARNING]){
+                    if(!params[STATUS_ERROR]){
                         await cmdb_cache.del(params.uuid)
+                        if(params.name&&params.category){
+                            await cmdb_cache.del(params.category+'_'+params.name)
+                        }
                     }
                 }else{
                     params[STATUS_WARNING] = CONTENT_NO_RECORD
@@ -263,11 +269,10 @@ module.exports = {
             if(params.category===CATEGORY_ALL)
                 await cmdb_cache.flushAll()
         }
-        if(params[STATUS_WARNING]){
-            response_wrapped.status = STATUS_WARNING
-            response_wrapped.content = params[STATUS_WARNING]
-        }else{
-            let notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
+        response_wrapped.status = params[STATUS_ERROR]?STATUS_ERROR:params[STATUS_WARNING]?STATUS_WARNING:STATUS_INFO
+        response_wrapped.message.content = params[STATUS_ERROR]||params[STATUS_WARNING]||CONTENT_OPERATION_SUCESS
+        if(!params[STATUS_ERROR]){
+            notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
             if(params.method === 'POST'){
                 notification_obj.action = 'CREATE'
                 notification_obj.new = params.fields
@@ -282,7 +287,7 @@ module.exports = {
                 notification_obj.old = params.fields_old
             }
             if(params.category!==CATEGORY_ALL)
-               await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
+                await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
         }
         return　response_wrapped;
     },

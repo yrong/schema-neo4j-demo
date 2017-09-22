@@ -106,20 +106,25 @@ const generateQueryNodeWithRelationToConfigurationItem_cypher = (params)=> {
  */
 const generateDummyOperation_cypher = (params) => `WITH 1 as result return result`
 
-const cmdb_addConfigurationItemLdapUserRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
-MERGE (u:LdapUser{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET u={used_by_user} ON MATCH SET u={used_by_user}
-CREATE (n)-[:UsedByUser]->(u)`
+const generateQueryConfigurationItemBySubCategoryCypher = (params) => {
+    let condition = _.map(params.subcategory, (subcategory) => {
+        return `n:${subcategory}`
+    }).join(' OR ')
+    return `MATCH (n) WHERE (${condition})
+    return collect(distinct n)
+    `
+}
 
-const cmdb_addConfigurationItemLdapOrgUnitRel_cypher = (ldap_obj)=>`MATCH (n:ConfigurationItem{uuid:{uuid}})
-MERGE (ou:LdapDept{${ldap_uuid_type}:'${ldap_obj[ldap_uuid_type]}'}) ON CREATE SET ou={used_by_dept} ON MATCH SET ou={used_by_dept}
-CREATE (n)-[:UsedByDept]->(ou)`
+const generateQuerySubTypeCypher = `MATCH (sw:ConfigurationItemLabel{category:{category}})
+MATCH (subtype)-[:INHERIT]->(sw)
+RETURN subtype`
 
 const cmdb_addSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:{category}})
 MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
 MERGE (subtype)-[:INHERIT]->(sw)`
 
 /**
- * ITService Customized
+ * Customized Query
  */
 const generateQueryITServiceByUuidsCypher = (params)=>`MATCH (s1:ITService)
 WHERE s1.uuid IN {uuids}
@@ -154,19 +159,6 @@ const generateCfgHostsByITServiceCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVIC
 WHERE (n:PhysicalServer or n:VirtualServer) and s.name IN {service_names}
 return collect(distinct n)
 `
-
-const generateQueryConfigurationItemBySubCategoryCypher = (params) => {
-    let condition = _.map(params.subcategory, (subcategory) => {
-        return `n:${subcategory}`
-    }).join(' OR ')
-    return `MATCH (n) WHERE (${condition})
-    return collect(distinct n)
-    `
-}
-
-const generateQuerySubTypeCypher = `MATCH (sw:ConfigurationItemLabel{category:{category}})
-MATCH (subtype)-[:INHERIT]->(sw)
-RETURN subtype`
 
 const generateRelationCypher = (params)=>{
     let refProperties = schema.getSchemaRefProperties(params.category),val,cypher,rel_part,rel_cyphers = []

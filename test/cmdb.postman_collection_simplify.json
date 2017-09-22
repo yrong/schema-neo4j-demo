@@ -77,9 +77,9 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms"
   },
   {
-    "name": "query ConfigurationItem Category",
+    "name": "query Asset Hierarchy",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Software"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset"
   },
   {
     "name": "add incident flow 2 reference incident flow 1",
@@ -99,11 +99,7 @@
           "reference_process_flow": [
             "{{incident_flow_1_id}}"
           ],
-          "status": "open",
-          "description": "{{process_flow_desc}}",
-          "note": "note",
-          "attachment": "attachment",
-          "title": "title"
+          "status": "open"
         }
       }
     }
@@ -152,6 +148,9 @@
             "shelf": "{{shelf_id}}",
             "label": "label",
             "other": "other"
+          },
+          "a": {
+            "b": 1
           }
         }
       }
@@ -193,11 +192,7 @@
           "committer": "{{auth_user_id}}",
           "executor": "{{auth_user_id}}",
           "reference_kb": "{{article_uuids}}",
-          "status": "open",
-          "description": "{{process_flow_desc}}",
-          "note": "note",
-          "attachment": "attachment",
-          "title": "title"
+          "status": "open"
         }
       }
     }
@@ -216,8 +211,7 @@
       "data": {
         "category": "IncidentFlow",
         "fields": {
-          "status": "solved",
-          "user": "a"
+          "status": "solved"
         }
       }
     }
@@ -256,7 +250,7 @@
     }
   },
   {
-    "name": "patch router with ubuntu",
+    "name": "patch router with it_service",
     "method": "PATCH",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
     "body": {
@@ -269,7 +263,6 @@
             "{{service_dns_id}}"
           ],
           "sn": "12345678",
-          "operating_system": "ubuntu",
           "responsibility": "{{auth_user_id}}"
         }
       }
@@ -330,6 +323,26 @@
     }
   },
   {
+    "name": "patch physical server with os",
+    "method": "PATCH",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "PhysicalServer",
+        "fields": {
+          "it_service": [
+            "{{service_pop3_id}}",
+            "{{service_dns_id}}"
+          ],
+          "sn": "12345678",
+          "responsibility": "{{auth_user_id}}",
+          "operating_system": "ubuntu"
+        }
+      }
+    }
+  },
+  {
     "name": "search it service by group name",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=Messaging"
@@ -352,7 +365,7 @@
             "192.168.0.108"
           ],
           "technical_support_info": "010-123456",
-          "operating_system": "ubuntu",
+          "operating_system": "windows xp",
           "storage_info": "hp-disk1",
           "model": "b10",
           "product_date": "2016-10-11",
@@ -421,6 +434,11 @@
         }
       }
     }
+  },
+  {
+    "name": "query ConfigurationItem Category advanced",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/advanced/Software"
   },
   {
     "name": "get license",
@@ -546,7 +564,6 @@
             "dns"
           ],
           "responsibility": "{{auth_user_id}}",
-          "operating_system": "windows xp",
           "sn": "123456",
           "model": "a10",
           "product_date": "2016-08-11",
@@ -588,11 +605,7 @@
         "category": "IncidentFlow",
         "fields": {
           "it_service": [],
-          "status": "open",
-          "description": "{{process_flow_desc}}",
-          "note": "note",
-          "attachment": "attachment",
-          "title": "title"
+          "status": "open"
         }
       }
     }
