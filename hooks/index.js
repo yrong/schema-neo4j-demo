@@ -50,7 +50,7 @@ const cudCypherGenerator = (params)=>{
 
 const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',STATUS_ERROR = 'error',
     CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
-    CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast';
+    CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast',DISPLAY_AS_MODAL='modal',DISPLAY_AS_CONSOLE='console';
 
 const paginationParamsGenerator = function (params) {
     var params_pagination = {"skip":0,"limit":config.get('perPageSize')},skip;
@@ -271,6 +271,7 @@ module.exports = {
         }
         response_wrapped.status = params[STATUS_ERROR]?STATUS_ERROR:params[STATUS_WARNING]?STATUS_WARNING:STATUS_INFO
         response_wrapped.message.content = params[STATUS_ERROR]||params[STATUS_WARNING]||CONTENT_OPERATION_SUCESS
+        response_wrapped.message.displayAs = params[STATUS_ERROR]?DISPLAY_AS_MODAL:params[STATUS_WARNING]?DISPLAY_AS_CONSOLE:DISPLAY_AS_TOAST
         if(!params[STATUS_ERROR]){
             notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
             if(params.method === 'POST'){
