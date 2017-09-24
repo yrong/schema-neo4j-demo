@@ -2,47 +2,59 @@ const Ajv = require('ajv')
 const _ = require('lodash')
 const ajv = new Ajv({ useDefaults: true })
 const config = require('config')
-const fs = require('fs')
+const Model = require('redis-crud-fork')
+const SchemaModel = Model('Schema')
 
 let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {},cmdbRoutes = {},cmdbConfigurationItemInheritanceRelationship={}
 
-const loadSchema = ()=>{
-    let schemas = fs.readdirSync("./schema"),schema,sortedAuxiliaryTypes=[],property
-    for(let schemaFile of schemas){
-        if(schemaFile!='index.js'){
-            schema = JSON.parse(fs.readFileSync('./schema/'+ schemaFile, 'utf8'))
-            for(let key in schema.properties){
-                property = schema.properties[key]
-                if(property.type==='array'&&property.items.type==='object'){
-                    throw new Error(`array field ${key} in ${schemaFile} can not be object`)
-                }
-            }
-            ajv.addSchema(schema)
-            cmdbSchemas[schema.id] = schema
-            cmdbTypeName[schema.id] = schema.id
-            if(schema.category==='auxiliary'){
-                cmdbConfigurationItemAuxiliaryTypes.push(schema.id)
-            }else{
-                _.each(schema.allOf,(parent)=>{
-                    if(parent['$ref']){
-                        cmdbConfigurationItemInheritanceRelationship[parent['$ref']] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]||{}
-                        cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children']||[]
-                        cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'].push(schema.id)
-                    }
-                })
-            }
-            if(schema.route){
-                cmdbRoutes[schema.id] = {route:schema.route}
-                if(schema.searchable){
-                    cmdbRoutes[schema.id].searchable = schema.searchable
-                }
-            }
+const persitSchema = async (schema)=>{
+    await SchemaModel.insert(schema)
+}
+
+const checkSchema = (schema)=>{
+    let property,key
+    for(key in schema.properties){
+        property = schema.properties[key]
+        if(property.type==='array'&&property.items.type==='object'){
+            throw new Error(`array field ${key} in schema ${schema.id} can not contain object`)
         }
     }
-    for(let key in cmdbTypeName){
-        schema = dereferenceSchema(key)
+}
+
+const loadSchema = async (schema, dereference=true, persistance=true)=>{
+    checkSchema(schema)
+    ajv.removeSchema(schema.id)
+    ajv.addSchema(schema)
+    if(persistance)
+        await persitSchema(schema)
+    cmdbSchemas[schema.id] = schema
+    cmdbTypeName[schema.id] = schema.id
+    if(schema.category==='auxiliary'){
+        cmdbConfigurationItemAuxiliaryTypes.push(schema.id)
+    }else{
+        _.each(schema.allOf,(parent)=>{
+            if(parent['$ref']){
+                cmdbConfigurationItemInheritanceRelationship[parent['$ref']] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]||{}
+                cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children']||[]
+                cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'].push(schema.id)
+            }
+        })
+    }
+    if(schema.route){
+        cmdbRoutes[schema.id] = {route:schema.route}
+        if(schema.searchable){
+            cmdbRoutes[schema.id].searchable = schema.searchable
+        }
+    }
+    if(dereference)
+    {
+        schema = dereferenceSchema(schema.id)
         cmdbDereferencedSchemas[schema.id]=schema
     }
+}
+
+const sortAuxiliaryTypes = ()=>{
+    let sortedAuxiliaryTypes=[]
     for(let auxiliaryType of cmdbConfigurationItemAuxiliaryTypes){
         let no_referenced = true
         for(let key in cmdbSchemas[auxiliaryType]['properties']){
@@ -58,13 +70,26 @@ const loadSchema = ()=>{
     cmdbConfigurationItemAuxiliaryTypes = _.uniq(_.concat(sortedAuxiliaryTypes,cmdbConfigurationItemAuxiliaryTypes))
 }
 
+const loadSchemas = async ()=>{
+    let schemas = await SchemaModel.findAll(),schema
+    for(let schema of schemas){
+        await loadSchema(schema,false,false)
+    }
+    for(let key in cmdbTypeName){
+        schema = dereferenceSchema(key)
+        cmdbDereferencedSchemas[schema.id]=schema
+    }
+    sortAuxiliaryTypes()
+    return schemas
+}
+
 const getAuxiliaryTypes = ()=>{
     return cmdbConfigurationItemAuxiliaryTypes
 }
 
 const _getSchema = function (category) {
     let schema = ajv.getSchema(category)
-    return schema.schema
+    return schema?schema.schema:undefined
 };
 
 const extendSchema = function (schema) {
@@ -169,7 +194,7 @@ const isProcessFlow = (category) => {
     return labels.includes(cmdbTypeName.ProcessFlow)||category===cmdbTypeName.ProcessFlow
 }
 
-const checkSchema = function (params) {
+const checkObject = function (params) {
     if(!params.data||!params.data.category){
         throw new Error("cfgItem does not contain category field!");
     }
@@ -216,4 +241,4 @@ const getApiRoutes = ()=>{
 }
 
 
-module.exports = {cmdbTypeName,loadSchema,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getAuxiliaryTypes,checkSchema,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes,getSchemaHierarchy,getApiRoutes}
+module.exports = {cmdbTypeName,checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getAuxiliaryTypes,checkObject,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes,getSchemaHierarchy,getApiRoutes}

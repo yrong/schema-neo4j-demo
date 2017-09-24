@@ -17,12 +17,12 @@ fs.readdirSync("node_modules")
 
 var devtool = 'source-map'
 
-var entry = {server:'./server.js'}
+var entry = {server:'./server.js',init:'./init.js'}
 var packages = [
-    {from:'config',to:'config'},{from:'cypher/initSchema.cyp',to:'cypher/initSchema.cyp'},
+    {from:'config',to:'config'},{from:'cypher',to:'cypher',ignore:['*.js']},
     {from:'test/*.json'},{from:'node_modules',to:'node_modules'},
     {from:'search',to:'search',ignore:['*.js']},
-    {from:'schema',to:'schema'}
+    {from:'schema',to:'schema',ignore:['*.js']}
 ]
 if(process.env.EDITION === 'essential'){
     packages = [...packages,{from:'script/init.sh',to:'script/init.sh'},{from:'script/execute_cypher.sh',to:'script/execute_cypher.sh'},{from:'script/jq-linux64',to:'script/jq-linux64'}]

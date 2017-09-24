@@ -8,7 +8,7 @@ const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('../../schema/index')
 
 const exportItems = async ()=>{
-    schema.loadSchema()
+    schema.loadSchemas()
     let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')

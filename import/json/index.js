@@ -53,7 +53,7 @@ class Importer {
     }
 
     async importer()  {
-        schema.loadSchema()
+        schema.loadSchemas()
         let date_dir = process.env.IMPORT_FOLDER
         if(!date_dir)
             throw new Error(`env 'IMPORT_FOLDER' not defined`)

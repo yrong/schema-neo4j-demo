@@ -58,30 +58,34 @@ const app = new KoaNeo4jApp({
     middleware:middlewares
 })
 
-/*schema init*/
 const schema = require('./schema')
-schema.loadSchema()
-
-/*route init*/
-const initAppRoutes = require("./routes")
-initAppRoutes(app)
-
-/*cache init*/
-const initCache = ()=>{
-    cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
-}
-
-(function(app) {
-    app.neo4jConnection.initialized.then(()=>{
-        initCache()
-    }).catch((error)=>{
-        logger.fatal('neo4j is not reachable,' + String(error))
-        process.exit(-1)
+const loadSchema = ()=>{
+    /*schema init*/
+    schema.loadSchemas().then((schemas)=>{
+        /*route init*/
+        const initAppRoutes = require("./routes")
+        initAppRoutes(app)
+        if(schemas.length){
+            console.log('init cache data:')
+            cmdb_cache.loadAll(`http://localhost:${config.get('port')}/api`);
+        }
     })
-})(app)
+}
 
 /*start listen*/
 app.listen(config.get('port'), function () {
     console.log(`App started`);
+    app.neo4jConnection.initialized.then(()=>{
+        loadSchema()
+    }).catch((error)=>{
+        logger.fatal('neo4j is not reachable,' + String(error))
+        process.exit(-1)
+    })
+})
+
+
+app.on('restart', function() {
+    console.log('restart signal received,will restart app in 2 seconds')
+    setTimeout(function(){process.exit(0)},2000);
 });
 

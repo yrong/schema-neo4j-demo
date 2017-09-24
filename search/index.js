@@ -26,31 +26,7 @@ var pre_process = function(params) {
     return params
 }
 
-const ConfigurationItemIndex = 'cmdb',ProcessFlowIndex = 'processflow',OpsControllerIndex = 'opscontroller',OpsControllerCommandType = 'command'
-
-var getIndexName = function(category) {
-    let indexName;
-    if(category === 'All')
-        indexName = [ConfigurationItemIndex,ProcessFlowIndex]
-    else if(schema.isConfigurationItem(category))
-        indexName = ConfigurationItemIndex
-    else if(schema.isProcessFlow(category))
-        indexName = ProcessFlowIndex
-    else
-        throw new Error('can not find index for category:'+category)
-    return indexName
-}
-
-var getTypeName = function(category) {
-    let typeName
-    if(schema.isConfigurationItem(category))
-        typeName = schema.cmdbTypeName.ConfigurationItem
-    else if(schema.isProcessFlow(category))
-        typeName = schema.cmdbTypeName.ProcessFlow
-    else
-        throw new Error('can not find type for category:'+category)
-    return typeName
-}
+const OpsControllerIndex = 'opscontroller',OpsControllerCommandType = 'command'
 
 var addOpsCommand = (command)=>{
     let index_obj = {
@@ -64,8 +40,7 @@ var addOpsCommand = (command)=>{
 
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
-    let indexName = getIndexName(params.category)
-    let typeName = getTypeName(params.category)
+    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
     let index_obj = {
         index: indexName,
         type: typeName,
@@ -84,8 +59,7 @@ var addItem = function(result, params, ctx) {
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
-    let indexName = getIndexName(params.category)
-    let typeName = getTypeName(params.category)
+    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
     let index_obj = {
         index: indexName,
         type: typeName,
@@ -104,7 +78,11 @@ var patchItem = function(result, params, ctx) {
 
 var deleteItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let indexName = getIndexName(params.category)
+    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName
+    if(typeName === hook.CATEGORY_ALL)
+        indexName = '*'
+    else
+        indexName = routes[typeName].searchable.index
     var delObj = {
         index: indexName,
         body: {
@@ -134,9 +112,10 @@ var searchItem = function(params, ctx) {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-    params.category =  hook.getCategoryFromUrl(ctx.url),params.search = true
+    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
+    params.search = true
     var searchObj = _.assign({
-        index: getIndexName(params.category),
+        index: indexName,
         type: params.category,
         _source:_source
     },queryObj,params_pagination)

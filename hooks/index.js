@@ -6,7 +6,6 @@ const cypherBuilder = require('../cypher/cypherBuilder')
 const LOGGER = require('log4js_wrapper')
 const logger = LOGGER.getLogger()
 const cmdb_cache = require('scirichon-cache')
-const routesDef = cmdb_cache.cmdb_type_routes
 const utils = require('../helper/utils')
 const cypherInvoker = require('../helper/cypherInvoker')
 const ref_converter = require('../helper/converter')
@@ -19,7 +18,7 @@ const path = require('path')
 
 const CATEGORY_ALL = 'All'
 const getCategoryFromUrl = function (url) {
-    let category,key,val
+    let category,key,val,routesDef = schema.getApiRoutes()
     for (key in routesDef){
         val = routesDef[key]
         if(url.includes(val.route)){
@@ -55,14 +54,12 @@ const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',STATUS_ER
 const paginationParamsGenerator = function (params) {
     var params_pagination = {"skip":0,"limit":config.get('perPageSize')},skip;
     if(params.page){
+        params.pagination = true
         params.per_page = params.per_page || config.get('perPageSize')
         skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
         if(schema.isAuxiliaryTypes(params.category)){
             throw new Error(`${params.category} not support pagination`);
-        }
-        if(schema.isConfigurationItem(params.category)||schema.isProcessFlow(params.category)){
-            params.pagination = true
         }
     }
     return _.assign(params,params_pagination);
@@ -298,6 +295,13 @@ module.exports = {
         params = queryParamsCypherGenerator(params);
         return params;
     },
+    customizedQueryItems_preProcess:(params,ctx)=>{
+        params.method = ctx.method,params.url = ctx.url,params.category = getCategoryFromUrl(ctx.url)
+        if(params.cypherQueryFile){
+            params.cypher = fs.readFileSync(params.cypherQueryFile, 'utf8')
+        }
+        return params
+    },
     queryItems_postProcess:async function (result,params,ctx) {
         let response_wrapped = constructResponse(STATUS_OK,CONTENT_QUERY_SUCESS,DISPLAY_AS_TOAST)
         result = _.isArray(result)&&result.length>0?result[0]:result;
@@ -357,6 +361,21 @@ module.exports = {
         response_wrapped.data = schema.getSchemaProperties(params.category)
         return response_wrapped
     },
-    STATUS_WARNING
+    STATUS_WARNING,
+    loadSchemas:async function(params, ctx) {
+        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),schemas = params.data,restart=false
+        for(let val of schemas){
+            await schema.loadSchema(val,true,true)
+            if(val.route)
+                restart = true
+        }
+        if(restart){
+            response_wrapped.message.additional = 'restart process required'
+            ctx.app.emit('restart')
+        }
+        response_wrapped.data = {}
+        return response_wrapped
+    },
+    CATEGORY_ALL
 }
 

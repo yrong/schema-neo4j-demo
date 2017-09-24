@@ -49,5 +49,5 @@
   },
   "required": ["name"],
   "route": "/cfgItems",
-  "searchable":true
+  "searchable":{"index":"cmdb"}
 }

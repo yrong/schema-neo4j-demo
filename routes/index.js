@@ -13,31 +13,35 @@ const es_checker=(params)=>{
     return none_checker(params)
 }
 
-const schema_checker = (params)=>{return schema.checkSchema(params)}
+const schema_checker = (params)=>{return schema.checkObject(params)}
 
 const none_checker = (params)=>true
 
 module.exports = (app)=>{
     let routesDef = schema.getApiRoutes(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
     let preProcess,postProcess,http_method,route,checker,methods,procedure
+    console.log('init routes from schema:\n' + JSON.stringify(routesDef,null,'\t'))
     _.each(routesDef,(val)=>{
         if(val.searchable){
             val.customizedHook = {
                 Add:{postProcess:search.addItem},
                 Modify:{postProcess:search.patchItem},
                 Delete:{postProcess: search.deleteItem},
-                Search:{procedure:search.searchItem}
+                Search:{procedure:search.searchItem},
+                SearchByCypher:{preProcess:hook.customizedQueryItems_preProcess}
             }
-            val.allowed_methods = [...allowed_methods,'Search']
+            val.allowed_methods = [...allowed_methods,'Search','SearchByCypher']
         }
         methods = val.allowed_methods||allowed_methods
         _.each(methods,(method)=>{
             procedure=null
-            http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
-            route = method==='Add'||method==='FindAll'?'/api'+val.route:(method==='Search'?'/api/search'+val.route:'/api'+val.route+'/:uuid')
+            http_method = method==='Add'||method === 'Search'||method==='SearchByCypher'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
+            route = method==='Add'||method==='FindAll'?'/api'+val.route:method==='Search'?'/api/search'+val.route:method==='SearchByCypher'?'/api/searchCypher'+val.route:'/api'+val.route+'/:uuid'
             checker = method==='Add'?[schema_checker,es_checker]:(method==='Modify'||method==='Delete')?es_checker:none_checker
             preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             postProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_postProcess:hook.queryItems_postProcess
+            if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
+                preProcess = val.customizedHook[method].preProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].postProcess)
                 postProcess = val.customizedHook[method].postProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].procedure)
@@ -97,7 +101,12 @@ module.exports = (app)=>{
         return next();
     })
 
-    /*websocket routes*/
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/schema/',
+        procedure: hook.loadSchemas
+    })
+
     ws(app)
 
     return app
