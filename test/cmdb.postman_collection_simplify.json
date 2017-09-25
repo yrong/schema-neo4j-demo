@@ -64,8 +64,9 @@
   {
     "name": "query uuid of it service by service name/id or service group name/id",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/it_services/service",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
     "body": {
+      "category": "ITService",
       "search": [
         "email",
         "pop3"
@@ -124,8 +125,9 @@
   {
     "name": "query it service reference attributes by uuids",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/it_services/service",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
     "body": {
+      "category": "ITService",
       "uuids": [
         "{{service_email_id}}",
         "{{service_pop3_id}}"
@@ -243,8 +245,9 @@
   {
     "name": "query ConfigurationItem mounted advanced",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
     "body": {
+      "category": "ConfigurationItem",
       "cypherQueryFile": "mountedConfigurationItemRels"
     }
   },
@@ -737,8 +740,9 @@
   {
     "name": "query it service groups related cmdb servers advanced",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
     "body": {
+      "category": "ConfigurationItem",
       "cypherQueryFile": "queryHostsByITService",
       "name": [
         "Messaging"

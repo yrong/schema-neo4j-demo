@@ -277,7 +277,6 @@ module.exports = {
         return params;
     },
     customizedQueryItems_preProcess:(params,ctx)=>{
-        params.method = ctx.method,params.url = ctx.url,params.category = getCategoryFromUrl(ctx.url)
         if(params.cypherQueryFile){
             params.cypher = fs.readFileSync('cypher/'+params.cypherQueryFile + '.cyp', 'utf8')
         }

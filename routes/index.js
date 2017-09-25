@@ -17,7 +17,7 @@ const schema_checker = (params)=>{return schema.checkObject(params)}
 const none_checker = (params)=>true
 
 module.exports = (app)=>{
-    let routesDef = schema.getApiRoutes(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete','SearchByCypher']
+    let routesDef = schema.getApiRoutes(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     console.log('init routes from schema:\n' + JSON.stringify(routesDef,null,'\t'))
     _.each(routesDef,(val)=>{
@@ -33,10 +33,10 @@ module.exports = (app)=>{
         methods = val.allowed_methods||allowed_methods
         _.each(methods,(method)=>{
             procedure=null
-            http_method = method==='Add'||method === 'Search'||method==='SearchByCypher'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
-            route = method==='Add'||method==='FindAll'?'/api'+val.route:method==='Search'?'/api/search'+val.route:method==='SearchByCypher'?'/api/searchCypher'+val.route:'/api'+val.route+'/:uuid'
+            http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
+            route = method==='Add'||method==='FindAll'?'/api'+val.route:method==='Search'?'/api/search'+val.route:'/api'+val.route+'/:uuid'
             checker = method==='Add'?[schema_checker,es_checker]:(method==='Modify'||method==='Delete')?es_checker:none_checker
-            preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:method==='FindOne'||method==='FindAll'?hook.queryItems_preProcess:hook.customizedQueryItems_preProcess
+            preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             postProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_postProcess:hook.queryItems_postProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].preProcess)
                 preProcess = val.customizedHook[method].preProcess
@@ -60,6 +60,13 @@ module.exports = (app)=>{
                 })
             }
         })
+    })
+
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/searchByCypher',
+        preProcess: hook.customizedQueryItems_preProcess,
+        postProcess: hook.queryItems_postProcess
     })
 
     /*ConfigurationItemCategory*/

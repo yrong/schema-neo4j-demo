@@ -409,7 +409,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/it_services/service",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"queryParams": [],
 			"preRequestScript": null,
@@ -421,12 +421,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"it service instance found\"] = jsonData.data.length >= 1;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506349063859,
+			"time": 1506353262211,
 			"name": "query uuid of it service by service name/id or service group name/id",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n\t\"search\":[\"email\",\"pop3\"],\n\t\"cypherQueryFile\":\"advanceSearchITService\"\n}"
+			"rawModeData": "{\n\t\"category\":\"ITService\",\n\t\"search\":[\"email\",\"pop3\"],\n\t\"cypherQueryFile\":\"advanceSearchITService\"\n}"
 		},
 		{
 			"id": "2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
@@ -628,7 +628,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/it_services/service",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 			"queryParams": [],
 			"preRequestScript": null,
@@ -640,12 +640,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"2 it service instances found\"] = jsonData.data.length >= 1;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506346967648,
+			"time": 1506353305642,
 			"name": "query it service reference attributes by uuids",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n\t\"uuids\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n\t\"cypherQueryFile\":\"queryITServiceByIds\"\n}"
+			"rawModeData": "{\n\t\"category\":\"ITService\",\n\t\"uuids\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n\t\"cypherQueryFile\":\"queryITServiceByIds\"\n}"
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
@@ -873,7 +873,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/cfgItems",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
@@ -885,12 +885,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"mount configurationItems\"] = jsonData.data.length ",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506347826777,
+			"time": 1506353381301,
 			"name": "query ConfigurationItem mounted advanced",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"cypherQueryFile\":\"mountedConfigurationItemRels\"\n}\n\n\n\n\n\n"
+			"rawModeData": "{\n   \"category\":\"ConfigurationItem\",\n  \"cypherQueryFile\":\"mountedConfigurationItemRels\"\n}\n\n\n\n\n\n"
 		},
 		{
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
@@ -1816,7 +1816,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchCypher/cfgItems",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [],
 			"preRequestScript": null,
@@ -1828,12 +1828,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"server found\"] = jsonData.data.length >=1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506348302305,
+			"time": 1506353398803,
 			"name": "query it service groups related cmdb servers advanced",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n\t\"cypherQueryFile\":\"queryHostsByITService\",\n\t\"name\":[\"Messaging\"]\n}"
+			"rawModeData": "{\n\t\"category\":\"ConfigurationItem\",\n\t\"cypherQueryFile\":\"queryHostsByITService\",\n\t\"name\":[\"Messaging\"]\n}"
 		},
 		{
 			"id": "f6bd7de0-64cb-11bc-0351-e2eccc92716f",
