@@ -694,6 +694,662 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service?search=email,pop3"
   },
   {
+    "name": "add schemas",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema",
+    "body": {
+      "token": "{{token}}",
+      "data": [
+        {
+          "id": "User",
+          "type": "object",
+          "properties": {
+            "alias": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "lang": {
+              "type": "string"
+            },
+            "surname": {
+              "type": "string"
+            },
+            "type": {
+              "type": "integer"
+            },
+            "attempt_ip": {
+              "type": "string"
+            },
+            "userid": {
+              "type": "integer"
+            },
+            "theme": {
+              "type": "string"
+            },
+            "passwd": {
+              "type": "string"
+            }
+          },
+          "category": "auxiliary",
+          "route": "/users"
+        },
+        {
+          "id": "ServerRoom",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "category": "auxiliary",
+          "route": "/serverRooms"
+        },
+        {
+          "id": "WareHouse",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "category": "auxiliary",
+          "route": "/wareHouses"
+        },
+        {
+          "id": "Shelf",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "warehouse_id": {
+              "type": "string",
+              "schema": "WareHouse",
+              "relationship": {
+                "name": "LocatedAt"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "warehouse_id"
+          ],
+          "category": "auxiliary",
+          "route": "/shelves"
+        },
+        {
+          "id": "Cabinet",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "server_room_id": {
+              "type": "string",
+              "schema": "ServerRoom",
+              "relationship": {
+                "name": "LocatedAt"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "server_room_id"
+          ],
+          "category": "auxiliary",
+          "route": "/cabinets"
+        },
+        {
+          "id": "ITServiceGroup",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "category": "auxiliary",
+          "route": "/it_services/group"
+        },
+        {
+          "id": "ITService",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "group": {
+              "type": "string",
+              "schema": "ITServiceGroup",
+              "relationship": {
+                "name": "BelongsTo"
+              }
+            },
+            "dependendents": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "schema": "ITService",
+                "relationship": {
+                  "name": "DependsOn",
+                  "reverse": true
+                }
+              }
+            },
+            "dependencies": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "schema": "ITService",
+                "relationship": {
+                  "name": "DependsOn"
+                }
+              }
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "schema": "ITService",
+                "relationship": {
+                  "name": "ParentOf"
+                }
+              }
+            },
+            "parent": {
+              "type": "string",
+              "schema": "ITService",
+              "relationship": {
+                "name": "ParentOf",
+                "reverse": true
+              }
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "category": "auxiliary",
+          "route": "/it_services/service"
+        },
+        {
+          "id": "ConfigurationItem",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "it_service": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "schema": "ITService",
+                "relationship": {
+                  "name": "SUPPORT_SERVICE"
+                }
+              },
+              "uniqueItems": true
+            },
+            "monitored": {
+              "type": "boolean",
+              "default": false
+            },
+            "responsibility": {
+              "type": "integer",
+              "schema": "User",
+              "relationship": {
+                "name": "RESPONSIBLE_FOR",
+                "reverse": true
+              }
+            },
+            "technical_support_info": {
+              "type": "string"
+            },
+            "status": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                }
+              }
+            },
+            "used_by_user": {
+              "type": "object",
+              "properties": {
+                "dn": {
+                  "type": "string"
+                }
+              }
+            },
+            "used_by_dept": {
+              "type": "object",
+              "properties": {
+                "dn": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "route": "/cfgItems",
+          "searchable": {
+            "index": "cmdb"
+          }
+        },
+        {
+          "id": "Asset",
+          "allOf": [
+            {
+              "$ref": "ConfigurationItem"
+            },
+            {
+              "properties": {
+                "geo_location": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lon": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "Hardware",
+          "allOf": [
+            {
+              "$ref": "Asset"
+            },
+            {
+              "properties": {
+                "asset_id": {
+                  "type": "string"
+                },
+                "sn": {
+                  "type": "string"
+                },
+                "asset_location": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "mounted",
+                        "unmounted",
+                        "on_shelf",
+                        "other"
+                      ]
+                    },
+                    "cabinet": {
+                      "type": "string",
+                      "schema": "Cabinet",
+                      "relationship": {
+                        "name": "LOCATED",
+                        "parentObjectAsRelProperty": true
+                      }
+                    },
+                    "date_mounted": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "u": {
+                      "type": "integer"
+                    },
+                    "shelf": {
+                      "type": "string",
+                      "schema": "Shelf",
+                      "relationship": {
+                        "name": "LOCATED",
+                        "parentObjectAsRelProperty": true
+                      }
+                    },
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                },
+                "model": {
+                  "type": "string"
+                },
+                "product_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "warranty_expiration_date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "retirement_date": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          ],
+          "required": [
+            "model",
+            "product_date"
+          ]
+        },
+        {
+          "id": "Storage",
+          "allOf": [
+            {
+              "$ref": "Hardware"
+            }
+          ]
+        },
+        {
+          "id": "Camera",
+          "allOf": [
+            {
+              "$ref": "Hardware"
+            }
+          ]
+        },
+        {
+          "id": "NetworkDevice",
+          "allOf": [
+            {
+              "$ref": "Hardware"
+            },
+            {
+              "properties": {
+                "ip_address": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "ipv4"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "Firewall",
+          "allOf": [
+            {
+              "$ref": "NetworkDevice"
+            }
+          ]
+        },
+        {
+          "id": "Router",
+          "allOf": [
+            {
+              "$ref": "NetworkDevice"
+            }
+          ]
+        },
+        {
+          "id": "Switch",
+          "allOf": [
+            {
+              "$ref": "NetworkDevice"
+            }
+          ]
+        },
+        {
+          "id": "AbstractServer",
+          "allOf": [
+            {
+              "$ref": "Asset"
+            },
+            {
+              "properties": {
+                "ip_address": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "ipv4"
+                  }
+                },
+                "operating_system": {
+                  "type": "string",
+                  "schema": "Software",
+                  "relationship": {
+                    "name": "RUNS_ON",
+                    "reverse": true
+                  }
+                },
+                "applications": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "schema": "Software",
+                    "relationship": {
+                      "name": "RUNS_ON",
+                      "reverse": true
+                    }
+                  },
+                  "uniqueItems": true
+                },
+                "storage_info": {
+                  "type": "string"
+                },
+                "hardware_info": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "required": [
+            "ip_address",
+            "operating_system"
+          ]
+        },
+        {
+          "id": "PhysicalServer",
+          "allOf": [
+            {
+              "$ref": "AbstractServer"
+            },
+            {
+              "$ref": "Hardware"
+            },
+            {
+              "properties": {
+                "management_ip": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "VirtualServer",
+          "allOf": [
+            {
+              "$ref": "AbstractServer"
+            },
+            {
+              "properties": {
+                "host_server": {
+                  "type": "string",
+                  "schema": "PhysicalServer",
+                  "relationship": {
+                    "name": "HOSTED_ON"
+                  }
+                }
+              }
+            }
+          ],
+          "required": [
+            "storage_info"
+          ]
+        },
+        {
+          "id": "Software",
+          "allOf": [
+            {
+              "$ref": "Asset"
+            },
+            {
+              "properties": {
+                "subtype": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          ],
+          "required": [
+            "subtype"
+          ]
+        },
+        {
+          "id": "ProcessFlow",
+          "type": "object",
+          "properties": {
+            "it_service": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "schema": "ITService",
+                "relationship": {
+                  "name": "SUPPORT_SERVICE"
+                }
+              },
+              "uniqueItems": true
+            },
+            "reference_process_flow": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "schema": "ProcessFlow",
+                "relationship": {
+                  "name": "REFERENCED_PROCESSFLOW"
+                }
+              },
+              "uniqueItems": true
+            },
+            "reference_kb": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "committer": {
+              "type": "integer",
+              "schema": "User",
+              "relationship": {
+                "name": "COMMITTED_BY",
+                "reverse": true
+              }
+            },
+            "executor": {
+              "type": "integer",
+              "schema": "User",
+              "relationship": {
+                "name": "EXECUTED_BY",
+                "reverse": true
+              }
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "open",
+                "closed",
+                "solved",
+                "cancelled"
+              ]
+            },
+            "note": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "attachment": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "pfid": {
+              "type": "string"
+            },
+            "user_affected": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "it_service"
+          ],
+          "route": "/processFlows",
+          "searchable": {
+            "index": "processflow"
+          }
+        },
+        {
+          "id": "IncidentFlow",
+          "allOf": [
+            {
+              "$ref": "ProcessFlow"
+            },
+            {
+              "properties": {
+                "user_affected": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     "name": "add ServiceGroup Infrastructure",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",

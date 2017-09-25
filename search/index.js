@@ -92,6 +92,8 @@ var deleteItem = function(result, params, ctx) {
     }
     logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
     return es_client.deleteByQuery(delObj).then(function (response) {
+        if(response&&response.deleted==0)
+            params[hook.STATUS_WARNING] = 'ElasticSearch:no record found to delete'
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
         params[hook.STATUS_WARNING] = 'ElasticSearch:' + error.response||String(error)

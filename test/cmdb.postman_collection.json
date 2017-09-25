@@ -17,7 +17,8 @@
 				"7d9d07e7-ac92-6126-de20-970f1b4114ad",
 				"9f34a8c1-40fb-30d0-c64a-d1c1880502c9"
 			],
-			"folders_order": []
+			"folders_order": [],
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
 		},
 		{
 			"owner": "2263720",
@@ -123,7 +124,19 @@
 				"93a8e1ba-573a-9bf7-984a-aef1a2df7366",
 				"07c40b56-89c6-d9c2-efcc-d9fa500b797c"
 			],
-			"folders_order": []
+			"folders_order": [],
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+		},
+		{
+			"name": "5-schema",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"order": [
+				"e4595497-019a-3e05-447c-ef740979dddd"
+			],
+			"owner": "2263720",
+			"folders_order": [],
+			"id": "1e6d21e7-2f41-6068-c2d1-2b3bb61b8816"
 		}
 	],
 	"folders_order": [
@@ -131,7 +144,8 @@
 		"ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 		"ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 		"62ced1ec-7033-2bc4-d382-58eef18b81f6",
-		"0fdc7538-565a-e2cd-a999-d8ada7d69363"
+		"0fdc7538-565a-e2cd-a999-d8ada7d69363",
+		"1e6d21e7-2f41-6068-c2d1-2b3bb61b8816"
 	],
 	"timestamp": 0,
 	"owner": "2263720",
@@ -179,6 +193,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}",
+			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363",
 			"queryParams": [],
 			"preRequestScript": "",
 			"pathVariables": {},
@@ -186,15 +201,14 @@
 			"method": "DELETE",
 			"data": [],
 			"dataMode": "params",
-			"tests": "\n\n\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"delete success\"] = jsonData.status=='info';\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500557684410,
+			"time": 1506259197498,
 			"name": "delete incident flow 3",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"folder": "0fdc7538-565a-e2cd-a999-d8ada7d69363"
+			"responses": []
 		},
 		{
 			"id": "168a351e-1498-85a0-5916-5895591e900e",
@@ -1844,6 +1858,38 @@
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf"
+		},
+		{
+			"id": "e4595497-019a-3e05-447c-ef740979dddd",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema",
+			"folder": "1e6d21e7-2f41-6068-c2d1-2b3bb61b8816",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506245355822,
+			"name": "add schemas",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "7350c37f-62ee-38cf-ef75-e140190da667",
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":\n  [\n  \t{\n\t  \"id\": \"User\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"alias\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"lang\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"surname\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"type\":{\n\t      \"type\": \"integer\"\n\t    },\n\t    \"attempt_ip\":{\n\t      \"type\":\"string\"\n\t    },\n\t    \"userid\":{\n\t      \"type\":\"integer\"\n\t    },\n\t    \"theme\":{\n\t      \"type\":\"string\"\n\t    },\n\t    \"passwd\":{\n\t      \"type\":\"string\"\n\t    }\n\t  },\n\t  \"category\":\"auxiliary\",\n\t  \"route\":\"/users\"\n\t},\n  \t{\n\t  \"id\": \"ServerRoom\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    }\n\t  },\n\t  \"required\": [\"name\"],\n\t  \"category\":\"auxiliary\",\n\t  \"route\":\"/serverRooms\"\n\t},\n\t{\n\t  \"id\": \"WareHouse\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    }\n\t  },\n\t  \"required\": [\"name\"],\n\t  \"category\":\"auxiliary\",\n\t  \"route\": \"/wareHouses\"\n\t},\n\t{\n\t  \"id\": \"Shelf\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"warehouse_id\":{\n\t      \"type\":\"string\",\n\t      \"schema\":\"WareHouse\",\n\t      \"relationship\":{\"name\":\"LocatedAt\"}\n\t    }\n\t  },\n\t  \"required\": [\"name\",\"warehouse_id\"],\n\t  \"category\":\"auxiliary\",\n\t  \"route\": \"/shelves\"\n\t},\n\t{\n\t  \"id\": \"Cabinet\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"server_room_id\":{\n\t      \"type\":\"string\",\n\t      \"schema\":\"ServerRoom\",\n\t      \"relationship\":{\"name\":\"LocatedAt\"}\n\t    }\n\t  },\n\t  \"required\": [\"name\",\"server_room_id\"],\n\t  \"category\":\"auxiliary\",\n\t  \"route\":\"/cabinets\"\n\t},\n\t{\n\t  \"id\": \"ITServiceGroup\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    }\n\t  },\n\t  \"required\": [\"name\"],\n\t  \"category\":\"auxiliary\",\n\t  \"route\":\"/it_services/group\"\n\t},\n\t{\n\t  \"id\": \"ITService\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"group\":{\n\t      \"type\": \"string\",\n\t      \"schema\":\"ITServiceGroup\",\n\t      \"relationship\":{\"name\":\"BelongsTo\"}\n\t    },\n\t    \"dependendents\": {\n\t      \"type\": \"array\",\n\t      \"items\": {\n\t        \"type\": \"string\",\n\t        \"schema\":\"ITService\",\n\t        \"relationship\":{\"name\":\"DependsOn\",\"reverse\":true}\n\t      }\n\t    },\n\t    \"dependencies\": {\n\t      \"type\": \"array\",\n\t      \"items\": {\n\t        \"type\": \"string\",\n\t        \"schema\":\"ITService\",\n\t        \"relationship\":{\"name\":\"DependsOn\"}\n\t      }\n\t    },\n\t    \"children\": {\n\t      \"type\": \"array\",\n\t      \"items\": {\n\t        \"type\": \"string\",\n\t        \"schema\":\"ITService\",\n\t        \"relationship\":{\"name\":\"ParentOf\"}\n\t      }\n\t    },\n\t    \"parent\":{\n\t      \"type\": \"string\",\n\t      \"schema\":\"ITService\",\n\t      \"relationship\":{\"name\":\"ParentOf\",\"reverse\":true}\n\t    }\n\t  },\n\t  \"required\": [\"name\"],\n\t  \"category\":\"auxiliary\",\n\t  \"route\":\"/it_services/service\"\n\t},\n\t{\n\t  \"id\": \"ConfigurationItem\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"name\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"it_service\": {\n\t      \"type\": \"array\",\n\t      \"items\": { \"type\": \"string\", \"schema\":\"ITService\",\"relationship\":{\"name\":\"SUPPORT_SERVICE\"}},\n\t      \"uniqueItems\": true\n\t    },\n\t    \"monitored\": {\n\t      \"type\": \"boolean\",\n\t      \"default\": false\n\t    },\n\t    \"responsibility\":{\n\t        \"type\": \"integer\",\n\t        \"schema\":\"User\",\n\t        \"relationship\":{\"name\":\"RESPONSIBLE_FOR\",\"reverse\":true}\n\t    },\n\t    \"technical_support_info\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"status\":{\n\t      \"type\":\"object\",\n\t      \"properties\":{\n\t        \"status\":{\n\t          \"type\": \"string\"\n\t        }\n\t      }\n\t    },\n\t    \"used_by_user\":{\n\t      \"type\":\"object\",\n\t      \"properties\":{\n\t        \"dn\":{\n\t          \"type\": \"string\"\n\t        }\n\t      }\n\t    },\n\t    \"used_by_dept\":{\n\t      \"type\":\"object\",\n\t      \"properties\":{\n\t        \"dn\":{\n\t          \"type\": \"string\"\n\t        }\n\t      }\n\t    }\n\t  },\n\t  \"required\": [\"name\"],\n\t  \"route\": \"/cfgItems\",\n\t  \"searchable\":{\"index\":\"cmdb\"}\n\t},\n\t{\n\t  \"id\": \"Asset\",\n\t  \"allOf\": [\n\t    {\n\t      \"$ref\": \"ConfigurationItem\"\n\t    },\n\t    {\n\t      \"properties\": {\n\t        \"geo_location\": {\n\t          \"type\": \"object\",\n\t          \"properties\": {\n\t            \"name\": {\n\t              \"type\": \"string\"\n\t            },\n\t            \"location\": {\n\t              \"type\": \"object\",\n\t              \"properties\": {\n\t                \"lat\": {\n\t                  \"type\": \"number\"\n\t                },\n\t                \"lon\": {\n\t                  \"type\": \"number\"\n\t                }\n\t              }\n\t            }\n\t          }\n\t        }\n\t      }\n\t    }\n\t  ]\n\t},\n\t{\n\t  \"id\": \"Hardware\",\n\t  \"allOf\":\n\t  [\n\t    {\"$ref\": \"Asset\"},\n\t    {\"properties\":\n\t    {\n\t      \"asset_id\": {\n\t        \"type\": \"string\"\n\t      },\n\t      \"sn\": {\n\t        \"type\": \"string\"\n\t      },\n\t      \"asset_location\":{\n\t        \"type\":\"object\",\n\t        \"properties\" : {\n\t          \"status\":{\"type\":\"string\",\"enum\": [\"mounted\", \"unmounted\",\"on_shelf\",\"other\"]},\n\t          \"cabinet\":{\"type\":\"string\",\"schema\":\"Cabinet\",\"relationship\":{\"name\":\"LOCATED\",\"parentObjectAsRelProperty\":true}},\n\t          \"date_mounted\" : {\n\t            \"type\" : \"string\",\n\t            \"format\": \"date\"\n\t          },\n\t          \"u\" : {\n\t            \"type\" : \"integer\"\n\t          },\n\t          \"shelf\":{\"type\":\"string\",\"schema\":\"Shelf\",\"relationship\":{\"name\":\"LOCATED\",\"parentObjectAsRelProperty\":true}},\n\t          \"label\":{\"type\":\"string\"}\n\t        },\n\t        \"required\": [\"status\"]\n\t      },\n\t      \"model\":{\n\t        \"type\": \"string\"\n\t      },\n\t      \"product_date\":{\n\t        \"type\": \"string\",\n\t        \"format\": \"date\"\n\t      },\n\t      \"warranty_expiration_date\":{\n\t        \"type\": \"string\",\n\t        \"format\": \"date\"\n\t      },\n\t      \"retirement_date\":{\n\t        \"type\": \"string\",\n\t        \"format\": \"date\"\n\t      }\n\t    }\n\t    }\n\t  ],\n\t  \"required\": [\"model\", \"product_date\"]\n\t},\n\t{\n\t  \"id\": \"Storage\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"Hardware\"}\n\t  ]\n\t},\n\t{\n\t  \"id\": \"Camera\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"Hardware\"}\n\t  ]\n\t},\n\t{\n\t  \"id\": \"NetworkDevice\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"Hardware\"},\n\t    {\n\t      \"properties\": {\n\t        \"ip_address\": {\n\t          \"type\": \"array\",\n\t          \"items\": {\n\t            \"type\": \"string\",\n\t            \"format\": \"ipv4\"\n\t          }\n\t        }\n\t      }\n\t    }\n\t  ]\n\t},\n\t{\n\t  \"id\": \"Firewall\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"NetworkDevice\"}\n\t  ]\n\t},\n\t{\n\t  \"id\": \"Router\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"NetworkDevice\"}\n\t  ]\n\t},\n\t{\n\t  \"id\": \"Switch\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"NetworkDevice\"}\n\t  ]\n\t},\n\t{\n\t  \"id\": \"AbstractServer\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"Asset\"},\n\t    {\"properties\": {\n\t        \"ip_address\": {\n\t          \"type\": \"array\",\n\t          \"items\": {\"type\": \"string\",\"format\":\"ipv4\"}\n\t        },\n\t        \"operating_system\": {\n\t          \"type\": \"string\",\n\t          \"schema\":\"Software\",\n\t          \"relationship\":{\"name\":\"RUNS_ON\",\"reverse\":true}\n\t        },\n\t        \"applications\":{\n\t            \"type\": \"array\",\n\t            \"items\": {\"type\": \"string\",\"schema\":\"Software\",\"relationship\":{\"name\":\"RUNS_ON\",\"reverse\":true}},\n\t            \"uniqueItems\": true\n\t        },\n\t        \"storage_info\":{\n\t          \"type\": \"string\"\n\t        },\n\t        \"hardware_info\":{\n\t          \"type\": \"string\"\n\t        }\n\t      }\n\t    }\n\t  ],\n\t  \"required\": [\"ip_address\", \"operating_system\"]\n\t},\n\t{\n\t  \"id\": \"PhysicalServer\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"AbstractServer\"},\n\t    {\"$ref\": \"Hardware\"},\n\t    {\"properties\": {\n\t      \"management_ip\":{\n\t        \"type\": \"array\",\n\t        \"items\": {\"type\": \"string\"}\n\t        }\n\t      }\n\t    }\n\t  ]\n\t},\n\t{\n\t  \"id\": \"VirtualServer\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"AbstractServer\"},\n\t    {\"properties\": {\n\t      \"host_server\":{\n\t        \"type\": \"string\",\n\t        \"schema\":\"PhysicalServer\",\n\t        \"relationship\":{\"name\":\"HOSTED_ON\"}\n\t      }\n\t    }\n\t    }\n\t  ],\n\t  \"required\": [\"storage_info\"]\n\t},\n\t{\n\t  \"id\": \"Software\",\n\t  \"allOf\": [\n\t    {\"$ref\": \"Asset\"},\n\t    {\n\t      \"properties\": {\n\t        \"subtype\": {\n\t          \"type\": \"string\",\n\t          \"minLength\": 1\n\t        }\n\t      }\n\t    }\n\t  ],\n\t  \"required\": [\"subtype\"]\n\t},\n\t{\n\t  \"id\": \"ProcessFlow\",\n\t  \"type\": \"object\",\n\t  \"properties\": {\n\t    \"it_service\": {\n\t      \"type\": \"array\",\n\t      \"items\": { \"type\": \"string\",\"schema\":\"ITService\",\"relationship\":{\"name\":\"SUPPORT_SERVICE\"}},\n\t      \"uniqueItems\": true\n\t    },\n\t    \"reference_process_flow\":{\n\t      \"type\": \"array\",\n\t      \"items\": { \"type\": \"string\" ,\"schema\":\"ProcessFlow\",\"relationship\":{\"name\":\"REFERENCED_PROCESSFLOW\"}},\n\t      \"uniqueItems\": true\n\t    },\n\t    \"reference_kb\":{\n\t      \"type\": \"array\",\n\t      \"items\": { \"type\": \"string\"},\n\t      \"uniqueItems\": true\n\t    },\n\t    \"committer\":{\n\t      \"type\": \"integer\",\n\t      \"schema\":\"User\",\n\t      \"relationship\":{\"name\":\"COMMITTED_BY\",\"reverse\":true}\n\t    },\n\t    \"executor\":{\n\t      \"type\": \"integer\",\n\t      \"schema\":\"User\",\n\t      \"relationship\":{\"name\":\"EXECUTED_BY\",\"reverse\":true}\n\t    },\n\t    \"status\":{\n\t      \"type\": \"string\",\n\t      \"enum\": [\"open\", \"closed\",\"solved\",\"cancelled\"]\n\t    },\n\t    \"note\":{\n\t      \"type\": \"string\"\n\t    },\n\t    \"description\": {\n\t      \"type\": \"string\"\n\t    },\n\t    \"attachment\":{\n\t      \"type\": \"string\"\n\t    },\n\t    \"title\":{\n\t      \"type\":\"string\"\n\t    },\n\t    \"pfid\":{\n\t      \"type\":\"string\"\n\t    },\n\t    \"user_affected\": {\n\t      \"type\": \"string\"\n\t    }\n\t  },\n\t  \"required\": [\"it_service\"],\n\t  \"route\": \"/processFlows\",\n\t  \"searchable\":{\"index\":\"processflow\"}\n\t},\n\t{\n\t  \"id\": \"IncidentFlow\",\n\t  \"allOf\": [\n\t    {\n\t      \"$ref\": \"ProcessFlow\"\n\t    },\n\t    {\n\t      \"properties\": {\n\t        \"user_affected\": {\n\t          \"type\": \"string\"\n\t        }\n\t      }\n\t    }\n\t  ]\n\t}\n  ]\n    \n}"
 		},
 		{
 			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",

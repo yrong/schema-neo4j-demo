@@ -3,7 +3,6 @@ const config = require('config');
 const hook = require('../hooks');
 const schema = require('../schema');
 const search = require('../search');
-const ws = require('./ws')
 const es_config = config.get('elasticsearch')
 
 
@@ -106,8 +105,6 @@ module.exports = (app)=>{
         route: '/api/schema/',
         procedure: hook.loadSchemas
     })
-
-    ws(app)
 
     return app
 }

@@ -71,7 +71,8 @@ const loadSchema = ()=>{
         }
     })
 }
-
+const ws = require('./routes/ws')
+ws(app)
 /*start listen*/
 app.listen(config.get('port'), function () {
     console.log(`App started`);

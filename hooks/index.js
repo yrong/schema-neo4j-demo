@@ -252,7 +252,7 @@ module.exports = {
         if(params.method==='DELETE'){
             if(params.uuid){
                 response_wrapped.uuid = params.uuid
-                if(result.length==1||result.deleted==1){
+                if(result&&(result.length==1||result.deleted==1)){
                     if(!params[STATUS_ERROR]){
                         await cmdb_cache.del(params.uuid)
                         if(params.name&&params.category){
@@ -260,7 +260,7 @@ module.exports = {
                         }
                     }
                 }else{
-                    params[STATUS_WARNING] = CONTENT_NO_RECORD
+                    params[STATUS_WARNING] = params[STATUS_WARNING]||CONTENT_NO_RECORD
                 }
             }
             if(params.category===CATEGORY_ALL)
