@@ -41,7 +41,7 @@ const configurationItemMapping = async (type, sheet, line)=>{
 class Importer {
     constructor(socketIOContext,configurationItemFileName) {
         this.error_book= {}
-        this.configurationItemFileName = configurationItemFileName||schema.cmdbTypeName.ConfigurationItem+'.xlsx'
+        this.configurationItemFileName = configurationItemFileName||'ConfigurationItem.xlsx'
         this.socketIOContext = socketIOContext
         this.categories = process.env.IMPORT_CATEGORIES||_.keys(xslxHelper.initSheets(this.configurationItemFileName))
     }

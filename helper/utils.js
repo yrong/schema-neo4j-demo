@@ -35,16 +35,14 @@ const recursivelyRemoveInternalProperties =  (val) => {
     return val;
 }
 
-const referencedMapper_assetLocation = async (val)=>{
-    let asset_val = {}
-    if(uuid_validator(val['cabinet'])){
-        asset_val = val['cabinet']=await cmdb_cache.get(val['cabinet'])||val['cabinet']
+const referencedObjectMapper = async (val,props)=>{
+    for(let key in props.properties){
+        if(val[key]&&props.properties[key].schema){
+            if(uuid_validator(val[key])){
+                val[key]= await cmdb_cache.get(val[key])||val[key]
+            }
+        }
     }
-    if(uuid_validator(val['shelf'])){
-        asset_val = val['shelf']=await cmdb_cache.get(val['shelf'])||val['shelf']
-    }
-    if(uuid_validator(asset_val['parent']))
-        asset_val['parent']=await cmdb_cache.get(asset_val['parent'])||asset_val['parent']
 }
 
 const referencedMapper = async (val) => {
@@ -73,9 +71,7 @@ const referencedMapper = async (val) => {
                         val[key] = JSON.parse(val[key])
                     }catch(error){
                     }
-                    if(key === 'asset_location'&&val[key]){
-                        await referencedMapper_assetLocation(val[key])
-                    }
+                    await referencedObjectMapper(val[key],properties[key])
                 }
             }
         }
@@ -93,10 +89,10 @@ var propertiesCombine = (results)=>{
     })
 }
 
-const resultMapper = (result, params) => {
-    if (params.category === schema.cmdbTypeName.ConfigurationItem || params.category === schema.cmdbTypeName.ProcessFlow)
-        result = referencedMapper(result)
-    if (params.category === schema.cmdbTypeName.ITServiceGroup || params.category === schema.cmdbTypeName.WareHouse || params.category === schema.cmdbTypeName.ServerRoom)
+const resultMapper = async (result, params) => {
+    if(schema.isSearchableType(params.category))
+        result = await referencedMapper(result)
+    if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
     result = removeInternalProperties(result)
     return result

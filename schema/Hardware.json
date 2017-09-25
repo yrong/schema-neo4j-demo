@@ -6,7 +6,8 @@
     {"properties":
     {
       "asset_id": {
-        "type": "string"
+        "type": "string",
+        "generateQRImage":true
       },
       "sn": {
         "type": "string"

@@ -17,7 +17,7 @@ const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uui
 
 const generateAddNodeCypher=(params)=>{
     let labels = schema.getParentCategories(params.category)
-    if(params.category === schema.cmdbTypeName.Software)
+    if(params.fields.subtype)
         labels.push(params.fields.subtype)
     labels = _.isArray(labels)?labels.join(":"):params.category;
     return cmdb_addNode_Cypher_template(labels);
@@ -78,7 +78,8 @@ const generateSequence=(name)=>
 /**
  * query item with members
  */
-const cmdb_queryItemWithMembers_cypher = (label, member_label, reference_field, condition) => {
+const cmdb_queryItemWithMembers_cypher = (label, member_label, reference_field, params) => {
+    let condition = params.keyword?`WHERE n.name = {keyword}`:''
     return `MATCH
         (n:${label})
         ${condition}
@@ -123,42 +124,6 @@ const cmdb_addSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:{ca
 MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
 MERGE (subtype)-[:INHERIT]->(sw)`
 
-/**
- * Customized Query
- */
-const generateQueryITServiceByUuidsCypher = (params)=>`MATCH (s1:ITService)
-WHERE s1.uuid IN {uuids}
-OPTIONAL MATCH (s1)-[:BelongsTo]->(sg)
-OPTIONAL MATCH (s1)-[:ParentOf]->(s2)
-OPTIONAL MATCH (s1)<-[:ParentOf]-(s3)
-OPTIONAL MATCH (s1)-[:DependsOn]->(s4)
-OPTIONAL MATCH (s1)<-[:DependsOn]-(s5)
-WITH {service:s1,group:sg,children:(collect(distinct(s2))),parent:s3,dependencies:(collect(distinct(s4))),dependendents:(collect(distinct(s5)))} as service
-RETURN COLLECT(distinct service)`
-
-const generateAdvancedSearchITServiceCypher = (params)=>`OPTIONAL MATCH (s1:ITService)
-WHERE s1.uuid IN {search} or s1.group IN {search}
-WITH COLLECT(distinct(s1.uuid)) as services_byIds
-UNWIND {search} as keyword
-OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
-WHERE s1.name = keyword or sg.name = keyword
-WITH services_byIds+collect(distinct(s1.uuid)) as services
-UNWIND services AS service
-RETURN COLLECT(distinct service)`
-
-const generateMountedConfigurationItemRelsCypher = (params)=> `MATCH (:ConfigurationItem)-[r:LOCATED]->(:Cabinet)
-return COLLECT(distinct r)
-`
-
-const generateCfgHostsByITServiceGroupCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(:ITService)-[:BelongsTo]->(sg:ITServiceGroup)
-WHERE (n:PhysicalServer or n:VirtualServer) and sg.name IN {group_names}
-return collect(distinct n)
-`
-
-const generateCfgHostsByITServiceCypher = (params)=> `MATCH (n)-[:SUPPORT_SERVICE]->(s:ITService)
-WHERE (n:PhysicalServer or n:VirtualServer) and s.name IN {service_names}
-return collect(distinct n)
-`
 
 const generateRelationCypher = (params)=>{
     let refProperties = schema.getSchemaRefProperties(params.category),val,cypher,rel_part,rel_cyphers = []
@@ -204,11 +169,10 @@ module.exports = {
     },
     generateQueryNodesCypher:(params)=>{
         let keyword_condition = `WHERE n.name = {keyword}`
-            ,user_keyword_condition = `WHERE n.alias = {keyword}`
             ,condition = ''
             ,cypher,label;
         if(params.keyword){
-            condition = params.category === schema.cmdbTypeName.User?user_keyword_condition:keyword_condition
+            condition = keyword_condition
         }
         label = _.isArray(params.category)?_.last(params.category):params.category
         if(params.pagination){
@@ -218,18 +182,13 @@ module.exports = {
         }
         return cypher;
     },
-    generateQueryITServiceByUuidsCypher,
-    generateAdvancedSearchITServiceCypher,
     generateQueryNodeCypher,
     generateDelNodeCypher,
     generateSequence,
     generateDelAllCypher,
     generateQueryNodeWithRelationToConfigurationItem_cypher,
     generateDummyOperation_cypher,
-    generateMountedConfigurationItemRelsCypher,
-    generateCfgHostsByITServiceGroupCypher,
     generateQueryConfigurationItemBySubCategoryCypher,
-    generateCfgHostsByITServiceCypher,
     generateQuerySubTypeCypher,
     cmdb_queryItemWithMembers_cypher
 }

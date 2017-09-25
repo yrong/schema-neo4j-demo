@@ -5,7 +5,7 @@ const config = require('config')
 const Model = require('redis-crud-fork')
 const SchemaModel = Model('Schema')
 
-let cmdbSchemas={},cmdbDereferencedSchemas = {},cmdbConfigurationItemAuxiliaryTypes=[],cmdbTypeName = {},cmdbRoutes = {},cmdbConfigurationItemInheritanceRelationship={}
+let typeSchemas={},dereferencedSchemas = {},cmdbTypeName = {},typeRoutes = {},typeInheritanceRelationship={},sortedTypes=[]
 
 const persitSchema = async (schema)=>{
     await SchemaModel.insert(schema)
@@ -21,53 +21,57 @@ const checkSchema = (schema)=>{
     }
 }
 
+const buildInheritanceRelationship = (schema)=>{
+    _.each(schema.allOf,(parent)=>{
+        if(parent['$ref']){
+            typeInheritanceRelationship[parent['$ref']] = typeInheritanceRelationship[parent['$ref']]||{}
+            typeInheritanceRelationship[parent['$ref']]['children'] = typeInheritanceRelationship[parent['$ref']]['children']||[]
+            typeInheritanceRelationship[parent['$ref']]['children'].push(schema.id)
+        }
+    })
+}
+
 const loadSchema = async (schema, dereference=true, persistance=true)=>{
     checkSchema(schema)
     ajv.removeSchema(schema.id)
     ajv.addSchema(schema)
     if(persistance)
         await persitSchema(schema)
-    cmdbSchemas[schema.id] = schema
+    typeSchemas[schema.id] = schema
     cmdbTypeName[schema.id] = schema.id
-    if(schema.category==='auxiliary'){
-        cmdbConfigurationItemAuxiliaryTypes.push(schema.id)
-    }else{
-        _.each(schema.allOf,(parent)=>{
-            if(parent['$ref']){
-                cmdbConfigurationItemInheritanceRelationship[parent['$ref']] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]||{}
-                cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'] = cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children']||[]
-                cmdbConfigurationItemInheritanceRelationship[parent['$ref']]['children'].push(schema.id)
-            }
-        })
-    }
+    buildInheritanceRelationship(schema)
     if(schema.route){
-        cmdbRoutes[schema.id] = {route:schema.route}
+        typeRoutes[schema.id] = {route:schema.route}
         if(schema.searchable){
-            cmdbRoutes[schema.id].searchable = schema.searchable
+            typeRoutes[schema.id].searchable = schema.searchable
         }
     }
     if(dereference)
     {
         schema = dereferenceSchema(schema.id)
-        cmdbDereferencedSchemas[schema.id]=schema
+        dereferencedSchemas[schema.id]=schema
     }
 }
 
-const sortAuxiliaryTypes = ()=>{
-    let sortedAuxiliaryTypes=[]
-    for(let auxiliaryType of cmdbConfigurationItemAuxiliaryTypes){
+const sortCmdbTypes = ()=>{
+    let noRefTypes=[],advancedTypes=[],otherTypes=[]
+    for(let category in typeRoutes){
+        if(typeRoutes[category].searchable){
+            advancedTypes.push(category)
+        }
         let no_referenced = true
-        for(let key in cmdbSchemas[auxiliaryType]['properties']){
-            let val = cmdbSchemas[auxiliaryType]['properties'][key]
+        for(let key in typeSchemas[category]['properties']){
+            let val = typeSchemas[category]['properties'][key]
             if(val.schema){
                 no_referenced = false
                 break
             }
         }
         if(no_referenced)
-            sortedAuxiliaryTypes.push(auxiliaryType)
+            noRefTypes.push(category)
     }
-    cmdbConfigurationItemAuxiliaryTypes = _.uniq(_.concat(sortedAuxiliaryTypes,cmdbConfigurationItemAuxiliaryTypes))
+    otherTypes = _.difference(_.keys(typeRoutes), _.concat(noRefTypes,advancedTypes))
+    return _.concat(noRefTypes,otherTypes,advancedTypes)
 }
 
 const loadSchemas = async ()=>{
@@ -77,14 +81,14 @@ const loadSchemas = async ()=>{
     }
     for(let key in cmdbTypeName){
         schema = dereferenceSchema(key)
-        cmdbDereferencedSchemas[schema.id]=schema
+        dereferencedSchemas[schema.id]=schema
     }
-    sortAuxiliaryTypes()
+    sortedTypes = sortCmdbTypes()
     return schemas
 }
 
-const getAuxiliaryTypes = ()=>{
-    return cmdbConfigurationItemAuxiliaryTypes
+const getSortedTypes = ()=>{
+    return sortedTypes
 }
 
 const _getSchema = function (category) {
@@ -128,7 +132,7 @@ const traverseAllProperties = (schema,properties)=>{
 }
 
 const getSchemaProperties = (category)=>{
-    let schema = cmdbDereferencedSchemas[category]
+    let schema = dereferencedSchemas[category]
     let properties = {}
     traverseAllProperties(schema,properties)
     return properties
@@ -149,7 +153,7 @@ const traverseParentCategory = (schema,parents)=>{
 
 const getParentCategories = (category) => {
     let labels = [category]
-    let schema = cmdbDereferencedSchemas[category]
+    let schema = dereferencedSchemas[category]
     labels = traverseParentCategory(schema,labels)
     return _.uniq(labels)
 }
@@ -184,19 +188,9 @@ const getSchemaObjectProperties = (category)=>{
     return objectFields
 }
 
-const isConfigurationItem = (category) => {
-    let labels = getParentCategories(category)
-    return labels.includes(cmdbTypeName.ConfigurationItem)||category===cmdbTypeName.ConfigurationItem
-}
-
-const isProcessFlow = (category) => {
-    let labels = getParentCategories(category)
-    return labels.includes(cmdbTypeName.ProcessFlow)||category===cmdbTypeName.ProcessFlow
-}
-
 const checkObject = function (params) {
     if(!params.data||!params.data.category){
-        throw new Error("cfgItem does not contain category field!");
+        throw new Error("item does not contain category field!");
     }
     var valid = ajv.validate(params.data.category,params.data.fields);
     if(!valid){
@@ -217,19 +211,19 @@ const checkAdditionalProperty = function(params){
     }
 }
 
-const isAuxiliaryTypes  = (category) => {
-    return cmdbConfigurationItemAuxiliaryTypes.includes(category)
+const isSearchableType  = (category) => {
+    return typeRoutes[category].searchable?true:false
 }
 
 const getSchemaHierarchy = (category)=>{
     let result = {name:category}
-    if(cmdbConfigurationItemInheritanceRelationship[category].children){
-        result.children = _.map(cmdbConfigurationItemInheritanceRelationship[category].children,(child)=>{
+    if(typeInheritanceRelationship[category].children){
+        result.children = _.map(typeInheritanceRelationship[category].children,(child)=>{
             return {name:child}
         })
     }
-    _.each(cmdbConfigurationItemInheritanceRelationship[category].children,(child,index)=> {
-        if (cmdbConfigurationItemInheritanceRelationship[child]) {
+    _.each(typeInheritanceRelationship[category].children,(child,index)=> {
+        if (typeInheritanceRelationship[child]) {
             result.children[index] = getSchemaHierarchy(child)
         }
     })
@@ -237,8 +231,49 @@ const getSchemaHierarchy = (category)=>{
 }
 
 const getApiRoutes = ()=>{
-    return cmdbRoutes
+    return typeRoutes
+}
+
+const isTypeCrossed = (category1,category2)=>{
+    return _.intersection(getParentCategories(category1),getParentCategories(category2)).length>0
+}
+
+const getRoute = (category)=>{
+    let route,parentCategories = getParentCategories(category)
+    if(typeRoutes[category]){
+        route = typeRoutes[category].route
+    }else{
+        for(let parent of parentCategories){
+            if(typeRoutes[parent]){
+                route = typeRoutes[parent].route
+                break
+            }
+        }
+    }
+    return route
+}
+
+const getMemberType = (category)=>{
+    let memberType = typeSchemas[category].member,refProperties,result
+    if(memberType){
+        refProperties = getSchemaRefProperties(memberType)
+        for(let refProperty of refProperties){
+            if(refProperty.schema == category){
+                result = {member:memberType,attr:refProperty.attr}
+                break
+            }
+        }
+    }
+    return result
+}
+
+const isSubTypeAllowed = (category)=>{
+    return _.includes(typeSchemas[category].required,'subtype')
+}
+
+const getDynamicSeqField = (category)=>{
+    return typeSchemas[category].dynamicSeqField
 }
 
 
-module.exports = {cmdbTypeName,checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getAuxiliaryTypes,checkObject,getParentCategories,isConfigurationItem,isProcessFlow,isAuxiliaryTypes,getSchemaHierarchy,getApiRoutes}
+module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField}

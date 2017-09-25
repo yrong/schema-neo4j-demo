@@ -58,7 +58,7 @@ const paginationParamsGenerator = function (params) {
         params.per_page = params.per_page || config.get('perPageSize')
         skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
-        if(schema.isAuxiliaryTypes(params.category)){
+        if(!schema.isSearchableType(params.category)){
             throw new Error(`${params.category} not support pagination`);
         }
     }
@@ -75,35 +75,12 @@ const queryParamsCypherGenerator = function (params) {
     /**
      * customized cypher query
      */
-    let condition = params.keyword?`WHERE n.name = {keyword}`:''
-    if(params.category === schema.cmdbTypeName.ITServiceGroup&&!params.origional){
-        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ITServiceGroup,schema.cmdbTypeName.ITService,'group',condition)
-    }else if(params.category === schema.cmdbTypeName.ServerRoom&&!params.origional){
-        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.ServerRoom,schema.cmdbTypeName.Cabinet,'server_room_id',condition)
-    }else if(params.category === schema.cmdbTypeName.WareHouse&&!params.origional){
-        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(schema.cmdbTypeName.WareHouse,schema.cmdbTypeName.Shelf,'warehouse_id',condition);
-    }else if(params.category === schema.cmdbTypeName.ITService){
-        if(params.uuids){
-            params.uuids = params.uuids.split(",");
-            params.cypher = cypherBuilder.generateQueryITServiceByUuidsCypher(params);
-        }else if(params.search){
-            params.search = params.search.split(",");
-            params.cypher = cypherBuilder.generateAdvancedSearchITServiceCypher(params);
-        }
-    }else if(params.category === schema.cmdbTypeName.ConfigurationItem){
-        if(params.mounted_rels){
-            params.cypher = cypherBuilder.generateMountedConfigurationItemRelsCypher(params);
-        }else if(params.cfgHostsByITServiceGroup){
-            params.group_names = params.cfgHostsByITServiceGroup.split(",")
-            params.cypher = cypherBuilder.generateCfgHostsByITServiceGroupCypher(params);
-        }else if(params.cfgHostsByITService){
-            params.service_names = params.cfgHostsByITService.split(",")
-            params.cypher = cypherBuilder.generateCfgHostsByITServiceCypher(params);
-        }
-        else if(params.subcategory){
-            params.subcategory = params.subcategory.split(",");
-            params.cypher = cypherBuilder.generateQueryConfigurationItemBySubCategoryCypher(params);
-        }
+    let member = schema.getMemberType(params.category)
+    if(member){
+        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(params.category,member.member,member.attr,params)
+    }else if(params.subcategory){
+        params.subcategory = params.subcategory.split(",");
+        params.cypher = cypherBuilder.generateQueryConfigurationItemBySubCategoryCypher(params);
     }
     logCypher(params)
     return params;
@@ -177,7 +154,7 @@ const constructResponse = (status,content,displayAs)=>{
 
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
-        let item_uuid,result
+        let item_uuid,result,dynamic_field
         params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar','roles']),params.token = ctx.token,
             params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
@@ -186,9 +163,10 @@ module.exports = {
             params.fields = _.assign({}, params.data.fields)
             params.fields.category = params.data.category
             params.fields.created = Date.now()
-            if (params.data.category === schema.cmdbTypeName.IncidentFlow) {
-                result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(schema.cmdbTypeName.IncidentFlow), params, true)
-                params.fields.pfid = 'IR' + result[0]
+            dynamic_field = schema.getDynamicSeqField(params.data.category)
+            if(dynamic_field){
+                result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(params.data.category), params, true)
+                params.fields[dynamic_field] = result[0]
             }
             return await cudItem_callback(params)
         }
@@ -242,11 +220,14 @@ module.exports = {
             if(params.name)
                 await cmdb_cache.set(params.category+'_'+params.name,{name:params.fields.name,uuid:params.uuid,category:params.category})
             response_wrapped.uuid = params.uuid
-            if(params.fields.asset_id){
-                let qr_code = qr.image(params.fields.asset_id,{ type: 'png' })
-                let qr_image = path.join('public/upload/QRImage',params.fields.asset_id+'.png')
-                let qr_output = fs.createWriteStream(qr_image)
-                qr_code.pipe(qr_output)
+            let properties=schema.getSchemaProperties(params.category)
+            for(let key in properties){
+                if(params.fields[key]&&properties[key].generateQRImage){
+                    let qr_code = qr.image(params.fields.asset_id,{ type: 'png' })
+                    let qr_image = path.join('public/upload/QRImage',params.fields.asset_id+'.png')
+                    let qr_output = fs.createWriteStream(qr_image)
+                    qr_code.pipe(qr_output)
+                }
             }
         }
         if(params.method==='DELETE'){
@@ -298,7 +279,7 @@ module.exports = {
     customizedQueryItems_preProcess:(params,ctx)=>{
         params.method = ctx.method,params.url = ctx.url,params.category = getCategoryFromUrl(ctx.url)
         if(params.cypherQueryFile){
-            params.cypher = fs.readFileSync(params.cypherQueryFile, 'utf8')
+            params.cypher = fs.readFileSync('cypher/'+params.cypherQueryFile + '.cyp', 'utf8')
         }
         return params
     },
@@ -319,28 +300,26 @@ module.exports = {
         response_wrapped.data = result;
         return response_wrapped;
     },
-    getSchemaHierarchy:function(params,ctx) {
-        return new Promise((resolve,reject)=>{
-            let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),cmdbConfigurationItemInheritanceRelationship
-            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,{category:'Software'},(result)=>{
-                let softwares = _.map(result,(subtype)=>{
+    getSchemaHierarchy:async function (params,ctx) {
+        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),result
+        let cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category)
+        let addSubTypeRelationship = async (relationship)=>{
+            if(schema.isSubTypeAllowed(relationship.name)){
+                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,{category:relationship.name}, params, true)
+                relationship.children = _.map(result,(subtype)=>{
                     return subtype.category
                 })
-                cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category)
-                let addSoftwareRelationship = (relationship)=>{
-                    if(relationship.name === schema.cmdbTypeName.Software){
-                        relationship.children = softwares
-                    }else if(relationship.children){
-                        _.each(relationship.children,(child)=>{
-                            return addSoftwareRelationship(child)
-                        })
+            }else if(relationship.children){
+                if(relationship.children){
+                    for(let child of relationship.children){
+                        await addSubTypeRelationship(child)
                     }
                 }
-                addSoftwareRelationship(cmdbConfigurationItemInheritanceRelationship)
-                response_wrapped.data = cmdbConfigurationItemInheritanceRelationship;
-                resolve(response_wrapped)
-            })
-        })
+            }
+        }
+        await addSubTypeRelationship(cmdbConfigurationItemInheritanceRelationship)
+        response_wrapped.data = cmdbConfigurationItemInheritanceRelationship;
+        return response_wrapped
     },
     configurationItemCategoryProcess:function(params,ctx) {
         return new Promise((resolve,reject)=>{

@@ -15,6 +15,5 @@
     }
   },
   "required": ["name","warehouse_id"],
-  "category":"auxiliary",
   "route": "/shelves"
 }

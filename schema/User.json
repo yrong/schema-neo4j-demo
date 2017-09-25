@@ -30,6 +30,5 @@
       "type":"string"
     }
   },
-  "category":"auxiliary",
   "route":"/users"
 }

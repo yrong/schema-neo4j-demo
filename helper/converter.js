@@ -1,13 +1,10 @@
 const _ = require('lodash')
 const cmdb_cache = require('scirichon-cache')
 const uuid_validator = require('uuid-validate')
-const schema = require('../schema')
 
 const single_converter = async (key,value)=>{
     let uuid,cached_val
-    if(uuid_validator(value)){
-        cached_val = await cmdb_cache.getItemByCategoryAndID(key,value)
-    }else if(key===schema.cmdbTypeName.User&&_.isInteger(value)){
+    if(uuid_validator(value)||_.isInteger(value)){
         cached_val = await cmdb_cache.getItemByCategoryAndID(key,value)
     }else{
         cached_val = await cmdb_cache.getItemByCategoryAndName(key,value)

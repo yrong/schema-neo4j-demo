@@ -16,14 +16,7 @@ module.exports = {
         return await common.apiInvoker('GET',base_url,path,params)
     },
     addItem: async(category,item,update) =>{
-        let route,method='POST',uri;
-        if(routesDefinition[category]){
-            route = routesDefinition[category].route
-        }else if(schema.isConfigurationItem(category)){
-            route = routesDefinition.ConfigurationItem.route
-        }else if(schema.isProcessFlow(category)){
-            route = routesDefinition.ProcessFlow.route
-        }
+        let route = schema.getRoute(category),method='POST',uri
         if(!route)
             throw new Error(`${category} api route not found`)
         uri = base_url  + route

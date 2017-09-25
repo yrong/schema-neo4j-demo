@@ -8,13 +8,13 @@ const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('../../schema/index')
 
 const exportItems = async ()=>{
-    schema.loadSchemas()
+    await schema.loadSchemas()
     let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')
     }
     else{
-        categories = [...schema.getAuxiliaryTypes(),schema.cmdbTypeName.ConfigurationItem,schema.cmdbTypeName.ProcessFlow]
+        categories = _.keys(schema.getApiRoutes())
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let directory = path.join(config.get('export.storeDir'), timestamp)

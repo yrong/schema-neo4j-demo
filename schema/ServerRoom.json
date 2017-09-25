@@ -10,6 +10,6 @@
     }
   },
   "required": ["name"],
-  "category":"auxiliary",
-  "route":"/serverRooms"
+  "route":"/serverRooms",
+  "member":"Cabinet"
 }
