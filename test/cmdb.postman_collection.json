@@ -59,9 +59,7 @@
 				"93b000e0-29d9-6b75-872b-99b9a0b01b55",
 				"59d86f92-c730-3f8c-d911-701d0b17abb1",
 				"bd468ca9-baf6-8538-423c-89838a439085",
-				"1d78a669-3539-4cb1-3cf0-2eb168cd3cf7",
-				"2ada29d3-e4ac-64a7-dc2d-5b0356cdc828",
-				"4b86d164-6d5c-bbe1-b981-34f38b400382"
+				"1d78a669-3539-4cb1-3cf0-2eb168cd3cf7"
 			],
 			"folders_order": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
@@ -78,27 +76,20 @@
 				"29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
 				"17dd9f76-085c-f1ed-40e8-6759b8dd69ad",
 				"fd933fe4-4837-d00a-2e26-8716634b14d8",
+				"f6bd7de0-64cb-11bc-0351-e2eccc92716f",
+				"d35bf486-8d8f-4918-d5e5-de334a8c5014",
 				"b58e5d7b-e57f-67c4-ffe6-2b05e93a8200",
 				"86742358-5d1e-dfd9-f70c-8a6ae287e08d",
 				"7be04e5b-b2f0-9f63-e7ca-0fb36af38ca3",
-				"f6bd7de0-64cb-11bc-0351-e2eccc92716f",
-				"d35bf486-8d8f-4918-d5e5-de334a8c5014",
 				"ae16ba2c-d0ef-27d7-4747-c9875653586a",
 				"781018c3-ca01-b278-6c87-a1bcd8cf91d6",
-				"54bc86ac-ff88-5d4e-2b21-c9e8fb2c792d",
 				"79e45a07-ffb0-6282-a668-e42bcd310bf9",
 				"7f9a51eb-c28c-7703-55aa-4314b910cfae",
 				"3045cd2f-ad11-6f2b-fa65-d5ce379d7c10",
+				"168a351e-1498-85a0-5916-5895591e900e",
 				"456720bc-7790-a016-d60d-fbd7d4f81cac",
 				"2ffc5201-3eda-8c4d-d50e-cf16acecf67a",
 				"ed5b9337-e1f9-d89c-997b-3671bf334185",
-				"3a23b38e-196c-849a-d295-c667ff0ed022",
-				"9c5f03ca-3d4c-1a9d-18a6-e7d415da53e9",
-				"8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
-				"168a351e-1498-85a0-5916-5895591e900e",
-				"b17a0229-80d6-13f7-13aa-4a3f2c770eb5",
-				"65db4750-5ff9-c456-c3bb-5f9d565edb93",
-				"f2753500-c109-8253-8c95-0b5f67c06877",
 				"1d81138e-82bd-2c79-18fc-1e518ac904b0"
 			],
 			"folders_order": [],
@@ -124,6 +115,58 @@
 			],
 			"folders_order": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
+		},
+		{
+			"name": "5-1-cypher",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"order": [
+				"65db4750-5ff9-c456-c3bb-5f9d565edb93",
+				"2ada29d3-e4ac-64a7-dc2d-5b0356cdc828",
+				"4b86d164-6d5c-bbe1-b981-34f38b400382",
+				"f2753500-c109-8253-8c95-0b5f67c06877"
+			],
+			"owner": "2263720",
+			"folder": "aee4ef65-8087-01aa-56df-ceb7bdc29219",
+			"folders_order": [],
+			"id": "776150e1-0bb7-ec37-ea81-9b7b5d66a8aa"
+		},
+		{
+			"name": "5-2-eql",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"order": [
+				"b17a0229-80d6-13f7-13aa-4a3f2c770eb5"
+			],
+			"owner": "2263720",
+			"folder": "aee4ef65-8087-01aa-56df-ceb7bdc29219",
+			"folders_order": [],
+			"id": "26f99c47-7286-8a2d-32a3-00c240b3cef3"
+		},
+		{
+			"name": "5-advancedSearch",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"order": [],
+			"owner": "2263720",
+			"folders_order": [
+				"776150e1-0bb7-ec37-ea81-9b7b5d66a8aa",
+				"26f99c47-7286-8a2d-32a3-00c240b3cef3"
+			],
+			"id": "aee4ef65-8087-01aa-56df-ceb7bdc29219"
+		},
+		{
+			"name": "6-schema",
+			"description": "",
+			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
+			"order": [
+				"8e584237-8b8c-0a7f-80a6-ffbe7d398aa8",
+				"3a23b38e-196c-849a-d295-c667ff0ed022",
+				"9c5f03ca-3d4c-1a9d-18a6-e7d415da53e9"
+			],
+			"owner": "2263720",
+			"folders_order": [],
+			"id": "aeb2c063-9893-94bb-eabc-489fe29d9727"
 		}
 	],
 	"folders_order": [
@@ -131,7 +174,9 @@
 		"ea73b714-3f7c-d6a7-823a-17d56ab3965b",
 		"ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
 		"62ced1ec-7033-2bc4-d382-58eef18b81f6",
-		"0fdc7538-565a-e2cd-a999-d8ada7d69363"
+		"0fdc7538-565a-e2cd-a999-d8ada7d69363",
+		"aee4ef65-8087-01aa-56df-ceb7bdc29219",
+		"aeb2c063-9893-94bb-eabc-489fe29d9727"
 	],
 	"timestamp": 0,
 	"owner": "2263720",
@@ -174,8 +219,8 @@
 				{
 					"key": "token",
 					"value": "{{token}}",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}",
@@ -187,14 +232,16 @@
 			"method": "DELETE",
 			"data": [],
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"delete success\"] = jsonData.status=='info';\n",
+			"tests": "\n\n\n",
 			"currentHelper": "normal",
-			"helperAttributes": {},
+			"helperAttributes": "{}",
 			"time": 1506259197498,
 			"name": "delete incident flow 3",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": []
+			"responses": [],
+			"rawModeData": null,
+			"descriptionFormat": null
 		},
 		{
 			"id": "168a351e-1498-85a0-5916-5895591e900e",
@@ -350,7 +397,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"node already referenced\"] = jsonData.status==='error'\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506088771992,
+			"time": 1506435484031,
 			"name": "delete already referenced email service fail",
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -363,14 +410,14 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				},
 				{
 					"key": "token",
 					"value": "{{token}}",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -382,14 +429,17 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"winxp_os_id\", jsonData.uuid);\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
-			"helperAttributes": {},
+			"helperAttributes": "{}",
 			"time": 1504835897292,
-			"name": "add operating system winxp",
+			"name": "add operating system",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "29a17ed3-34fb-06e6-d572-e1bb2dc0796d",
+			"descriptionFormat": null,
 			"rawModeData": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"windows xp\",\r      \"description\":\"Microsoft Windows XP\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
 		},
 		{
@@ -410,7 +460,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
+			"folder": "776150e1-0bb7-ec37-ea81-9b7b5d66a8aa",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -426,6 +476,8 @@
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "2ada29d3-e4ac-64a7-dc2d-5b0356cdc828",
 			"rawModeData": "{\n\t\"category\":\"ITService\",\n\t\"search\":[\"email\",\"pop3\"],\n\t\"cypherQueryFile\":\"advanceSearchITService\"\n}"
 		},
 		{
@@ -488,7 +540,7 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1500557420457,
-			"name": "query cfgitem by uuid ",
+			"name": "query router by uuid",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
@@ -535,7 +587,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"folder": "aeb2c063-9893-94bb-eabc-489fe29d9727",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -543,10 +595,10 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"labels found\"] = jsonData.status === 'ok'",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"ConfigurationItem as root\"] = jsonData.data.name === 'Asset'",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505716835213,
+			"time": 1506434839468,
 			"name": "query Asset Hierarchy",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -575,12 +627,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_2_id\", jsonData.uuid);",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506088060004,
+			"time": 1506438583653,
 			"name": "add incident flow 2 reference incident flow 1",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
 		},
 		{
 			"id": "456720bc-7790-a016-d60d-fbd7d4f81cac",
@@ -602,10 +654,10 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"configurationItems found\"] = jsonData.data.length >= 1",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length >= 1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504834312302,
+			"time": 1506435057666,
 			"name": "query ConfigurationItems",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -629,7 +681,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-			"folder": "ad7413aa-b439-7e04-3a29-0b8ff4149fdf",
+			"folder": "776150e1-0bb7-ec37-ea81-9b7b5d66a8aa",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -645,6 +697,8 @@
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "4b86d164-6d5c-bbe1-b981-34f38b400382",
 			"rawModeData": "{\n\t\"category\":\"ITService\",\n\t\"uuids\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n\t\"cypherQueryFile\":\"queryITServiceByIds\"\n}"
 		},
 		{
@@ -676,36 +730,6 @@
 			"pathVariableData": [],
 			"responses": [],
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403"
-		},
-		{
-			"id": "54bc86ac-ff88-5d4e-2b21-c9e8fb2c792d",
-			"headers": "Content-Type: application/json\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"schema validation failed\"] = jsonData.status === \"error\"\n",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1505698433853,
-			"name": "add test",
-			"description": "",
-			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"test\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"},\n      \"a\":{\"b\":1}\n    }\n  }\n}"
 		},
 		{
 			"id": "59d86f92-c730-3f8c-d911-701d0b17abb1",
@@ -789,12 +813,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506088049700,
+			"time": 1506438574751,
 			"name": "add incident flow 1",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
 		},
 		{
 			"id": "63559db1-50bd-322e-82fb-bca01def1b22",
@@ -849,7 +873,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506088091183,
+			"time": 1506438612183,
 			"name": "patch incident flow 1 status to solved",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -874,7 +898,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"folder": "776150e1-0bb7-ec37-ea81-9b7b5d66a8aa",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -890,6 +914,9 @@
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "65db4750-5ff9-c456-c3bb-5f9d565edb93",
+			"folderId": "aee4ef65-8087-01aa-56df-ceb7bdc29219",
 			"rawModeData": "{\n   \"category\":\"ConfigurationItem\",\n  \"cypherQueryFile\":\"mountedConfigurationItemRels\"\n}\n\n\n\n\n\n"
 		},
 		{
@@ -929,8 +956,8 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
@@ -944,12 +971,15 @@
 			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
-			"helperAttributes": {},
+			"helperAttributes": "{}",
 			"time": 1506350394881,
 			"name": "patch router with it_service",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "79e45a07-ffb0-6282-a668-e42bcd310bf9",
+			"descriptionFormat": null,
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_email_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}}\n    }\n  }\n}"
 		},
 		{
@@ -975,7 +1005,7 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"virtual_server_id\", jsonData.uuid); \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505632142472,
+			"time": 1506434233451,
 			"name": "add virtual server",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
@@ -1064,12 +1094,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\n// postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506350622658,
+			"time": 1506435599565,
 			"name": "patch physical server with os",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}},\n      \"operating_system\": \"windows xp\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"}\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":{{auth_user_id}},\n      \"operating_system\": \"ubuntu\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"}\n    }\n  }\n}"
 		},
 		{
 			"id": "86742358-5d1e-dfd9-f70c-8a6ae287e08d",
@@ -1078,8 +1108,8 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1093,12 +1123,13 @@
 			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
-			"helperAttributes": {},
+			"helperAttributes": "{}",
 			"time": 1506351710714,
 			"name": "add physical server",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"descriptionFormat": null,
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"asset_id\":\"test\"\n    }\n  }\n}"
 		},
 		{
@@ -1173,7 +1204,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"folder": "aeb2c063-9893-94bb-eabc-489fe29d9727",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1181,11 +1212,11 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Router schema found\"] = jsonData.status === 'ok'",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Router schema found\"] = jsonData.data.name.type === 'string'",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505370935861,
-			"name": "query json schema of router ",
+			"time": 1506435170131,
+			"name": "query properties of router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": []
@@ -1261,7 +1292,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/advanced/Software",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"folder": "aeb2c063-9893-94bb-eabc-489fe29d9727",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1273,10 +1304,12 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1505716853870,
-			"name": "query ConfigurationItem Category advanced",
+			"name": "query schema advanced",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
-			"responses": []
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "9c5f03ca-3d4c-1a9d-18a6-e7d415da53e9"
 		},
 		{
 			"id": "9f34a8c1-40fb-30d0-c64a-d1c1880502c9",
@@ -1384,7 +1417,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=10",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
 			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
 			"queryParams": [
 				{
@@ -1411,12 +1444,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1504667063697,
+			"time": 1506432366608,
 			"name": "search configurationItem",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[{\"match\": {\"category\": \"Router\"}},{\"match\":{\"status.status\":\"In_Use\"}}]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+			"rawModeData": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[{\"match\": {\"category\": \"Router\"}},{\"match\":{\"status.status\":\"In_Use\"}}]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"id": "b58e5d7b-e57f-67c4-ffe6-2b05e93a8200",
@@ -1441,12 +1474,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"router_id\", jsonData.uuid);\nvar skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);\nif(skipAdditionalPropertyCheck){\n   postman.setNextRequest(\"add physical server\"); \n}\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506074278435,
+			"time": 1506434625335,
 			"name": "add router",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n       },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"dns\"],\n      \"responsibility\":{{auth_user_id}},\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n          },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
 		},
 		{
 			"id": "b72c8911-1d98-b47a-1c7f-3f903f53b7d8",
@@ -1455,8 +1488,8 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"description": "",
-					"enabled": true
+					"enabled": true,
+					"description": ""
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -1470,12 +1503,13 @@
 			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_3_id\", jsonData.uuid);",
 			"currentHelper": "normal",
-			"helperAttributes": {},
+			"helperAttributes": "{}",
 			"time": 1506308069009,
 			"name": "add incident flow 3 with it_service empty",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"descriptionFormat": null,
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[],\n      \"status\": \"open\",\n      \"test\":1\n    }\n  }\n}"
 		},
 		{
@@ -1817,7 +1851,7 @@
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-			"folder": "62ced1ec-7033-2bc4-d382-58eef18b81f6",
+			"folder": "776150e1-0bb7-ec37-ea81-9b7b5d66a8aa",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1833,6 +1867,8 @@
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",
 			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "f2753500-c109-8253-8c95-0b5f67c06877",
 			"rawModeData": "{\n\t\"category\":\"ConfigurationItem\",\n\t\"cypherQueryFile\":\"queryHostsByITService\",\n\t\"name\":[\"Messaging\"]\n}"
 		},
 		{
@@ -1898,10 +1934,10 @@
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"email_gateway_id\", jsonData.uuid);\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1505367702745,
+			"time": 1506433935847,
 			"name": "add application",
 			"description": "",
 			"collectionId": "571102aa-184c-923d-fc8e-a11f9c0c3403",

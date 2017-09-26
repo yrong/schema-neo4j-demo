@@ -43,9 +43,6 @@
     "title":{
       "type":"string"
     },
-    "pfid":{
-      "type":"string"
-    },
     "user_affected": {
       "type": "string"
     }

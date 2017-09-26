@@ -1,10 +1,8 @@
 const _ = require('lodash')
 const apiInvoker = require('../../helper/apiInvoker')
 const converter = require('../../helper/converter')
-const checker = require('../../helper/checker')
 const xslxHelper = require('../../helper/xslxHelper')
 const mappingDefinition = require('./mappingDef')
-const schema = require('../../schema/index')
 
 
 const configurationItemMapping = async (type, sheet, line)=>{

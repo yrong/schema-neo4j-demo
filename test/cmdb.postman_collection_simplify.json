@@ -46,7 +46,7 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}"
   },
   {
-    "name": "add operating system winxp",
+    "name": "add operating system",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
@@ -80,7 +80,7 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer"
   },
   {
-    "name": "query cfgitem by uuid ",
+    "name": "query router by uuid",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}"
   },
@@ -112,7 +112,8 @@
           "reference_process_flow": [
             "{{incident_flow_1_id}}"
           ],
-          "status": "open"
+          "status": "open",
+          "title": "title"
         }
       }
     }
@@ -147,37 +148,6 @@
           "name": "email",
           "description": "email",
           "group": "Messaging"
-        }
-      }
-    }
-  },
-  {
-    "name": "add test",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "test",
-        "fields": {
-          "name": "test",
-          "it_service": [
-            "{{service_dns_id}}"
-          ],
-          "responsibility": "{{auth_user_id}}",
-          "sn": "123456",
-          "model": "b10",
-          "product_date": "2016-10-11",
-          "warranty_expiration_date": "2016-11-11",
-          "asset_location": {
-            "status": "on_shelf",
-            "shelf": "{{shelf_id}}",
-            "label": "label",
-            "other": "other"
-          },
-          "a": {
-            "b": 1
-          }
         }
       }
     }
@@ -218,7 +188,8 @@
           "committer": "{{auth_user_id}}",
           "executor": "{{auth_user_id}}",
           "reference_kb": "{{article_uuids}}",
-          "status": "open"
+          "status": "open",
+          "title": "title"
         }
       }
     }
@@ -367,7 +338,7 @@
           ],
           "sn": "12345678",
           "responsibility": "{{auth_user_id}}",
-          "operating_system": "windows xp",
+          "operating_system": "ubuntu",
           "asset_location": {
             "status": "mounted",
             "u": 42,
@@ -444,7 +415,7 @@
     }
   },
   {
-    "name": "query json schema of router ",
+    "name": "query properties of router",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router"
   },
@@ -469,7 +440,7 @@
     }
   },
   {
-    "name": "query ConfigurationItem Category advanced",
+    "name": "query schema advanced",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/advanced/Software"
   },
@@ -528,8 +499,9 @@
   {
     "name": "search configurationItem",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=10",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
     "body": {
+      "category": "ConfigurationItem",
       "body": {
         "query": {
           "bool": {

@@ -166,7 +166,7 @@ module.exports = {
             dynamic_field = schema.getDynamicSeqField(params.data.category)
             if(dynamic_field){
                 result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(params.data.category), params, true)
-                params.fields[dynamic_field] = result[0]
+                params.fields[dynamic_field] = String(result[0])
             }
             return await cudItem_callback(params)
         }

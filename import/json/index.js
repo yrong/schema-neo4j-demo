@@ -9,18 +9,19 @@ const search = require('../../search')
 const sortItemsDependentFirst = (items)=>{
     if(!items||items.length==0)
         return items
-    let dependent_items = [],refProperties = schema.getSchemaRefProperties(items[0].category),noSelfReference=true,propertyVal
+    let dependent_items = [],refProperties = schema.getSchemaRefProperties(items[0].category),propertyVal
     for (let item of items){
+        let selfReference=false
         for(let refProperty of refProperties){
-            propertyVal = item[refProperty['attr']
+            propertyVal = item[refProperty['attr']]
             if(propertyVal){
                 if(schema.isTypeCrossed(refProperty['schema'],item.category)){
-                    noSelfReference = false
+                    selfReference = true
                     break
                 }
             }
         }
-        if(noSelfReference)
+        if(!selfReference)
             dependent_items.push(item)
     }
     let other_items = []

@@ -1,7 +1,5 @@
 const config = require('config')
 const _ = require('lodash')
-const cmdb_cache = require('scirichon-cache')
-const routesDefinition = cmdb_cache.cmdb_type_routes
 const schema = require('../schema')
 var wrapRequest = (category,item) => {
     return {data:{category:category,fields:item}}
@@ -12,9 +10,6 @@ const common = require('scirichon-common')
 const net = require('net')
 
 module.exports = {
-    apiGetter: async function(path,params){
-        return await common.apiInvoker('GET',base_url,path,params)
-    },
     addItem: async(category,item,update) =>{
         let route = schema.getRoute(category),method='POST',uri
         if(!route)

@@ -26,15 +26,12 @@ module.exports = (app)=>{
                 Add:{postProcess:search.addItem},
                 Modify:{postProcess:search.patchItem},
                 Delete:{postProcess: search.deleteItem},
-                Search:{procedure:search.searchItem}
             }
-            val.allowed_methods = [...allowed_methods,'Search']
         }
-        methods = val.allowed_methods||allowed_methods
-        _.each(methods,(method)=>{
+        _.each(allowed_methods,(method)=>{
             procedure=null
-            http_method = method==='Add'||method === 'Search'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
-            route = method==='Add'||method==='FindAll'?'/api'+val.route:method==='Search'?'/api/search'+val.route:'/api'+val.route+'/:uuid'
+            http_method = method==='Add'?'POST':method==='Modify'?'PATCH':method === 'Delete'?'DEL':'GET'
+            route = method==='Add'||method==='FindAll'?'/api'+val.route:'/api'+val.route+'/:uuid'
             checker = method==='Add'?[schema_checker,es_checker]:(method==='Modify'||method==='Delete')?es_checker:none_checker
             preProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_preProcess:hook.queryItems_preProcess
             postProcess = method==='Add'||method==='Modify'||method==='Delete'?hook.cudItem_postProcess:hook.queryItems_postProcess
@@ -42,24 +39,20 @@ module.exports = (app)=>{
                 preProcess = val.customizedHook[method].preProcess
             if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].postProcess)
                 postProcess = val.customizedHook[method].postProcess
-            if(val.customizedHook&&val.customizedHook[method]&&val.customizedHook[method].procedure)
-                procedure = val.customizedHook[method].procedure
-            if(procedure)
-                app.defineAPI({
-                    method: http_method,
-                    route: route,
-                    procedure: procedure
-                })
-            else {
-                app.defineAPI({
-                    method: http_method,
-                    route: route,
-                    check: checker,
-                    preProcess: preProcess,
-                    postProcess: postProcess
-                })
-            }
+            app.defineAPI({
+                method: http_method,
+                route: route,
+                check: checker,
+                preProcess: preProcess,
+                postProcess: postProcess
+            })
         })
+    })
+
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/searchByEql',
+        procedure:search.searchItem
     })
 
     app.defineAPI({

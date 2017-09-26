@@ -1,11 +1,12 @@
 const _ = require('lodash')
-const apiInvoker = require('./apiInvoker')
-const utils = require('./utils')
+const common = require('scirichon-common')
+const config = require('config')
+const base_url=`http://localhost:${config.get('port')}/api`
 
 module.exports={
     cabinet_u_unique:async (asset) =>{
         if(asset&&asset.asset_location_cabinet){
-            let response = await apiInvoker.apiGetter('/cfgItems',{mounted_rels:true}),matched
+            let response = await common.apiInvoker('POST',base_url,'/searchByCypher','',{"category":"ConfigurationItem", "cypherQueryFile":"mountedConfigurationItemRels"}),matched
             if(response&&response.data){
                 matched = _.find(response.data,(mounted_cabinet)=>{
                     return (mounted_cabinet.cabinet.name === asset.asset_location_cabinet || mounted_cabinet.cabinet.uuid === asset.asset_location_cabinet)
