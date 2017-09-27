@@ -29,7 +29,7 @@ describe("CMDB Integration test suite", function() {
 
         it('import all categories', function(done) {
             console.time("importAll")
-            new importerFromJson().importer().then((result)=>{
+            importerFromJson().then((result)=>{
                 console.timeEnd("importAll");
                 console.log(JSON.stringify(result))
                 assert.equal(result['ConfigurationItem']['errorItems'].length,0)

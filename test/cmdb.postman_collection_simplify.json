@@ -1,203 +1,27 @@
 [
   {
-    "name": "query warehouse",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses"
-  },
-  {
-    "name": "delete incident flow 3",
-    "method": "DELETE",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}"
-  },
-  {
-    "name": "query physical server by uuid",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}"
-  },
-  {
-    "name": "add operating system ubuntu",
+    "name": "add ServiceGroup Infrastructure",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
     "body": {
       "token": "{{token}}",
       "data": {
-        "category": "Software",
+        "category": "ITServiceGroup",
         "fields": {
-          "name": "ubuntu",
-          "description": "ubuntu",
-          "subtype": "OperatingSystem"
+          "name": "Infrastructure",
+          "description": "Infrastructure"
         }
       }
     }
   },
   {
-    "name": "query Cabinets",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets"
-  },
-  {
-    "name": "query it service groups by keyword",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
-  },
-  {
-    "name": "delete already referenced email service fail",
-    "method": "DELETE",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}"
-  },
-  {
-    "name": "add operating system",
+    "name": "login",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "url": "http://{{auth_api_host}}:{{auth_api_port}}/auth/login",
     "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "Software",
-        "fields": {
-          "name": "windows xp",
-          "description": "Microsoft Windows XP",
-          "subtype": "OperatingSystem"
-        }
-      }
+      "username": "{{auth_user}}",
+      "password": "{{auth_passwd}}"
     }
-  },
-  {
-    "name": "query uuid of it service by service name/id or service group name/id",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-    "body": {
-      "category": "ITService",
-      "search": [
-        "email",
-        "pop3"
-      ],
-      "cypherQueryFile": "advanceSearchITService"
-    }
-  },
-  {
-    "name": "query ConfigurationItems by subcategory",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer"
-  },
-  {
-    "name": "query router by uuid",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}"
-  },
-  {
-    "name": "query server room",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms"
-  },
-  {
-    "name": "query Asset Hierarchy",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset"
-  },
-  {
-    "name": "add incident flow 2 reference incident flow 1",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "IncidentFlow",
-        "fields": {
-          "it_service": [
-            "{{service_dns_id}}"
-          ],
-          "committer": "{{auth_user_id}}",
-          "executor": "{{auth_user_id}}",
-          "reference_kb": "{{article_uuids}}",
-          "reference_process_flow": [
-            "{{incident_flow_1_id}}"
-          ],
-          "status": "open",
-          "title": "title"
-        }
-      }
-    }
-  },
-  {
-    "name": "query ConfigurationItems",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems"
-  },
-  {
-    "name": "query it service reference attributes by uuids",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-    "body": {
-      "category": "ITService",
-      "uuids": [
-        "{{service_email_id}}",
-        "{{service_pop3_id}}"
-      ],
-      "cypherQueryFile": "queryITServiceByIds"
-    }
-  },
-  {
-    "name": "add ITService Email",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ITService",
-        "fields": {
-          "name": "email",
-          "description": "email",
-          "group": "Messaging"
-        }
-      }
-    }
-  },
-  {
-    "name": "query all it service groups",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group"
-  },
-  {
-    "name": "add warehouse",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "WareHouse",
-        "fields": {
-          "name": "warehouse",
-          "description": "warehouse"
-        }
-      }
-    }
-  },
-  {
-    "name": "add incident flow 1",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "IncidentFlow",
-        "fields": {
-          "it_service": [
-            "{{service_email_id}}",
-            "{{service_pop3_id}}"
-          ],
-          "committer": "{{auth_user_id}}",
-          "executor": "{{auth_user_id}}",
-          "reference_kb": "{{article_uuids}}",
-          "status": "open",
-          "title": "title"
-        }
-      }
-    }
-  },
-  {
-    "name": "get articles from kb api",
-    "method": "GET",
-    "url": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles?token={{token}}"
   },
   {
     "name": "patch incident flow 1 status to solved",
@@ -214,114 +38,19 @@
     }
   },
   {
-    "name": "query ConfigurationItem mounted advanced",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-    "body": {
-      "category": "ConfigurationItem",
-      "cypherQueryFile": "mountedConfigurationItemRels"
-    }
+    "name": "query all it service",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service"
   },
   {
-    "name": "add firewall",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "Firewall",
-        "fields": {
-          "name": "firewall",
-          "it_service": [
-            "{{service_dns_id}}"
-          ],
-          "responsibility": "{{auth_user_id}}",
-          "sn": "123456",
-          "model": "b10",
-          "product_date": "2016-10-11",
-          "warranty_expiration_date": "2016-11-11",
-          "asset_location": {
-            "status": "on_shelf",
-            "shelf": "{{shelf_id}}",
-            "label": "label",
-            "other": "other"
-          }
-        }
-      }
-    }
+    "name": "query Cabinets",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets"
   },
   {
-    "name": "patch router with it_service",
-    "method": "PATCH",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "Router",
-        "fields": {
-          "it_service": [
-            "{{service_pop3_id}}",
-            "{{service_email_id}}"
-          ],
-          "sn": "12345678",
-          "responsibility": "{{auth_user_id}}"
-        }
-      }
-    }
-  },
-  {
-    "name": "add virtual server",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "VirtualServer",
-        "fields": {
-          "name": "virtualserver",
-          "it_service": [
-            "{{service_email_id}}",
-            "{{service_pop3_id}}"
-          ],
-          "ip_address": [
-            "192.168.0.108"
-          ],
-          "technical_support_info": "010-123456",
-          "operating_system": "windows xp",
-          "applications": [
-            "反垃圾邮件网关"
-          ],
-          "storage_info": "hp-disk1",
-          "model": "b10",
-          "product_date": "2016-10-11",
-          "warranty_expiration_date": "2016-11-11",
-          "management_ip": [
-            "192.168.0.108"
-          ],
-          "monitored": true,
-          "host_server": "physicalserver"
-        }
-      }
-    }
-  },
-  {
-    "name": "clear all items in db",
-    "method": "DELETE",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items"
-  },
-  {
-    "name": "patch incident flow 1 status to closed",
-    "method": "PATCH",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "IncidentFlow",
-        "fields": {
-          "status": "closed"
-        }
-      }
-    }
+    "name": "query cabinet by uuid as name",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/cabinet"
   },
   {
     "name": "patch physical server with os",
@@ -351,181 +80,16 @@
     }
   },
   {
-    "name": "add physical server",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "PhysicalServer",
-        "fields": {
-          "name": "physicalserver",
-          "it_service": [
-            "{{service_email_id}}",
-            "{{service_pop3_id}}"
-          ],
-          "ip_address": [
-            "192.168.0.108"
-          ],
-          "technical_support_info": "010-123456",
-          "operating_system": "windows xp",
-          "storage_info": "hp-disk1",
-          "model": "b10",
-          "product_date": "2016-10-11",
-          "warranty_expiration_date": "2016-11-11",
-          "asset_location": {
-            "status": "on_shelf",
-            "shelf": "shelf",
-            "label": "label",
-            "other": "other"
-          },
-          "management_ip": [
-            "192.168.0.108"
-          ],
-          "monitored": true,
-          "asset_id": "test"
-        }
-      }
-    }
-  },
-  {
-    "name": "login",
-    "method": "POST",
-    "url": "http://{{auth_api_host}}:{{auth_api_port}}/auth/login",
-    "body": {
-      "username": "{{auth_user}}",
-      "password": "{{auth_passwd}}"
-    }
-  },
-  {
-    "name": "add ITService Pop3",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ITService",
-        "fields": {
-          "name": "pop3",
-          "description": "pop3",
-          "group": "{{group_messaging_id}}",
-          "parent": "{{service_email_id}}"
-        }
-      }
-    }
-  },
-  {
-    "name": "query properties of router",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router"
-  },
-  {
-    "name": "query process flow by uuid",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}"
-  },
-  {
-    "name": "patch ITService Dns",
+    "name": "patch incident flow 1 status to closed",
     "method": "PATCH",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_dns_id}}",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
     "body": {
       "token": "{{token}}",
       "data": {
-        "category": "ITService",
+        "category": "IncidentFlow",
         "fields": {
-          "description": "dns2",
-          "group": "Infrastructure"
+          "status": "closed"
         }
-      }
-    }
-  },
-  {
-    "name": "query schema advanced",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/advanced/Software"
-  },
-  {
-    "name": "get license",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license"
-  },
-  {
-    "name": "add ITService Dns",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ITService",
-        "fields": {
-          "name": "dns",
-          "description": "dns",
-          "group": "{{group_infrastructure_id}}",
-          "dependendents": [
-            "email"
-          ]
-        }
-      }
-    }
-  },
-  {
-    "name": "add switch",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "Switch",
-        "fields": {
-          "name": "switch",
-          "it_service": [
-            "{{service_dns_id}}"
-          ],
-          "responsibility": "{{auth_user_id}}",
-          "sn": "123456",
-          "model": "a10",
-          "product_date": "2016-10-11",
-          "warranty_expiration_date": "2016-11-11",
-          "asset_location": {
-            "status": "mounted",
-            "u": 42,
-            "date_mounted": "2016-06-28",
-            "cabinet": "{{cabinet_id}}"
-          }
-        }
-      }
-    }
-  },
-  {
-    "name": "search configurationItem",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
-    "body": {
-      "category": "ConfigurationItem",
-      "body": {
-        "query": {
-          "bool": {
-            "must": [
-              {
-                "match": {
-                  "category": "Router"
-                }
-              },
-              {
-                "match": {
-                  "status.status": "In_Use"
-                }
-              }
-            ]
-          }
-        },
-        "sort": [
-          {
-            "product_date": {
-              "order": "desc"
-            }
-          }
-        ]
       }
     }
   },
@@ -581,25 +145,248 @@
     }
   },
   {
-    "name": "add incident flow 3 with it_service empty",
+    "name": "get license",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license"
+  },
+  {
+    "name": "delete incident flow 3",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}"
+  },
+  {
+    "name": "add physical server",
     "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
     "body": {
       "token": "{{token}}",
       "data": {
-        "category": "IncidentFlow",
+        "category": "PhysicalServer",
         "fields": {
-          "it_service": [],
-          "status": "open",
-          "test": 1
+          "name": "physicalserver",
+          "it_service": [
+            "{{service_email_id}}",
+            "{{service_pop3_id}}"
+          ],
+          "ip_address": [
+            "192.168.0.108"
+          ],
+          "technical_support_info": "010-123456",
+          "operating_system": "windows xp",
+          "storage_info": "hp-disk1",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "on_shelf",
+            "shelf": "shelf",
+            "label": "label",
+            "other": "other"
+          },
+          "management_ip": [
+            "192.168.0.108"
+          ],
+          "monitored": true,
+          "asset_id": "test"
         }
       }
     }
   },
   {
-    "name": "query all it service",
+    "name": "search configurationItem",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+    "body": {
+      "category": "ConfigurationItem",
+      "body": {
+        "query": {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "category": "Router"
+                }
+              },
+              {
+                "match": {
+                  "status.status": "In_Use"
+                }
+              },
+              {
+                "match": {
+                  "it_service": "e35c1240-a32c-11e7-9a55-45c7c98ddc18"
+                }
+              }
+            ]
+          }
+        },
+        "sort": [
+          {
+            "product_date": {
+              "order": "desc"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "patch ITService Dns",
+    "method": "PATCH",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_dns_id}}",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "description": "dns2",
+          "group": "Infrastructure"
+        }
+      }
+    }
+  },
+  {
+    "name": "query server room",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms"
+  },
+  {
+    "name": "delete already referenced email service fail",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}"
+  },
+  {
+    "name": "get articles from kb api",
+    "method": "GET",
+    "url": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles?token={{token}}"
+  },
+  {
+    "name": "add operating system ubuntu",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Software",
+        "fields": {
+          "name": "ubuntu",
+          "description": "ubuntu",
+          "subtype": "OperatingSystem"
+        }
+      }
+    }
+  },
+  {
+    "name": "query schema advanced",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/advanced/Software"
+  },
+  {
+    "name": "add switch",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Switch",
+        "fields": {
+          "name": "switch",
+          "it_service": [
+            "{{service_dns_id}}"
+          ],
+          "responsibility": "{{auth_user_id}}",
+          "sn": "123456",
+          "model": "a10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "mounted",
+            "u": 42,
+            "date_mounted": "2016-06-28",
+            "cabinet": "{{cabinet_id}}"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "query warehouse",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses"
+  },
+  {
+    "name": "add warehouse",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "WareHouse",
+        "fields": {
+          "name": "warehouse",
+          "description": "warehouse"
+        }
+      }
+    }
+  },
+  {
+    "name": "query ConfigurationItem mounted advanced",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+    "body": {
+      "category": "ConfigurationItem",
+      "cypherQueryFile": "mountedConfigurationItemRels"
+    }
+  },
+  {
+    "name": "add ITService Pop3",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "pop3",
+          "description": "pop3",
+          "group": "{{group_messaging_id}}",
+          "parent": "{{service_email_id}}"
+        }
+      }
+    }
+  },
+  {
+    "name": "query router by uuid",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}"
+  },
+  {
+    "name": "add firewall",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Firewall",
+        "fields": {
+          "name": "firewall",
+          "it_service": [
+            "{{service_dns_id}}"
+          ],
+          "responsibility": "{{auth_user_id}}",
+          "sn": "123456",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "asset_location": {
+            "status": "on_shelf",
+            "shelf": "{{shelf_id}}",
+            "label": "label",
+            "other": "other"
+          }
+        }
+      }
+    }
   },
   {
     "name": "add ServiceGroup Messaging",
@@ -617,9 +404,117 @@
     }
   },
   {
-    "name": "query cabinet by uuid as name",
+    "name": "query it service reference attributes by uuids",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+    "body": {
+      "category": "ITService",
+      "uuids": [
+        "{{service_email_id}}",
+        "{{service_pop3_id}}"
+      ],
+      "cypherQueryFile": "queryITServiceByIds"
+    }
+  },
+  {
+    "name": "query ConfigurationItems",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/cabinet"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems"
+  },
+  {
+    "name": "add incident flow 2 reference incident flow 1",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [
+            "{{service_dns_id}}"
+          ],
+          "committer": "{{auth_user_id}}",
+          "executor": "{{auth_user_id}}",
+          "reference_kb": "{{article_uuids}}",
+          "reference_process_flow": [
+            "{{incident_flow_1_id}}"
+          ],
+          "status": "open",
+          "title": "title"
+        }
+      }
+    }
+  },
+  {
+    "name": "query ConfigurationItems by subcategory",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer"
+  },
+  {
+    "name": "query all it service groups",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group"
+  },
+  {
+    "name": "query uuid of it service by service name/id or service group name/id",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+    "body": {
+      "category": "ITService",
+      "search": [
+        "email",
+        "pop3"
+      ],
+      "cypherQueryFile": "advanceSearchITService"
+    }
+  },
+  {
+    "name": "query Asset Hierarchy",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset"
+  },
+  {
+    "name": "add cabinet ",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Cabinet",
+        "fields": {
+          "name": "cabinet",
+          "description": "cabinet",
+          "server_room_id": "{{server_room_id}}"
+        }
+      }
+    }
+  },
+  {
+    "name": "add incident flow 1",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [
+            "{{service_email_id}}",
+            "{{service_pop3_id}}"
+          ],
+          "committer": "{{auth_user_id}}",
+          "executor": "{{auth_user_id}}",
+          "reference_kb": "{{article_uuids}}",
+          "status": "open",
+          "title": "title"
+        }
+      }
+    }
+  },
+  {
+    "name": "clear all items in db",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items"
   },
   {
     "name": "add shelf",
@@ -659,57 +554,6 @@
     }
   },
   {
-    "name": "add cabinet ",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "Cabinet",
-        "fields": {
-          "name": "cabinet",
-          "description": "cabinet",
-          "server_room_id": "{{server_room_id}}"
-        }
-      }
-    }
-  },
-  {
-    "name": "add ServiceGroup Infrastructure",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ITServiceGroup",
-        "fields": {
-          "name": "Infrastructure",
-          "description": "Infrastructure"
-        }
-      }
-    }
-  },
-  {
-    "name": "query ConfigurationItems paginated",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?page=1&per_page=2"
-  },
-  {
-    "name": "add server_room",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
-    "body": {
-      "token": "{{token}}",
-      "data": {
-        "category": "ServerRoom",
-        "fields": {
-          "name": "server_room",
-          "description": "server_room"
-        }
-      }
-    }
-  },
-  {
     "name": "query it service groups related cmdb servers advanced",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
@@ -722,9 +566,40 @@
     }
   },
   {
+    "name": "query physical server by uuid",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}"
+  },
+  {
+    "name": "query process flow by uuid",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}"
+  },
+  {
+    "name": "query ConfigurationItems paginated",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?page=1&per_page=2"
+  },
+  {
     "name": "query softwares",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software"
+  },
+  {
+    "name": "add ITService Email",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "email",
+          "description": "email",
+          "group": "Messaging"
+        }
+      }
+    }
   },
   {
     "name": "add application",
@@ -755,6 +630,136 @@
           "sn": "123456",
           "product_date": "2016-08-11",
           "warranty_expiration_date": "2016-11-11"
+        }
+      }
+    }
+  },
+  {
+    "name": "add ITService Dns",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ITService",
+        "fields": {
+          "name": "dns",
+          "description": "dns",
+          "group": "{{group_infrastructure_id}}",
+          "dependendents": [
+            "email"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "name": "query it service groups by keyword",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
+  },
+  {
+    "name": "query properties of router",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router"
+  },
+  {
+    "name": "patch router with it_service",
+    "method": "PATCH",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Router",
+        "fields": {
+          "it_service": [
+            "{{service_pop3_id}}",
+            "{{service_email_id}}"
+          ],
+          "sn": "12345678",
+          "responsibility": "{{auth_user_id}}"
+        }
+      }
+    }
+  },
+  {
+    "name": "add operating system",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "Software",
+        "fields": {
+          "name": "windows xp",
+          "description": "Microsoft Windows XP",
+          "subtype": "OperatingSystem"
+        }
+      }
+    }
+  },
+  {
+    "name": "add server_room",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "ServerRoom",
+        "fields": {
+          "name": "server_room",
+          "description": "server_room"
+        }
+      }
+    }
+  },
+  {
+    "name": "add incident flow 3 with it_service empty",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "IncidentFlow",
+        "fields": {
+          "it_service": [],
+          "status": "open",
+          "test": 1
+        }
+      }
+    }
+  },
+  {
+    "name": "add virtual server",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "VirtualServer",
+        "fields": {
+          "name": "virtualserver",
+          "it_service": [
+            "{{service_email_id}}",
+            "{{service_pop3_id}}"
+          ],
+          "ip_address": [
+            "192.168.0.108"
+          ],
+          "technical_support_info": "010-123456",
+          "operating_system": "windows xp",
+          "applications": [
+            "反垃圾邮件网关"
+          ],
+          "storage_info": "hp-disk1",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "2016-11-11",
+          "management_ip": [
+            "192.168.0.108"
+          ],
+          "monitored": true,
+          "host_server": "physicalserver"
         }
       }
     }
