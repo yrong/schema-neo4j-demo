@@ -35,7 +35,7 @@
     "koa-socket": "^4.4.0",
     "koa-static": "^2.1.0",
     "koa-token-checker": "1.0.2-beta.4",
-    "log4js_wrapper": "1.0.3-beta.2",
+    "log4js_wrapper": "1.0.3-beta.3",
     "qr-image": "^3.2.0",
     "redis-crud-fork": "1.0.0-beta.7",
     "scirichon-acl-checker": "1.0.0-beta.9",
