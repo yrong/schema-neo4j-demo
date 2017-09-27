@@ -17,7 +17,10 @@ const exportItems = async ()=>{
         categories = _.keys(schema.getApiRoutes())
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
-    let directory = path.join(config.get('export.storeDir'), timestamp)
+    let storeDir = config.get('export.storeDir')
+    if (!fs.existsSync(storeDir))
+        fs.mkdirSync(storeDir)
+    let directory = path.join(storeDir, timestamp)
     if (!fs.existsSync(directory))
         fs.mkdirSync(directory)
     let category,cypher,result,items,filePath
@@ -47,7 +50,12 @@ const exportItems = async ()=>{
 }
 
 if (require.main === module) {
-    exportItems().then((result)=>console.log(JSON.stringify(result,null,'\t')))
+    exportItems().then((result)=>{
+        console.log(JSON.stringify(result,null,'\t'))
+        process.exit()
+    }).catch(err=>{
+        console.log(err)
+    })
 }
 
 module.exports = exportItems

@@ -16,7 +16,7 @@
       }
     ],
     "replaceConsole": true,
-    "defaultLevel":"DEBUG"
+    "defaultLevel":"INFO"
   },
   "neo4j": {
     "host": "localhost",

@@ -275,5 +275,16 @@ const getDynamicSeqField = (category)=>{
     return typeSchemas[category].dynamicSeqField
 }
 
+const getAncestorCategory = (category)=>{
+    let parentCategories = getParentCategories(category),parentCategory
+    for(let parent of parentCategories){
+        if(typeRoutes[parent]){
+            parentCategory = parent
+            break
+        }
+    }
+    return parentCategory
+}
 
-module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField}
+
+module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField,getAncestorCategory}

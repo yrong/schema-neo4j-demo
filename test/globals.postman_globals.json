@@ -1,0 +1,87 @@
+{
+  "id": "51e03fd3-f433-8032-7aa5-9658dc8bbd38",
+  "name": "Postman Globals",
+  "values": [
+    {
+      "enabled": true,
+      "key": "cmdb_api_host",
+      "value": "localhost",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "cmdb_api_port",
+      "value": "3001",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "kb_api_host",
+      "value": "localhost",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "kb_api_port",
+      "value": "3000",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_api_host",
+      "value": "localhost",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_api_port",
+      "value": "3002",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_user",
+      "value": "demo",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_passwd",
+      "value": "fe01ce2a7fbac8fafaed7c982a04e229",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_user_id",
+      "value": "100",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_ldap_user",
+      "value": "test test",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "auth_ldap_passwd",
+      "value": "test",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "scmpz_api_host",
+      "value": "localhost",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "scmpz_api_port",
+      "value": "3003",
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2017-09-27T00:46:45.451Z",
+  "_postman_exported_using": "Postman/5.2.0"
+}

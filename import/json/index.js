@@ -43,57 +43,57 @@ const itemPreprocess = (item)=>{
     return item
 }
 
-class Importer {
-    constructor() {
-    }
-
-    async importer()  {
-        await schema.loadSchemas()
-        let date_dir = process.env.IMPORT_FOLDER
-        if(!date_dir)
-            throw new Error(`env 'IMPORT_FOLDER' not defined`)
-        let importStrategy = process.env.IMPORT_STRATEGY||'api'
-        let categories = [...schema.getSortedTypes()]
-        let result = {}
-        for(let category of categories){
-            let filePath = path.join(date_dir,category + '.json')
-            let errorFolder = path.join(date_dir,'exception')
-            let errorFilePath = path.join(errorFolder,category + '.json')
-            let errorItems = []
-            if(fs.existsSync(filePath)){
-                let items = jsonfile.readFileSync(filePath)
-                items = sortItemsDependentFirst(items)
-                for (let item of items) {
-                    if(!item.category)
-                        item.category = category
-                    try {
-                        item = itemPreprocess(item)
-                        if(importStrategy === 'api')
-                            await apiInvoker.addItem(item.category, item)
-                        else if(importStrategy === 'search')
-                            await search.addItem({},item)
-                    }catch(error){
-                        item.error = String(error)
-                        errorItems.push(item)
-                    }
-                }
-                if(errorItems.length){
-                    if (!fs.existsSync(errorFolder))
-                        fs.mkdirSync(errorFolder)
-                    jsonfile.writeFileSync(errorFilePath, errorItems, {spaces: 2})
+const importItems = async ()=>{
+    await schema.loadSchemas()
+    let date_dir = process.env.IMPORT_FOLDER
+    if(!date_dir)
+        throw new Error(`env 'IMPORT_FOLDER' not defined`)
+    let importStrategy = process.env.IMPORT_STRATEGY||'api'
+    let categories = [...schema.getSortedTypes()]
+    let result = {}
+    for(let category of categories){
+        let filePath = path.join(date_dir,category + '.json')
+        let errorFolder = path.join(date_dir,'exception')
+        let errorFilePath = path.join(errorFolder,category + '.json')
+        let errorItems = []
+        if(fs.existsSync(filePath)){
+            let items = jsonfile.readFileSync(filePath)
+            items = sortItemsDependentFirst(items)
+            for (let item of items) {
+                if(!item.category)
+                    item.category = category
+                try {
+                    item = itemPreprocess(item)
+                    if(importStrategy === 'api')
+                        await apiInvoker.addItem(item.category, item)
+                    else if(importStrategy === 'search')
+                        await search.addItem({},item)
+                }catch(error){
+                    item.error = String(error)
+                    errorItems.push(item)
                 }
             }
-            result[category] = {errorItems}
+            if(errorItems.length){
+                if (!fs.existsSync(errorFolder))
+                    fs.mkdirSync(errorFolder)
+                jsonfile.writeFileSync(errorFilePath, errorItems, {spaces: 2})
+            }
         }
-        return result
+        result[category] = {errorItems}
     }
+    return result
 }
 
 if (require.main === module) {
-    new Importer().importer().then((result)=>console.log(JSON.stringify(result,null,'\t')))
+    importItems().then((result)=>{
+        console.log(JSON.stringify(result,null,'\t'))
+        process.exit()
+    }).catch(err=>{
+        console.log(err)
+    })
 }
 
-module.exports = Importer
+module.exports = importItems
 
 
 

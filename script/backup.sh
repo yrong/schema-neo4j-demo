@@ -19,12 +19,12 @@ while [ "$1" != "" ]; do
     shift
 done
 
-storeDir=$(cat ./config/default.json|./script/jq-linux64 '.config.export.storeDir'| sed -e 's/^"//' -e 's/"$//')
+storeDir=$(cat ./config/default.json|./script/jq-linux64 '.export.storeDir'| sed -e 's/^"//' -e 's/"$//')
 timestamp=$(date +"%Y%m%d%H%M%S")
 mkdir -p $storeDir/$timestamp
 $NEO4J_HOME/bin/neo4j-shell -c dump > $storeDir/$timestamp/neo4j.dump
 if [ $? -eq 0 ]; then
-    echo "dumping data to $timestamp successfully! you can import later with '/bin/bash ./script/import.sh --dir=$storeDir/$timestamp'"
+    echo "dumping data to $timestamp successfully! you can import later with '/bin/bash ./script/restore.sh --dir=$storeDir/$timestamp'"
 fi
 
 

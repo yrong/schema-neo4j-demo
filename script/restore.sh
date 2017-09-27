@@ -27,7 +27,6 @@ if [ -z "$storeDir" ]; then
         exit
 fi
 
-curl -X DELETE --header "Content-Type: application/json" --url "http://localhost:3001/api/items"
 cat $storeDir/neo4j.dump | $NEO4J_HOME/bin/neo4j-shell
 
 

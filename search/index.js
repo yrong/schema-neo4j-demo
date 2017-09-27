@@ -40,26 +40,31 @@ var addOpsCommand = (command)=>{
 
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
-    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
-    let index_obj = {
-        index: indexName,
-        type: typeName,
-        id: params.uuid,
-        body: _.omit(params,hidden_fields),
-        refresh:true
+    let routes = schema.getApiRoutes()
+    let typeName = schema.getAncestorCategory(params.category)||hook.getCategoryFromUrl(ctx.url)
+    if(routes[typeName].searchable){
+        let indexName = routes[typeName].searchable.index
+        let index_obj = {
+            index: indexName,
+            type: typeName,
+            id: params.uuid,
+            body: _.omit(params,hidden_fields),
+            refresh:true
+        }
+        logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
+        return es_client.index(index_obj).then(function (response) {
+            if(params.fields)
+                return hook.cudItem_postProcess(response, params, ctx);
+        }, function (error) {
+            params[hook.STATUS_WARNING] = 'ElasticSearch:' + error.response||String(error)
+            return hook.cudItem_postProcess(result, params, ctx);
+        });
     }
-    logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
-    return es_client.index(index_obj).then(function (response) {
-        return hook.cudItem_postProcess(response, params, ctx);
-    }, function (error) {
-        params[hook.STATUS_WARNING] = 'ElasticSearch:' + error.response||String(error)
-        return hook.cudItem_postProcess(result, params, ctx);
-    });
 }
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
-    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
+    let routes = schema.getApiRoutes(),typeName = schema.getAncestorCategory(params.category)||hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
     let index_obj = {
         index: indexName,
         type: typeName,
