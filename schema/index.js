@@ -5,7 +5,7 @@ const config = require('config')
 const Model = require('redis-crud-fork')
 const SchemaModel = Model('Schema')
 
-let typeSchemas={},dereferencedSchemas = {},cmdbTypeName = {},typeRoutes = {},typeInheritanceRelationship={},sortedTypes=[]
+let typeSchemas={},dereferencedSchemas = {},typeRoutes = {},typeInheritanceRelationship={},sortedTypes=[]
 
 const persitSchema = async (schema)=>{
     await SchemaModel.insert(schema)
@@ -38,7 +38,6 @@ const loadSchema = async (schema, dereference=true, persistance=true)=>{
     if(persistance)
         await persitSchema(schema)
     typeSchemas[schema.id] = schema
-    cmdbTypeName[schema.id] = schema.id
     buildInheritanceRelationship(schema)
     if(schema.route){
         typeRoutes[schema.id] = {route:schema.route}
@@ -79,7 +78,7 @@ const loadSchemas = async ()=>{
     for(let schema of schemas){
         await loadSchema(schema,false,false)
     }
-    for(let key in cmdbTypeName){
+    for(let key in typeSchemas){
         schema = dereferenceSchema(key)
         dereferencedSchemas[schema.id]=schema
     }
@@ -215,6 +214,15 @@ const isSearchableType  = (category) => {
     return typeRoutes[category].searchable?true:false
 }
 
+const getSearchableTypes = ()=>{
+    let searchableTypes = []
+    _.each(typeRoutes,(val,key)=>{
+        if(isSearchableType(key)){
+            searchableTypes.push(key)
+        }})
+    return searchableTypes
+}
+
 const getSchemaHierarchy = (category)=>{
     let result = {name:category}
     if(typeInheritanceRelationship[category].children){
@@ -287,4 +295,7 @@ const getAncestorCategory = (category)=>{
 }
 
 
-module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField,getAncestorCategory}
+module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,
+    getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,
+    getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField,
+    getAncestorCategory,getSearchableTypes}

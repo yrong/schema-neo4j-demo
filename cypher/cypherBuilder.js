@@ -78,7 +78,7 @@ const generateSequence=(name)=>
 /**
  * query item with members
  */
-const cmdb_queryItemWithMembers_cypher = (label, member_label, reference_field, params) => {
+const generateQueryItemWithMembersCypher = (label, member_label, reference_field, params) => {
     let condition = params.keyword?`WHERE n.name = {keyword}`:''
     return `MATCH
         (n:${label})
@@ -93,11 +93,12 @@ const cmdb_queryItemWithMembers_cypher = (label, member_label, reference_field, 
 /**
  * query node and relations
  */
-const generateQueryNodeWithRelationToConfigurationItem_cypher = (params)=> {
+const generateQueryNodeWithRelationToAdvancedTypes_cypher = (params, advancedTypes)=> {
     let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
+    let where = _.map(advancedTypes,(type)=>`c:${type}`).join(' or ')
     return `MATCH (n{${id_type}: {uuid}})
     OPTIONAL MATCH (n)-[]-(c)
-    WHERE c:ConfigurationItem or c:ProcessFlow
+    WHERE ${where}
     WITH n as self,collect(c) as items
     RETURN self,items`
 }
@@ -107,7 +108,7 @@ const generateQueryNodeWithRelationToConfigurationItem_cypher = (params)=> {
  */
 const generateDummyOperation_cypher = (params) => `WITH 1 as result return result`
 
-const generateQueryConfigurationItemBySubCategoryCypher = (params) => {
+const generateQueryItemByCategoryCypher = (params) => {
     let condition = _.map(params.subcategory, (subcategory) => {
         return `n:${subcategory}`
     }).join(' OR ')
@@ -186,9 +187,9 @@ module.exports = {
     generateDelNodeCypher,
     generateSequence,
     generateDelAllCypher,
-    generateQueryNodeWithRelationToConfigurationItem_cypher,
+    generateQueryNodeWithRelationToAdvancedTypes_cypher,
     generateDummyOperation_cypher,
-    generateQueryConfigurationItemBySubCategoryCypher,
+    generateQueryItemByCategoryCypher,
     generateQuerySubTypeCypher,
-    cmdb_queryItemWithMembers_cypher
+    generateQueryItemWithMembersCypher
 }

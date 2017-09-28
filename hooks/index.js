@@ -77,10 +77,10 @@ const queryParamsCypherGenerator = function (params) {
      */
     let member = schema.getMemberType(params.category)
     if(member){
-        params.cypher = cypherBuilder.cmdb_queryItemWithMembers_cypher(params.category,member.member,member.attr,params)
+        params.cypher = cypherBuilder.generateQueryItemWithMembersCypher(params.category,member.member,member.attr,params)
     }else if(params.subcategory){
         params.subcategory = params.subcategory.split(",");
-        params.cypher = cypherBuilder.generateQueryConfigurationItemBySubCategoryCypher(params);
+        params.cypher = cypherBuilder.generateQueryItemByCategoryCypher(params);
     }
     logCypher(params)
     return params;
@@ -188,7 +188,7 @@ module.exports = {
 
         } else if (params.method === 'DELETE') {
             if(params.uuid){
-                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationToConfigurationItem_cypher(params), params, true)
+                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationToAdvancedTypes_cypher(params,schema.getSearchableTypes()), params, true)
                 if(result&&result[0]&&result[0].self&&result[0].self.category){
                     params.category = result[0].self.category
                     params.name = result[0].self.name
