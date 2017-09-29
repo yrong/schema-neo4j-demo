@@ -57,6 +57,18 @@ module.exports = (app)=>{
 
     app.defineAPI({
         method: 'POST',
+        route: '/api/search/cfgItems',
+        procedure:search.searchItem
+    })
+
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/search/processFlows',
+        procedure:search.searchItem
+    })
+
+    app.defineAPI({
+        method: 'POST',
         route: '/api/searchByCypher',
         preProcess: hook.customizedQueryItems_preProcess,
         postProcess: hook.queryItems_postProcess

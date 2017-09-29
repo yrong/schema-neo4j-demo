@@ -119,7 +119,9 @@ var searchItem = function(params, ctx) {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-    let routes = schema.getApiRoutes(),indexName = routes[params.category].searchable.index
+    let routes = schema.getApiRoutes()
+    let typeName = params.category = params.category || hook.getCategoryFromUrl(ctx.url)
+    let indexName = routes[typeName].searchable.index
     params.search = true
     var searchObj = _.assign({
         index: indexName,
