@@ -80,6 +80,46 @@ GET /users
 
 * `search` means instance of `ConfigurationItem` will also stored in elasticsearch with `cmdb` as index name
 
+## Search
+
+* query interfaces which use cypher and elasticsearch dsl(will I called eql) directly
+
+```cypher
+api/searchByCypher
+{
+	"category":"ITService",
+	"search":["email","pop3"],
+	"cypher":"OPTIONAL MATCH (s1:ITService) WHERE s1.uuid IN {search} or s1.group IN {search} WITH COLLECT(distinct(s1.uuid)) as services_byIds UNWIND {search} as keyword OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup) WHERE s1.name = keyword or sg.name = keyword WITH services_byIds+collect(distinct(s1.uuid)) as services UNWIND services AS service RETURN COLLECT(distinct service)"
+}
+```
+
+`category` is id of the model,`cypher` is the raw cypher query, other fields are required parameters in cypher query
+
+```eql
+api/searchByEql
+{
+  "category":"ConfigurationItem",
+  "body":
+  {
+      "query": {
+      	"bool":{
+      		"must":[
+      			{"match": {"category": "Router"}},
+      			{"match":{"status.status":"In_Use"}},
+      			{"match":{"it_service":"{{service_email_id}}"}}
+      		]
+      	}
+
+      },
+      "sort" : [
+          { "product_date" : {"order" : "desc"}}]
+  }
+}
+```
+
+`category` is id of the model,`body` is the raw eql
+
+
 ## Deploy
 
 1. install db server
@@ -96,7 +136,7 @@ GET /users
 
 3. configuration
 
-    modify value in config/default.json according to the db configuration
+    modify value in config/default.json to match db configuration
 
     ```
       "neo4j": {
