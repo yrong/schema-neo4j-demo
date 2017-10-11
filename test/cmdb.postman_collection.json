@@ -104,7 +104,6 @@
 			"name": "4-processFlow",
 			"description": "",
 			"order": [
-				"48c746bc-41fc-f393-c49b-f69e198a10ea",
 				"a9aa6bcd-59f7-a089-ec3e-b905e99468cc",
 				"a0272281-e9d9-86c8-d254-e8e3c16a71a8",
 				"fa102c8c-5008-0d23-ff2c-c9ac6b5a56dd",
@@ -121,6 +120,7 @@
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"order": [
+				"a0114b18-2556-7935-d8a4-fcafe8a6e731",
 				"7be61ad3-8c2a-7e6c-8fb0-7ed9952fbed2",
 				"a3347ad3-a496-9fba-123d-616d9266fc19",
 				"971bc044-ec11-84dc-9b50-0285d5089a78",
@@ -136,7 +136,8 @@
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"order": [
-				"2eddc386-fe68-95d6-7994-84df56b07a91"
+				"2eddc386-fe68-95d6-7994-84df56b07a91",
+				"2059b457-6d1e-2b32-9916-dbbc25b1f011"
 			],
 			"owner": "1388965",
 			"folder": "c16ff76e-c00b-a316-0242-7785d61ce15e",
@@ -334,6 +335,59 @@
 			"responses": [],
 			"folder": "beb9a9b8-aa0e-bc1d-d140-b144016ee16c",
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+		},
+		{
+			"id": "2059b457-6d1e-2b32-9916-dbbc25b1f011",
+			"headers": "Content-Type: application/json\ntoken: {{token}}\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+			"folder": "8f14029c-b1ba-5374-fc19-22742ffb3f37",
+			"queryParams": [
+				{
+					"key": "page",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "per_page",
+					"value": "10",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506494468323,
+			"name": "search configurationItem with eql as parameter",
+			"description": "",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "2059b457-6d1e-2b32-9916-dbbc25b1f011",
+			"rawModeData": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\": {\"category\": \"Router\"}},\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"match\":{\"it_service\":\"{{service_email_id}}\"}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"id": "23db68d9-2942-15e1-ed68-1de8f80e50b0",
@@ -569,7 +623,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=10",
 			"folder": "8f14029c-b1ba-5374-fc19-22742ffb3f37",
 			"queryParams": [
 				{
@@ -596,12 +650,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506492012672,
-			"name": "search configurationItem",
+			"time": 1506655419720,
+			"name": "search configurationItem legacy",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"rawModeData": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\": {\"category\": \"Router\"}},\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"match\":{\"it_service\":\"e35c1240-a32c-11e7-9a55-45c7c98ddc18\"}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\": {\"category\": \"Router\"}},\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"match\":{\"it_service\":\"{{service_email_id}}\"}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"folder": "4f04a2cd-76b9-0592-88d0-cfc81c726d8b",
@@ -692,37 +746,6 @@
 			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
-		},
-		{
-			"id": "48c746bc-41fc-f393-c49b-f69e198a10ea",
-			"headers": "",
-			"headerData": [],
-			"url": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles?token={{token}}",
-			"queryParams": [
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
-			"preRequestScript": "",
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"articles found\"] = jsonData.data.count>0 \nvar article_uuids = [];\njsonData.data.rows.forEach(function(article){\n    article_uuids.push(article.uuid);\n})\npostman.setEnvironmentVariable(\"article_uuids\", JSON.stringify(article_uuids));",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1500557618570,
-			"name": "get articles from kb api",
-			"description": "",
-			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
-			"responses": [],
-			"folder": "d02a5899-8b42-a85f-2e2a-12f152139864",
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
 		},
 		{
@@ -1115,6 +1138,42 @@
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
 		},
 		{
+			"id": "a0114b18-2556-7935-d8a4-fcafe8a6e731",
+			"headers": "token: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+			"folder": "8ecfbc8b-7857-c985-eca0-81737670098e",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"it service instance found\"] = jsonData.data.length >= 1;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1506931937443,
+			"name": "cypher as parameter",
+			"description": "",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": [],
+			"rawModeData": "{\n\t\"category\":\"ITService\",\n\t\"search\":[\"email\",\"pop3\"],\n\t\"cypher\":\"OPTIONAL MATCH (s1:ITService) WHERE s1.uuid IN {search} or s1.group IN {search} WITH COLLECT(distinct(s1.uuid)) as services_byIds UNWIND {search} as keyword OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup) WHERE s1.name = keyword or sg.name = keyword WITH services_byIds+collect(distinct(s1.uuid)) as services UNWIND services AS service RETURN COLLECT(distinct service)\"\n}"
+		},
+		{
 			"id": "a0272281-e9d9-86c8-d254-e8e3c16a71a8",
 			"headers": "Content-Type: application/json\n",
 			"headerData": [
@@ -1137,13 +1196,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_2_id\", jsonData.uuid);",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506438583653,
+			"time": 1506495991549,
 			"name": "add incident flow 2 reference incident flow 1",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}",
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n       \"reference_kb\":[\"{{article_1_id}}\"],\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
 		},
 		{
 			"id": "a131ad83-f8fe-1206-2326-ffbe9e88e026",
@@ -1336,13 +1394,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506438574751,
+			"time": 1506496033414,
 			"name": "add incident flow 1",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":{{article_uuids}},\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}",
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":{{auth_user_id}},\n      \"executor\":{{auth_user_id}},\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
 		},
 		{
 			"id": "acea69c2-2be4-8c1b-d4d7-965fdcd01230",
@@ -1902,11 +1959,12 @@
 				{
 					"key": "Content-Type",
 					"value": "application/json",
-					"enabled": true,
-					"description": ""
+					"description": "",
+					"enabled": true
 				}
 			],
 			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
+			"folder": "beb9a9b8-aa0e-bc1d-d140-b144016ee16c",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -1916,16 +1974,13 @@
 			"dataMode": "raw",
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\npostman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid);\n",
 			"currentHelper": "normal",
-			"helperAttributes": "{}",
-			"time": 1501072846238,
+			"helperAttributes": {},
+			"time": 1506516801399,
 			"name": "add server_room",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"folder": "beb9a9b8-aa0e-bc1d-d140-b144016ee16c",
-			"descriptionFormat": null,
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"server_room\"\n    }\n  }\n}",
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"机房1\"\n    }\n  }\n}"
 		},
 		{
 			"id": "fa102c8c-5008-0d23-ff2c-c9ac6b5a56dd",
