@@ -15,6 +15,11 @@
     }
   },
   {
+    "name": "delete already referenced asset fail",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/{{cabinet_id}}"
+  },
+  {
     "name": "login",
     "method": "POST",
     "url": "http://{{auth_api_host}}:{{auth_api_port}}/auth/login",
@@ -781,5 +786,10 @@
         }
       }
     }
+  },
+  {
+    "name": "delete already referenced physical server fail",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}"
   }
 ]

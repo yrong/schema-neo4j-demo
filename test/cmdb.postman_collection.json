@@ -80,9 +80,9 @@
 				"b44fa458-5713-15c5-2139-d3d0a56f5c28",
 				"27cc5245-3c20-2e25-f4b0-10960c601612",
 				"2db927c3-2d71-8a76-13ae-682beb99de7f",
-				"fb5967d5-30bc-6bad-ace9-6c37f591eb96",
 				"52d53541-9c7d-b926-06f1-de3c9568482a",
 				"9340334e-127d-52b7-fc6d-5692eab5430a",
+				"fb5967d5-30bc-6bad-ace9-6c37f591eb96",
 				"e3fc6804-8649-0568-2171-3816faef1354",
 				"24af5e61-34ad-690f-1823-31c9fb2d73e7",
 				"8a2dd57b-bf7e-69b6-1e53-ee8b48e85439",
@@ -90,7 +90,9 @@
 				"9e71e422-8e61-227d-0ae0-219ed1204424",
 				"a131ad83-f8fe-1206-2326-ffbe9e88e026",
 				"bf0e6a13-34c2-1854-1798-cd7d938a5d93",
-				"4747d502-fd2c-0f22-e83b-5389d7014a3a"
+				"4747d502-fd2c-0f22-e83b-5389d7014a3a",
+				"15eedada-e367-a2ba-f98c-825bee0136b5",
+				"fcf756da-fdff-ddfc-e11e-2d12d37d2ab2"
 			],
 			"folders_order": [],
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
@@ -212,6 +214,35 @@
 			"responses": [],
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+		},
+		{
+			"id": "15eedada-e367-a2ba-f98c-825bee0136b5",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/{{cabinet_id}}",
+			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
+			"queryParams": [],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"node already referenced\"] = jsonData.status==='error'\n\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507809062431,
+			"name": "delete already referenced asset fail",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": []
 		},
 		{
 			"folder": "09c298af-fec1-3ccd-2ff6-f23b3f5f8956",
@@ -1990,6 +2021,35 @@
 			"responses": [],
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}",
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+		},
+		{
+			"id": "fcf756da-fdff-ddfc-e11e-2d12d37d2ab2",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
+			"queryParams": [],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"node already referenced\"] = jsonData.status==='error'\n\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507806361078,
+			"name": "delete already referenced physical server fail",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": []
 		}
 	]
 }

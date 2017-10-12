@@ -93,12 +93,10 @@ const generateQueryItemWithMembersCypher = (label, member_label, reference_field
 /**
  * query node and relations
  */
-const generateQueryNodeWithRelationToAdvancedTypes_cypher = (params, advancedTypes)=> {
+const generateQueryNodeWithRelationCypher = (params)=> {
     let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
-    let where = _.map(advancedTypes,(type)=>`c:${type}`).join(' or ')
     return `MATCH (n{${id_type}: {uuid}})
     OPTIONAL MATCH (n)-[]-(c)
-    WHERE ${where}
     WITH n as self,collect(c) as items
     RETURN self,items`
 }
@@ -106,7 +104,7 @@ const generateQueryNodeWithRelationToAdvancedTypes_cypher = (params, advancedTyp
 /**
  * dummy operation
  */
-const generateDummyOperation_cypher = (params) => `WITH 1 as result return result`
+const generateDummyOperationCypher = (params) => `WITH 1 as result return result`
 
 const generateQueryItemByCategoryCypher = (params) => {
     let condition = _.map(params.subcategory, (subcategory) => {
@@ -145,15 +143,14 @@ const generateRelationCypher = (params)=>{
                 MATCH (ref_node:${ref.schema}{uuid:{${ref.attr}}})
                 `
             }
-            if(ref.relationship.parentObjectAsRelProperty){
-                rel_part =  `[:${ref.relationship.name}{${ref.attr.split('.')[0]}}]`
-            }else{
-                rel_part = `[:${ref.relationship.name}]`
-            }
+            rel_part = `[r:${ref.relationship.name}]`
             if(ref.relationship.reverse)
-                cypher = cypher + `CREATE (node)<-${rel_part}-(ref_node)`
+                cypher = cypher + `MERGE (node)<-${rel_part}-(ref_node)`
             else
-                cypher = cypher + `CREATE (node)-${rel_part}->(ref_node)`
+                cypher = cypher + `MERGE (node)-${rel_part}->(ref_node)`
+            if(ref.relationship.parentObjectAsRelProperty){
+                cypher = cypher + ` ON MATCH SET r={${ref.attr.split('.')[0]}}`
+            }
             rel_cyphers.push(cypher)
         }
     }
@@ -165,7 +162,7 @@ const generateRelationCypher = (params)=>{
 
 module.exports = {
     generateAddOrUpdateCyphers: (params)=>{
-        let cyphers_todo = [generateDelNodeCypher(params),generateAddNodeCypher(params),...generateRelationCypher(params)]
+        let cyphers_todo = [generateAddNodeCypher(params),...generateRelationCypher(params)]
         return cyphers_todo
     },
     generateQueryNodesCypher:(params)=>{
@@ -187,8 +184,8 @@ module.exports = {
     generateDelNodeCypher,
     generateSequence,
     generateDelAllCypher,
-    generateQueryNodeWithRelationToAdvancedTypes_cypher,
-    generateDummyOperation_cypher,
+    generateQueryNodeWithRelationCypher,
+    generateDummyOperationCypher,
     generateQueryItemByCategoryCypher,
     generateQuerySubTypeCypher,
     generateQueryItemWithMembersCypher

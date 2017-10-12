@@ -152,6 +152,34 @@ const constructResponse = (status,content,displayAs)=>{
     }
 }
 
+const checkReferenced = (uuid,items)=>{
+    let referenced = false
+    for(let item of items){
+        if(!referenced){
+            let objectFields=schema.getSchemaObjectProperties(item.category)
+            for(let key of objectFields){
+                if(_.isString(item[key])){
+                    try{
+                        item[key] = JSON.parse(item[key])
+                    }catch(error){
+                        //same field with different type in different categories(e.g:'status in 'ConfigurationItem' and 'ProcessFlow'),ignore error and just for protection here
+                    }
+                }
+            }
+            let refProperties = schema.getSchemaRefProperties(item.category)
+            for(let refProperty of refProperties){
+                let key = refProperty.attr
+                let val = jp.query(item, `$.${key}`)[0]
+                if(uuid==val||(_.isArray(val)&&_.includes(val,uuid))){
+                    referenced = true
+                    break
+                }
+            }
+        }
+    }
+    return referenced
+}
+
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
         let item_uuid,result,dynamic_field
@@ -188,15 +216,19 @@ module.exports = {
 
         } else if (params.method === 'DELETE') {
             if(params.uuid){
-                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationToAdvancedTypes_cypher(params,schema.getSearchableTypes()), params, true)
+                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationCypher(params), params, true)
                 if(result&&result[0]&&result[0].self&&result[0].self.category){
                     params.category = result[0].self.category
                     params.name = result[0].self.name
                     params.fields_old = _.omit(result[0].self,'id')
                     if(result[0].items&&result[0].items.length){
-                        params[STATUS_ERROR] = CONTENT_NODE_USED
-                        params.cypher = cypherBuilder.generateDummyOperation_cypher(params)
-                        return params
+                        if(checkReferenced(params.uuid,result[0].items)){
+                            params[STATUS_ERROR] = CONTENT_NODE_USED
+                            params.cypher = cypherBuilder.generateDummyOperationCypher(params)
+                            return params
+                        }else{
+                            return await cudItem_callback(params)
+                        }
                     }else{
                         return await cudItem_callback(params)
                     }

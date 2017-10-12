@@ -214,27 +214,21 @@ const isSearchableType  = (category) => {
     return typeRoutes[category].searchable?true:false
 }
 
-const getSearchableTypes = ()=>{
-    let searchableTypes = []
-    _.each(typeRoutes,(val,key)=>{
-        if(isSearchableType(key)){
-            searchableTypes.push(key)
-        }})
-    return searchableTypes
-}
-
 const getSchemaHierarchy = (category)=>{
     let result = {name:category}
     if(typeInheritanceRelationship[category].children){
-        result.children = _.map(typeInheritanceRelationship[category].children,(child)=>{
-            return {name:child}
-        })
-    }
-    _.each(typeInheritanceRelationship[category].children,(child,index)=> {
-        if (typeInheritanceRelationship[child]) {
-            result.children[index] = getSchemaHierarchy(child)
+        result.children = []
+        for(let child of typeInheritanceRelationship[category].children){
+            if(typeSchemas[child].hideInHierarchyTree){
+                continue
+            }
+            if (typeInheritanceRelationship[child]) {
+                result.children.push(getSchemaHierarchy(child))
+            }else{
+                result.children.push({name:child})
+            }
         }
-    })
+    }
     return result
 }
 
@@ -298,4 +292,4 @@ const getAncestorCategory = (category)=>{
 module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,
     getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,
     getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField,
-    getAncestorCategory,getSearchableTypes}
+    getAncestorCategory}
