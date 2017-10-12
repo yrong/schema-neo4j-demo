@@ -59,17 +59,23 @@
             "must": [
               {
                 "match": {
-                  "category": "Router"
-                }
-              },
-              {
-                "match": {
                   "status.status": "In_Use"
                 }
               },
               {
-                "match": {
-                  "it_service": "{{service_email_id}}"
+                "bool": {
+                  "should": [
+                    {
+                      "match": {
+                        "it_service": "{{service_email_id}}"
+                      }
+                    },
+                    {
+                      "match": {
+                        "it_service": "{{service_pop3_id}}"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -227,43 +233,6 @@
           "monitored": true,
           "asset_id": "test"
         }
-      }
-    }
-  },
-  {
-    "name": "search configurationItem legacy",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=10",
-    "body": {
-      "body": {
-        "query": {
-          "bool": {
-            "must": [
-              {
-                "match": {
-                  "category": "Router"
-                }
-              },
-              {
-                "match": {
-                  "status.status": "In_Use"
-                }
-              },
-              {
-                "match": {
-                  "it_service": "{{service_email_id}}"
-                }
-              }
-            ]
-          }
-        },
-        "sort": [
-          {
-            "product_date": {
-              "order": "desc"
-            }
-          }
-        ]
       }
     }
   },
@@ -454,7 +423,7 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems"
   },
   {
-    "name": "cypher as parameter",
+    "name": "cql as parameter",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
     "body": {

@@ -116,7 +116,7 @@
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
 		},
 		{
-			"name": "5-1-cypher",
+			"name": "5-1-cql",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"order": [
@@ -136,7 +136,6 @@
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"order": [
-				"2eddc386-fe68-95d6-7994-84df56b07a91",
 				"2059b457-6d1e-2b32-9916-dbbc25b1f011"
 			],
 			"owner": "1388965",
@@ -380,14 +379,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506494468323,
+			"time": 1507790732693,
 			"name": "search configurationItem with eql as parameter",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"isFromCollection": true,
-			"collectionRequestId": "2059b457-6d1e-2b32-9916-dbbc25b1f011",
-			"rawModeData": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\": {\"category\": \"Router\"}},\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"match\":{\"it_service\":\"{{service_email_id}}\"}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+			"rawModeData": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"bool\":{\"should\":[{\"match\":{\"it_service\":\"{{service_email_id}}\"}},{\"match\":{\"it_service\":\"{{service_pop3_id}}\"}}]}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"id": "23db68d9-2942-15e1-ed68-1de8f80e50b0",
@@ -605,57 +602,6 @@
 			"descriptionFormat": null,
 			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"physicalserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"asset_id\":\"test\"\n    }\n  }\n}",
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
-		},
-		{
-			"id": "2eddc386-fe68-95d6-7994-84df56b07a91",
-			"headers": "Content-Type: application/json\ntoken: {{token}}\n",
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"description": "",
-					"enabled": true
-				},
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/search/cfgItems?page=1&per_page=10",
-			"folder": "8f14029c-b1ba-5374-fc19-22742ffb3f37",
-			"queryParams": [
-				{
-					"key": "page",
-					"value": "1",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				},
-				{
-					"key": "per_page",
-					"value": "10",
-					"equals": true,
-					"description": "",
-					"enabled": true
-				}
-			],
-			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"tests": "var jsonData = JSON.parse(responseBody);\nif(jsonData.data&&jsonData.data.count){\n  tests[\"configuration items found\"] = jsonData.data.count >= 1; \n}\n",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1506655419720,
-			"name": "search configurationItem legacy",
-			"description": "",
-			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
-			"responses": [],
-			"rawModeData": "{\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\": {\"category\": \"Router\"}},\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"match\":{\"it_service\":\"{{service_email_id}}\"}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
 		},
 		{
 			"folder": "4f04a2cd-76b9-0592-88d0-cfc81c726d8b",
@@ -1167,7 +1113,7 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1506931937443,
-			"name": "cypher as parameter",
+			"name": "cql as parameter",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
