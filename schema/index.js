@@ -219,9 +219,6 @@ const getSchemaHierarchy = (category)=>{
     if(typeInheritanceRelationship[category].children){
         result.children = []
         for(let child of typeInheritanceRelationship[category].children){
-            if(typeSchemas[child].hideInHierarchyTree){
-                continue
-            }
             if (typeInheritanceRelationship[child]) {
                 result.children.push(getSchemaHierarchy(child))
             }else{

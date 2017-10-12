@@ -26,6 +26,5 @@
       }
     }
   ],
-  "required": ["ip_address", "operating_system"],
-  "hideInHierarchyTree":true
+  "required": ["ip_address", "operating_system"]
 }
