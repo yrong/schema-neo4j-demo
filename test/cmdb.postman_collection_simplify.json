@@ -677,6 +677,15 @@
     }
   },
   {
+    "name": "search configurationItem by keyword in all fields",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+    "body": {
+      "category": "ConfigurationItem",
+      "keyword": "test"
+    }
+  },
+  {
     "name": "query it service groups by keyword",
     "method": "GET",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
