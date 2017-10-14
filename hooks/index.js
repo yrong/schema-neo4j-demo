@@ -182,7 +182,8 @@ const checkReferenced = (uuid,items)=>{
 
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
-        let item_uuid,result,dynamic_field
+        let item_uuid,result,dynamic_field;
+        params = common.pruneEmpty(params)
         params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar','roles']),params.token = ctx.token,
             params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {

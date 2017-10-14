@@ -92,7 +92,10 @@
 				"bf0e6a13-34c2-1854-1798-cd7d938a5d93",
 				"4747d502-fd2c-0f22-e83b-5389d7014a3a",
 				"15eedada-e367-a2ba-f98c-825bee0136b5",
-				"fcf756da-fdff-ddfc-e11e-2d12d37d2ab2"
+				"fcf756da-fdff-ddfc-e11e-2d12d37d2ab2",
+				"b83653db-9513-a678-e428-7b8c3f269b6d",
+				"6a3ea780-c751-1e85-97ab-46391caf1ad2",
+				"5f063243-1a6e-7503-b9f4-271ad3023bd0"
 			],
 			"folders_order": [],
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
@@ -856,6 +859,64 @@
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
 		},
 		{
+			"id": "5f063243-1a6e-7503-b9f4-271ad3023bd0",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
+			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
+			"queryParams": [],
+			"preRequestScript": "",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"deleted\"] = jsonData.status==='info'\n\n\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507948485931,
+			"name": "delete virtual server 1",
+			"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response.",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": []
+		},
+		{
+			"id": "6a3ea780-c751-1e85-97ab-46391caf1ad2",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
+			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"empty field already removed\"] = jsonData.data.it_service.length == 1 && jsonData.data.warranty_expiration_date === undefined",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507948687660,
+			"name": "query virtual server 1",
+			"description": "",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": []
+		},
+		{
 			"folder": "beb9a9b8-aa0e-bc1d-d140-b144016ee16c",
 			"id": "701d360b-fe36-1540-538f-cf717c1c2611",
 			"name": "add warehouse",
@@ -1546,6 +1607,36 @@
 			"isFromCollection": true,
 			"rawModeData": "{\n\t\"category\":\"ConfigurationItem\",\n\t\"cypherQueryFile\":\"queryHostsByITService\",\n\t\"name\":[\"Messaging\"]\n}",
 			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+		},
+		{
+			"id": "b83653db-9513-a678-e428-7b8c3f269b6d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"virtual_server_1_id\", jsonData.uuid); \n}\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1507950511202,
+			"name": "add virtual server 1 with empty fields",
+			"description": "",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": [],
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver1\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}"
 		},
 		{
 			"id": "ba9969ab-7bc5-de0f-0c6a-bc856c9fa345",

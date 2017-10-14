@@ -321,6 +321,16 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses"
   },
   {
+    "name": "delete virtual server 1",
+    "method": "DELETE",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}"
+  },
+  {
+    "name": "query virtual server 1",
+    "method": "GET",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}"
+  },
+  {
     "name": "add warehouse",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
@@ -586,6 +596,41 @@
       "name": [
         "Messaging"
       ]
+    }
+  },
+  {
+    "name": "add virtual server 1 with empty fields",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+    "body": {
+      "token": "{{token}}",
+      "data": {
+        "category": "VirtualServer",
+        "fields": {
+          "name": "virtualserver1",
+          "it_service": [
+            "{{service_email_id}}",
+            ""
+          ],
+          "ip_address": [
+            "192.168.0.108"
+          ],
+          "technical_support_info": "010-123456",
+          "operating_system": "windows xp",
+          "applications": [
+            "反垃圾邮件网关"
+          ],
+          "storage_info": "hp-disk1",
+          "model": "b10",
+          "product_date": "2016-10-11",
+          "warranty_expiration_date": "",
+          "management_ip": [
+            "192.168.0.108"
+          ],
+          "monitored": true,
+          "host_server": "physicalserver"
+        }
+      }
     }
   },
   {
