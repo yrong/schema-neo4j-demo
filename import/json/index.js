@@ -5,6 +5,7 @@ const fs = require('fs')
 const apiInvoker = require('../../helper/apiInvoker')
 const schema = require('../../schema')
 const search = require('../../search')
+const common = require('scirichon-common')
 
 const sortItemsDependentFirst = (items)=>{
     if(!items||items.length==0)
@@ -40,7 +41,7 @@ const sortItemsDependentFirst = (items)=>{
 }
 
 const itemPreprocess = (item)=>{
-    return item
+    return common.pruneEmpty(item)
 }
 
 const importItems = async ()=>{
@@ -68,6 +69,8 @@ const importItems = async ()=>{
                         await apiInvoker.addItem(item.category, item)
                     else if(importStrategy === 'search')
                         await search.addItem({},item)
+                    else
+                        throw new Error('unknown importStrategy')
                 }catch(error){
                     item.error = String(error)
                     errorItems.push(item)

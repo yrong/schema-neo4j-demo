@@ -135,6 +135,7 @@ const cudItem_refParamsConverter = async (params)=>{
 
 const cudItem_callback = async (params)=>{
     if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
+        params = common.pruneEmpty(params)
         params = _.assign(params, params.fields)
         await cudItem_refParamsConverter(params)
         await cudItem_params_stringify(params)
@@ -182,8 +183,7 @@ const checkReferenced = (uuid,items)=>{
 
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
-        let item_uuid,result,dynamic_field;
-        params = common.pruneEmpty(params)
+        let item_uuid,result,dynamic_field
         params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar','roles']),params.token = ctx.token,
             params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
         if (params.method === 'POST') {
