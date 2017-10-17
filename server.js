@@ -88,5 +88,9 @@ app.listen(config.get('port'), function () {
 app.on('restart', function() {
     console.log('restart signal received,will restart app in 2 seconds')
     setTimeout(function(){process.exit(0)},2000);
-});
+})
+
+process.on('uncaughtException', (err) => {
+    console.log(`Caught exception: ${err}`)
+})
 
