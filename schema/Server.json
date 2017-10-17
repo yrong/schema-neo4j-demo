@@ -1,7 +1,7 @@
 {
   "id": "Server",
   "allOf": [
-    {"$ref": "Host"},
+    {"$ref": "Asset"},
     {"properties": {
         "operating_system": {
           "type": "string",

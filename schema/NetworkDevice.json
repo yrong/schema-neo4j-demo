@@ -1,7 +1,17 @@
 {
   "id": "NetworkDevice",
   "allOf": [
-    {"$ref": "Host"},
-    {"$ref": "Hardware"}
+    {"$ref": "Hardware"},
+    {
+      "properties": {
+        "ip_address": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "ipv4"
+          }
+        }
+      }
+    }
   ]
 }

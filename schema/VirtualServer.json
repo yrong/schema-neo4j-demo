@@ -3,12 +3,12 @@
   "allOf": [
     {"$ref": "Server"},
     {"properties": {
-      "host_server":{
-        "type": "string",
-        "schema":"PhysicalServer",
-        "relationship":{"name":"HOSTED_ON"}
+        "host_server":{
+          "type": "string",
+          "schema":"PhysicalServer",
+          "relationship":{"name":"HOSTED_ON"}
+        }
       }
-    }
     }
   ],
   "required": ["storage_info"]
