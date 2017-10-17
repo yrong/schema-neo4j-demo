@@ -1,0 +1,19 @@
+{
+  "id": "Host",
+  "allOf": [
+    {
+      "$ref": "Asset"
+    },
+    {
+      "properties": {
+        "ip_address": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "ipv4"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,12 +1,8 @@
 {
-  "id": "AbstractServer",
+  "id": "Server",
   "allOf": [
-    {"$ref": "Asset"},
+    {"$ref": "Host"},
     {"properties": {
-        "ip_address": {
-          "type": "array",
-          "items": {"type": "string","format":"ipv4"}
-        },
         "operating_system": {
           "type": "string",
           "schema":"Software",

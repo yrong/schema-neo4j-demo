@@ -339,7 +339,7 @@ module.exports = {
             if(schema.isSubTypeAllowed(relationship.name)){
                 result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,{category:relationship.name}, params, true)
                 relationship.children = _.map(result,(subtype)=>{
-                    return subtype.category
+                    return {name:subtype.category}
                 })
             }else if(relationship.children){
                 if(relationship.children){

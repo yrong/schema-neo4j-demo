@@ -3,6 +3,7 @@ const fs = require('fs')
 
 const syncSchemas = async ()=>{
     let files = fs.readdirSync("./schema"),schemas = [],schma_instance
+    await schema.clearSchema()
     for(let file of files){
         if(file!='index.js') {
             schma_instance = JSON.parse(fs.readFileSync('./schema/' + file, 'utf8'))

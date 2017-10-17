@@ -1,7 +1,7 @@
 {
   "id": "PhysicalServer",
   "allOf": [
-    {"$ref": "AbstractServer"},
+    {"$ref": "Server"},
     {"$ref": "Hardware"},
     {"properties": {
       "management_ip":{

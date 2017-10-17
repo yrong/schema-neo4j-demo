@@ -11,6 +11,10 @@ const persitSchema = async (schema)=>{
     await SchemaModel.insert(schema)
 }
 
+const clearSchema = async ()=>{
+    await SchemaModel.deleteAll()
+}
+
 const checkSchema = (schema)=>{
     let property,key
     for(key in schema.properties){
@@ -286,7 +290,7 @@ const getAncestorCategory = (category)=>{
 }
 
 
-module.exports = {checkSchema,loadSchema,persitSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,
+module.exports = {checkSchema,loadSchema,persitSchema,clearSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,
     getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,
     getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField,
     getAncestorCategory}

@@ -1,7 +1,7 @@
 {
   "id": "VirtualServer",
   "allOf": [
-    {"$ref": "AbstractServer"},
+    {"$ref": "Server"},
     {"properties": {
       "host_server":{
         "type": "string",
