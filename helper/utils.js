@@ -36,10 +36,12 @@ const recursivelyRemoveInternalProperties =  (val) => {
 }
 
 const referencedObjectMapper = async (val,props)=>{
-    for(let key in props.properties){
-        if(val[key]&&props.properties[key].schema){
-            if(uuid_validator(val[key])){
-                val[key]= await cmdb_cache.get(val[key])||val[key]
+    if(props.properties){
+        for(let key in props.properties){
+            if(val[key]&&props.properties[key].schema){
+                if(uuid_validator(val[key])){
+                    val[key]= await cmdb_cache.get(val[key])||val[key]
+                }
             }
         }
     }
@@ -54,24 +56,26 @@ const referencedMapper = async (val) => {
         val = results
     } else if(val.category){
         properties = schema.getSchemaProperties(val.category)
-        for (let key in val) {
-            if(val[key]&&properties[key]){
-                if(properties[key].schema){
-                    val[key] = await cmdb_cache.get(val[key])
-                }
-                else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
-                    let objs = []
-                    for(let id of val[key]){
-                        objs.push(await cmdb_cache.get(id))
+        if(properties){
+            for (let key in val) {
+                if(val[key]&&properties[key]){
+                    if(properties[key].schema){
+                        val[key] = await cmdb_cache.get(val[key]) || val[key]
                     }
-                    val[key] = objs
-                }
-                else if(properties[key].type==='object'&&_.isString(val[key])){
-                    try{
-                        val[key] = JSON.parse(val[key])
-                    }catch(error){
+                    else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
+                        let objs = []
+                        for(let id of val[key]){
+                            objs.push(await cmdb_cache.get(id)||id)
+                        }
+                        val[key] = objs
                     }
-                    await referencedObjectMapper(val[key],properties[key])
+                    else if(properties[key].type==='object'&&_.isString(val[key])){
+                        try{
+                            val[key] = JSON.parse(val[key])
+                        }catch(error){
+                        }
+                        await referencedObjectMapper(val[key],properties[key])
+                    }
                 }
             }
         }
