@@ -97,11 +97,6 @@
     }
   },
   {
-    "name": "query cabinet by uuid as name",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/cabinet"
-  },
-  {
     "name": "patch physical server with os",
     "method": "PATCH",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
@@ -331,6 +326,20 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}"
   },
   {
+    "name": "search with filter",
+    "method": "POST",
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/search",
+    "body": {
+      "category": "VirtualServer",
+      "filter": {
+        "name": "virtualserver",
+        "ip_address": [
+          "192.168.0.107"
+        ]
+      }
+    }
+  },
+  {
     "name": "add warehouse",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
@@ -479,7 +488,7 @@
   {
     "name": "query ConfigurationItems by subcategory",
     "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer"
+    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Hardware,Software,NetworkDevice"
   },
   {
     "name": "query all it service groups",
@@ -613,7 +622,7 @@
             ""
           ],
           "ip_address": [
-            "192.168.0.108"
+            "192.168.0.105"
           ],
           "technical_support_info": "010-123456",
           "operating_system": "windows xp",
@@ -821,7 +830,7 @@
             "{{service_pop3_id}}"
           ],
           "ip_address": [
-            "192.168.0.108"
+            "192.168.0.107"
           ],
           "technical_support_info": "010-123456",
           "operating_system": "windows xp",
@@ -833,7 +842,7 @@
           "product_date": "2016-10-11",
           "warranty_expiration_date": "2016-11-11",
           "management_ip": [
-            "192.168.0.108"
+            "192.168.0.107"
           ],
           "monitored": true,
           "host_server": "physicalserver"

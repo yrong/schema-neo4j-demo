@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const schema = require('./../schema')
-const uuid_validator = require('uuid-validate')
 const config = require('config')
 const ldap_uuid_type = config.get('ldap_uuid_type')
 const jp = require('jsonpath')
@@ -23,48 +22,44 @@ const generateAddNodeCypher=(params)=>{
     return cmdb_addNode_Cypher_template(labels);
 }
 
-const ID_TYPE_UUID = 'uuid',ID_TYPE_NAME = 'name'
+const generateDelNodeCypher = (params)=> `
+    MATCH (n)
+    WHERE n.uuid = {uuid}
+    DETACH
+    DELETE n
+    return n`
 
-const generateDelNodeCypher = (params)=>{
-    let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
-    return `MATCH (n)
-            WHERE n.${id_type} = {uuid}
-            DETACH
-            DELETE n
-            return n`
-}
 
-const generateDelAllCypher = (params)=>`MATCH (n)
-WHERE NOT n:User and NOT n:Role
-DETACH
-DELETE n`
+const generateDelAllCypher = (params)=>
+    `MATCH (n)
+    WHERE NOT n:User and NOT n:Role
+    DETACH
+    DELETE n`
 
-const generateQueryNodeCypher = (params) => {
-    let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
-    let label = _.isArray(params.category)?_.last(params.category):params.category
-    return `MATCH (n:${label})
-            WHERE n.${id_type} = {uuid}
-            RETURN n`;
-}
+const generateQueryNodeCypher = (params) =>
+    `MATCH (n:${params.category})
+    WHERE n.uuid = {uuid}
+    RETURN n`
 
-const cmdb_findNodes_Cypher_template = (label,condition) => {
-    return `MATCH (n:${label}) 
+
+const cmdb_findNodes_Cypher_template = (label,condition) =>
+    `MATCH (n:${label}) 
     ${condition}
     RETURN collect(n)`
-};
 
-const cmdb_findNodesPaginated_Cypher_template = (label,condition) => `MATCH
-            (n:${label})
-            ${condition}
-            WITH
-            count(n) AS cnt
-            MATCH
-            (n:${label})
-            ${condition}
-            WITH
-            n as n, cnt
-            SKIP {skip} LIMIT {limit}
-            RETURN { count: cnt, results:collect(n) }`
+
+const cmdb_findNodesPaginated_Cypher_template = (label,condition) =>
+    `MATCH (n:${label})
+    ${condition}
+    WITH
+    count(n) AS cnt
+    MATCH
+    (n:${label})
+    ${condition}
+    WITH
+    n as n, cnt
+    SKIP {skip} LIMIT {limit}
+    RETURN { count: cnt, results:collect(n) }`
 
 /**
  * sequence id generator
@@ -94,8 +89,7 @@ const generateQueryItemWithMembersCypher = (label, member_label, reference_field
  * query node and relations
  */
 const generateQueryNodeWithRelationCypher = (params)=> {
-    let id_type = uuid_validator(params.uuid)?ID_TYPE_UUID:ID_TYPE_NAME
-    return `MATCH (n{${id_type}: {uuid}})
+    return `MATCH (n{uuid: {uuid}})
     OPTIONAL MATCH (n)-[]-(c)
     WITH n as self,collect(c) as items
     RETURN self,items`
@@ -116,12 +110,12 @@ const generateQueryItemByCategoryCypher = (params) => {
 }
 
 const generateQuerySubTypeCypher = `MATCH (sw:ConfigurationItemLabel{category:{category}})
-MATCH (subtype)-[:INHERIT]->(sw)
-RETURN subtype`
+    MATCH (subtype)-[:INHERIT]->(sw)
+    RETURN subtype`
 
 const cmdb_addSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:{category}})
-MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
-MERGE (subtype)-[:INHERIT]->(sw)`
+    MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
+    MERGE (subtype)-[:INHERIT]->(sw)`
 
 
 const generateRelationCypher = (params)=>{
@@ -166,13 +160,14 @@ module.exports = {
         return cyphers_todo
     },
     generateQueryNodesCypher:(params)=>{
-        let keyword_condition = `WHERE n.name = {keyword}`
-            ,condition = ''
-            ,cypher,label;
-        if(params.keyword){
-            condition = keyword_condition
+        let condition = '',cypher,label=params.category
+        if(params.filter){
+            _.assign(params,params.filter)
+            for(let key in params.filter){
+                condition = condition + ` AND n.${key}={${key}}`
+            }
+            condition = 'WHERE '  + condition.substr(4)
         }
-        label = _.isArray(params.category)?_.last(params.category):params.category
         if(params.pagination){
             cypher = cmdb_findNodesPaginated_Cypher_template(label,condition)
         }else{

@@ -32,7 +32,6 @@
 				"f5467fd5-2f82-03e7-f833-402ca522bb3b",
 				"a74a4d5c-1873-5782-4135-e772c5588c40",
 				"3d0b842e-2555-5a70-4efa-be729116e8ba",
-				"23db68d9-2942-15e1-ed68-1de8f80e50b0",
 				"1e425eb0-9456-9b4a-e326-4373a3a27639",
 				"701d360b-fe36-1540-538f-cf717c1c2611",
 				"b35ce73e-7878-651e-1ff5-4965077d348b",
@@ -153,7 +152,9 @@
 			"name": "5-advancedSearch",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
-			"order": [],
+			"order": [
+				"6c67e496-3f04-7ff0-d621-438d41c5d526"
+			],
 			"owner": "1388965",
 			"folders_order": [
 				"8ecfbc8b-7857-c985-eca0-81737670098e",
@@ -420,36 +421,6 @@
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
 			"rawModeData": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"bool\":{\"should\":[{\"match\":{\"it_service\":\"{{service_email_id}}\"}},{\"match\":{\"it_service\":\"{{service_pop3_id}}\"}}]}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
-		},
-		{
-			"id": "23db68d9-2942-15e1-ed68-1de8f80e50b0",
-			"headers": "token: {{token}}\n",
-			"headerData": [
-				{
-					"key": "token",
-					"value": "{{token}}",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/cabinet",
-			"queryParams": [],
-			"preRequestScript": "function pausecomp(millis)\n {\n  var date = new Date();\n  var curDate = null;\n  do { curDate = new Date(); }\n  while(curDate-date < millis);\n}\n\n//pausecomp(environment['es-refresh-interval']);\n",
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"query cabinet by keyword found\"] = jsonData.data",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1500557202124,
-			"name": "query cabinet by uuid as name",
-			"description": "",
-			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
-			"responses": [],
-			"folder": "beb9a9b8-aa0e-bc1d-d140-b144016ee16c",
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
 		},
 		{
 			"id": "24af5e61-34ad-690f-1823-31c9fb2d73e7",
@@ -917,6 +888,42 @@
 			"responses": []
 		},
 		{
+			"id": "6c67e496-3f04-7ff0-d621-438d41c5d526",
+			"headers": "token: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/search",
+			"folder": "c16ff76e-c00b-a316-0242-7785d61ce15e",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"find\"] = jsonData.data.length == 1",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1508490059614,
+			"name": "search with filter",
+			"description": "",
+			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
+			"responses": [],
+			"rawModeData": "{\n  \"category\":\"VirtualServer\",\n  \"filter\":{\n  \t\"name\":\"virtualserver\",\n  \t\"ip_address\":[\"192.168.0.107\"]\n  }\n}\n\n\n\n\n\n"
+		},
+		{
 			"folder": "beb9a9b8-aa0e-bc1d-d140-b144016ee16c",
 			"id": "701d360b-fe36-1540-538f-cf717c1c2611",
 			"name": "add warehouse",
@@ -1253,11 +1260,12 @@
 					"enabled": true
 				}
 			],
-			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=PhysicalServer,VirtualServer",
+			"url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Hardware,Software,NetworkDevice",
+			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
 			"queryParams": [
 				{
 					"key": "subcategory",
-					"value": "PhysicalServer,VirtualServer",
+					"value": "Hardware,Software,NetworkDevice",
 					"equals": true,
 					"description": "",
 					"enabled": true
@@ -1272,13 +1280,11 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"1 Configuration Item found\"] = jsonData.data.length >= 1",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1500557447362,
+			"time": 1508248047159,
 			"name": "query ConfigurationItems by subcategory",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
-			"responses": [],
-			"folder": "e1babac4-42a3-9b7a-1f53-7cf89226c0ef",
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+			"responses": []
 		},
 		{
 			"id": "a30be468-e485-cc44-c60f-1f87e2aed26b",
@@ -1631,12 +1637,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"virtual_server_1_id\", jsonData.uuid); \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1507950511202,
+			"time": 1508473501710,
 			"name": "add virtual server 1 with empty fields",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver1\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver1\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.105\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}"
 		},
 		{
 			"id": "ba9969ab-7bc5-de0f-0c6a-bc856c9fa345",
@@ -2157,13 +2163,12 @@
 			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"uuid found\"] = jsonData.uuid;\nif(jsonData.uuid){\n   postman.setEnvironmentVariable(\"virtual_server_id\", jsonData.uuid); \n}\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1506434233451,
+			"time": 1508473462004,
 			"name": "add virtual server",
 			"description": "",
 			"collectionId": "b29da452-6a53-d2ec-e8b0-e57755f9854c",
 			"responses": [],
-			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}",
-			"collection_id": "b29da452-6a53-d2ec-e8b0-e57755f9854c"
+			"rawModeData": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.107\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.107\"],\n      \"monitored\":true,\n      \"host_server\":\"physicalserver\"\n    }\n  }\n}"
 		},
 		{
 			"id": "fcf756da-fdff-ddfc-e11e-2d12d37d2ab2",
