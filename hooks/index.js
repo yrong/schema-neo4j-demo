@@ -58,9 +58,6 @@ const paginationParamsGenerator = function (params) {
         params.per_page = params.per_page || config.get('perPageSize')
         skip = (String)((parseInt(params.page)-1) * parseInt(params.per_page));
         params_pagination = {"skip":skip,"limit":params.per_page}
-        if(!schema.isSearchableType(params.category)){
-            throw new Error(`${params.category} not support pagination`);
-        }
     }
     return _.assign(params,params_pagination);
 }
@@ -181,6 +178,30 @@ const checkReferenced = (uuid,items)=>{
     return referenced
 }
 
+const addNotification = async (params)=>{
+    let notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
+    if(params.method === 'POST'){
+        notification_obj.action = 'CREATE'
+        notification_obj.new = params.fields
+    }
+    else if(params.method === 'PUT' || params.method === 'PATCH'){
+        notification_obj.action = 'UPDATE'
+        notification_obj.new = params.fields
+        notification_obj.old = params.fields_old
+        notification_obj.update = params.change
+    }else if(params.method === 'DELETE'){
+        notification_obj.action = 'DELETE'
+        notification_obj.old = params.fields_old
+    }
+    await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
+}
+
+const needNofify = (params)=>{
+    if(params.category==CATEGORY_ALL||params.batchImport||params[STATUS_ERROR]||params[STATUS_WARNING])
+        return false
+    return true
+}
+
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
         let item_uuid,result,dynamic_field
@@ -234,7 +255,7 @@ module.exports = {
                         return await cudItem_callback(params)
                     }
                 }else{
-                    throw new Error("no record found to delete,uuid or name:" + params.uuid||params.name);
+                    throw new Error("no record found to delete,uuid:" + params.uuid);
                 }
             }else if(params.category === CATEGORY_ALL){
                 params.cypher = cypherBuilder.generateDelAllCypher();
@@ -283,23 +304,14 @@ module.exports = {
         response_wrapped.status = params[STATUS_ERROR]?STATUS_ERROR:params[STATUS_WARNING]?STATUS_WARNING:STATUS_INFO
         response_wrapped.message.content = params[STATUS_ERROR]||params[STATUS_WARNING]||CONTENT_OPERATION_SUCESS
         response_wrapped.message.displayAs = params[STATUS_ERROR]?DISPLAY_AS_MODAL:params[STATUS_WARNING]?DISPLAY_AS_CONSOLE:DISPLAY_AS_TOAST
-        if(!params[STATUS_ERROR]){
-            notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
-            if(params.method === 'POST'){
-                notification_obj.action = 'CREATE'
-                notification_obj.new = params.fields
+        if(needNofify(params)){
+            try{
+                await addNotification(params)
+            }catch(err){
+                response_wrapped.status = STATUS_WARNING
+                response_wrapped.message.content = 'add notification failed:' + String(error)
+                response_wrapped.message.displayAs = DISPLAY_AS_CONSOLE
             }
-            else if(params.method === 'PUT' || params.method === 'PATCH'){
-                notification_obj.action = 'UPDATE'
-                notification_obj.new = params.fields
-                notification_obj.old = params.fields_old
-                notification_obj.update = params.change
-            }else if(params.method === 'DELETE'){
-                notification_obj.action = 'DELETE'
-                notification_obj.old = params.fields_old
-            }
-            if(params.category!==CATEGORY_ALL)
-                await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
         }
         return　response_wrapped;
     },

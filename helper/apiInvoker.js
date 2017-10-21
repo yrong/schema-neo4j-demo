@@ -2,7 +2,7 @@ const config = require('config')
 const _ = require('lodash')
 const schema = require('../schema')
 var wrapRequest = (category,item) => {
-    return {data:{category:category,fields:item}}
+    return {data:{category:category,fields:item},batchImport:true}
 }
 var base_url=`http://localhost:${config.get('port')}/api`
 const cypherInvoker = require('./cypherInvoker')

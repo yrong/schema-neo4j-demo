@@ -326,20 +326,6 @@
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}"
   },
   {
-    "name": "search with filter",
-    "method": "POST",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/search",
-    "body": {
-      "category": "VirtualServer",
-      "filter": {
-        "name": "virtualserver",
-        "ip_address": [
-          "192.168.0.107"
-        ]
-      }
-    }
-  },
-  {
     "name": "add warehouse",
     "method": "POST",
     "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
@@ -738,11 +724,6 @@
       "category": "ConfigurationItem",
       "keyword": "test"
     }
-  },
-  {
-    "name": "query it service groups by keyword",
-    "method": "GET",
-    "url": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group?keyword=Messaging"
   },
   {
     "name": "query properties of router",

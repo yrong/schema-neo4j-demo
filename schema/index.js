@@ -214,10 +214,6 @@ const checkAdditionalProperty = function(params){
     }
 }
 
-const isSearchableType  = (category) => {
-    return typeRoutes[category].searchable?true:false
-}
-
 const getSchemaHierarchy = (category)=>{
     let result = {name:category}
     if(typeInheritanceRelationship[category].children){
@@ -291,6 +287,6 @@ const getAncestorCategory = (category)=>{
 
 
 module.exports = {checkSchema,loadSchema,persitSchema,clearSchema,loadSchemas,getSchemaProperties,getSchemaObjectProperties,
-    getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,isSearchableType,getSchemaHierarchy,
+    getSchemaRefProperties,getSortedTypes,checkObject,getParentCategories,getSchemaHierarchy,
     getApiRoutes,isTypeCrossed,getRoute,getMemberType,isSubTypeAllowed,getDynamicSeqField,
     getAncestorCategory}

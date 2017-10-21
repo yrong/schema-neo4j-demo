@@ -94,8 +94,7 @@ var propertiesCombine = (results)=>{
 }
 
 const resultMapper = async (result, params) => {
-    if(schema.isSearchableType(params.category))
-        result = await referencedMapper(result)
+    result = await referencedMapper(result)
     if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
     result = removeInternalProperties(result)

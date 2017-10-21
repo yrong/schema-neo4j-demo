@@ -29,7 +29,7 @@ for(let option of _.values(config.get('upload'))){
 /*staticFile*/
 middlewares.push(convert(staticFile(path.join(__dirname, 'public'))))
 /*check token*/
-const check_token = require('koa-token-checker')
+const check_token = require('scirichon-token-checker')
 middlewares.push(check_token(config.get('auth')))
 /*check role*/
 const acl_checker = require('scirichon-acl-checker')

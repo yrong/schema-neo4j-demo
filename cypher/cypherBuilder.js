@@ -74,10 +74,8 @@ const generateSequence=(name)=>
  * query item with members
  */
 const generateQueryItemWithMembersCypher = (label, member_label, reference_field, params) => {
-    let condition = params.keyword?`WHERE n.name = {keyword}`:''
     return `MATCH
         (n:${label})
-        ${condition}
     OPTIONAL MATCH
         (m:${member_label})
     WHERE m.${reference_field}=n.uuid
@@ -161,13 +159,6 @@ module.exports = {
     },
     generateQueryNodesCypher:(params)=>{
         let condition = '',cypher,label=params.category
-        if(params.filter){
-            _.assign(params,params.filter)
-            for(let key in params.filter){
-                condition = condition + ` AND n.${key}={${key}}`
-            }
-            condition = 'WHERE '  + condition.substr(4)
-        }
         if(params.pagination){
             cypher = cmdb_findNodesPaginated_Cypher_template(label,condition)
         }else{
