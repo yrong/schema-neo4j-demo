@@ -6,5 +6,5 @@ CREATE CONSTRAINT ON (n:ConfigurationItem) ASSERT n.name IS UNIQUE;
 CREATE CONSTRAINT ON (n:Shelf) ASSERT n.name IS UNIQUE;
 CREATE CONSTRAINT ON (n:ServerRoom) ASSERT n.name IS UNIQUE;
 CREATE CONSTRAINT ON (n:WareHouse) ASSERT n.name IS UNIQUE;
-CREATE CONSTRAINT ON (n:ConfigurationItem) ASSERT n.ip_address IS UNIQUE;
+DROP CONSTRAINT ON (n:ConfigurationItem) ASSERT n.ip_address IS UNIQUE;
 commit
