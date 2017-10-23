@@ -1,11 +1,11 @@
 const _ = require('lodash')
 const uuid = require('uuid')
-const schema = require('../schema')
+const schema = require('redis-json-schema')
 const config = require('config')
 const cypherBuilder = require('../cypher/cypherBuilder')
 const LOGGER = require('log4js_wrapper')
 const logger = LOGGER.getLogger()
-const cmdb_cache = require('scirichon-cache')
+const scirichon_cache = require('scirichon-cache')
 const utils = require('../helper/utils')
 const cypherInvoker = require('../helper/cypherInvoker')
 const ref_converter = require('../helper/converter')
@@ -15,10 +15,12 @@ const notifier_api_config = config.get('notifier')
 const qr = require('qr-image')
 const fs = require('fs')
 const path = require('path')
+const ScirichonError = common.ScirichonError
+const ScirichonWarning = common.ScirichonWarning
 
 const CATEGORY_ALL = 'All'
 const getCategoryFromUrl = function (url) {
-    let category,key,val,routesDef = schema.getApiRoutes()
+    let category,key,val,routesDef = schema.getApiRoutesAll()
     for (key in routesDef){
         val = routesDef[key]
         if(url.includes(val.route)){
@@ -29,7 +31,7 @@ const getCategoryFromUrl = function (url) {
     if(url.includes('/api/items'))
         category = CATEGORY_ALL
     if(!category)
-        throw new Error('can not find category from url:'+url)
+        throw new ScirichonError('can not find category from url:'+url)
     return category;
 }
 
@@ -46,10 +48,6 @@ const cudCypherGenerator = (params)=>{
     logCypher(params)
     return params;
 }
-
-const STATUS_OK = 'ok',STATUS_WARNING = 'warning',STATUS_INFO = 'info',STATUS_ERROR = 'error',
-    CONTENT_QUERY_SUCESS='query success',CONTENT_NO_RECORD='no record found',CONTENT_OPERATION_SUCESS='operation success',
-    CONTENT_NODE_USED = 'node already used', DISPLAY_AS_TOAST='toast',DISPLAY_AS_MODAL='modal',DISPLAY_AS_CONSOLE='console';
 
 const paginationParamsGenerator = function (params) {
     var params_pagination = {"skip":0,"limit":config.get('perPageSize')},skip;
@@ -86,16 +84,11 @@ const queryParamsCypherGenerator = function (params) {
 const cudItem_params_stringify = async (params) => {
     let objectFields=schema.getSchemaObjectProperties(params.category)
     for (let key in params.fields){
-        if(_.isArray(params.fields[key])){
-            if(_.isObject(params.fields[key][0])){
-                throw new Error('array field can only be of primitive type,invalid field:' + key)
-            }
-        }
-        else if(_.isObject(params.fields[key])){
+        if(!_.isArray(params.fields[key])&&_.isObject(params.fields[key])){
             if(_.includes(objectFields,key)){
                 params.fields[key] = JSON.stringify(params.fields[key])
             }else{
-                throw new Error('object field not defined in schema,invalid field:' + key)
+                throw new ScirichonError('object field not defined in schema,invalid field:' + key)
             }
         }
     }
@@ -138,16 +131,6 @@ const cudItem_callback = async (params)=>{
         await cudItem_params_stringify(params)
     }
     return cudCypherGenerator(params)
-}
-
-const constructResponse = (status,content,displayAs)=>{
-     return {
-        "status":status,
-        "message":{
-            "content":content,
-            "displayAs":displayAs
-        }
-    }
 }
 
 const checkReferenced = (uuid,items)=>{
@@ -197,7 +180,7 @@ const addNotification = async (params)=>{
 }
 
 const needNofify = (params)=>{
-    if(params.category==CATEGORY_ALL||params.batchImport||params[STATUS_ERROR]||params[STATUS_WARNING])
+    if(params.category==CATEGORY_ALL||params.batchImport)
         return false
     return true
 }
@@ -230,12 +213,9 @@ module.exports = {
                     params.change = params.data.fields
                     return await cudItem_callback(params, true)
                 } else {
-                    throw new Error("no record found to patch,uuid or name:" + params.uuid||params.name);
+                    throw new ScirichonError("no record found")
                 }
-            }else{
-                throw new Error('missing uuid when modify')
             }
-
         } else if (params.method === 'DELETE') {
             if(params.uuid){
                 result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationCypher(params), params, true)
@@ -245,9 +225,7 @@ module.exports = {
                     params.fields_old = _.omit(result[0].self,'id')
                     if(result[0].items&&result[0].items.length){
                         if(checkReferenced(params.uuid,result[0].items)){
-                            params[STATUS_ERROR] = CONTENT_NODE_USED
-                            params.cypher = cypherBuilder.generateDummyOperationCypher(params)
-                            return params
+                            throw new ScirichonError("node already used")
                         }else{
                             return await cudItem_callback(params)
                         }
@@ -255,25 +233,19 @@ module.exports = {
                         return await cudItem_callback(params)
                     }
                 }else{
-                    throw new Error("no record found to delete,uuid:" + params.uuid);
+                    throw new ScirichonError("no record found")
                 }
             }else if(params.category === CATEGORY_ALL){
                 params.cypher = cypherBuilder.generateDelAllCypher();
                 return params
-            }else{
-                throw new Error('missing uuid when delete')
             }
         }
     },
     cudItem_postProcess:async function (result,params,ctx) {
-        let response_wrapped = constructResponse(STATUS_INFO,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),notification_obj
         if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
-            if(!params.uuid||!params.fields)
-                throw new Error('added obj without uuid')
-            await cmdb_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
+            await scirichon_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
             if(params.name)
-                await cmdb_cache.set(params.category+'_'+params.name,{name:params.fields.name,uuid:params.uuid,category:params.category})
-            response_wrapped.uuid = params.uuid
+                await scirichon_cache.set(params.category+'_'+params.name,{name:params.fields.name,uuid:params.uuid,category:params.category})
             let properties=schema.getSchemaProperties(params.category)
             for(let key in properties){
                 if(params.fields[key]&&properties[key].generateQRImage){
@@ -286,34 +258,26 @@ module.exports = {
         }
         if(params.method==='DELETE'){
             if(params.uuid){
-                response_wrapped.uuid = params.uuid
                 if(result&&(result.length==1||result.deleted==1)){
-                    if(!params[STATUS_ERROR]){
-                        await cmdb_cache.del(params.uuid)
-                        if(params.name&&params.category){
-                            await cmdb_cache.del(params.category+'_'+params.name)
-                        }
+                    await scirichon_cache.del(params.uuid)
+                    if(params.name&&params.category){
+                        await scirichon_cache.del(params.category+'_'+params.name)
                     }
                 }else{
-                    params[STATUS_WARNING] = params[STATUS_WARNING]||CONTENT_NO_RECORD
+                    throw new ScirichonWarning('no record found')
                 }
             }
             if(params.category===CATEGORY_ALL)
-                await cmdb_cache.flushAll()
+                await scirichon_cache.flushAll()
         }
-        response_wrapped.status = params[STATUS_ERROR]?STATUS_ERROR:params[STATUS_WARNING]?STATUS_WARNING:STATUS_INFO
-        response_wrapped.message.content = params[STATUS_ERROR]||params[STATUS_WARNING]||CONTENT_OPERATION_SUCESS
-        response_wrapped.message.displayAs = params[STATUS_ERROR]?DISPLAY_AS_MODAL:params[STATUS_WARNING]?DISPLAY_AS_CONSOLE:DISPLAY_AS_TOAST
         if(needNofify(params)){
             try{
                 await addNotification(params)
             }catch(err){
-                response_wrapped.status = STATUS_WARNING
-                response_wrapped.message.content = 'add notification failed:' + String(error)
-                response_wrapped.message.displayAs = DISPLAY_AS_CONSOLE
+                throw new ScirichonWarning('add notification failed,' + String(err))
             }
         }
-        return　response_wrapped;
+        return {uuid:params.uuid}
     },
     queryItems_preProcess:function (params,ctx) {
         params.method = ctx.method,params.url = ctx.url,params.category = getCategoryFromUrl(ctx.url)
@@ -328,24 +292,15 @@ module.exports = {
         return params
     },
     queryItems_postProcess:async function (result,params,ctx) {
-        let response_wrapped = constructResponse(STATUS_OK,CONTENT_QUERY_SUCESS,DISPLAY_AS_TOAST)
-        result = _.isArray(result)&&result.length>0?result[0]:result;
-        if(!result||result.total==0||result.count==0||result.length==0){
-            response_wrapped.message.content = CONTENT_NO_RECORD;
-            return response_wrapped;
+        result = _.isArray(result)&&result.length>0?result[0]:result
+        if(result.count>0&&_.isArray(result.results)){
+            result.results = await utils.resultMapper(result.results,params);
+        }else{
+            result = await utils.resultMapper(result,params);
         }
-        if(!params.origional){
-            if(result.count>0&&_.isArray(result.results)){
-                result.results = await utils.resultMapper(result.results,params);
-            }else{
-                result = await utils.resultMapper(result,params);
-            }
-        }
-        response_wrapped.data = result;
-        return response_wrapped;
+        return result
     },
     getSchemaHierarchy:async function (params,ctx) {
-        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),result
         let cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category)
         let addSubTypeRelationship = async (relationship)=>{
             if(schema.isSubTypeAllowed(relationship.name)){
@@ -362,42 +317,34 @@ module.exports = {
             }
         }
         await addSubTypeRelationship(cmdbConfigurationItemInheritanceRelationship)
-        response_wrapped.data = cmdbConfigurationItemInheritanceRelationship;
-        return response_wrapped
+        return cmdbConfigurationItemInheritanceRelationship
     },
     configurationItemCategoryProcess:function(params,ctx) {
         return new Promise((resolve,reject)=>{
-            let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
             cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,params,(result, params)=>{
-                response_wrapped.data = {
-                    parents:schema.getParentCategories(params.category),
+                resolve({
+                    parents:schema.getParentSchemas(params.category),
                     references:_.uniq(_.map(schema.getSchemaRefProperties(params.category),(attr)=>attr.schema)),
                     subtypes:_.map(result,(subtype)=>subtype.category)
-                }
-                resolve(response_wrapped)
+                })
             })
         })
     },
     getCategoryFromUrl:getCategoryFromUrl,
     getSchemaPropertiesProcess:function(params,ctx) {
-        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST)
-        response_wrapped.data = schema.getSchemaProperties(params.category)
-        return response_wrapped
+        return schema.getSchemaProperties(params.category)
     },
-    STATUS_WARNING,
     loadSchemas:async function(params, ctx) {
-        let response_wrapped = constructResponse(STATUS_OK,CONTENT_OPERATION_SUCESS,DISPLAY_AS_TOAST),schemas = params.data,restart=false
+        let schemas = params.data,restart=false
         for(let val of schemas){
             await schema.loadSchema(val,true,true)
             if(val.route)
                 restart = true
         }
         if(restart){
-            response_wrapped.message.additional = 'restart process required'
             ctx.app.emit('restart')
         }
-        response_wrapped.data = {}
-        return response_wrapped
+        return {}
     },
     CATEGORY_ALL
 }

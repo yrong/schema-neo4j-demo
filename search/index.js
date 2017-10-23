@@ -1,25 +1,19 @@
-var config = require('config');
-
-var _ = require('lodash');
-
-var esConfig = config.get('elasticsearch');
-
-var hook = require('../hooks');
-
-var elasticsearch = require('elasticsearch');
-
-var es_client = new elasticsearch.Client({
+const _ = require('lodash')
+const config = require('config')
+const esConfig = config.get('elasticsearch')
+const elasticsearch = require('elasticsearch')
+const es_client = new elasticsearch.Client({
     host: esConfig.host + ":" + esConfig.port,
     requestTimeout: esConfig.requestTimeout
-});
-
-var utils = require('../helper/utils')
-var hidden_fields = utils.globalHiddenFields
-
-var schema = require('../schema')
-
+})
+const hook = require('../hooks')
+const utils = require('../helper/utils')
+const hidden_fields = utils.globalHiddenFields
+const schema = require('redis-json-schema')
 const LOGGER = require('log4js_wrapper')
 const logger = LOGGER.getLogger()
+const common = require('scirichon-common')
+const ScirichonWarning = common.ScirichonWarning
 
 
 var pre_process = function(params) {
@@ -40,8 +34,8 @@ var addOpsCommand = (command)=>{
 
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
-    let routes = schema.getApiRoutes()
-    let typeName = schema.getAncestorCategory(params.category)||hook.getCategoryFromUrl(ctx.url)
+    let routes = schema.getApiRoutesAll()
+    let typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx.url)
     if(routes[typeName].searchable){
         let indexName = routes[typeName].searchable.index
         let index_obj = {
@@ -56,15 +50,14 @@ var addItem = function(result, params, ctx) {
             if(params.fields)
                 return hook.cudItem_postProcess(response, params, ctx);
         }, function (error) {
-            params[hook.STATUS_WARNING] = 'ElasticSearch:' + error.response||String(error)
-            return hook.cudItem_postProcess(result, params, ctx);
+            throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
         });
     }
 }
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
-    let routes = schema.getApiRoutes(),typeName = schema.getAncestorCategory(params.category)||hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
+    let routes = schema.getApiRoutesAll(),typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
     let index_obj = {
         index: indexName,
         type: typeName,
@@ -76,14 +69,13 @@ var patchItem = function(result, params, ctx) {
     return es_client.update(index_obj).then(function (response) {
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        params[hook.STATUS_WARNING] = 'ElasticSearch:' + error.response||String(error)
-        return hook.cudItem_postProcess(result, params, ctx);
+        throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
     });
 }
 
 var deleteItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let routes = schema.getApiRoutes(),typeName = hook.getCategoryFromUrl(ctx.url),indexName
+    let routes = schema.getApiRoutesAll(),typeName = hook.getCategoryFromUrl(ctx.url),indexName
     if(typeName === hook.CATEGORY_ALL)
         indexName = '*'
     else
@@ -98,11 +90,10 @@ var deleteItem = function(result, params, ctx) {
     logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
     return es_client.deleteByQuery(delObj).then(function (response) {
         if(response&&response.deleted==0)
-            params[hook.STATUS_WARNING] = 'ElasticSearch:no record found to delete'
+            throw new ScirichonWarning('ElasticSearch:no record found to delete')
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
-        params[hook.STATUS_WARNING] = 'ElasticSearch:' + error.response||String(error)
-        return hook.cudItem_postProcess(result, params, ctx);
+        throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
     });
 }
 
@@ -119,7 +110,7 @@ var searchItem = function(params, ctx) {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-    let routes = schema.getApiRoutes()
+    let routes = schema.getApiRoutesAll()
     let typeName = params.category = params.category || hook.getCategoryFromUrl(ctx.url)
     let indexName = routes[typeName].searchable.index
     params.search = true
