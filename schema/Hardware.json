@@ -23,5 +23,5 @@
       }
     }
   ],
-  "required": ["model", "product_date"]
+  "required": ["product_date"]
 }

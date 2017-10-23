@@ -27,8 +27,7 @@
             },
             "shelf":{"type":"string","schema":"Shelf","relationship":{"name":"LOCATED","parentObjectAsRelProperty":true}},
             "label":{"type":"string"}
-          },
-          "required": ["status"]
+          }
         },
         "geo_location": {
           "type": "object",

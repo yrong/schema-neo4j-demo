@@ -127,7 +127,8 @@ const cudItem_callback = async (params)=>{
     if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
         params = common.pruneEmpty(params)
         params = _.assign(params, params.fields)
-        await cudItem_refParamsConverter(params)
+        if(!params.batchImport)
+            await cudItem_refParamsConverter(params)
         await cudItem_params_stringify(params)
     }
     return cudCypherGenerator(params)
