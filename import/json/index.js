@@ -3,7 +3,7 @@ const _ = require('lodash')
 const path = require('path')
 const fs = require('fs')
 const apiInvoker = require('../../helper/apiInvoker')
-const schema = require('../../schema')
+const schema = require('redis-json-schema')
 const search = require('../../search')
 const common = require('scirichon-common')
 
@@ -16,7 +16,7 @@ const sortItemsDependentFirst = (items)=>{
         for(let refProperty of refProperties){
             propertyVal = item[refProperty['attr']]
             if(propertyVal){
-                if(schema.isTypeCrossed(refProperty['schema'],item.category)){
+                if(schema.isSchemaCrossed(refProperty['schema'],item.category)){
                     selfReference = true
                     break
                 }
@@ -50,7 +50,7 @@ const importItems = async ()=>{
     if(!date_dir)
         throw new Error(`env 'IMPORT_FOLDER' not defined`)
     let importStrategy = process.env.IMPORT_STRATEGY||'api'
-    let categories = [...schema.getSortedTypes()]
+    let categories = [...schema.getSortedSchemas()]
     let result = {}
     for(let category of categories){
         let filePath = path.join(date_dir,category + '.json')

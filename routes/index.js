@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const config = require('config');
 const hook = require('../hooks');
-const schema = require('../schema');
+const schema = require('redis-json-schema');
 const search = require('../search');
 const es_config = config.get('elasticsearch')
 
@@ -17,7 +17,7 @@ const schema_checker = (params)=>{return schema.checkObject(params)}
 const none_checker = (params)=>true
 
 module.exports = (app)=>{
-    let routesDef = schema.getApiRoutes(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
+    let routesDef = schema.getApiRoutesAll(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
     let preProcess,postProcess,http_method,route,checker,methods,procedure
     console.log('init routes from schema:\n' + JSON.stringify(routesDef,null,'\t'))
     _.each(routesDef,(val)=>{
@@ -107,8 +107,7 @@ module.exports = (app)=>{
 
     /*License*/
     app.router.get('/api/license', function (ctx, next) {
-        ctx.body = ctx.state.license;
-        return next();
+        ctx.body = ctx.state.license
     })
 
     app.defineAPI({

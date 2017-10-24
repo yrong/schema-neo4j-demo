@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const hook = require('./hook')
-const schema = require('../../schema/index')
+const schema = require('redis-json-schema')
 
 const configurationItemMapping = {
     ip_address: {col: 1, type: 'array', required: true},

@@ -1,9 +1,7 @@
 const _ = require('lodash');
-const cmdb_cache = require('scirichon-cache')
-const schema = require('../schema')
-const uuid_validator = require('uuid-validate')
+const schema = require('redis-json-schema')
 
-const globalHiddenFields = ['fields', 'cyphers', 'method', 'data', 'token', 'fields_old', 'change', 'url', 'id', '_id', '_index', '_type','user']
+const globalHiddenFields = ['fields', 'cyphers', 'cypher','method', 'data', 'token', 'fields_old', 'change', 'url', '_id', '_index', '_type','user']
     , globalHiddenFieldsInAllLevel = ['passwd', 'id']
 
 const removeInternalProperties = (val) => {
@@ -35,54 +33,6 @@ const recursivelyRemoveInternalProperties =  (val) => {
     return val;
 }
 
-const referencedObjectMapper = async (val,props)=>{
-    if(props.properties){
-        for(let key in props.properties){
-            if(val[key]&&props.properties[key].schema){
-                if(uuid_validator(val[key])){
-                    val[key]= await cmdb_cache.get(val[key])||val[key]
-                }
-            }
-        }
-    }
-}
-
-const referencedMapper = async (val) => {
-    let properties,results = []
-    if (_.isArray(val)) {
-        for(let single of val){
-            results.push(await referencedMapper(single))
-        }
-        val = results
-    } else if(val.category){
-        properties = schema.getSchemaProperties(val.category)
-        if(properties){
-            for (let key in val) {
-                if(val[key]&&properties[key]){
-                    if(properties[key].schema){
-                        val[key] = await cmdb_cache.get(val[key]) || val[key]
-                    }
-                    else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
-                        let objs = []
-                        for(let id of val[key]){
-                            objs.push(await cmdb_cache.get(id)||id)
-                        }
-                        val[key] = objs
-                    }
-                    else if(properties[key].type==='object'&&_.isString(val[key])){
-                        try{
-                            val[key] = JSON.parse(val[key])
-                        }catch(error){
-                        }
-                        await referencedObjectMapper(val[key],properties[key])
-                    }
-                }
-            }
-        }
-    }
-    return val;
-}
-
 var propertiesCombine = (results)=>{
     return _.map(results,(result)=>{
         if(result.self&&result.members){
@@ -94,7 +44,6 @@ var propertiesCombine = (results)=>{
 }
 
 const resultMapper = async (result, params) => {
-    result = await referencedMapper(result)
     if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
     result = removeInternalProperties(result)

@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const schema = require('./../schema')
+const schema = require('redis-json-schema')
 const config = require('config')
 const ldap_uuid_type = config.get('ldap_uuid_type')
 const jp = require('jsonpath')
@@ -15,7 +15,7 @@ const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uui
                                     ON MATCH SET n = {fields}`
 
 const generateAddNodeCypher=(params)=>{
-    let labels = schema.getParentCategories(params.category)
+    let labels = schema.getParentSchemas(params.category)
     if(params.fields.subtype)
         labels.push(params.fields.subtype)
     labels = _.isArray(labels)?labels.join(":"):params.category;

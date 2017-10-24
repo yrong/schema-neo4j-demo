@@ -5,7 +5,7 @@ const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
 const cypherInvoker = require('../../helper/cypherInvoker')
-const schema = require('../../schema/index')
+const schema = require('redis-json-schema')
 
 const exportItems = async ()=>{
     await schema.loadSchemas()
@@ -14,7 +14,7 @@ const exportItems = async ()=>{
         categories = categories.split(',')
     }
     else{
-        categories = _.keys(schema.getApiRoutes())
+        categories = _.keys(schema.getApiRoutesAll())
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let storeDir = config.get('export.storeDir')

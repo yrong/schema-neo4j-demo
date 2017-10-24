@@ -1,6 +1,6 @@
 const config = require('config')
 const _ = require('lodash')
-const schema = require('../schema')
+const schema = require('redis-json-schema')
 var wrapRequest = (category,item) => {
     return {data:{category:category,fields:item},batchImport:true}
 }
@@ -11,7 +11,7 @@ const net = require('net')
 
 module.exports = {
     addItem: async(category,item,update) =>{
-        let route = schema.getRoute(category),method='POST',uri
+        let route = schema.getRouteFromParentSchemas(category),method='POST',uri
         if(!route)
             throw new Error(`${category} api route not found`)
         uri = base_url  + route
