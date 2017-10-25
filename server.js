@@ -9,6 +9,8 @@ const socket_route = require('./routes/ws')
 const initAppRoutes = require("./routes")
 const responseWrapper = require('scirichon-response-wrapper')
 const LOGGER = require('log4js_wrapper')
+const check_token = require('scirichon-token-checker')
+const acl_checker = require('scirichon-acl-checker')
 
 LOGGER.initialize(config.get('logger'))
 const logger = LOGGER.getLogger()
@@ -21,6 +23,8 @@ const loadMiddleWares = ()=>{
     middlewares.push(getLicense)
     if(config.get('wrapResponse'))
         middlewares.push(responseWrapper())
+    middlewares.push(check_token(config.get('auth')))
+    middlewares.push(acl_checker.middleware)
     middlewares.push(convert(staticFile(path.join(__dirname, 'public'))))
     return middlewares
 }

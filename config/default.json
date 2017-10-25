@@ -3,7 +3,8 @@
   "port":3001,
   "additionalPropertyCheck":false,
   "perPageSize":2000,
-  "wrapResponse": false,
+  "wrapResponse": true,
+  "retrieveObjectFromId":true,
   "logger":{
     "appenders": [
       {
@@ -44,5 +45,8 @@
   },
   "notifier":{
     "base_url":"http://localhost:3004/api/notifications"
+  },
+  "auth":{
+    "check_token_url":"http://localhost:3002/auth/check"
   }
 }
