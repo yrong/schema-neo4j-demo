@@ -1,7 +1,6 @@
 const _ = require('lodash')
 const schema = require('redis-json-schema')
 const config = require('config')
-const ldap_uuid_type = config.get('ldap_uuid_type')
 const jp = require('jsonpath')
 
 
@@ -93,11 +92,6 @@ const generateQueryNodeWithRelationCypher = (params)=> {
     RETURN self,items`
 }
 
-/**
- * dummy operation
- */
-const generateDummyOperationCypher = (params) => `WITH 1 as result return result`
-
 const generateQueryItemByCategoryCypher = (params) => {
     let condition = _.map(params.subcategory, (subcategory) => {
         return `n:${subcategory}`
@@ -171,7 +165,6 @@ module.exports = {
     generateSequence,
     generateDelAllCypher,
     generateQueryNodeWithRelationCypher,
-    generateDummyOperationCypher,
     generateQueryItemByCategoryCypher,
     generateQuerySubTypeCypher,
     generateQueryItemWithMembersCypher

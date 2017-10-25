@@ -3,6 +3,7 @@
   "port":3001,
   "additionalPropertyCheck":false,
   "perPageSize":2000,
+  "wrapResponse": false,
   "logger":{
     "appenders": [
       {
@@ -16,7 +17,7 @@
       }
     ],
     "replaceConsole": true,
-    "defaultLevel":"INFO"
+    "defaultLevel":"DEBUG"
   },
   "neo4j": {
     "host": "localhost",
@@ -41,33 +42,7 @@
   "import":{
     "storeDir": "./public/upload/ConfigurationItem"
   },
-  "upload": {
-    "ProcessFlow": {
-      "url": "/api/upload/processFlows/attachment",
-      "storeDir": "ProcessFlowAttachment",
-      "provider": "local",
-      "folder": "public/upload",
-      "mimetypes": [
-        "text/plain"
-      ],
-      "urlPath": "upload"
-    },
-    "ConfigurationItem": {
-      "url": "/api/upload/configurationItem/xslx",
-      "storeDir": "ConfigurationItem",
-      "provider": "local",
-      "folder": "public/upload",
-      "mimetypes": [
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      ],
-      "urlPath": "upload"
-    }
-  },
-  "auth":{
-    "check_token_url":"http://localhost:3002/auth/check"
-  },
   "notifier":{
     "base_url":"http://localhost:3004/api/notifications"
-  },
-  "ldap_uuid_type":"dn"
+  }
 }

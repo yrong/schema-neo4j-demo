@@ -33,7 +33,7 @@ const recursivelyRemoveInternalProperties =  (val) => {
     return val;
 }
 
-var propertiesCombine = (results)=>{
+const propertiesCombine = (results)=>{
     return _.map(results,(result)=>{
         if(result.self&&result.members){
             result = _.merge(result.self,{members:result.members})
@@ -43,10 +43,33 @@ var propertiesCombine = (results)=>{
     })
 }
 
+const objectMapper = (val) => {
+    let properties,results = []
+    if (_.isArray(val)) {
+        for(let single of val){
+            results.push(objectMapper(single))
+        }
+        val = results
+    } else if(val.category){
+        properties = schema.getSchemaProperties(val.category)
+        if(properties){
+            for (let key in val) {
+                if(val[key]&&properties[key]){
+                    if(properties[key].type==='object'&&_.isString(val[key])){
+                        val[key] = JSON.parse(val[key])
+                    }
+                }
+            }
+        }
+    }
+    return val;
+}
+
 const resultMapper = async (result, params) => {
     if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
     result = removeInternalProperties(result)
+    result = objectMapper(result)
     return result
 }
 

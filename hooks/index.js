@@ -18,35 +18,24 @@ const path = require('path')
 const ScirichonError = common.ScirichonError
 const ScirichonWarning = common.ScirichonWarning
 
-const CATEGORY_ALL = 'All'
-const getCategoryFromUrl = function (url) {
+const getCategoryFromUrl = function (ctx) {
     let category,key,val,routesDef = schema.getApiRoutesAll()
     for (key in routesDef){
         val = routesDef[key]
-        if(url.includes(val.route)){
+        if(ctx.url.includes(val.route)){
             category = key
             break
         }
     }
-    if(url.includes('/api/items'))
-        category = CATEGORY_ALL
-    if(!category)
+    if(ctx.url.includes('/api/items')&&ctx.method==='DELETE')
+        ctx.deleteAll = true
+    if(!ctx.deleteAll&&!category)
         throw new ScirichonError('can not find category from url:'+url)
     return category;
 }
 
 const logCypher = (params)=>{
     logger.debug(`cypher to executed:${JSON.stringify({cypher:params.cyphers||params.cypher,params:_.omit(params,['cypher','cyphers','data','fields_old','method','url','token'])},null,'\t')}`)
-}
-
-const cudCypherGenerator = (params)=>{
-    if(params.method === 'POST' || params.method === 'PUT' || params.method === 'PATCH'){
-        params.cyphers = cypherBuilder.generateAddOrUpdateCyphers(params);
-    }
-    else if(params.method === 'DELETE')
-        params.cypher = cypherBuilder.generateDelNodeCypher(params)
-    logCypher(params)
-    return params;
 }
 
 const paginationParamsGenerator = function (params) {
@@ -123,15 +112,19 @@ const cudItem_refParamsConverter = async (params)=>{
     return params
 }
 
-const cudItem_callback = async (params)=>{
-    if(params.method === 'POST'||params.method === 'PUT' || params.method === 'PATCH'){
+const cudItem_callback = async (params,ctx)=>{
+    if(ctx.method === 'POST'||ctx.method === 'PUT' || ctx.method === 'PATCH'){
         params = common.pruneEmpty(params)
         params = _.assign(params, params.fields)
         if(!params.batchImport)
             await cudItem_refParamsConverter(params)
         await cudItem_params_stringify(params)
+        params.cyphers = cypherBuilder.generateAddOrUpdateCyphers(params);
     }
-    return cudCypherGenerator(params)
+    else if(ctx.method === 'DELETE')
+        params.cypher = cypherBuilder.generateDelNodeCypher(params)
+    logCypher(params)
+    return params
 }
 
 const checkReferenced = (uuid,items)=>{
@@ -162,26 +155,29 @@ const checkReferenced = (uuid,items)=>{
     return referenced
 }
 
-const addNotification = async (params)=>{
-    let notification_obj = {type:params.category,user:params.user,token:params.token,source:'cmdb'}
-    if(params.method === 'POST'){
+const addNotification = async (params,ctx)=>{
+    let notification_obj = {type:params.category,user:JSON.parse(ctx.cookies.get(common.TokenUserName)),source:'cmdb'}
+    if(ctx.method === 'POST'){
         notification_obj.action = 'CREATE'
         notification_obj.new = params.fields
     }
-    else if(params.method === 'PUT' || params.method === 'PATCH'){
+    else if(ctx.method === 'PUT' || ctx.method === 'PATCH'){
         notification_obj.action = 'UPDATE'
         notification_obj.new = params.fields
         notification_obj.old = params.fields_old
         notification_obj.update = params.change
-    }else if(params.method === 'DELETE'){
+    }else if(ctx.method === 'DELETE'){
         notification_obj.action = 'DELETE'
         notification_obj.old = params.fields_old
     }
     await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
 }
 
-const needNofify = (params)=>{
-    if(params.category==CATEGORY_ALL||params.batchImport)
+const needNofify = (params,ctx)=>{
+    if(ctx.deleteAll || params.batchImport || ctx.headers[common.TokenName] === common.InternalTokenId )
+        return false
+    let token_user = ctx.cookies.get(common.TokenUserName)
+    if(!token_user)
         return false
     return true
 }
@@ -189,9 +185,8 @@ const needNofify = (params)=>{
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
         let item_uuid,result,dynamic_field
-        params.method = ctx.method,params.user =_.pick(ctx.local,['alias','userid','avatar','roles']),params.token = ctx.token,
-            params.url = ctx.url,params.category = params.data?params.data.category:getCategoryFromUrl(params.url)
-        if (params.method === 'POST') {
+        params.category = params.data?params.data.category:getCategoryFromUrl(ctx)
+        if (ctx.method === 'POST') {
             item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
             params.data.fields.uuid = item_uuid
             params.fields = _.assign({}, params.data.fields)
@@ -202,9 +197,9 @@ module.exports = {
                 result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(params.data.category), params, true)
                 params.fields[dynamic_field] = String(result[0])
             }
-            return await cudItem_callback(params)
+            return await cudItem_callback(params,ctx)
         }
-        else if (params.method === 'PUT' || params.method === 'PATCH') {
+        else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {
             if(params.uuid){
                 result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeCypher(params), params, true)
                 if (result && result[0]) {
@@ -212,12 +207,12 @@ module.exports = {
                     params.fields = _.assign({}, params.fields_old,params.data.fields)
                     params.fields.lastUpdated = Date.now()
                     params.change = params.data.fields
-                    return await cudItem_callback(params, true)
+                    return await cudItem_callback(params,ctx)
                 } else {
                     throw new ScirichonError("no record found")
                 }
             }
-        } else if (params.method === 'DELETE') {
+        } else if (ctx.method === 'DELETE') {
             if(params.uuid){
                 result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationCypher(params), params, true)
                 if(result&&result[0]&&result[0].self&&result[0].self.category){
@@ -228,22 +223,22 @@ module.exports = {
                         if(checkReferenced(params.uuid,result[0].items)){
                             throw new ScirichonError("node already used")
                         }else{
-                            return await cudItem_callback(params)
+                            return await cudItem_callback(params,ctx)
                         }
                     }else{
-                        return await cudItem_callback(params)
+                        return await cudItem_callback(params,ctx)
                     }
                 }else{
                     throw new ScirichonError("no record found")
                 }
-            }else if(params.category === CATEGORY_ALL){
+            }else if(ctx.deleteAll){
                 params.cypher = cypherBuilder.generateDelAllCypher();
                 return params
             }
         }
     },
     cudItem_postProcess:async function (result,params,ctx) {
-        if(params.method==='POST'||params.method==='PUT'||params.method==='PATCH'){
+        if(ctx.method==='POST'||ctx.method==='PUT'||ctx.method==='PATCH'){
             await scirichon_cache.set(params.uuid,{name:params.fields.name,uuid:params.uuid,category:params.category})
             if(params.name)
                 await scirichon_cache.set(params.category+'_'+params.name,{name:params.fields.name,uuid:params.uuid,category:params.category})
@@ -257,7 +252,7 @@ module.exports = {
                 }
             }
         }
-        if(params.method==='DELETE'){
+        if(ctx.method==='DELETE'){
             if(params.uuid){
                 if(result&&(result.length==1||result.deleted==1)){
                     await scirichon_cache.del(params.uuid)
@@ -268,12 +263,12 @@ module.exports = {
                     throw new ScirichonWarning('no record found')
                 }
             }
-            if(params.category===CATEGORY_ALL)
+            if(ctx.deleteAll)
                 await scirichon_cache.flushAll()
         }
-        if(needNofify(params)){
+        if(needNofify(params,ctx)){
             try{
-                await addNotification(params)
+                await addNotification(params,ctx)
             }catch(err){
                 throw new ScirichonWarning('add notification failed,' + String(err))
             }
@@ -281,7 +276,7 @@ module.exports = {
         return {uuid:params.uuid}
     },
     queryItems_preProcess:function (params,ctx) {
-        params.method = ctx.method,params.url = ctx.url,params.category = getCategoryFromUrl(ctx.url)
+        params.category = getCategoryFromUrl(ctx)
         params = paginationParamsGenerator(params);
         params = queryParamsCypherGenerator(params);
         return params;
@@ -346,7 +341,6 @@ module.exports = {
             ctx.app.emit('restart')
         }
         return {}
-    },
-    CATEGORY_ALL
+    }
 }
 

@@ -35,7 +35,7 @@ var addOpsCommand = (command)=>{
 var addItem = function(result, params, ctx) {
     params = pre_process(params)
     let routes = schema.getApiRoutesAll()
-    let typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx.url)
+    let typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx)
     if(routes[typeName].searchable){
         let indexName = routes[typeName].searchable.index
         let index_obj = {
@@ -57,7 +57,7 @@ var addItem = function(result, params, ctx) {
 
 var patchItem = function(result, params, ctx) {
     params = pre_process(params)
-    let routes = schema.getApiRoutesAll(),typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx.url),indexName = routes[typeName].searchable.index
+    let routes = schema.getApiRoutesAll(),typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx),indexName = routes[typeName].searchable.index
     let index_obj = {
         index: indexName,
         type: typeName,
@@ -75,7 +75,7 @@ var patchItem = function(result, params, ctx) {
 
 var deleteItem = function(result, params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let routes = schema.getApiRoutesAll(),typeName = hook.getCategoryFromUrl(ctx.url),indexName
+    let routes = schema.getApiRoutesAll(),typeName = hook.getCategoryFromUrl(ctx),indexName
     if(typeName === hook.CATEGORY_ALL)
         indexName = '*'
     else
@@ -89,8 +89,6 @@ var deleteItem = function(result, params, ctx) {
     }
     logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
     return es_client.deleteByQuery(delObj).then(function (response) {
-        if(response&&response.deleted==0)
-            throw new ScirichonWarning('ElasticSearch:no record found to delete')
         return hook.cudItem_postProcess(response, params, ctx);
     }, function (error) {
         throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
@@ -111,7 +109,7 @@ var searchItem = function(params, ctx) {
     }
     var queryObj = params.body?{body:params.body}:{q:query}
     let routes = schema.getApiRoutesAll()
-    let typeName = params.category = params.category || hook.getCategoryFromUrl(ctx.url)
+    let typeName = params.category = params.category || hook.getCategoryFromUrl(ctx)
     let indexName = routes[typeName].searchable.index
     params.search = true
     var searchObj = _.assign({
