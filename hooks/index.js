@@ -297,7 +297,7 @@ module.exports = {
         return result
     },
     getSchemaHierarchy:async function (params,ctx) {
-        let cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category)
+        let cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category),result
         let addSubTypeRelationship = async (relationship)=>{
             if(schema.isSubTypeAllowed(relationship.name)){
                 result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,{category:relationship.name}, params, true)
