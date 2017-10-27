@@ -156,7 +156,7 @@ const checkReferenced = (uuid,items)=>{
 }
 
 const addNotification = async (params,ctx)=>{
-    let notification_obj = {type:params.category,user:JSON.parse(ctx.cookies.get(common.TokenUserName)),source:'cmdb'}
+    let notification_obj = {type:params.category,user:ctx[common.TokenUserName],source:'cmdb'}
     if(ctx.method === 'POST'){
         notification_obj.action = 'CREATE'
         notification_obj.new = params.fields
@@ -176,7 +176,7 @@ const addNotification = async (params,ctx)=>{
 const needNofify = (params,ctx)=>{
     if(ctx.deleteAll || params.batchImport || ctx.headers[common.TokenName] === common.InternalTokenId )
         return false
-    let token_user = ctx.cookies.get(common.TokenUserName)
+    let token_user = ctx[common.TokenUserName]
     if(!token_user)
         return false
     return true
