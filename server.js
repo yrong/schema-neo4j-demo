@@ -11,6 +11,7 @@ const responseWrapper = require('scirichon-response-wrapper')
 const LOGGER = require('log4js_wrapper')
 const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
+const scirichon_cache = require('scirichon-cache')
 
 LOGGER.initialize(config.get('logger'))
 const logger = LOGGER.getLogger()
@@ -44,7 +45,13 @@ socket_route(app)
 
 const loadSchema = ()=>{
     schema.loadSchemas().then((schemas)=>{
-        initAppRoutes(app)
+        if(schemas&&schemas.length){
+            initAppRoutes(app)
+            scirichon_cache.loadAll(`http://localhost:${config.get('port')}/api`)
+        }else{
+            logger.fatal(`load schema failed!`)
+            process.exit(-2)
+        }
     })
 }
 
