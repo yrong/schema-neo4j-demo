@@ -11,7 +11,7 @@ const single_converter = async (key,value)=>{
     }else{
         cached_val = await scirichon_cache.getItemByCategoryAndName(key,value)
     }
-    if(cached_val)
+    if(cached_val&&cached_val.uuid)
         uuid = cached_val.uuid
     else
         throw new ScirichonError(`can not find category '${key}' with name or id as '${value}' in cmdb`)

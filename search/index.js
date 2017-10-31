@@ -6,19 +6,12 @@ const es_client = new elasticsearch.Client({
     host: esConfig.host + ":" + esConfig.port,
     requestTimeout: esConfig.requestTimeout
 })
-const hook = require('../hooks')
-const utils = require('../helper/utils')
-const hidden_fields = utils.globalHiddenFields
 const schema = require('redis-json-schema')
-const LOGGER = require('log4js_wrapper')
-const logger = LOGGER.getLogger()
-const common = require('scirichon-common')
-const ScirichonWarning = common.ScirichonWarning
+const logger = require('log4js_wrapper').getLogger()
+const requestHandler = require('../hooks/requestHandler')
+const responseHandler = require('../hooks/responseHandler')
+const hidden_fields = requestHandler.internalUsedFields
 
-
-var pre_process = function(params) {
-    return params
-}
 
 const OpsControllerIndex = 'opscontroller',OpsControllerCommandType = 'command'
 
@@ -32,51 +25,34 @@ var addOpsCommand = (command)=>{
     es_client.index(index_obj)
 }
 
-var addItem = function(result, params, ctx) {
-    params = pre_process(params)
-    let routes = schema.getApiRoutesAll()
-    let typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx)
-    if(routes[typeName].searchable){
-        let indexName = routes[typeName].searchable.index
-        let index_obj = {
+var addOrUpdateItem = function(params, ctx) {
+    let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,index_obj,promise = Promise.resolve(params)
+    if(routes[typeName]&&routes[typeName].searchable){
+        indexName = routes[typeName].searchable.index
+        index_obj = {
             index: indexName,
             type: typeName,
             id: params.uuid,
-            body: _.omit(params,hidden_fields),
             refresh:true
         }
-        logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
-        return es_client.index(index_obj).then(function (response) {
-            if(params.fields)
-                return hook.cudItem_postProcess(response, params, ctx);
-        }, function (error) {
-            throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
-        });
+        if(ctx.method === 'POST'){
+            index_obj.body = _.omit(params,hidden_fields)
+            promise = es_client.index(index_obj)
+        }else if(ctx.method === 'PUT'||ctx.method === 'PATCH') {
+            index_obj.body = {doc: _.omit(params, hidden_fields)}
+            promise = es_client.update(index_obj)
+        }
+        promise.then(()=>{
+            logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
+        })
     }
+    return promise
 }
 
-var patchItem = function(result, params, ctx) {
-    params = pre_process(params)
-    let routes = schema.getApiRoutesAll(),typeName = schema.getAncestorSchemas(params.category)||hook.getCategoryFromUrl(ctx),indexName = routes[typeName].searchable.index
-    let index_obj = {
-        index: indexName,
-        type: typeName,
-        id:params.uuid,
-        body: {doc:_.omit(params,hidden_fields)},
-        refresh:true
-    }
-    logger.debug(`patch index in es:${JSON.stringify(index_obj,null,'\t')}`)
-    return es_client.update(index_obj).then(function (response) {
-        return hook.cudItem_postProcess(response, params, ctx);
-    }, function (error) {
-        throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
-    });
-}
-
-var deleteItem = function(result, params, ctx) {
+var deleteItem = function(params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let routes = schema.getApiRoutesAll(),typeName = hook.getCategoryFromUrl(ctx),indexName
-    if(typeName === hook.CATEGORY_ALL)
+    let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName
+    if(!typeName&&ctx.deleteAll)
         indexName = '*'
     else
         indexName = routes[typeName].searchable.index
@@ -87,19 +63,16 @@ var deleteItem = function(result, params, ctx) {
         },
         refresh:true
     }
-    logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
-    return es_client.deleteByQuery(delObj).then(function (response) {
-        return hook.cudItem_postProcess(response, params, ctx);
-    }, function (error) {
-        throw new ScirichonWarning('ElasticSearch:' + error.response||String(error))
-    });
+    return es_client.deleteByQuery(delObj).then(function () {
+        logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
+    })
 }
 
-var responseWrapper = function(response){
+var esResponseWrapper = function(response){
     return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
 }
 
-var searchItem = function(params, ctx) {
+var searchItem = (params, ctx)=> {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
     var params_pagination = {"from":0,"size":config.get('perPageSize')},from;
@@ -109,7 +82,7 @@ var searchItem = function(params, ctx) {
     }
     var queryObj = params.body?{body:params.body}:{q:query}
     let routes = schema.getApiRoutesAll()
-    let typeName = params.category = params.category || hook.getCategoryFromUrl(ctx)
+    let typeName = params.category = params.category || requestHandler.getCategoryFromUrl(ctx)
     let indexName = routes[typeName].searchable.index
     params.search = true
     var searchObj = _.assign({
@@ -118,8 +91,12 @@ var searchItem = function(params, ctx) {
         _source:_source
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
-    return es_client.search(searchObj).then(function (response) {
-        return hook.queryItems_postProcess(responseWrapper(response), params, ctx);
+    return es_client.search(searchObj).then(async function (response) {
+        response = esResponseWrapper(response)
+        if(response.count>0&&_.isArray(response.results)){
+            response.results = await responseHandler.resultMapper(response.results, params, ctx);
+        }
+        return response
     });
 }
 
@@ -129,4 +106,4 @@ var checkStatus = ()=> {
     })
 }
 
-module.exports = {searchItem,deleteItem,patchItem,addItem,checkStatus,addOpsCommand}
+module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus,addOpsCommand}

@@ -46,8 +46,10 @@ socket_route(app)
 const loadSchema = ()=>{
     schema.loadSchemas().then((schemas)=>{
         if(schemas&&schemas.length){
+            console.log('init route and cache from schema:\n' + JSON.stringify(schema.getApiRoutesAll(),null,'\t'))
             initAppRoutes(app)
-            scirichon_cache.loadAll(`http://localhost:${config.get('port')}/api`)
+            scirichon_cache.setLoadUrl({cmdb_url:`http://localhost:${config.get('port')}/api`})
+            scirichon_cache.loadAll()
         }else{
             logger.fatal(`load schema failed!`)
             process.exit(-2)

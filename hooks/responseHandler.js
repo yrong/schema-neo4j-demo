@@ -1,40 +1,8 @@
-const _ = require('lodash');
-const schema = require('redis-json-schema')
-const scirichon_cache = require('scirichon-cache')
+const _ = require('lodash')
 const uuid_validator = require('uuid-validate')
 const config = require('config')
-
-const globalHiddenFields = ['fields', 'cyphers', 'cypher','method', 'data', 'token', 'fields_old', 'change', 'url', '_id', '_index', '_type','user']
-    , globalHiddenFieldsInAllLevel = ['passwd', 'id']
-
-const removeInternalProperties = (val) => {
-    for (let prop in val) {
-        for(let hidden_prop of globalHiddenFields){
-            if (prop === hidden_prop)
-                delete val[prop];
-        }
-    }
-    return recursivelyRemoveInternalProperties(val)
-}
-
-const recursivelyRemoveInternalProperties =  (val) => {
-    if (_.isArray(val)) {
-        val = _.map(val, function (val) {
-            return recursivelyRemoveInternalProperties(val);
-        });
-    } else {
-        for (let prop in val) {
-            for(let hidden_prop of globalHiddenFieldsInAllLevel){
-                if (prop === hidden_prop)
-                    delete val[prop];
-            }
-            if (typeof val[prop] === 'object')
-                if(prop !== 'status')//not remove 'fields' in field 'status'
-                    recursivelyRemoveInternalProperties(val[prop]);
-        }
-    }
-    return val;
-}
+const scirichon_cache = require('scirichon-cache')
+const schema = require('redis-json-schema')
 
 const propertiesCombine = (results)=>{
     return _.map(results,(result)=>{
@@ -51,7 +19,7 @@ const referencedObjectMapper = async (val,props)=>{
         for(let key in props.properties){
             if(val[key]&&props.properties[key].schema){
                 if(uuid_validator(val[key])){
-                    val[key]= await scirichon_cache.get(val[key])||val[key]
+                    val[key]= await scirichon_cache.getItemByCategoryAndID(props.properties[key].schema,val[key])||val[key]
                 }
             }
         }
@@ -77,12 +45,12 @@ const referencedMapper = async (val) => {
                     }
                     if(config.get('retrieveObjectFromId')){
                         if(properties[key].schema){
-                            val[key] = await scirichon_cache.get(val[key]) || val[key]
+                            val[key] = await scirichon_cache.getItemByCategoryAndID(properties[key].schema,val[key]) || val[key]
                         }
                         else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
                             let objs = []
                             for(let id of val[key]){
-                                objs.push(await scirichon_cache.get(id)||id)
+                                objs.push(await scirichon_cache.getItemByCategoryAndID(properties[key].items.schema,id)||id)
                             }
                             val[key] = objs
                         }else if(properties[key].type==='object') {
@@ -99,12 +67,11 @@ const referencedMapper = async (val) => {
 const resultMapper = async (result, params) => {
     if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
-    result = removeInternalProperties(result)
-    result = referencedMapper(result)
+    if(!params.origional)
+        result = referencedMapper(result)
     return result
 }
 
 module.exports = {
-    resultMapper,
-    globalHiddenFields
+    resultMapper
 }
