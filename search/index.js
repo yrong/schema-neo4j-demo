@@ -51,21 +51,24 @@ var addOrUpdateItem = function(params, ctx) {
 
 var deleteItem = function(params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName
-    if(!typeName&&ctx.deleteAll)
-        indexName = '*'
-    else
-        indexName = routes[typeName].searchable.index
-    var delObj = {
-        index: indexName,
-        body: {
-            query: queryObj
-        },
-        refresh:true
+    let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,promise = Promise.resolve(params)
+    if(routes[typeName]&&routes[typeName].searchable){
+        if(ctx.deleteAll)
+            indexName = '*'
+        else
+            indexName = routes[typeName].searchable.index
+        var delObj = {
+            index: indexName,
+            body: {
+                query: queryObj
+            },
+            refresh:true
+        }
+        promise = es_client.deleteByQuery(delObj).then(function () {
+            logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
+        })
     }
-    return es_client.deleteByQuery(delObj).then(function () {
-        logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
-    })
+    return promise
 }
 
 var esResponseWrapper = function(response){

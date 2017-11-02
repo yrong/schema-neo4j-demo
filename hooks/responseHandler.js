@@ -5,13 +5,16 @@ const scirichon_cache = require('scirichon-cache')
 const schema = require('redis-json-schema')
 
 const propertiesCombine = (results)=>{
-    return _.map(results,(result)=>{
-        if(result.self&&result.members){
-            result = _.merge(result.self,{members:result.members})
+    if(_.isArray(results)&&results.length){
+        return _.map(results,(result)=>{
+            if(result.self&&result.members){
+                result = _.merge(result.self,{members:result.members})
+                return result
+            }
             return result
-        }
-        return result
-    })
+        })
+    }
+    return results
 }
 
 const referencedObjectMapper = async (val,props)=>{
