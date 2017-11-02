@@ -78,8 +78,8 @@ const generateQR = async (params,ctx)=>{
     let properties=schema.getSchemaProperties(params.category)
     for(let key in properties){
         if(params.fields[key]&&properties[key].generateQRImage){
-            let qr_code = qr.image(params.fields.asset_id,{ type: 'png' })
-            let qr_image = path.join('public/upload/QRImage',params.fields.asset_id+'.png')
+            let qr_code = qr.image(params.fields[key],{ type: 'png' })
+            let qr_image = path.join(config.get('runtime_data.qr_image_dir'),params.fields[key]+'.png')
             let qr_output = fs.createWriteStream(qr_image)
             qr_code.pipe(qr_output)
         }

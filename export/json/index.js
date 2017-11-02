@@ -17,7 +17,7 @@ const exportItems = async ()=>{
         categories = _.keys(schema.getApiRoutesAll())
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
-    let storeDir = config.get('export.storeDir')
+    let storeDir = config.get('runtime_data.json_export_dir')
     if (!fs.existsSync(storeDir))
         fs.mkdirSync(storeDir)
     let directory = path.join(storeDir, timestamp)

@@ -10,7 +10,7 @@ const getSheetRange = (sheet)=>{
 }
 
 const initSheets = (fileName)=>{
-    let importFileBaseDir = config.get('import.storeDir')
+    let importFileBaseDir = config.get('runtime_data.excel_import_dir')
     let workbook = XLSX.readFile(path.join(importFileBaseDir,fileName))
     return workbook.Sheets
 }
@@ -50,7 +50,7 @@ module.exports = {
         return error_book
     },
     dumpErrorBook:(errorbook,fileName)=>{
-        let importFileBaseDir = config.get('import.storeDir')
+        let importFileBaseDir = config.get('runtime_data.excel_import_dir')
         let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
         if (!fs.existsSync(exceptionFileBaseDir))
             fs.mkdirSync(exceptionFileBaseDir)
