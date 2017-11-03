@@ -3,12 +3,12 @@ const config = require('config')
 const qr = require('qr-image')
 const fs = require('fs')
 const path = require('path')
+const mkdirp = require('mkdirp')
 const common = require('scirichon-common')
 const schema = require('redis-json-schema')
 const scirichon_cache = require('scirichon-cache')
 const cypherBuilder = require('../cypher/cypherBuilder')
 const cypherInvoker = require('../helper/cypherInvoker')
-const notifier_api_config = config.get('notifier')
 const ScirichonWarning = common.ScirichonWarning
 const search = require('../search')
 const requestHandler = require('./requestHandler')
@@ -36,7 +36,7 @@ const addNotification = async (params,ctx)=>{
             notification_obj.action = 'DELETE'
             notification_obj.old = params.fields_old
         }
-        await common.apiInvoker('POST',notifier_api_config.base_url,'','',notification_obj)
+        await common.apiInvoker('POST',`http://${config.get('publicIP')||'localhost'}:${config.get('notifier.port')}/api/notifications`,'','',notification_obj)
     }
 }
 
@@ -75,13 +75,14 @@ const updateSearch = async (params,ctx)=>{
 }
 
 const generateQR = async (params,ctx)=>{
-    let properties=schema.getSchemaProperties(params.category)
+    let properties=schema.getSchemaProperties(params.category),qr_code,qr_image_dir,qr_image_file
     for(let key in properties){
         if(params.fields[key]&&properties[key].generateQRImage){
-            let qr_code = qr.image(params.fields[key],{ type: 'png' })
-            let qr_image = path.join(config.get('runtime_data.qr_image_dir'),params.fields[key]+'.png')
-            let qr_output = fs.createWriteStream(qr_image)
-            qr_code.pipe(qr_output)
+            qr_code = qr.image(params.fields[key],{ type: 'png' })
+            qr_image_dir = config.get('runtime_data.cmdb.qr_image_dir')
+            mkdirp.sync(qr_image_dir)
+            qr_image = path.join(qr_image_dir,params.fields[key]+'.png')
+            qr_code.pipe(fs.createWriteStream(qr_image))
         }
     }
 }

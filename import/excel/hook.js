@@ -1,11 +1,11 @@
 var _ = require('lodash')
-var checker = require('./../../helper/checker')
+var apiInvoker = require('../../helper/apiInvoker')
 
 module.exports = {
     buildAssetLocation:async (asset) =>{
         if(asset&&asset.asset_location_cabinet){
             asset.asset_location = {cabinet:asset.asset_location_cabinet,status:"mounted",u:asset.asset_location_u,date_mounted:asset.asset_location_mounted_date}
-            await checker.cabinet_u_unique(asset)
+            await apiInvoker.check_cabinet_u_unique(asset)
         }
         else if(asset&&asset.asset_location_shelf)
             asset.asset_location = {shelf:asset.asset_location_shelf,status:"unmounted"}

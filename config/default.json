@@ -1,24 +1,30 @@
 {
-  "name":"cmdb-api",
-  "port":3001,
-  "additionalPropertyCheck":false,
+  "cmdb":{
+    "port":3001
+  },
+  "kb":{
+    "port":3000
+  },
+  "auth":{
+    "port":3002
+  },
+  "notifier":{
+    "port":3004
+  },
+  "scmpz":{
+    "port":3003
+  },
+  "gateway":{
+    "port":8080
+  },
+  "publicIP":"localhost",
   "perPageSize":2000,
   "wrapResponse": true,
   "retrieveObjectFromId":true,
+  "additionalPropertyCheck":false,
   "logger":{
-    "appenders": [
-      {
-        "type": "console"
-      },
-      {
-        "type": "file",
-        "filename": "cmdb-api.log",
-        "maxLogSize": 20480,
-        "numBackups": 5
-      }
-    ],
-    "replaceConsole": true,
-    "defaultLevel":"DEBUG"
+    "defaultLevel":"DEBUG",
+    "logpath":"../logs"
   },
   "neo4j": {
     "host": "localhost",
@@ -37,15 +43,12 @@
     "host": "localhost",
     "port": 6379
   },
-  "notifier":{
-    "base_url":"http://localhost:3004/api/notifications"
-  },
-  "auth":{
-    "check_token_url":"http://localhost:3002/auth/check"
-  },
   "runtime_data":{
-    "json_export_dir":"./export_data",
-    "excel_import_dir":"./public/upload/ConfigurationItem",
-    "qr_image_dir":"public/upload/QRImage"
+    "cmdb":{
+      "base_dir":"../runtime/cmdb",
+      "json_export_dir":"../runtime/cmdb/export",
+      "excel_import_dir":"../runtime/cmdb/configurationItems_excel",
+      "qr_image_dir":"../runtime/cmdb/qr_image"
+    }
   }
 }

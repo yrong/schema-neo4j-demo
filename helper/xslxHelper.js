@@ -4,13 +4,13 @@ const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
+const importFileBaseDir = config.get('runtime_data.cmdb.excel_import_dir')
 
 const getSheetRange = (sheet)=>{
     return XLSX.utils.decode_range(sheet['!ref'])
 }
 
 const initSheets = (fileName)=>{
-    let importFileBaseDir = config.get('runtime_data.excel_import_dir')
     let workbook = XLSX.readFile(path.join(importFileBaseDir,fileName))
     return workbook.Sheets
 }
@@ -50,7 +50,6 @@ module.exports = {
         return error_book
     },
     dumpErrorBook:(errorbook,fileName)=>{
-        let importFileBaseDir = config.get('runtime_data.excel_import_dir')
         let exceptionFileBaseDir = path.join(importFileBaseDir,'exception')
         if (!fs.existsSync(exceptionFileBaseDir))
             fs.mkdirSync(exceptionFileBaseDir)

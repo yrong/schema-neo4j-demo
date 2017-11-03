@@ -4,7 +4,7 @@ const schema = require('redis-json-schema')
 var wrapRequest = (category,item) => {
     return {data:{category:category,fields:item},batchImport:true}
 }
-var base_url=`http://localhost:${config.get('port')}/api`
+var base_url=`http://${config.get('publicIP')||'localhost'}:${config.get('cmdb.port')}/api`
 const cypherInvoker = require('./cypherInvoker')
 const common = require('scirichon-common')
 const net = require('net')
@@ -44,5 +44,19 @@ module.exports = {
                     results.push({ip_address:[host],name:host})
             })
         return results
+    },
+    check_cabinet_u_unique:async (asset) =>{
+        if(asset&&asset.asset_location_cabinet){
+            let response = await common.apiInvoker('POST',base_url,'/searchByCypher','',{"category":"ConfigurationItem", "cypherQueryFile":"mountedConfigurationItemRels"}),matched
+            response = response||response.data
+            if(response){
+                matched = _.find(response,(mounted_cabinet)=>{
+                    return (mounted_cabinet.cabinet.name === asset.asset_location_cabinet || mounted_cabinet.cabinet.uuid === asset.asset_location_cabinet)
+                        && mounted_cabinet.u === asset.asset_location_u
+                })
+            }
+            if(matched)
+                throw new Error('Cabinet_U unique constraint violation')
+        }
     }
 }

@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
+const mkdirp = require('mkdirp')
 const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('redis-json-schema')
 
@@ -17,12 +18,10 @@ const exportItems = async ()=>{
         categories = _.keys(schema.getApiRoutesAll())
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
-    let storeDir = config.get('runtime_data.json_export_dir')
-    if (!fs.existsSync(storeDir))
-        fs.mkdirSync(storeDir)
-    let directory = path.join(storeDir, timestamp)
-    if (!fs.existsSync(directory))
-        fs.mkdirSync(directory)
+    let storeDir = config.get('runtime_data.cmdb.json_export_dir')
+    mkdirp.sync(storeDir)
+    let store_time_dir = path.join(storeDir, timestamp)
+    mkdirp.sync(store_time_dir)
     let category,cypher,result,items,filePath
     for(category of categories){
         cypher = `MATCH (n) WHERE n:${category} RETURN n`
@@ -42,11 +41,11 @@ const exportItems = async ()=>{
             return item
         })
         if (items && items.length) {
-            filePath = path.join(directory, `${category}.json`)
+            filePath = path.join(store_time_dir, `${category}.json`)
             jsonfile.writeFileSync(filePath, items, {spaces: 2});
         }
     }
-    return {directory,categories}
+    return {directory: store_time_dir,categories}
 }
 
 if (require.main === module) {
