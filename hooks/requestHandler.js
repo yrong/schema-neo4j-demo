@@ -195,7 +195,7 @@ const handleCudRequest = async (params, ctx)=>{
         if(!params.batchImport)
             await cudItem_referenced_params_convert(params)
         await cudItem_params_stringify(params)
-        params.cyphers = cypherBuilder.generateAddOrUpdateCyphers(params);
+        params.cypher = cypherBuilder.generateAddOrUpdateCyphers(params);
     }else if(ctx.method === 'DELETE'){
         params.cypher = cypherBuilder.generateDelNodeCypher(params)
         if(ctx.deleteAll){
