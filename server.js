@@ -17,7 +17,7 @@ const scirichon_cache = require('scirichon-cache')
 let license = license_checker.load('./CMDB-API.lic')
 logger.info('cmdb-api license:' + JSON.stringify(license))
 
-const KoaNeo4jApp = require('koa-neo4j-fork')
+const KoaNeo4jApp = require('koa-neo4j')
 const neo4jConfig = config.get('neo4j')
 let koaNeo4jOptions = {
     neo4j: {
@@ -27,7 +27,7 @@ let koaNeo4jOptions = {
     },
     middleware:[
         getLicense,
-        check_token({check_token_url:`http://${config.get('publicIP')||'localhost'}:${config.get('auth.port')}/auth/check`}),
+        check_token({check_token_url:`http://${config.get('privateIP')||'localhost'}:${config.get('auth.port')}/auth/check`}),
         acl_checker.middleware,
         convert(staticFile(config.get('runtime_data.cmdb.base_dir')))
     ]
@@ -41,7 +41,7 @@ const loadSchemas = ()=>{
         if(schemas&&schemas.length){
             logger.info('init route and cache from schema:\n' + JSON.stringify(schema.getApiRoutesAll(),null,'\t'))
             initAppRoutes(app)
-            scirichon_cache.setLoadUrl({cmdb_url:`http://${config.get('publicIP')||'localhost'}:${config.get('cmdb.port')}/api`})
+            scirichon_cache.setLoadUrl({cmdb_url:`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}/api`})
             scirichon_cache.loadAll()
         }else{
             logger.fatal(`load schema failed!`)

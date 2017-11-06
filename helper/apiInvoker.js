@@ -4,7 +4,7 @@ const schema = require('redis-json-schema')
 var wrapRequest = (category,item) => {
     return {data:{category:category,fields:item},batchImport:true}
 }
-var base_url=`http://${config.get('publicIP')||'localhost'}:${config.get('cmdb.port')}/api`
+var base_url=`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}/api`
 const cypherInvoker = require('./cypherInvoker')
 const common = require('scirichon-common')
 const net = require('net')

@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-mkdir -p ../config ../logs ../runtime/cmdb/export ../runtime/cmdb/configurationItems_excel ../runtime/cmdb/qr_image
-cp -rf config/* ../config
+testdir="$(dirname "$(pwd)")/test"
+if [ ! -d "${testdir}" ]; then
+  git clone https://git.coding.net/alien11/test.git
+  ln -s ../test/config .
+fi

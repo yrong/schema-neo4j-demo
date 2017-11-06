@@ -36,7 +36,7 @@ const addNotification = async (params,ctx)=>{
             notification_obj.action = 'DELETE'
             notification_obj.old = params.fields_old
         }
-        await common.apiInvoker('POST',`http://${config.get('publicIP')||'localhost'}:${config.get('notifier.port')}/api/notifications`,'','',notification_obj)
+        await common.apiInvoker('POST',`http://${config.get('privateIP')||'localhost'}:${config.get('notifier.port')}`,'/api/notifications','',notification_obj)
     }
 }
 
