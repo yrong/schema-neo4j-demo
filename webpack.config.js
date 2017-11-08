@@ -1,11 +1,11 @@
 var path = require('path');
 var fs = require("fs");
 
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 var mods = {};
 fs.readdirSync("node_modules")
@@ -33,7 +33,9 @@ if(process.env.EDITION === 'essential'){
 var releaseDir = process.env.ReleaseDir||path.join(__dirname, 'release')
 
 var plugins = [
-    new MinifyPlugin(),
+    new UglifyJSPlugin({
+        sourceMap: devtool && (devtool.indexOf("sourcemap") >= 0 || devtool.indexOf("source-map") >= 0)
+    }),
     new CopyWebpackPlugin(packages, {ignore: ['*.gitignore']}),
     new CleanWebpackPlugin(['build']),
     new GitRevisionPlugin(),

@@ -63,7 +63,6 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
-    "babel-minify-webpack-plugin": "^0.2.0",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^3.5.0",
@@ -76,8 +75,9 @@
     "eslint-plugin-babel": "^3.3.0",
     "git-revision-webpack-plugin": "^2.4.1",
     "mocha": "^3.2.0",
-    "newman": "^3.3.1",
+    "newman": "^3.8.3",
     "postman_simplify": "1.0.0-beta.1",
+    "uglifyjs-webpack-plugin": "^1.0.1",
     "webpack": "^2.3.2",
     "webpack-shell-plugin": "^0.5.0"
   }
