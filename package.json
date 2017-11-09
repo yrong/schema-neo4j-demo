@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack",
     "buildEssential": "EDITION=essential webpack",
-    "test": "ENVIRONMENT_FILE=./test/globals.postman_globals.json mocha",
+    "test": "mocha",
     "start": "NODE_ENV=production NODE_NAME=cmdb node ./server.js",
     "init": "/bin/bash ./script/init.sh",
     "initCache": "INIT_CACHE=1 node ./init.js",
