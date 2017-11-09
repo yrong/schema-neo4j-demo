@@ -10,7 +10,7 @@ describe("CMDB Integration test suite", function() {
         it('postman tests from collection file', function(done) {
             newman.run({
                 collection: JSON.parse(fs.readFileSync('./test/cmdb.postman_collection.json', 'utf8')),
-                environment: JSON.parse(fs.readFileSync(process.env['ENVIRONMENT_FILE'], 'utf8')),
+                environment: JSON.parse(fs.readFileSync('./config/postman_globals.json', 'utf8')),
                 reporters: 'cli'
             }, done);
         })
