@@ -4647,9 +4647,9 @@ scirichon-acl-checker@1.0.1-beta.3:
     config "^1.25.1"
     scirichon-common "1.0.1-beta.6"
 
-scirichon-cache@1.0.2-beta.8:
-  version "1.0.2-beta.8"
-  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.2-beta.8.tgz#5ff6fc1e1a76157e6a767f970846bbb7ead836c7"
+scirichon-cache@1.0.3-beta.1:
+  version "1.0.3-beta.1"
+  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.3-beta.1.tgz#4255074c5e542c2cdc209f1568e8ee313ed6322e"
   dependencies:
     config "^1.25.1"
     lodash "^4.17.4"

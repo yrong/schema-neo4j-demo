@@ -49,7 +49,7 @@
     "request": "^2.81.0",
     "request-promise": "^4.1.1",
     "scirichon-acl-checker": "1.0.1-beta.3",
-    "scirichon-cache": "1.0.2-beta.8",
+    "scirichon-cache": "1.0.3-beta.1",
     "scirichon-common": "1.0.1-beta.6",
     "scirichon-response-wrapper": "1.0.0-beta.5",
     "scirichon-token-checker": "1.0.0-beta.6",
