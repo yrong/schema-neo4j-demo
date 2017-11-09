@@ -42,7 +42,6 @@ const loadSchemas = ()=>{
             logger.info('init route and cache from schema:\n' + JSON.stringify(schema.getApiRoutesAll(),null,'\t'))
             initAppRoutes(app)
             scirichon_cache.setLoadUrl({cmdb_url:`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}/api`})
-            scirichon_cache.loadAll()
         }else{
             logger.fatal(`load schema failed!`)
             process.exit(-2)
