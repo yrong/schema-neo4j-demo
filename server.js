@@ -1,6 +1,4 @@
 const config = require('config')
-const convert = require('koa-convert')
-const staticFile = require('koa-static')
 const license_checker = require('cmdb-license-checker')
 const getLicense = require('./middleware/getLicense')
 const schema = require('redis-json-schema')
@@ -28,8 +26,7 @@ let koaNeo4jOptions = {
     middleware:[
         getLicense,
         check_token({check_token_url:`http://${config.get('privateIP')||'localhost'}:${config.get('auth.port')}/auth/check`}),
-        acl_checker.middleware,
-        convert(staticFile(config.get('runtime_data.cmdb.base_dir')))
+        acl_checker.middleware
     ]
 }
 if(config.get('wrapResponse'))
