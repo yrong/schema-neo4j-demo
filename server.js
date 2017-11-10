@@ -34,16 +34,14 @@ if(config.get('wrapResponse'))
 const app = new KoaNeo4jApp(koaNeo4jOptions)
 
 app.neo4jConnection.initialized.then(() => {
-    schema.loadSchemas().then((schemas) => {
+    scirichon_cache.initialize({cmdb_url: `http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`}).then((schemas)=>{
         if (schemas && schemas.length) {
-            logger.info('init route and cache from schema:\n' + JSON.stringify(schema.getApiRoutesAll(), null, '\t'))
-            scirichon_cache.setLoadUrl({cmdb_url: `http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`})
             initAppRoutes(app)
             app.listen(config.get('cmdb.port'), function () {
                 logger.info(`App started`);
             })
-        } else {
-            logger.fatal(`load schema failed!`)
+        }else{
+            logger.fatal(`no schemas found,npm run init first!`)
             process.exit(-2)
         }
     })
