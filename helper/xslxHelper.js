@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
-const importFileBaseDir = config.get('runtime_data.cmdb.excel_import_dir')
+const importFileBaseDir = config.get('runtime_data.base_dir')+config.get('runtime_data.upload.cmdb-excel.urlPath')
 
 const getSheetRange = (sheet)=>{
     return XLSX.utils.decode_range(sheet['!ref'])

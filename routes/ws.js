@@ -14,19 +14,17 @@ module.exports = (app)=>{
     /*importConfigurationItem*/
     importer_io.on( 'importConfigurationItem', ( ctx, data ) => {
         logger.info("receive importConfigurationItem request from socket")
-        let importerInstance
-        try{
-            importerInstance = new excelImporter(importer_io,path.basename(data.fileId))
-        }catch(error){
-            logger.error("excelImporter initialized failed:" + String(error))
-            ctx.socket.emit('importConfigurationItemError',error.message)
+        if(!data.fileName&&!data.fileId){
+            logger.error("required field missing")
+            ctx.socket.emit('importConfigurationItemError','required field missing')
             return
         }
+        let importerInstance = new excelImporter(importer_io,path.basename(data.fileName||data.fileId))
         importerInstance.importer().then((result)=>{
             logger.info("importConfigurationItem success:" + JSON.stringify(result))
             ctx.socket.emit('importConfigurationItemResponse',result)
         }).catch((error)=>{
-            logger.error("importConfigurationItemError:" + String(error))
+            logger.error("importConfigurationItemError:" + error.stack||error)
             ctx.socket.emit('importConfigurationItemError',error.message)
         })
     })
@@ -35,7 +33,14 @@ module.exports = (app)=>{
     opscontroller_io.on('executeScript',(ctx,data)=>{
         logger.info("receive executeScript request from socket")
         let opscontroller = new OpsController(opscontroller_io,data,ctx)
-        opscontroller.execute()
+        try{
+            opscontroller.execute()
+        }catch(err){
+            logger.error("executeScriptError:" + error.stack||error)
+            ctx.socket.emit('executeScriptError',error.message)
+        }
+
     })
+
 }
 

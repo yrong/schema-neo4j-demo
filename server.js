@@ -33,28 +33,25 @@ if(config.get('wrapResponse'))
     koaNeo4jOptions.responseWrapper = responseWrapper
 const app = new KoaNeo4jApp(koaNeo4jOptions)
 
-const loadSchemas = ()=>{
-    schema.loadSchemas().then((schemas)=>{
-        if(schemas&&schemas.length){
-            logger.info('init route and cache from schema:\n' + JSON.stringify(schema.getApiRoutesAll(),null,'\t'))
+app.neo4jConnection.initialized.then(() => {
+    schema.loadSchemas().then((schemas) => {
+        if (schemas && schemas.length) {
+            logger.info('init route and cache from schema:\n' + JSON.stringify(schema.getApiRoutesAll(), null, '\t'))
+            scirichon_cache.setLoadUrl({cmdb_url: `http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`})
             initAppRoutes(app)
-            scirichon_cache.setLoadUrl({cmdb_url:`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}/api`})
-        }else{
+            app.listen(config.get('cmdb.port'), function () {
+                logger.info(`App started`);
+            })
+        } else {
             logger.fatal(`load schema failed!`)
             process.exit(-2)
         }
     })
-}
-
-app.listen(config.get('cmdb.port'), function () {
-    logger.info(`App started`);
-    app.neo4jConnection.initialized.then(()=>{
-        loadSchemas()
-    }).catch((error)=>{
-        logger.fatal('neo4j is not reachable,' + String(error))
-        process.exit(-1)
-    })
+}).catch((error) => {
+    logger.fatal('neo4j is not reachable,' + String(error))
+    process.exit(-1)
 })
+
 
 app.on('restart', function() {
     logger.warn('restart signal received,will restart app in 2 seconds')

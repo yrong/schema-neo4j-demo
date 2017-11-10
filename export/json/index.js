@@ -18,7 +18,7 @@ const exportItems = async ()=>{
         categories = _.keys(schema.getApiRoutesAll())
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
-    let storeDir = config.get('runtime_data.cmdb.json_export_dir')
+    let storeDir = config.get('runtime_data.base_dir')+config.get('runtime_data.cmdb.json_export_dir')
     mkdirp.sync(storeDir)
     let store_time_dir = path.join(storeDir, timestamp)
     mkdirp.sync(store_time_dir)
