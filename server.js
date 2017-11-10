@@ -1,22 +1,31 @@
 const config = require('config')
 const license_checker = require('cmdb-license-checker')
 const getLicense = require('./middleware/getLicense')
-const schema = require('redis-json-schema')
+
+/**
+ * init logger
+ */
 const LOGGER = require('log4js_wrapper')
 LOGGER.initialize(config.get('logger'))
 const logger = LOGGER.getLogger()
+
 const initAppRoutes = require("./routes")
 const responseWrapper = require('scirichon-response-wrapper')
 const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
 const scirichon_cache = require('scirichon-cache')
+const KoaNeo4jApp = require('koa-neo4j')
+const neo4jConfig = config.get('neo4j')
 
-
+/**
+ * check license
+ */
 let license = license_checker.load('./CMDB-API.lic')
 logger.info('cmdb-api license:' + JSON.stringify(license))
 
-const KoaNeo4jApp = require('koa-neo4j')
-const neo4jConfig = config.get('neo4j')
+/**
+ * int koa app and load scrichon middlewares
+ */
 let koaNeo4jOptions = {
     neo4j: {
         boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
@@ -33,6 +42,9 @@ if(config.get('wrapResponse'))
     koaNeo4jOptions.responseWrapper = responseWrapper
 const app = new KoaNeo4jApp(koaNeo4jOptions)
 
+/**
+ * init routes from schema and start server
+ */
 app.neo4jConnection.initialized.then(() => {
     scirichon_cache.initialize({cmdb_url: `http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`}).then((schemas)=>{
         if (schemas && schemas.length) {
