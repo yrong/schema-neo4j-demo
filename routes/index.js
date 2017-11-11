@@ -5,7 +5,6 @@ const schema = require('redis-json-schema');
 const search = require('../search');
 const es_config = config.get('elasticsearch')
 const requestWrapper = require('../hooks/requestHandler')
-const socket_route = require('./ws')
 
 const schema_checker = (params)=>{
     return schema.checkObject(params)&&requestWrapper.internalUsedFieldsChecker(params)
@@ -101,8 +100,6 @@ module.exports = (app)=>{
         route: '/api/schema/',
         procedure: hook.loadSchemas
     })
-
-    socket_route(app)
 
     return app
 }

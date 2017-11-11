@@ -8,13 +8,11 @@ const common = require('scirichon-common')
 const schema = require('redis-json-schema')
 const scirichon_cache = require('scirichon-cache')
 const cypherBuilder = require('../cypher/cypherBuilder')
-const cypherInvoker = require('../helper/cypherInvoker')
 const ScirichonWarning = common.ScirichonWarning
 const search = require('../search')
 const requestHandler = require('./requestHandler')
 const responseHandler = require('./responseHandler')
 const logger = require('log4js_wrapper').getLogger()
-
 
 const needNotify = (params,ctx)=>{
     return !(ctx.deleteAll || params.batchImport || ctx.headers[common.TokenName] === common.InternalTokenId)
@@ -114,9 +112,9 @@ module.exports = {
     queryItems_postProcess:async function (result,params,ctx) {
         result = _.isArray(result)&&result.length>0?result[0]:result
         if(result.count>0&&_.isArray(result.results)){
-            result.results = await responseHandler.resultMapper(result.results,params);
+            result.results = await responseHandler.resultMapper(result.results,params,ctx);
         }else{
-            result = await responseHandler.resultMapper(result,params)
+            result = await responseHandler.resultMapper(result,params,ctx)
         }
         return result
     },
@@ -131,7 +129,7 @@ module.exports = {
         let cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category),result
         let addSubTypeRelationship = async (relationship)=>{
             if(schema.isSubTypeAllowed(relationship.name)){
-                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,{category:relationship.name}, params, true)
+                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,{category:relationship.name}, true)
                 relationship.children = _.map(result,(subtype)=>{
                     return {name:subtype.category}
                 })
@@ -146,17 +144,15 @@ module.exports = {
         await addSubTypeRelationship(cmdbConfigurationItemInheritanceRelationship)
         return cmdbConfigurationItemInheritanceRelationship
     },
-    configurationItemCategoryProcess:function(params,ctx) {
-        return new Promise((resolve,reject)=>{
-            cypherInvoker.fromCtxApp(ctx.app,cypherBuilder.generateQuerySubTypeCypher,params,(result, params)=>{
-                resolve({
-                    properties:schema.getSchemaProperties(params.category),
-                    parents:schema.getParentSchemas(params.category),
-                    references:_.uniq(_.map(schema.getSchemaRefProperties(params.category),(attr)=>attr.schema)),
-                    subtypes:_.map(result,(subtype)=>subtype.category)
-                })
-            })
-        })
+    configurationItemCategoryProcess:async function(params,ctx) {
+        let result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,params, true)
+        return {
+            properties:schema.getSchemaProperties(params.category),
+            parents:schema.getParentSchemas(params.category),
+            references:_.uniq(_.map(schema.getSchemaRefProperties(params.category),(attr)=>attr.schema)),
+            subtypes:_.map(result,(subtype)=>subtype.category)
+        }
+
     },
     loadSchemas:async function(params, ctx) {
         let schemas = params.data,restart=false

@@ -1,12 +1,12 @@
 const config = require('config')
 const jsonfile = require('jsonfile')
-const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
 const _ = require('lodash')
 const mkdirp = require('mkdirp')
-const cypherInvoker = require('../../helper/cypherInvoker')
 const schema = require('redis-json-schema')
+const common = require('scirichon-common')
+const base_url=`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}`
 
 const exportItems = async ()=>{
     await schema.loadSchemas()
@@ -25,21 +25,9 @@ const exportItems = async ()=>{
     let category,cypher,result,items,filePath
     for(category of categories){
         cypher = `MATCH (n) WHERE n:${category} RETURN n`
-        result = await cypherInvoker.fromRestful(cypher, {})
-        items = result.results[0].data
-        items = _.map(items,(item)=>{
-            return item.row[0]
-        })
-        items = _.map(items,(item)=>{
-            for(let field of schema.getSchemaObjectProperties(item.category)){
-                if(_.isString(item[field]))
-                    try {
-                        item[field] = JSON.parse(item[field])
-                    }catch(error){//just for geo_location legacy string format compatibility,do nothing
-                    }
-            }
-            return item
-        })
+        result = await common.apiInvoker('POST',base_url,'/api/searchByCypher',{origional:true},{category,cypher:`MATCH (n) WHERE n:${category} RETURN collect(n)`})
+        items = result.data||result
+        items = _.map(items,(item)=>(_.omit(item,'id')))
         if (items && items.length) {
             filePath = path.join(store_time_dir, `${category}.json`)
             jsonfile.writeFileSync(filePath, items, {spaces: 2});

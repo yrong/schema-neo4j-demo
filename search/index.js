@@ -12,20 +12,7 @@ const requestHandler = require('../hooks/requestHandler')
 const responseHandler = require('../hooks/responseHandler')
 const hidden_fields = requestHandler.internalUsedFields
 
-
-const OpsControllerIndex = 'opscontroller',OpsControllerCommandType = 'command'
-
-var addOpsCommand = (command)=>{
-    let index_obj = {
-        index: OpsControllerIndex,
-        type: OpsControllerCommandType,
-        body: command
-    }
-    logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
-    es_client.index(index_obj)
-}
-
-var addOrUpdateItem = function(params, ctx) {
+const addOrUpdateItem = function(params, ctx) {
     let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,index_obj,promise = Promise.resolve(params)
     if(routes[typeName]&&routes[typeName].searchable){
         indexName = routes[typeName].searchable.index
@@ -49,7 +36,7 @@ var addOrUpdateItem = function(params, ctx) {
     return promise
 }
 
-var deleteItem = function(params, ctx) {
+const deleteItem = function(params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
     let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,promise = Promise.resolve(params)
     if(routes[typeName]&&routes[typeName].searchable){
@@ -71,11 +58,11 @@ var deleteItem = function(params, ctx) {
     return promise
 }
 
-var esResponseWrapper = function(response){
+const esResponseWrapper = function(response){
     return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
 }
 
-var searchItem = (params, ctx)=> {
+const searchItem = (params, ctx)=> {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
     var params_pagination = {"from":0,"size":config.get('perPageSize')},from;
@@ -109,4 +96,4 @@ var checkStatus = ()=> {
     })
 }
 
-module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus,addOpsCommand}
+module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus}

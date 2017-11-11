@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const uuid_validator = require('uuid-validate')
-const config = require('config')
 const scirichon_cache = require('scirichon-cache')
 const schema = require('redis-json-schema')
 
@@ -29,11 +28,11 @@ const referencedObjectMapper = async (val,props)=>{
     }
 }
 
-const referencedMapper = async (val) => {
+const referencedMapper = async (val,origional) => {
     let properties,results = []
     if (_.isArray(val)) {
         for(let single of val){
-            results.push(await referencedMapper(single))
+            results.push(await referencedMapper(single,origional))
         }
         val = results
     } else if(val.category){
@@ -46,7 +45,7 @@ const referencedMapper = async (val) => {
                             val[key] = JSON.parse(val[key])
                         }
                     }
-                    if(config.get('retrieveObjectFromId')){
+                    if(!origional){
                         if(properties[key].schema){
                             val[key] = await scirichon_cache.getItemByCategoryAndID(properties[key].schema,val[key]) || val[key]
                         }
@@ -67,11 +66,10 @@ const referencedMapper = async (val) => {
     return val;
 }
 
-const resultMapper = async (result, params) => {
+const resultMapper = async (result, params,ctx) => {
     if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
-    if(!params.origional)
-        result = referencedMapper(result)
+    result = referencedMapper(result,params.origional?true:false)
     return result
 }
 

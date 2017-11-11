@@ -2,10 +2,15 @@ const jsonfile = require('jsonfile')
 const _ = require('lodash')
 const path = require('path')
 const fs = require('fs')
-const apiInvoker = require('../../helper/apiInvoker')
 const schema = require('redis-json-schema')
 const search = require('../../search')
 const common = require('scirichon-common')
+const config = require('config')
+const base_url=`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}/api`
+
+const wrapRequest = (category,item) => {
+    return {data:{category:category,fields:item},batchImport:true}
+}
 
 const sortItemsDependentFirst = (items)=>{
     if(!items||items.length==0)
@@ -44,6 +49,18 @@ const itemPreprocess = (item)=>{
     return common.pruneEmpty(item)
 }
 
+const addItem = async(category,item,update) =>{
+    let route = schema.getRouteFromParentSchemas(category),method='POST',uri
+    if(!route)
+        throw new Error(`${category} api route not found`)
+    uri = base_url  + route
+    if(update){
+        method = 'PATCH'
+        uri = uri + "/" + item.uuid
+    }
+    return await common.apiInvoker(method,uri,'','',wrapRequest(category,item))
+}
+
 const importItems = async ()=>{
     await schema.loadSchemas()
     let date_dir = process.env.IMPORT_FOLDER
@@ -66,7 +83,7 @@ const importItems = async ()=>{
                 try {
                     item = itemPreprocess(item)
                     if(importStrategy === 'api')
-                        await apiInvoker.addItem(item.category, item)
+                        await addItem(item.category, item)
                     else if(importStrategy === 'search')
                         await search.addItem({},item)
                     else
