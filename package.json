@@ -33,7 +33,6 @@
     "koa-neo4j": "^1.2.8",
     "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
-    "log4js_wrapper": "1.0.3-beta.4",
     "mkdirp": "^0.5.1",
     "moment": "^2.13.0",
     "qr-image": "^3.2.0",
@@ -44,7 +43,7 @@
     "scirichon-acl-checker": "1.0.1-beta.3",
     "scirichon-cache": "1.0.3-beta.2",
     "scirichon-common": "1.0.1-beta.6",
-    "scirichon-response-wrapper": "1.0.0-beta.5",
+    "scirichon-response-wrapper": "1.0.0-beta.6",
     "scirichon-token-checker": "1.0.0-beta.6",
     "uuid": "^3.0.0",
     "uuid-validate": "0.0.2"

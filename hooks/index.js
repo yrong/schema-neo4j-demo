@@ -77,7 +77,7 @@ const generateQR = async (params,ctx)=>{
     for(let key in properties){
         if(params.fields[key]&&properties[key].generateQRImage){
             qr_code = qr.image(params.fields[key],{ type: 'png' })
-            qr_image_dir = config.get('runtime_data.base_dir')+config.get('runtime_data.cmdb.qr_image_dir')
+            qr_image_dir = (process.env['RUNTIME_PATH']||'../runtime') + config.get('runtime_data.cmdb.qr_image_dir')
             mkdirp.sync(qr_image_dir)
             qr_code.pipe(fs.createWriteStream(path.join(qr_image_dir,params.fields[key]+'.png')))
         }
@@ -120,7 +120,7 @@ module.exports = {
     },
     customizedQueryItems_preProcess:(params,ctx)=>{
         if(params.cypherQueryFile){
-            params.cypher = fs.readFileSync('cypher/'+params.cypherQueryFile + '.cyp', 'utf8')
+            params.cypher = fs.readFileSync(path.resolve(__dirname,'../cypher/'+params.cypherQueryFile + '.cyp'), "utf8")
         }
         requestHandler.logCypher(params)
         return params
