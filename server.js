@@ -20,7 +20,8 @@ const neo4jConfig = config.get('neo4j')
 /**
  * check license
  */
-let license = license_checker.load('./CMDB-API.lic')
+const lincense_file = `${process.env['LICENSE_PATH']}/${process.env['NODE_NAME']}.lic`
+const license = license_checker.load(lincense_file)
 logger.info('cmdb-api license:' + JSON.stringify(license))
 
 /**
