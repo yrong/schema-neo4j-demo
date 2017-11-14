@@ -2353,7 +2353,7 @@ koa-router@^7.0.1:
     methods "^1.0.1"
     path-to-regexp "^1.1.1"
 
-koa@^2.0.0, koa@^2.3.0:
+koa@^2.3.0:
   version "2.4.1"
   resolved "https://registry.npmjs.org/koa/-/koa-2.4.1.tgz#d449cfb970a7e9da571f699eda40bb9e32eb1484"
   dependencies:

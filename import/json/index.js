@@ -85,7 +85,7 @@ const importItems = async ()=>{
                     if(importStrategy === 'api')
                         await addItem(item.category, item)
                     else if(importStrategy === 'search')
-                        await search.addItem({},item)
+                        await search.addOrUpdateItem(item)
                     else
                         throw new Error('unknown importStrategy')
                 }catch(error){

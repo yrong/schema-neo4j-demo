@@ -13,7 +13,7 @@ const responseHandler = require('../hooks/responseHandler')
 const hidden_fields = requestHandler.internalUsedFields
 
 const addOrUpdateItem = function(params, ctx) {
-    let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,index_obj,promise = Promise.resolve(params)
+    let routes = schema.getApiRoutesAll(),typeName = schema.getAncestorSchemas(params.category),indexName,index_obj,promise = Promise.resolve(params)
     if(routes[typeName]&&routes[typeName].searchable){
         indexName = routes[typeName].searchable.index
         index_obj = {
@@ -22,7 +22,7 @@ const addOrUpdateItem = function(params, ctx) {
             id: params.uuid,
             refresh:true
         }
-        if(ctx.method === 'POST'){
+        if(!ctx||ctx.method === 'POST'){
             index_obj.body = _.omit(params,hidden_fields)
             promise = es_client.index(index_obj)
         }else if(ctx.method === 'PUT'||ctx.method === 'PATCH') {

@@ -15,8 +15,7 @@
     "exportToJson": "node ./exportJSON.js",
     "importFromJson": "IMPORT_FOLDER=./export_data/20170927095432 node ./importJSON.js",
     "importToESFromJson": "IMPORT_FOLDER=./export_data/20170927095432 IMPORT_STRATEGY=search node ./importJSON.js",
-    "generateLicense": "generateLicense",
-    "prepare": "/bin/bash ./script/prepare.sh"
+    "generateLicense": "generateLicense"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
@@ -27,11 +26,7 @@
     "elasticsearch": "^12.1.3",
     "jsonfile": "^2.4.0",
     "jsonpath": "^0.2.11",
-    "kcors": "^2.1.1",
-    "koa": "^2.0.0",
-    "koa-bodyparser": "^3.2.0",
     "koa-neo4j": "^1.2.8",
-    "koa-router": "^7.0.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "moment": "^2.13.0",
