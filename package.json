@@ -26,7 +26,7 @@
     "elasticsearch": "^12.1.3",
     "jsonfile": "^2.4.0",
     "jsonpath": "^0.2.11",
-    "koa-neo4j": "^1.2.8",
+    "koa-neo4j-fork": "1.2.8-beta.2",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "moment": "^2.13.0",

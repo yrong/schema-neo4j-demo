@@ -14,7 +14,7 @@ const responseWrapper = require('scirichon-response-wrapper')
 const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
 const scirichon_cache = require('scirichon-cache')
-const KoaNeo4jApp = require('koa-neo4j')
+const KoaNeo4jApp = require('koa-neo4j-fork')
 const neo4jConfig = config.get('neo4j')
 
 /**

@@ -2316,9 +2316,9 @@ koa-logger@^2.0.0:
     humanize-number "0.0.2"
     passthrough-counter "^1.0.0"
 
-koa-neo4j@^1.2.8:
-  version "1.2.8"
-  resolved "https://registry.npmjs.org/koa-neo4j/-/koa-neo4j-1.2.8.tgz#f4804bb32cccc2dfb04c1a9da825dd616de3af65"
+koa-neo4j-fork@1.2.8-beta.2:
+  version "1.2.8-beta.2"
+  resolved "https://registry.npmjs.org/koa-neo4j-fork/-/koa-neo4j-fork-1.2.8-beta.2.tgz#69c164f4ed6d6688ee9615586c9f249c81651dc9"
   dependencies:
     chai "^3.5.0"
     chalk "^1.1.3"
@@ -2331,7 +2331,7 @@ koa-neo4j@^1.2.8:
     koa-passport "^2.2.2"
     koa-router "^7.0.1"
     neo4j-driver "^1.0.5"
-    parse-neo4j "^0.6.7"
+    parse-neo4j-fork "0.6.10"
     passport-jwt "^2.1.0"
     passport-local "^1.0.0"
     pythonic "0.0.4"
@@ -2976,9 +2976,9 @@ parse-ms@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/parse-ms/-/parse-ms-1.0.1.tgz#56346d4749d78f23430ca0c713850aef91aa361d"
 
-parse-neo4j@^0.6.7:
+parse-neo4j-fork@0.6.10:
   version "0.6.10"
-  resolved "https://registry.npmjs.org/parse-neo4j/-/parse-neo4j-0.6.10.tgz#5c116b8ce012c2b26ea9ec1402660d46a2e120e6"
+  resolved "https://registry.npmjs.org/parse-neo4j-fork/-/parse-neo4j-fork-0.6.10.tgz#aa6eae62cbb0301a3d7509ce61ddfcac3c5d7abc"
 
 parseurl@^1.3.0:
   version "1.3.2"
