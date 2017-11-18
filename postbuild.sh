@@ -1,10 +1,8 @@
 #! /bin/bash
 
-chmod +x ./build/script/*
 git_commit_id=$(git rev-parse HEAD)
 git_commit_date=$(git show -s --format=%ci HEAD |tail |awk '{print $1}')
 filename="$git_commit_date-$git_commit_id"
-tar -zcvf ./cmdb-api-$filename.tar.gz ./build
 
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
@@ -12,6 +10,9 @@ while [ "$1" != "" ]; do
     case $PARAM in
         --dir)
             releaseDir=$VALUE
+            ;;
+        --edition)
+            edition=$VALUE
             ;;
         *)
             echo "ERROR: unknown parameter \"$PARAM\""
@@ -21,5 +22,14 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-echo "move build file to $releaseDir"
-mv ./cmdb-api-$filename.tar.gz $releaseDir
+
+if [ "$edition" = "docker" ]; then
+    docker rm -f cmdb
+    docker rmi cmdb:$git_commit_id
+    docker build -t cmdb:$git_commit_id .
+elif [ "$edition" = "essential" ]; then
+    tar -zcvf $releaseDir/cmdb-$git_commit_date-$git_commit_id.tar.gz ./build
+else
+  echo "$edition not recognized"
+  exit 1
+fi

@@ -3,7 +3,7 @@ const config = require('config')
 const esConfig = config.get('elasticsearch')
 const elasticsearch = require('elasticsearch')
 const es_client = new elasticsearch.Client({
-    host: esConfig.host + ":" + esConfig.port,
+    host: (process.env['ES_HOST']||esConfig.host) + ":" + esConfig.port,
     requestTimeout: esConfig.requestTimeout
 })
 const schema = require('redis-json-schema')
@@ -39,7 +39,7 @@ const addOrUpdateItem = function(params, ctx) {
 const deleteItem = function(params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
     let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,promise = Promise.resolve(params)
-    if(routes[typeName]&&routes[typeName].searchable){
+    if((routes[typeName]&&routes[typeName].searchable)||ctx.deleteAll){
         if(ctx.deleteAll)
             indexName = '*'
         else

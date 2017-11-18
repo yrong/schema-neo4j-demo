@@ -69,7 +69,7 @@ const referencedMapper = async (val,origional) => {
 const resultMapper = async (result, params,ctx) => {
     if(schema.getMemberType(params.category))
         result = propertiesCombine(result)
-    result = referencedMapper(result,params.origional?true:false)
+    result = await referencedMapper(result,params.origional?true:false)
     return result
 }
 

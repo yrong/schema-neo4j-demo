@@ -1,10 +1,12 @@
 const schema = require('redis-json-schema')
 const fs = require('fs')
-const scirichon_cache = require('scirichon-cache')
 const config = require('config')
 
 const syncSchemas = async ()=>{
-    let files = fs.readdirSync("./schema"),schemas = [],schma_instance
+    let files = fs.readdirSync("./schema"),schemas = [],schma_instance,
+        redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')},
+        additionalPropertyCheck = config.get('additionalPropertyCheck')
+    schema.initialize({redisOption,additionalPropertyCheck})
     await schema.clearSchemas()
     for(let file of files){
         if(file!='index.js') {
@@ -18,14 +20,7 @@ const syncSchemas = async ()=>{
 }
 
 syncSchemas().then((schemas)=>{
-    if(process.env['INIT_CACHE']){
-        scirichon_cache.loadAll(`http://localhost:${config.get('port')}/api`).then(()=>{
-            console.log('scirichon cache reload')
-            process.exit(0)
-        })
-    }else{
-        console.log('schemas are:\n' + JSON.stringify(schemas,null,'\t'))
-        process.exit(0)
-    }
+    console.log('schemas are:\n' + JSON.stringify(schemas,null,'\t'))
+    process.exit(0)
 })
 

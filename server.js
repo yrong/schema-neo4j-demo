@@ -1,7 +1,6 @@
 const config = require('config')
-const license_checker = require('cmdb-license-checker')
-const getLicense = require('./middleware/getLicense')
-
+const schema = require('redis-json-schema')
+const scirichon_cache = require('scirichon-cache')
 /**
  * init logger
  */
@@ -9,34 +8,43 @@ const LOGGER = require('log4js_wrapper')
 LOGGER.initialize(config.get('logger'))
 const logger = LOGGER.getLogger()
 
-const initAppRoutes = require("./routes")
+const license_helper = require('license-helper')
+const getLicense = require('./middleware/getLicense')
 const responseWrapper = require('scirichon-response-wrapper')
 const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
-const scirichon_cache = require('scirichon-cache')
 const KoaNeo4jApp = require('koa-neo4j-fork')
 const neo4jConfig = config.get('neo4j')
+const initAppRoutes = require("./routes")
 
 /**
  * check license
  */
 const lincense_file = `${process.env['LICENSE_PATH']}/${process.env['NODE_NAME']}.lic`
-const license = license_checker.load(lincense_file)
+const license = license_helper.load(lincense_file)
 logger.info('cmdb-api license:' + JSON.stringify(license))
+
+
+/**
+ * config options
+ */
+const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')}
+const additionalPropertyCheck = config.get('additionalPropertyCheck')
+const cache_loadUrl = {cmdb_url:`http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`}
 
 /**
  * int koa app and load scrichon middlewares
  */
 let koaNeo4jOptions = {
     neo4j: {
-        boltUrl: 'bolt://'+ neo4jConfig.host + ':' + neo4jConfig.port,
-        user: neo4jConfig.user,
-        password: neo4jConfig.password
+        boltUrl: `bolt://${process.env['NEO4J_HOST']||neo4jConfig.host}:${neo4jConfig.port}`,
+        user: process.env['NEO4J_USER']||neo4jConfig.user,
+        password: process.env['NEO4J_PASSWD']||neo4jConfig.password
     },
     middleware:[
         getLicense,
         check_token({check_token_url:`http://${config.get('privateIP')||'localhost'}:${config.get('auth.port')}/auth/check`}),
-        acl_checker.middleware
+        acl_checker({redisOption})
     ]
 }
 if(config.get('wrapResponse'))
@@ -46,10 +54,12 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
 /**
  * init routes from schema and start server
  */
+
 app.neo4jConnection.initialized.then(() => {
-    scirichon_cache.initialize({cmdb_url: `http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`}).then((schemas)=>{
+    schema.loadSchemas({redisOption,additionalPropertyCheck}).then((schemas)=>{
         if (schemas && schemas.length) {
             initAppRoutes(app)
+            scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck})
             app.listen(config.get('cmdb.port'), function () {
                 logger.info(`App started`);
             })

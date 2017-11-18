@@ -1,9 +1,9 @@
-const license_checker = require('cmdb-license-checker')
+const license_helper = require('license-helper')
 const moment = require('moment')
 
 module.exports = async (ctx, next) => {
-    let license = license_checker.getLicense()
-    let expiration_date = moment(license.expiration),now = license_checker.now()
+    let license = license_helper.getLicense()
+    let expiration_date = moment(license.expiration),now = license_helper.now()
     if(expiration_date.isBefore(now)){
         console.log('license expired,please contact administrator')
         process.exit(-1)

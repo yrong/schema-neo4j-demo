@@ -16,21 +16,19 @@ fs.readdirSync("node_modules")
 
 var devtool = 'source-map'
 
-var entry = {server:'./server.js',init:'./init.js'}
+var entry = {server:'./server.js'}
 var packages = [
-    {from:'config',to:'config'},{from:'cypher',to:'cypher',ignore:['*.js']},
-    {from:'test/*.json'},{from:'node_modules',to:'node_modules'},
-    {from:'search',to:'search',ignore:['*.js']},
-    {from:'schema',to:'schema',ignore:['*.js']}
+    {from:'cypher',to:'cypher',ignore:['*.js']},
+    {from:'node_modules',to:'node_modules'},
 ]
 if(process.env.EDITION === 'essential'){
-    packages = [...packages,{from:'script/init.sh',to:'script/init.sh'},{from:'script/execute_cypher.sh',to:'script/execute_cypher.sh'},{from:'script/jq-linux64',to:'script/jq-linux64'}]
-}else{
-    entry = Object.assign(entry,{exportJSON:'./export/json/index.js',importJSON:'./import/json/index.js'})
-    packages = [...packages,{from:'script',to:'script'}]
+    packages = [...packages,{from:'script',to:'script'},{from:'search',to:'search',ignore:['*.js']},
+        {from:'schema',to:'schema',ignore:['*.js']},{from:'test/*.json'}]
+    entry = Object.assign(entry,{init:'./init.js',exportJSON:'./export/json/index.js',importJSON:'./import/json/index.js'})
 }
 
 var releaseDir = process.env.ReleaseDir||path.join(__dirname, 'release')
+var edition = process.env.EDITION || 'essential'
 
 var plugins = [
     new UglifyJSPlugin({
@@ -39,7 +37,7 @@ var plugins = [
     new CopyWebpackPlugin(packages, {ignore: ['*.gitignore']}),
     new CleanWebpackPlugin(['build']),
     new GitRevisionPlugin(),
-    new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildEnd:[`/bin/bash ./postbuild.sh --dir=${releaseDir}`]})
+    new WebpackShellPlugin({onBuildStart:['echo "Build Start"'], onBuildEnd:[`/bin/bash ./postbuild.sh --dir=${releaseDir} --edition=${edition}`]})
 ];
 
 var config = {
