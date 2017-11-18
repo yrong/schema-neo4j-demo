@@ -16,7 +16,7 @@ fs.readdirSync("node_modules")
 
 var devtool = 'source-map'
 
-var entry = {server:'./server.js'}
+var entry = {server:'./app.js'}
 var packages = [
     {from:'cypher',to:'cypher',ignore:['*.js']},
     {from:'node_modules',to:'node_modules'},
