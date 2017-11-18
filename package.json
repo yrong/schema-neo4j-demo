@@ -5,6 +5,7 @@
   "scripts": {
     "buildDockerImage": "EDITION=docker webpack",
     "buildEssential": "EDITION=essential webpack",
+    "build": "webpack",
     "test": "mocha",
     "start": "NODE_ENV=production NODE_NAME=cmdb node ./server.js",
     "init": "/bin/bash ./script/init.sh",

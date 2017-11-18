@@ -21,7 +21,7 @@ var packages = [
     {from:'cypher',to:'cypher',ignore:['*.js']},
     {from:'node_modules',to:'node_modules'},
 ]
-if(process.env.EDITION === 'essential'){
+if(!process.env.EDITION){
     packages = [...packages,{from:'script',to:'script'},{from:'search',to:'search',ignore:['*.js']},
         {from:'schema',to:'schema',ignore:['*.js']},{from:'test/*.json'}]
     entry = Object.assign(entry,{init:'./init.js',exportJSON:'./export/json/index.js',importJSON:'./import/json/index.js'})
