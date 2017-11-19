@@ -15,5 +15,6 @@
     }
   },
   "required": ["name","server_room_id"],
-  "route":"/cabinets"
+  "route":"/cabinets",
+  "uniqueKeys":["name"]
 }

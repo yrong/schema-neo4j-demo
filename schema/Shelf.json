@@ -15,5 +15,6 @@
     }
   },
   "required": ["name","warehouse_id"],
-  "route": "/shelves"
+  "route": "/shelves",
+  "uniqueKeys":["name"]
 }

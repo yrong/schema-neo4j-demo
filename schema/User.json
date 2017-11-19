@@ -30,5 +30,6 @@
       "type":"string"
     }
   },
-  "route":"/users"
+  "route":"/users",
+  "uniqueKeys":["name","alias"]
 }

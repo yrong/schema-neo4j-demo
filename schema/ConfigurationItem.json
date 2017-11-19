@@ -49,5 +49,6 @@
   },
   "required": ["name"],
   "route": "/cfgItems",
-  "searchable":{"index":"cmdb"}
+  "searchable":{"index":"cmdb"},
+  "uniqueKeys":["name","ip_address"]
 }

@@ -27,22 +27,16 @@ build/Release
 node_modules
 
 .idea
-
-dist
-
-main.js
-main.js.map
 !webpack.config.js
-
-nohup.out
 dump.rdb
 wheels
 build
-tmp
-export_data
-CMDB-API.lic
 logs
 runtime
 package-lock.json
 cmdb.lic
 config
+release
+Dockerfile
+webpack.js
+.babelrc

@@ -44,5 +44,6 @@
     }
   },
   "required": ["name"],
-  "route":"/it_services/service"
+  "route":"/it_services/service",
+  "uniqueKeys":["name"]
 }

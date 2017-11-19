@@ -11,5 +11,6 @@
   },
   "required": ["name"],
   "route": "/wareHouses",
-  "member":"Shelf"
+  "member":"Shelf",
+  "uniqueKeys":["name"]
 }
