@@ -1,5 +1,5 @@
 {
-  "id": "ITServiceGroup",
+  "id": "Brand",
   "type": "object",
   "properties": {
     "name": {
@@ -10,7 +10,6 @@
     }
   },
   "required": ["name"],
-  "route":"/it_services/group",
-  "member":"ITService",
+  "route":"/brands",
   "uniqueKeys":["name"]
 }

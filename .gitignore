@@ -34,9 +34,9 @@ build
 logs
 runtime
 package-lock.json
-cmdb.lic
 config
 release
 Dockerfile
 webpack.js
 .babelrc
+*.lic

@@ -60,7 +60,7 @@ const initNeo4jConstraints = async ()=>{
 
 const initJsonSchema = async ()=>{
     let files = fs.readdirSync("./schema"),schma_obj,
-        redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')}
+        redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:'VEHICLE_SCHEMA'}
     schema.initialize({redisOption})
     await schema.clearSchemas()
     for(let file of files){
@@ -75,8 +75,8 @@ const initJsonSchema = async ()=>{
 
 const initialize = async ()=>{
     await initJsonSchema()
-    await initNeo4jConstraints()
-    await initElasticSearchSchema()
+    // await initNeo4jConstraints()
+    // await initElasticSearchSchema()
 }
 
 initialize().then((schemas)=>{

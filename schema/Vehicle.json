@@ -1,0 +1,14 @@
+{
+  "id": "Vehicle",
+  "type": "object",
+  "properties": {
+    "model":{
+        "type": "string",
+        "schema":"Model",
+        "relationship":{"name":"ModelOf"}
+    }
+  },
+  "required": ["model"],
+  "route": "/vehicles",
+  "searchable":{"index":"vehicle"}
+}

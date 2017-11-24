@@ -1,5 +1,5 @@
 {
-  "id": "ServerRoom",
+  "id": "Exterior",
   "type": "object",
   "properties": {
     "name": {
@@ -7,10 +7,14 @@
     },
     "description": {
       "type": "string"
+    },
+    "model":{
+      "type": "string",
+      "schema":"Model",
+      "relationship":{"name":"BelongsTo"}
     }
   },
   "required": ["name"],
-  "route":"/serverRooms",
-  "member":"Cabinet",
+  "route":"/exteriors",
   "uniqueKeys":["name"]
 }

@@ -1,6 +1,5 @@
 const config = require('config')
 const schema = require('redis-json-schema')
-const scirichon_cache = require('scirichon-cache')
 /**
  * init logger
  */
@@ -28,9 +27,8 @@ logger.info('cmdb-api license:' + JSON.stringify(license))
 /**
  * config options
  */
-const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')}
+const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:'VEHICLE_SCHEMA'}
 const additionalPropertyCheck = config.get('additionalPropertyCheck')
-const cache_loadUrl = {cmdb_url:`http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`}
 
 /**
  * int koa app and load scrichon middlewares
@@ -59,8 +57,7 @@ app.neo4jConnection.initialized.then(() => {
     schema.loadSchemas({redisOption,additionalPropertyCheck}).then((schemas)=>{
         if (schemas && schemas.length) {
             initAppRoutes(app)
-            scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck})
-            app.listen(config.get('cmdb.port'), function () {
+            app.listen(config.get('vehicle.port'), function () {
                 logger.info(`App started`);
             })
         }else{
