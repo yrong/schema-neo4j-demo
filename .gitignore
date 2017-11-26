@@ -1,7 +1,6 @@
 # Logs
 *.log
 
-.env
 # Runtime data
 pids
 *.pid
@@ -34,7 +33,7 @@ build
 logs
 runtime
 package-lock.json
-cmdb.lic
+*.lic
 config
 release
 Dockerfile

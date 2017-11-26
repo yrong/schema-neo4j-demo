@@ -1,6 +1,0 @@
-{
-  "id": "Firewall",
-  "allOf": [
-    {"$ref": "NetworkDevice"}
-  ]
-}
