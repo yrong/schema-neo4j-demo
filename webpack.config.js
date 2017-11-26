@@ -1,6 +1,6 @@
 const webpack_config = require('webpack-builder-advanced')
 
-let entry = {server:'./app.js',init:'./init.js'}
+let entry = {server:'./app.js'}
 const packages = [
     {from:'cypher',to:'cypher',ignore:['*.js']}
 ]

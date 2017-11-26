@@ -32,7 +32,6 @@ wheels
 build
 logs
 runtime
-package-lock.json
 *.lic
 config
 release
