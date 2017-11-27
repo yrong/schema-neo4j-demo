@@ -51,16 +51,17 @@ const referencedMapper = async (val,origional) => {
                             val[key] = await scirichon_cache.getItemByCategoryAndID(properties[key].schema,val[key]) || val[key]
                         }
                         else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
-                            let objs = [],obj={},id
-                            for (id of val[key]) {
-                                obj = await scirichon_cache.getItemByCategoryAndID(properties[key].items.schema, id) || id
+
+                            let objs = [],obj,id
+                            for(id of val[key]){
+                                obj = await scirichon_cache.getItemByCategoryAndID(properties[key].items.schema,id)||id
                                 objs.push(obj)
                             }
                             val[key] = objs
                         }else if(properties[key].type==='object') {
-                            await referencedObjectMapper(val[key], properties[key])
-                        }else if(properties[key].type==='array'&&properties[key].items.type==='object'){
-                            for(let entry of val[key]){
+                            val[key] = await referencedObjectMapper(val[key], properties[key])
+                        }else if (properties[key].type === 'array' && properties[key].items.type === 'object') {
+                            for (let entry of val[key]) {
                                 entry = await referencedObjectMapper(entry, properties[key].items)
                             }
                         }

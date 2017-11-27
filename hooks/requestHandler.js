@@ -56,8 +56,8 @@ const queryParamsCypherGenerator = function (params) {
 
 const cudItem_params_stringify = async (params) => {
     let objectFields=schema.getSchemaObjectProperties(params.category)
-    for(let key of objectFields){
-        if(params.fields[key]){
+    for (let key of objectFields) {
+        if (_.isObject(params.fields[key])) {
             params.fields[key] = JSON.stringify(params.fields[key])
         }
     }
