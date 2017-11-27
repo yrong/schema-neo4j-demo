@@ -56,13 +56,9 @@ const queryParamsCypherGenerator = function (params) {
 
 const cudItem_params_stringify = async (params) => {
     let objectFields=schema.getSchemaObjectProperties(params.category)
-    for (let key in params.fields){
-        if(!_.isArray(params.fields[key])&&_.isObject(params.fields[key])){
-            if(_.includes(objectFields,key)){
-                params.fields[key] = JSON.stringify(params.fields[key])
-            }else{
-                throw new ScirichonError('object field not defined in schema,invalid field:' + key)
-            }
+    for (let key of objectFields) {
+        if (_.isObject(params.fields[key])) {
+            params.fields[key] = JSON.stringify(params.fields[key])
         }
     }
     params = _.assign(params, params.fields)

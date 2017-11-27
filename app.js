@@ -22,7 +22,7 @@ const initAppRoutes = require("./routes")
  */
 const lincense_file = `${process.env['LICENSE_PATH']}/${process.env['NODE_NAME']}.lic`
 const license = license_helper.load(lincense_file)
-logger.info('cmdb-api license:' + JSON.stringify(license))
+logger.info('license:' + JSON.stringify(license))
 
 
 /**
@@ -30,7 +30,10 @@ logger.info('cmdb-api license:' + JSON.stringify(license))
  */
 const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
 const additionalPropertyCheck = config.get('additionalPropertyCheck')
-const cache_loadUrl = {cmdb_url:`http://${config.get('privateIP') || 'localhost'}:${config.get('cmdb.port')}/api`}
+const cache_url_key = `${process.env['NODE_NAME']}_url`
+const port = config.get(`${process.env['NODE_NAME']}.port`)
+const cache_loadUrl = {}
+cache_loadUrl[cache_url_key]=`http://${config.get('privateIP') || 'localhost'}:${port}/api`
 
 /**
  * int koa app and load scrichon middlewares
@@ -59,8 +62,8 @@ app.neo4jConnection.initialized.then(() => {
     schema.loadSchemas({redisOption,additionalPropertyCheck}).then((schemas)=>{
         if (schemas && schemas.length) {
             initAppRoutes(app)
-            scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck})
-            app.listen(config.get('cmdb.port'), function () {
+            scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']})
+            app.listen(port, function () {
                 logger.info(`App started`);
             })
         }else{

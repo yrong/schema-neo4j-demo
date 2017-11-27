@@ -3523,20 +3523,20 @@ redis-crud-fork@1.0.0-beta.8:
   version "1.0.0-beta.8"
   resolved "https://registry.npmjs.org/redis-crud-fork/-/redis-crud-fork-1.0.0-beta.8.tgz#6ff803b251f092bb7a5d108c75d24f43b30fd057"
 
-redis-json-schema-init@1.0.0-beta.2:
-  version "1.0.0-beta.2"
-  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.0-beta.2.tgz#99b076af891008e09f435d276ad106d289b4ae76"
+redis-json-schema-init@1.0.0-beta.4:
+  version "1.0.0-beta.4"
+  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.0-beta.4.tgz#96c4962a99e94c65bf40d72f715e02d73ad6230a"
   dependencies:
     config "^1.25.1"
     elasticsearch "^12.1.3"
     lodash "^4.17.4"
     neo4j-driver "^1.5.0"
     parse-neo4j-fork "^0.6.10"
-    redis-json-schema "1.0.0-beta.9"
+    redis-json-schema "1.0.1-beta.2"
 
-redis-json-schema@1.0.0-beta.9:
-  version "1.0.0-beta.9"
-  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.0-beta.9.tgz#deeec91b48da159091e0c978dc953c410f322522"
+redis-json-schema@1.0.1-beta.2:
+  version "1.0.1-beta.2"
+  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.1-beta.2.tgz#f5c5d899d31f7c151c13e0e485379deb1247350b"
   dependencies:
     ajv "^5.3.0"
     lodash "^4.17.4"
@@ -3762,13 +3762,13 @@ scirichon-acl-checker@1.0.1-beta.4:
     redis "^2.8.0"
     scirichon-common "1.0.1-beta.6"
 
-scirichon-cache@1.0.3-beta.6:
-  version "1.0.3-beta.6"
-  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.3-beta.6.tgz#b0ad1cf2fabf0e9608ddfb00fd5bd04774d0ffcd"
+scirichon-cache@1.0.3-beta.8:
+  version "1.0.3-beta.8"
+  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.3-beta.8.tgz#4952aa3b20acab25ade5c2e3979776f8bff034e3"
   dependencies:
     lodash "^4.17.4"
     node-cache-redis-fork "2.2.0-beta.3"
-    redis-json-schema "1.0.0-beta.9"
+    redis-json-schema "1.0.1-beta.2"
     request "^2.81.0"
     request-promise "^4.1.1"
     scirichon-common "1.0.1-beta.6"
