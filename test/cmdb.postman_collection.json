@@ -1,0 +1,2851 @@
+{
+	"info": {
+		"name": "cmdb",
+		"_postman_id": "47b13c4e-0294-1f24-c87e-683ab864ed8f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "0-prepare",
+			"description": "",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"var token = jsonData.data?jsonData.data.token:jsonData.token;",
+									"tests[\"token found\"] = token;",
+									"if(token){",
+									"    postman.setEnvironmentVariable(\"token\", token);",
+									"}",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\":\"{{auth_user}}\",\n  \"password\":\"{{auth_passwd}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{auth_api_host}}:{{auth_api_port}}/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{auth_api_host}}"
+							],
+							"port": "{{auth_api_port}}",
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "clear all items in db",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"items"
+							]
+						},
+						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
+					},
+					"response": []
+				},
+				{
+					"name": "get license",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"expiration find\"] = jsonData.expiration||jsonData.data.expiration"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"license"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1-auxiliary",
+			"description": "",
+			"item": [
+				{
+					"name": "add server_room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ServerRoom\",\n    \"fields\":{\n      \"name\":\"server_room\",\n      \"description\":\"机房\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"serverRooms"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add cabinet ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Cabinet\",\n    \"fields\":{\n      \"name\":\"cabinet\",\n      \"description\":\"cabinet\",\n      \"server_room_id\":\"{{server_room_id}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cabinets"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query server room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one room found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"serverRooms"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query Cabinets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"1 cabinet found\"] = jsonData.length === 1||jsonData.data.length >=1"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cabinets"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add warehouse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"warehouse_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"WareHouse\",\n    \"fields\":{\n      \"name\":\"warehouse\",\n      \"description\":\"warehouse\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"wareHouses"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add shelf",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"shelf_id\", jsonData.uuid);",
+									"}",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Shelf\",\n    \"fields\":{\n      \"name\":\"shelf\",\n      \"description\":\"shelf\",\n      \"warehouse_id\": \"warehouse\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/shelves",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"shelves"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query warehouse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one warehouse found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"wareHouses"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2-itservice",
+			"description": "",
+			"item": [
+				{
+					"name": "add ServiceGroup Messaging",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"group_messaging_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITServiceGroup\",\n    \"fields\":{\n      \"name\":\"Messaging\",\n      \"description\":\"Messaging\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"group"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add ServiceGroup Infrastructure",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"group_infrastructure_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITServiceGroup\",\n    \"fields\":{\n      \"name\":\"Infrastructure\",\n      \"description\":\"Infrastructure\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"group"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add ITService Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"service_email_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"email\",\n      \"description\":\"email\",\n      \"group\":\"Messaging\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add ITService Email With Name Conflict",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"console.log(responseCode);",
+									"tests[\"add ITService Email With same name conflict\"] = responseCode.code > 400"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"email\",\n      \"description\":\"email\",\n      \"group\":\"{{group_messaging_id}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add ITService Pop3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"service_pop3_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"pop3\",\n      \"description\":\"pop3\",\n      \"group\":\"{{group_messaging_id}}\",\n      \"parent\":\"{{service_email_id}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add ITService Dns",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"service_dns_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\":\"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"name\":\"dns\",\n      \"description\":\"dns\",\n      \"group\":\"{{group_infrastructure_id}}\",\n      \"dependendents\":[\"email\"]\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "patch ITService Dns",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITService\",\n    \"fields\":{\n      \"description\":\"dns2\",\n      \"group\":\"Infrastructure\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_dns_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service",
+								"{{service_dns_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query all it service groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"2 it service groups found\"] = jsonData.length === 2||jsonData.data.length >=2"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"group"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query all it service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"it services found\"] = jsonData.length >=3||jsonData.data.length >=3"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add ServiceGroup test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"    postman.setEnvironmentVariable(\"group_test_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ITServiceGroup\",\n    \"fields\":{\n      \"name\":\"test\",\n      \"description\":\"test\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"group"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete  ServiceGroup test success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group/{{group_test_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"group",
+								"{{group_test_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete used ServiceGroup Messaging failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group/{{group_messaging_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"group",
+								"{{group_messaging_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3-configurationItem",
+			"description": "",
+			"item": [
+				{
+					"name": "add operating system",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"windows xp\",\r      \"description\":\"Microsoft Windows XP\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add operating system ubuntu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"ubuntu\",\r      \"description\":\"ubuntu\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"subtype\":\"AntispamGateway\",\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"email\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query softwares",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one software found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							],
+							"query": [
+								{
+									"key": "subcategory",
+									"value": "Software",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query operating systems",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one software found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=OperatingSystem",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							],
+							"query": [
+								{
+									"key": "subcategory",
+									"value": "OperatingSystem",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add router",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"router_id\", jsonData.uuid);",
+									"}",
+									"var skipAdditionalPropertyCheck = (environment['additionalPropertyCheck'] == 'true'?false:true);",
+									"if(skipAdditionalPropertyCheck){",
+									"   postman.setNextRequest(\"add physical server\"); ",
+									"}",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n          },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add physical server",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"AS-2285-BAK-1\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"shelf\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"asset_id\":\"test\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add switch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"switch_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Switch\",\n    \"fields\":{\n      \"name\":\"switch\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add firewall",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"firewall_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Firewall\",\n    \"fields\":{\n      \"name\":\"firewall\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"}\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add virtual server",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"   postman.setEnvironmentVariable(\"virtual_server_id\", jsonData.uuid); ",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.107\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.107\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "patch router with it_service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_email_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":\"{{auth_user_id}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{router_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "patch physical server with os",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"operating_system\": \"ubuntu\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"cabinet\",\"test\":\"test\"}\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{physical_server_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query router by uuid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"1 Configuration Item found\"] = jsonData.uuid === environment['router_id']"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{router_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query physical server by uuid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"1 Configuration Item found\"] = jsonData.uuid === environment['physical_server_id']"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{physical_server_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query ConfigurationItems",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"1 Configuration Item found\"] = jsonData.length >= 1||jsonData.data.length >=1"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query ConfigurationItems by subcategory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"1 Configuration Item found\"] = jsonData.length >= 1||jsonData.data.length >=1"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Hardware,Software,NetworkDevice",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							],
+							"query": [
+								{
+									"key": "subcategory",
+									"value": "Hardware,Software,NetworkDevice",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query ConfigurationItems paginated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"2 Configuration Item found\"] = (jsonData.results&&jsonData.results.length === 2)||jsonData.data.results.length ==2"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?page=1&per_page=2",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"equals": true
+								},
+								{
+									"key": "per_page",
+									"value": "2",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete already referenced email service fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"node already referenced\"] = responseCode.code > 400",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service",
+								"{{service_email_id}}"
+							]
+						},
+						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
+					},
+					"response": []
+				},
+				{
+					"name": "delete already referenced asset fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"node already referenced\"] = responseCode.code > 400",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/{{cabinet_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cabinets",
+								"{{cabinet_id}}"
+							]
+						},
+						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
+					},
+					"response": []
+				},
+				{
+					"name": "delete already referenced physical server fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"node already referenced\"] = responseCode.code > 400",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{physical_server_id}}"
+							]
+						},
+						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
+					},
+					"response": []
+				},
+				{
+					"name": "add virtual server 1 with empty fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"   postman.setEnvironmentVariable(\"virtual_server_1_id\", jsonData.uuid); ",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver2\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.103\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"windows xp\",\n      \"applications\":[\"反垃圾邮件网关\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.109\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query virtual server 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"empty field already removed\"] = (jsonData.it_service&&jsonData.it_service.length == 1 && jsonData.warranty_expiration_date === undefined)||jsonData.data.it_service.length == 1"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{virtual_server_1_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete virtual server 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"deleted\"] = jsonData.uuid",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{virtual_server_1_id}}"
+							]
+						},
+						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4-processFlow",
+			"description": "",
+			"item": [
+				{
+					"name": "add incident flow 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add incident flow 2 reference incident flow 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"incident_flow_2_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n       \"reference_kb\":[\"{{article_1_id}}\"],\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "add incident flow 3 with it_service empty",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"incident_flow_3_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[],\n      \"status\": \"open\",\n      \"test\":1\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "patch incident flow 1 status to solved",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"solved\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows",
+								"{{incident_flow_1_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "patch incident flow 1 status to closed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n       \"status\": \"closed\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows",
+								"{{incident_flow_1_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query process flow by uuid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"process flow by uuid found\"] = jsonData.uuid;",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows",
+								"{{incident_flow_1_id}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete incident flow 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows",
+								"{{incident_flow_3_id}}"
+							]
+						},
+						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5-advancedSearch",
+			"description": "",
+			"item": [
+				{
+					"name": "5-1-cql",
+					"description": "",
+					"item": [
+						{
+							"name": "cql as parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"it service instance found\"] = jsonData.length >= 1||jsonData.data.length>=1;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"category\":\"ITService\",\n\t\"search\":[\"email\",\"pop3\"],\n\t\"cypher\":\"OPTIONAL MATCH (s1:ITService) WHERE s1.uuid IN {search} or s1.group IN {search} WITH COLLECT(distinct(s1.uuid)) as services_byIds UNWIND {search} as keyword OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup) WHERE s1.name = keyword or sg.name = keyword WITH services_byIds+collect(distinct(s1.uuid)) as services UNWIND services AS service RETURN COLLECT(distinct service)\"\n}"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByCypher"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "query ConfigurationItem mounted advanced",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"mount configurationItems\"] = jsonData.length ||jsonData.data.length>=1"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"category\":\"ConfigurationItem\",\n  \"cypherQueryFile\":\"mountedConfigurationItemRels\"\n}\n\n\n\n\n\n"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByCypher"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "query uuid of it service by service name/id or service group name/id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"it service instance found\"] = jsonData.length >= 1||jsonData.data.length>=1;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"category\":\"ITService\",\n\t\"search\":[\"email\",\"pop3\"],\n\t\"cypherQueryFile\":\"advanceSearchITService\"\n}"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByCypher"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "query it service reference attributes by uuids",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"2 it service instances found\"] = jsonData.length >= 1||jsonData.data.length>=1;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"category\":\"ITService\",\n\t\"uuids\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n\t\"cypherQueryFile\":\"queryITServiceByIds\"\n}"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByCypher"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "query it service groups related cmdb servers advanced",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"server found\"] = jsonData.length >=1||jsonData.data.length>=1"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"category\":\"ConfigurationItem\",\n\t\"cypherQueryFile\":\"queryHostsByITService\",\n\t\"uuid\":[\"{{group_messaging_id}}\"]\n}"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByCypher"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "5-2-eql",
+					"description": "",
+					"item": [
+						{
+							"name": "search configurationItem with eql as parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1; "
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"function pausecomp(millis)",
+											" {",
+											"  var date = new Date();",
+											"  var curDate = null;",
+											"  do { curDate = new Date(); }",
+											"  while(curDate-date < millis);",
+											"}",
+											"",
+											"//pausecomp(environment['es-refresh-interval']);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "token",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n      \t\"bool\":{\n      \t\t\"must\":[\n      \t\t\t{\"match\":{\"status.status\":\"In_Use\"}},\n      \t\t\t{\"bool\":{\"should\":[{\"match\":{\"it_service\":\"{{service_email_id}}\"}},{\"match\":{\"it_service\":\"{{service_pop3_id}}\"}}]}}\n      \t\t]\n      \t}\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByEql"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"equals": true
+										},
+										{
+											"key": "per_page",
+											"value": "10",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "search configurationItem by keyword in all fields",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1",
+											""
+										]
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"function pausecomp(millis)",
+											" {",
+											"  var date = new Date();",
+											"  var curDate = null;",
+											"  do { curDate = new Date(); }",
+											"  while(curDate-date < millis);",
+											"}",
+											"",
+											"//pausecomp(environment['es-refresh-interval']);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "token",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"keyword\":\"test\"\n}\n\n\n\n\n\n"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByEql"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"equals": true
+										},
+										{
+											"key": "per_page",
+											"value": "10",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "6-schema",
+			"description": "",
+			"item": [
+				{
+					"name": "query properties of router",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody)",
+									"jsonData = jsonData.data||jsonData",
+									"tests[\"Router schema found\"] = jsonData.properties"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"schema",
+								"Router"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query Asset Hierarchy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"ConfigurationItem as root\"] = jsonData.name === 'Asset'||jsonData.data.name==='Asset'"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"categories",
+								"Asset"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
