@@ -27,7 +27,7 @@ logger.info('cmdb-api license:' + JSON.stringify(license))
 /**
  * config options
  */
-const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['SCHEMA_PREFIX']||'SCHEMA'}
+const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
 const additionalPropertyCheck = config.get('additionalPropertyCheck')
 
 /**

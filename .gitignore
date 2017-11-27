@@ -1,7 +1,6 @@
 # Logs
 *.log
 
-.env
 # Runtime data
 pids
 *.pid
@@ -33,10 +32,7 @@ wheels
 build
 logs
 runtime
-package-lock.json
+*.lic
 config
 release
 Dockerfile
-webpack.js
-.babelrc
-*.lic
