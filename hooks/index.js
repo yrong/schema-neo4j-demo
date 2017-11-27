@@ -41,17 +41,9 @@ const addNotification = async (params,ctx)=>{
 const updateCache = async (params,ctx)=>{
     if (ctx.method === 'POST' || ctx.method === 'PUT' || ctx.method === 'PATCH') {
         if (params.uuid)
-            await scirichon_cache.set(params.uuid, {
-                name: params.fields.name,
-                uuid: params.uuid,
-                category: params.category
-            })
+            await scirichon_cache.set(params.uuid, params.fields)
         if (params.name && params.category)
-            await scirichon_cache.set(params.category + '_' + params.name, {
-                name: params.fields.name,
-                uuid: params.uuid,
-                category: params.category
-            })
+            await scirichon_cache.set(params.category + '_' + params.name, params.fields)
     }
     if (ctx.method === 'DELETE') {
         if (params.uuid)
