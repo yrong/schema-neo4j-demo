@@ -17,6 +17,8 @@ const generateAddNodeCypher=(params)=>{
     let labels = schema.getParentSchemas(params.category)
     if(params.fields.subtype)
         labels.push(params.fields.subtype)
+    if(params.fields.tags)
+        labels = [...labels,params.fields.tags]
     labels = _.isArray(labels)?labels.join(":"):params.category;
     return cmdb_addNode_Cypher_template(labels);
 }
