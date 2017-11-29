@@ -1,0 +1,6 @@
+{
+  "id": "Router",
+  "allOf": [
+    {"$ref": "NetworkDevice"}
+  ]
+}

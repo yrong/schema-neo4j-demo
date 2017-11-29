@@ -1,0 +1,15 @@
+{
+  "id": "Software",
+  "allOf": [
+    {"$ref": "Asset"},
+    {
+      "properties": {
+        "subtype": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  ],
+  "required": ["subtype"]
+}

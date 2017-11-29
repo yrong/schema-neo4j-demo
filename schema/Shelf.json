@@ -1,0 +1,20 @@
+{
+  "id": "Shelf",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "warehouse_id":{
+      "type":"string",
+      "schema":"WareHouse",
+      "relationship":{"name":"LocatedAt"}
+    }
+  },
+  "required": ["name","warehouse_id"],
+  "route": "/shelves",
+  "uniqueKeys":["name"]
+}

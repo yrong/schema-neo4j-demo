@@ -1,0 +1,14 @@
+{
+  "id": "User",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "passwd":{
+      "type":"string"
+    }
+  },
+  "route":"/users",
+  "uniqueKeys":["name"]
+}

@@ -1,0 +1,6 @@
+{
+  "id": "Camera",
+  "allOf": [
+    {"$ref": "Hardware"}
+  ]
+}

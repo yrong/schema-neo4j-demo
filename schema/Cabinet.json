@@ -1,0 +1,20 @@
+{
+  "id": "Cabinet",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "server_room_id":{
+      "type":"string",
+      "schema":"ServerRoom",
+      "relationship":{"name":"LocatedAt"}
+    }
+  },
+  "required": ["name","server_room_id"],
+  "route":"/cabinets",
+  "uniqueKeys":["name"]
+}

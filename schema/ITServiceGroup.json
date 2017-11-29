@@ -1,0 +1,16 @@
+{
+  "id": "ITServiceGroup",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": ["name"],
+  "route":"/it_services/group",
+  "member":"ITService",
+  "uniqueKeys":["name"]
+}
