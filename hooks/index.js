@@ -20,7 +20,7 @@ const needNotify = (params,ctx)=>{
 
 const addNotification = async (params,ctx)=>{
     if(needNotify(params,ctx)){
-        let notification_obj = {type:params.category,user:ctx[common.TokenUserName],source:'cmdb'}
+        let notification_obj = {type:params.category,user:ctx[common.TokenUserName],source:process.env['NODE_NAME']}
         if(ctx.method === 'POST'){
             notification_obj.action = 'CREATE'
             notification_obj.new = params.fields

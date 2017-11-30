@@ -116,7 +116,7 @@ const generateRelationCypher = (params)=>{
     let refProperties = schema.getSchemaRefProperties(params.category),val,cypher,rel_part,rel_cyphers = []
     for(let ref of refProperties){
         val = jp.query(params, `$.${ref.attr}`)[0]
-        if(val){
+        if(val&&ref.relationship){
             if(ref.relationship.parentObjectAsRelProperty){
                 cypher = `MATCH (node:${params.category}{uuid:{uuid}})
                 MATCH (ref_node:${ref.schema}{uuid:{${ref.attr.split('.')[0]}}.${ref.attr.split('.')[1]}})
