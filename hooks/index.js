@@ -39,6 +39,9 @@ const addNotification = async (params,ctx)=>{
 }
 
 const updateCache = async (params,ctx)=>{
+    let schema_obj = schema.getSchema(params.category)
+    if(schema_obj.cache&&schema_obj.cache.ignore)
+        return
     if (ctx.method === 'POST' || ctx.method === 'PUT' || ctx.method === 'PATCH') {
         if (params.uuid)
             await scirichon_cache.set(params.uuid, params.fields)
