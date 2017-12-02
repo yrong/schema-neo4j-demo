@@ -49,5 +49,5 @@
   },
   "required": ["it_service"],
   "route": "/processFlows",
-  "searchable":{"index":"processflow"}
+  "search":{"index":"processflow"}
 }

@@ -13,9 +13,9 @@ const responseHandler = require('../hooks/responseHandler')
 const hidden_fields = requestHandler.internalUsedFields
 
 const addOrUpdateItem = function(params, ctx) {
-    let routes = schema.getApiRoutesAll(),typeName = schema.getAncestorSchemas(params.category),indexName,index_obj,promise = Promise.resolve(params)
-    if(routes[typeName]&&routes[typeName].searchable){
-        indexName = routes[typeName].searchable.index
+    let schemas = schema.getSchemas(),typeName = schema.getAncestorSchemas(params.category),indexName,index_obj,promise = Promise.resolve(params)
+    if(schemas[typeName]&&schemas[typeName].search){
+        indexName = schemas[typeName].search.index
         index_obj = {
             index: indexName,
             type: typeName,
@@ -38,12 +38,12 @@ const addOrUpdateItem = function(params, ctx) {
 
 const deleteItem = function(params, ctx) {
     var queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let routes = schema.getApiRoutesAll(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,promise = Promise.resolve(params)
-    if((routes[typeName]&&routes[typeName].searchable)||ctx.deleteAll){
+    let schemas = schema.getSchemas(),typeName = requestHandler.getCategoryFromUrl(ctx),indexName,promise = Promise.resolve(params)
+    if((schemas[typeName]&&schemas[typeName].search)||ctx.deleteAll){
         if(ctx.deleteAll)
             indexName = '*'
         else
-            indexName = routes[typeName].searchable.index
+            indexName = schemas[typeName].search.index
         var delObj = {
             index: indexName,
             body: {
@@ -71,9 +71,9 @@ const searchItem = (params, ctx)=> {
         params_pagination = {"from":from,"size":params.per_page}
     }
     var queryObj = params.body?{body:params.body}:{q:query}
-    let routes = schema.getApiRoutesAll()
+    let schemas = schema.getSchemas()
     let typeName = params.category = params.category || requestHandler.getCategoryFromUrl(ctx)
-    let indexName = routes[typeName].searchable.index
+    let indexName = schemas[typeName].search.index
     params.search = true
     var searchObj = _.assign({
         index: indexName,
@@ -90,10 +90,21 @@ const searchItem = (params, ctx)=> {
     });
 }
 
-var checkStatus = ()=> {
+const checkStatus = ()=> {
     return es_client.ping({
         requestTimeout: Infinity
     })
 }
 
-module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus}
+const batchUpdate = async (category,uuids,body)=>{
+    let bulks = [],schemas = schema.getSchemas()
+    if(schemas[category].search){
+        for(let uuid of uuids){
+            bulks.push({update:{_index: schemas[category].search.index, _type: category, _id: uuid}})
+            bulks.push(body)
+        }
+        await es_client.bulk({body:bulks})
+    }
+}
+
+module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus,batchUpdate}
