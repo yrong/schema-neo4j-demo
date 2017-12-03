@@ -12,6 +12,31 @@ const wrapRequest = (category,item) => {
     return {data:{category:category,fields:item},batchImport:true}
 }
 
+const isSchemaCrossed = (category1, category2)=>{
+    return _.intersection(schema.getParentCategories(category1),schema.getParentCategories(category2)).length>0
+}
+
+const sortCategories = (routeSchemas)=>{
+    let noRefTypes=[],advancedTypes=[],otherTypes=[],routeCategories = _.map(routeSchemas,(schema)=>schema.id)
+    for(let obj of routeSchemas){
+        if(obj.search){
+            advancedTypes.push(obj.id)
+        }
+        let no_referenced = true
+        for(let key in obj['properties']){
+            let val = obj['properties'][key]
+            if(val.schema){
+                no_referenced = false
+                break
+            }
+        }
+        if(no_referenced)
+            noRefTypes.push(obj.id)
+    }
+    otherTypes = _.difference(routeCategories, _.concat(noRefTypes,advancedTypes))
+    return _.concat(noRefTypes,otherTypes,advancedTypes)
+}
+
 const sortItemsDependentFirst = (items)=>{
     if(!items||items.length==0)
         return items
@@ -21,7 +46,7 @@ const sortItemsDependentFirst = (items)=>{
         for(let refProperty of refProperties){
             propertyVal = item[refProperty['attr']]
             if(propertyVal){
-                if(schema.isSchemaCrossed(refProperty['schema'],item.category)){
+                if(isSchemaCrossed(refProperty['schema'],item.category)){
                     selfReference = true
                     break
                 }
@@ -50,7 +75,7 @@ const itemPreprocess = (item)=>{
 }
 
 const addItem = async(category,item,update) =>{
-    let route = schema.getRouteFromParentSchemas(category),method='POST',uri
+    let route = schema.getAncestorSchema(category).route,method='POST',uri
     if(!route)
         throw new Error(`${category} api route not found`)
     uri = base_url  + route
@@ -62,16 +87,18 @@ const addItem = async(category,item,update) =>{
 }
 
 const importItems = async ()=>{
-    await schema.loadSchemas()
-    let date_dir = process.env.IMPORT_FOLDER
-    if(!date_dir)
+    const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
+    const additionalPropertyCheck = config.get('additionalPropertyCheck')
+    await schema.loadSchemas({redisOption,additionalPropertyCheck})
+    let data_dir = process.env.IMPORT_FOLDER
+    if(!data_dir)
         throw new Error(`env 'IMPORT_FOLDER' not defined`)
     let importStrategy = process.env.IMPORT_STRATEGY||'api'
-    let categories = [...schema.getSortedSchemas()]
+    let categories = sortCategories(schema.getApiRouteSchemas())
     let result = {}
     for(let category of categories){
-        let filePath = path.join(date_dir,category + '.json')
-        let errorFolder = path.join(date_dir,'exception')
+        let filePath = path.join(data_dir,category + '.json')
+        let errorFolder = path.join(data_dir,'exception')
         let errorFilePath = path.join(errorFolder,category + '.json')
         let errorItems = []
         if(fs.existsSync(filePath)){

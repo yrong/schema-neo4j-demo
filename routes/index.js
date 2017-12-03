@@ -20,7 +20,7 @@ const none_checker = ()=>true
 
 
 module.exports = (app)=>{
-    let routesDef = schema.getApiRoutesAll(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
+    let routesDef = schema.getApiRouteSchemas(),allowed_methods=['Add', 'Modify', 'FindAll', 'FindOne','Delete']
     let preProcess,postProcess,http_method,route,checker,procedure
     _.each(routesDef,(val)=>{
         _.each(allowed_methods,(method)=>{

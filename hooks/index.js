@@ -15,7 +15,13 @@ const responseHandler = require('./responseHandler')
 const logger = require('log4js_wrapper').getLogger()
 
 const needNotify = (params,ctx)=>{
-    return !(ctx.deleteAll || params.batchImport || ctx.headers[common.TokenName] === common.InternalTokenId)
+    if(ctx.deleteAll || ctx.headers[common.TokenName] === common.InternalTokenId)
+        return false
+    if(params.batchImport)
+        return false
+    let schema_obj = schema.getAncestorSchema(params.category)
+    if(schema_obj&&schema_obj.notification)
+        return true
 }
 
 const addNotification = async (params,ctx)=>{
@@ -39,22 +45,15 @@ const addNotification = async (params,ctx)=>{
 }
 
 const updateCache = async (params,ctx)=>{
-    let schema_obj = schema.getSchema(params.category)
-    if(schema_obj.cache&&schema_obj.cache.ignore)
+    if (ctx.method === 'DELETE'&&ctx.deleteAll) {
+        await scirichon_cache.flushAll()
         return
+    }
     if (ctx.method === 'POST' || ctx.method === 'PUT' || ctx.method === 'PATCH') {
-        if (params.uuid)
-            await scirichon_cache.set(params.uuid, params.fields)
-        if (params.name && params.category)
-            await scirichon_cache.set(params.category + '_' + params.name, params.fields)
+        await scirichon_cache.addItem(params.fields)
     }
     if (ctx.method === 'DELETE') {
-        if (params.uuid)
-            await scirichon_cache.del(params.uuid)
-        if (params.name && params.category)
-            await scirichon_cache.del(params.category + '_' + params.name)
-        if (ctx.deleteAll)
-            await scirichon_cache.flushAll()
+        await scirichon_cache.delItem(params.fields_old)
     }
 }
 
@@ -143,7 +142,7 @@ module.exports = {
         let result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,params, true)
         return {
             properties:schema.getSchemaProperties(params.category),
-            parents:schema.getParentSchemas(params.category),
+            parents:schema.getParentCategories(params.category),
             references:_.uniq(_.map(schema.getSchemaRefProperties(params.category),(attr)=>attr.schema)),
             subtypes:_.map(result,(subtype)=>subtype.category)
         }

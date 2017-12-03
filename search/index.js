@@ -13,7 +13,7 @@ const responseHandler = require('../hooks/responseHandler')
 const hidden_fields = requestHandler.internalUsedFields
 
 const addOrUpdateItem = function(params, ctx) {
-    let schemas = schema.getSchemas(),typeName = schema.getAncestorSchemas(params.category),indexName,index_obj,promise = Promise.resolve(params)
+    let schemas = schema.getSchemas(),typeName = schema.getAncestorCategory(params.category),indexName,index_obj,promise = Promise.resolve(params)
     if(schemas[typeName]&&schemas[typeName].search){
         indexName = schemas[typeName].search.index
         index_obj = {

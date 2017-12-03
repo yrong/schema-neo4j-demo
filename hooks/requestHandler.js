@@ -11,11 +11,10 @@ const cypherBuilder = require('../cypher/cypherBuilder')
 
 
 const getCategoryFromUrl = function (ctx) {
-    let category,key,val,routesDef = schema.getApiRoutesAll()
-    for (key in routesDef){
-        val = routesDef[key]
+    let category,val,routeSchemas = schema.getApiRouteSchemas()
+    for (val of routeSchemas){
         if(ctx.url.includes(val.route)){
-            category = key
+            category = val.id
             break
         }
     }
@@ -137,7 +136,7 @@ const internalUsedFieldsChecker = (params)=>{
 }
 
 const handleCudRequest = async (params, ctx)=>{
-    let item_uuid,result,dynamic_field
+    let item_uuid,result,dynamic_field,root_schema
     params = common.pruneEmpty(params)
     params.category = params.data?params.data.category:getCategoryFromUrl(ctx)
     if (ctx.method === 'POST') {
@@ -150,6 +149,10 @@ const handleCudRequest = async (params, ctx)=>{
         if(dynamic_field){
             result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(params.category), params, true)
             params.fields[dynamic_field] = String(result[0])
+        }
+        root_schema = schema.getAncestorSchema(params.category)
+        if(root_schema.uniqueKeys){
+            params.fields['unique_name']=params.fields[root_schema.uniqueKeys[0]]
         }
     }
     else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {

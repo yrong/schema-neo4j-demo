@@ -50,5 +50,6 @@
   "required": ["name"],
   "route": "/cfgItems",
   "search":{"index":"cmdb"},
-  "uniqueKeys":["name","ip_address"]
+  "uniqueKeys":["name","ip_address"],
+  "notification":true
 }

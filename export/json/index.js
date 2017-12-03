@@ -9,13 +9,15 @@ const common = require('scirichon-common')
 const base_url=`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}`
 
 const exportItems = async ()=>{
-    await schema.loadSchemas()
+    const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
+    const additionalPropertyCheck = config.get('additionalPropertyCheck')
+    await schema.loadSchemas({redisOption,additionalPropertyCheck})
     let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')
     }
     else{
-        categories = _.keys(schema.getApiRoutesAll())
+        categories = _.map(schema.getApiRouteSchemas(),(schema)=>schema.id)
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
     let storeDir = (process.env['RUNTIME_PATH']||'../runtime') + config.get('runtime_data.cmdb.json_export_dir')

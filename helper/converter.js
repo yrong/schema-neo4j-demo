@@ -6,10 +6,10 @@ const ScirichonError = common.ScirichonError
 
 const single_converter = async (key,value)=>{
     let uuid,cached_val
-    if(uuid_validator(value)||_.isInteger(value)){
+    if(uuid_validator(value)||common.isLegacyUserId(key,value)){
         cached_val = await scirichon_cache.getItemByCategoryAndID(key,value)
     }else{
-        cached_val = await scirichon_cache.getItemByCategoryAndName(key,value)
+        cached_val = await scirichon_cache.getItemByCategoryAndUniqueName(key,value)
     }
     if(cached_val&&cached_val.uuid)
         uuid = cached_val.uuid

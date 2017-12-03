@@ -14,7 +14,7 @@ const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uui
                                     ON MATCH SET n = {fields}`
 
 const generateAddNodeCypher=(params)=>{
-    let labels = schema.getParentSchemas(params.category)
+    let labels = schema.getParentCategories(params.category)
     if(params.fields.subtype)
         labels.push(params.fields.subtype)
     if(params.fields.tags)
