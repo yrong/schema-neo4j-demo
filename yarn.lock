@@ -3738,9 +3738,9 @@ scirichon-acl-checker@1.0.1-beta.4:
     redis "^2.8.0"
     scirichon-common "1.0.1-beta.6"
 
-scirichon-cache@1.0.4-beta.2:
-  version "1.0.4-beta.2"
-  resolved "https://registry.yarnpkg.com/scirichon-cache/-/scirichon-cache-1.0.4-beta.2.tgz#70581aafc9b6c57d0a00f01945b0448a17c444a1"
+scirichon-cache@1.0.4-beta.3:
+  version "1.0.4-beta.3"
+  resolved "https://registry.yarnpkg.com/scirichon-cache/-/scirichon-cache-1.0.4-beta.3.tgz#f791dee9038afae2b1dab6b77db40cc210243473"
   dependencies:
     lodash "^4.17.4"
     node-cache-redis-fork "2.2.0-beta.3"
