@@ -8,7 +8,7 @@ const ScirichonError = common.ScirichonError
 const logger = require('log4js_wrapper').getLogger()
 const ref_converter = require('../helper/converter')
 const cypherBuilder = require('../cypher/cypherBuilder')
-
+const scirichon_cache = require('scirichon-cache')
 
 const getCategoryFromUrl = function (ctx) {
     let category,val,routeSchemas = schema.getApiRouteSchemas()
@@ -136,7 +136,7 @@ const internalUsedFieldsChecker = (params)=>{
 }
 
 const handleCudRequest = async (params, ctx)=>{
-    let item_uuid,result,dynamic_field,root_schema
+    let item_uuid,result,dynamic_field,root_schema,key,keyNames
     params = common.pruneEmpty(params)
     params.category = params.data?params.data.category:getCategoryFromUrl(ctx)
     if (ctx.method === 'POST') {
@@ -153,6 +153,21 @@ const handleCudRequest = async (params, ctx)=>{
         root_schema = schema.getAncestorSchema(params.category)
         if(root_schema.uniqueKeys){
             params.fields['unique_name']=params.fields[root_schema.uniqueKeys[0]]
+        }
+        if(root_schema.compoundKeys){
+            for(key of root_schema.compoundKeys){
+                if(key!=='name'){
+                    result = await scirichon_cache.getItemByCategoryAndID(_.capitalize(key),params.fields[key])
+                    key = key + "_name"
+                    params[key] = params.fields[key] = result.name
+                }
+            }
+            keyNames = _.map(root_schema.compoundKeys,(key)=>{
+                if(key!=='name')
+                    key = key + "_name"
+                return key
+            })
+            params.unique_name = params.fields.unique_name = common.buildCompoundKey(keyNames,params.fields)
         }
     }
     else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {
