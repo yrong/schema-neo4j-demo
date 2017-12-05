@@ -63,6 +63,9 @@ app.neo4jConnection.initialized.then(() => {
         if (schemas && schemas.length) {
             initAppRoutes(app)
             scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']})
+            if(process.env['INIT_CACHE']){
+                scirichon_cache.loadAll()
+            }
             app.listen(port, function () {
                 logger.info(`App started`);
             })
