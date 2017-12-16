@@ -58,10 +58,6 @@ const deleteItem = function(params, ctx) {
     return promise
 }
 
-const esResponseWrapper = function(response){
-    return {count:response.hits.total,results:_.map(response.hits.hits,(result)=>_.omit(result._source,hidden_fields))}
-}
-
 const searchItem = (params, ctx)=> {
     var query = params.uuid?`uuid:${params.uuid}`:(params.keyword?params.keyword:'*');
     var _source = params._source?params._source.split(','):true;
@@ -74,7 +70,10 @@ const searchItem = (params, ctx)=> {
     let schemas = schema.getSchemas()
     let typeName = params.category = params.category || requestHandler.getCategoryFromUrl(ctx)
     let indexName = schemas[typeName].search.index
-    params.search = true
+    if(queryObj.body&&queryObj.body.aggs){
+        params_pagination = {size:0}
+        params.aggs = true
+    }
     var searchObj = _.assign({
         index: indexName,
         type: params.category,
@@ -82,10 +81,7 @@ const searchItem = (params, ctx)=> {
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
     return es_client.search(searchObj).then(async function (response) {
-        response = esResponseWrapper(response)
-        if(response.count>0&&_.isArray(response.results)){
-            response.results = await responseHandler.resultMapper(response.results, params, ctx);
-        }
+        response = await responseHandler.esResultMapper(response,params,ctx)
         return response
     });
 }
@@ -101,7 +97,7 @@ const batchUpdate = async (category,uuids,body)=>{
     if(schemas[category].search){
         for(let uuid of uuids){
             bulks.push({update:{_index: schemas[category].search.index, _type: category, _id: uuid}})
-            bulks.push(body)
+            bulks.push(_.omit(body, hidden_fields))
         }
         await es_client.bulk({body:bulks})
     }

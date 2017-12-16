@@ -75,9 +75,7 @@ const cudItem_params_stringify = async (params) => {
 
 const cudItem_referenced_params_convert = async (params)=>{
     var convert = async (ref,val)=>{
-        val = await ref_converter(ref.schema||ref.items.schema,val)
-        jp.value(params, `$.${ref.attr}`,val)
-        jp.value(params, `$.fields.${ref.attr}`,val)
+        await ref_converter(ref.schema||ref.items.schema,val)
     }
     var refs = schema.getSchemaRefProperties(params.category)
     if(refs){

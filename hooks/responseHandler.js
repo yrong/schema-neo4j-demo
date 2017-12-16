@@ -3,6 +3,53 @@ const uuid_validator = require('uuid-validate')
 const scirichon_cache = require('scirichon-cache')
 const schema = require('redis-json-schema')
 
+const removeAndRenameInternalProperties =  (val) => {
+    if(_.isArray(val)) {
+        val = _.map(val, function (val) {
+            return removeAndRenameInternalProperties(val)
+        });
+    }else if(_.isObject(val)){
+        for (let prop in val) {
+            if(_.includes(['doc_count_error_upper_bound','sum_other_doc_count'],prop)){
+                delete val[prop]
+            }
+            if(typeof val[prop] === 'object')
+                removeAndRenameInternalProperties(val[prop])
+        }
+    }
+    return val
+}
+
+const findRefCategory = (category,key)=>{
+    let refs = schema.getSchemaRefProperties(category)
+    for(let ref of refs){
+        if(ref.attr===key){
+            return ref.schema
+        }
+    }
+}
+
+const aggsMetaFields = ['key','key_as_string','buckets','doc_count','doc_count_error_upper_bound','sum_other_doc_count','ref_obj']
+
+const aggsReferencedMapper =  async (val,category) => {
+    let keys = _.keys(val)
+    for(let key of keys){
+        if(!_.includes(aggsMetaFields,key)){
+            let ref_category = findRefCategory(category,key),cached_obj
+            if(_.isArray(val[key]['buckets'])){
+                for(let internal_val of val[key]['buckets']){
+                    if(ref_category){
+                        cached_obj = await scirichon_cache.getItemByCategoryAndID(key,internal_val.key)
+                        internal_val.ref_obj = cached_obj
+                    }
+                    await aggsReferencedMapper(internal_val,category)
+                }
+            }
+        }
+    }
+    return val
+}
+
 const propertiesCombine = (results)=>{
     if(_.isArray(results)&&results.length){
         return _.map(results,(result)=>{
@@ -74,12 +121,27 @@ const referencedMapper = async (val,origional) => {
 }
 
 const resultMapper = async (result, params,ctx) => {
-    if(schema.getMemberType(params.category))
+    if(schema.getMemberType(params.category)&&!params.origional)
         result = propertiesCombine(result)
     result = await referencedMapper(result,params.origional?true:false)
     return result
 }
 
+const esResultMapper = async function(result,params,ctx){
+    if(params.aggs){
+        result = result.aggregations
+        result = await aggsReferencedMapper(result,params.category)
+        result = removeAndRenameInternalProperties(result)
+
+    }else{
+        result =  {count:result.hits.total,results:_.map(result.hits.hits,(result)=>result._source)}
+        if(result.count>0&&_.isArray(result.results)){
+            result.results = await resultMapper(result.results, params)
+        }
+    }
+    return result
+}
+
 module.exports = {
-    resultMapper
+    resultMapper,esResultMapper
 }

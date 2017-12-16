@@ -3,16 +3,13 @@
     "ConfigurationItem": {
       "properties": {
         "uuid": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         },
         "category": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         },
         "model": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         },
         "geo_location": {
           "properties": {
@@ -27,13 +24,12 @@
         "status": {
           "properties": {
             "status": {
-              "type": "string"
+              "type": "keyword"
             }
           }
         },
         "it_service":{
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         }
       },
       "dynamic_templates": [

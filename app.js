@@ -59,25 +59,20 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
  */
 
 app.neo4jConnection.initialized.then(() => {
-    schema.loadSchemas({redisOption,additionalPropertyCheck}).then((schemas)=>{
-        if (schemas && schemas.length) {
-            initAppRoutes(app)
-            scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']})
-            if(process.env['INIT_CACHE']){
-                scirichon_cache.loadAll()
-            }
-            app.listen(port, function () {
-                logger.info(`App started`);
-            })
-        }else{
-            logger.fatal(`no schemas found,npm run init first!`)
-            process.exit(-2)
-        }
+    scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']}).then(()=>{
+        initAppRoutes(app)
+        app.listen(port, function () {
+            logger.info(`App started`);
+        })
     })
 }).catch((error) => {
     logger.fatal('neo4j is not reachable,' + String(error))
     process.exit(-1)
 })
+
+if(process.env['INIT_CACHE']){
+    scirichon_cache.loadAll()
+}
 
 
 app.on('restart', function() {

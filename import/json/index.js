@@ -6,7 +6,9 @@ const schema = require('redis-json-schema')
 const search = require('../../search')
 const common = require('scirichon-common')
 const config = require('config')
-const base_url=`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}/api`
+const port = config.get(`${process.env['NODE_NAME']}.port`)
+const base_url=`http://${config.get('privateIP')||'localhost'}:${port}`
+
 
 const wrapRequest = (category,item) => {
     return {data:{category:category,fields:item},batchImport:true}
@@ -14,27 +16,6 @@ const wrapRequest = (category,item) => {
 
 const isSchemaCrossed = (category1, category2)=>{
     return _.intersection(schema.getParentCategories(category1),schema.getParentCategories(category2)).length>0
-}
-
-const sortCategories = (routeSchemas)=>{
-    let noRefTypes=[],advancedTypes=[],otherTypes=[],routeCategories = _.map(routeSchemas,(schema)=>schema.id)
-    for(let obj of routeSchemas){
-        if(obj.search){
-            advancedTypes.push(obj.id)
-        }
-        let no_referenced = true
-        for(let key in obj['properties']){
-            let val = obj['properties'][key]
-            if(val.schema){
-                no_referenced = false
-                break
-            }
-        }
-        if(no_referenced)
-            noRefTypes.push(obj.id)
-    }
-    otherTypes = _.difference(routeCategories, _.concat(noRefTypes,advancedTypes))
-    return _.concat(noRefTypes,otherTypes,advancedTypes)
 }
 
 const sortItemsDependentFirst = (items)=>{
@@ -78,7 +59,7 @@ const addItem = async(category,item,update) =>{
     let route = schema.getAncestorSchema(category).route,method='POST',uri
     if(!route)
         throw new Error(`${category} api route not found`)
-    uri = base_url  + route
+    uri = base_url  + '/api' + route
     if(update){
         method = 'PATCH'
         uri = uri + "/" + item.uuid
@@ -94,7 +75,7 @@ const importItems = async ()=>{
     if(!data_dir)
         throw new Error(`env 'IMPORT_FOLDER' not defined`)
     let importStrategy = process.env.IMPORT_STRATEGY||'api'
-    let categories = sortCategories(schema.getApiRouteSchemas())
+    let categories = schema.getSortedCategories()
     let result = {}
     for(let category of categories){
         let filePath = path.join(data_dir,category + '.json')

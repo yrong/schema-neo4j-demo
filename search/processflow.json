@@ -3,20 +3,16 @@
     "ProcessFlow": {
       "properties": {
         "uuid": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         },
         "category": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         },
         "pfid": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         },
         "status":{
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword"
         }
       }
     }
