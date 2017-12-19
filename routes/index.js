@@ -40,24 +40,14 @@ module.exports = (app)=>{
         })
     })
 
+    /*search by es*/
     app.defineAPI({
         method: 'POST',
         route: '/api/searchByEql',
         procedure:search.searchItem
     })
 
-    app.defineAPI({
-        method: 'POST',
-        route: '/api/search/cfgItems',
-        procedure:search.searchItem
-    })
-
-    app.defineAPI({
-        method: 'POST',
-        route: '/api/search/processFlows',
-        procedure:search.searchItem
-    })
-
+    /*search by neo4j*/
     app.defineAPI({
         method: 'POST',
         route: '/api/searchByCypher',
@@ -65,19 +55,47 @@ module.exports = (app)=>{
         postProcess: hook.queryItems_postProcess
     })
 
-    /*ConfigurationItemCategory*/
+
+    /*Schema*/
+    app.defineAPI({
+        method: 'GET',
+        route: '/api/schema/:category',
+        procedure: hook.getCategorySchema
+    })
+
+    /*SchemaHierarchy*/
+    app.defineAPI({
+        method: 'GET',
+        route: '/api/schema/hierarchy/:category/',
+        procedure: hook.getCategoryInheritanceHierarchy
+    })
+
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/schema/hierarchy/:category',
+        procedure: hook.addCategoryInheritanceHierarchy
+    })
+
+
+    /*deprecated*/
     app.defineAPI({
         method: 'GET',
         route: '/api/cfgItems/categories/:category',
         procedure: hook.getSchemaHierarchy
     })
 
-
-    /*Schema*/
+    /*deprecated*/
     app.defineAPI({
-        method: 'GET',
-        route: '/api/schema/:category',
-        procedure: hook.configurationItemCategoryProcess
+        method: 'POST',
+        route: '/api/search/cfgItems',
+        procedure:search.searchItem
+    })
+
+    /*deprecated*/
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/search/processFlows',
+        procedure:search.searchItem
     })
 
     /* Delete all Items(for test purpose) */

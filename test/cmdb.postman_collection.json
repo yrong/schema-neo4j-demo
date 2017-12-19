@@ -1029,7 +1029,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"windows xp\",\r      \"description\":\"Microsoft Windows XP\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
+							"raw": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"windows xp\",\r      \"description\":\"Microsoft Windows XP\",\r      \"tags\": [\"OperatingSystem\"]\r    }\r  }\r}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1079,7 +1079,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"ubuntu\",\r      \"description\":\"ubuntu\",\r      \"subtype\": \"OperatingSystem\"\r    }\r  }\r}"
+							"raw": "{\r  \"token\": \"{{token}}\",\r  \"data\":{\r    \"category\":\"Software\",\r    \"fields\":{\r      \"name\":\"ubuntu\",\r      \"description\":\"ubuntu\",\r      \"tags\": [\"OperatingSystem\"]\r    }\r  }\r}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1130,7 +1130,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"subtype\":\"AntispamGateway\",\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"tags\":[\"AntispamGateway\"],\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -2000,10 +2000,10 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "b4418be1-be68-475b-9ec9-b54deae8a265",
 								"type": "text/javascript",
 								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"deleted\"] = jsonData.uuid",
+									"tests[\"deleted\"] = responseCode.code == 200",
 									"",
 									"",
 									""
@@ -2323,10 +2323,10 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "650dc8ec-56f8-466d-af78-3c5cf0565f8f",
 								"type": "text/javascript",
 								"exec": [
-									"",
-									"",
+									"tests[\"deleted\"] = responseCode.code == 200",
 									"",
 									""
 								]
@@ -2810,15 +2810,66 @@
 					"response": []
 				},
 				{
-					"name": "query Asset Hierarchy",
+					"name": "add Software Inheritance",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
+								"id": "e92f6436-c8f4-4820-81c2-f0260d2a5a09",
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"added\"] = responseCode.code == 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"category\":\"Software\",\n\t\"subtype\": \"OperationSystem\"\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/hierarchy/Software/",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"schema",
+								"hierarchy",
+								"Software",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "query Software Hierarchy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9d4df51a-784b-4fec-8f4d-cd4cb15a466f",
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"ConfigurationItem as root\"] = jsonData.name === 'Asset'||jsonData.data.name==='Asset'"
+									"jsonData = jsonData.data || jsonData",
+									"tests[\"ConfigurationItem as root\"] = jsonData.name === 'Software'"
 								]
 							}
 						}
@@ -2833,7 +2884,7 @@
 						],
 						"body": {},
 						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/categories/Asset",
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/hierarchy/Software",
 							"protocol": "http",
 							"host": [
 								"{{cmdb_api_host}}"
@@ -2841,9 +2892,9 @@
 							"port": "{{cmdb_api_port}}",
 							"path": [
 								"api",
-								"cfgItems",
-								"categories",
-								"Asset"
+								"schema",
+								"hierarchy",
+								"Software"
 							]
 						},
 						"description": ""

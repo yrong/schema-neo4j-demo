@@ -15,8 +15,6 @@ const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uui
 
 const generateAddNodeCypher=(params)=>{
     let labels = schema.getParentCategories(params.category)
-    if(params.fields.subtype)
-        labels.push(params.fields.subtype)
     if(params.fields.tags)
         labels = [...labels,params.fields.tags]
     labels = _.isArray(labels)?labels.join(":"):params.category;
@@ -103,13 +101,13 @@ const generateQueryItemByCategoryCypher = (params) => {
     `
 }
 
-const generateQuerySubTypeCypher = `MATCH (sw:ConfigurationItemLabel{category:{category}})
-    MATCH (subtype)-[:INHERIT]->(sw)
-    RETURN subtype`
+const generateQueryInheritHierarchyCypher = `MATCH (base:CategoryLabel{category:{category}})
+    MATCH (child)-[:INHERIT]->(base)
+    RETURN child`
 
-const cmdb_addSubTypeRel_cypher = `MERGE (sw:ConfigurationItemLabel{category:{category}})
-    MERGE (subtype:ConfigurationItemLabel{category:{subtype}})
-    MERGE (subtype)-[:INHERIT]->(sw)`
+const generateInheritRelCypher = `MERGE (base:CategoryLabel{category:{category}})
+    MERGE (child:CategoryLabel{category:{subtype}})
+    MERGE (child)-[:INHERIT]->(base)`
 
 
 const generateRelationCypher = (params)=>{
@@ -142,8 +140,6 @@ const generateRelationCypher = (params)=>{
             rel_cyphers.push(cypher)
         }
     }
-    if(params.subtype)
-        rel_cyphers.push(cmdb_addSubTypeRel_cypher)
     return rel_cyphers
 }
 
@@ -168,6 +164,7 @@ module.exports = {
     generateDelAllCypher,
     generateQueryNodeWithRelationCypher,
     generateQueryItemByCategoryCypher,
-    generateQuerySubTypeCypher,
-    generateQueryItemWithMembersCypher
+    generateQueryInheritHierarchyCypher,
+    generateQueryItemWithMembersCypher,
+    generateInheritRelCypher
 }

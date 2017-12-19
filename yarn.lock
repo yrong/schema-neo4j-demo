@@ -2413,9 +2413,9 @@ koa-logger@^2.0.0:
     humanize-number "0.0.2"
     passthrough-counter "^1.0.0"
 
-koa-neo4j-fork@1.2.8-beta.2:
-  version "1.2.8-beta.2"
-  resolved "https://registry.npmjs.org/koa-neo4j-fork/-/koa-neo4j-fork-1.2.8-beta.2.tgz#69c164f4ed6d6688ee9615586c9f249c81651dc9"
+koa-neo4j-fork@1.2.8-beta.3:
+  version "1.2.8-beta.3"
+  resolved "https://registry.npmjs.org/koa-neo4j-fork/-/koa-neo4j-fork-1.2.8-beta.3.tgz#4c576bae0fb3407e9837336a3e1a7594f72c62e4"
   dependencies:
     chai "^3.5.0"
     chalk "^1.1.3"
@@ -3527,20 +3527,20 @@ redis-crud-fork@1.0.0-beta.8:
   version "1.0.0-beta.8"
   resolved "https://registry.npmjs.org/redis-crud-fork/-/redis-crud-fork-1.0.0-beta.8.tgz#6ff803b251f092bb7a5d108c75d24f43b30fd057"
 
-redis-json-schema-init@1.0.1-beta.3:
-  version "1.0.1-beta.3"
-  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.1-beta.3.tgz#07cb719a356339757acd8c7fdd85d71cd1053926"
+redis-json-schema-init@1.0.1-beta.4:
+  version "1.0.1-beta.4"
+  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.1-beta.4.tgz#b68fb3c121ce10edaa010a8d5e29dd8b5882db1f"
   dependencies:
     config "^1.25.1"
     elasticsearch "^12.1.3"
     lodash "^4.17.4"
     neo4j-driver "^1.5.0"
     parse-neo4j-fork "^0.6.10"
-    redis-json-schema "1.0.1-beta.7"
+    redis-json-schema "1.0.1-beta.8"
 
-redis-json-schema@1.0.1-beta.7:
-  version "1.0.1-beta.7"
-  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.1-beta.7.tgz#50eeb60020a2eff6be2a18e2c6b35f924c962497"
+redis-json-schema@1.0.1-beta.8:
+  version "1.0.1-beta.8"
+  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.1-beta.8.tgz#2f56a9229d965a8067308325aae4c63b25a95552"
   dependencies:
     ajv "^5.3.0"
     lodash "^4.17.4"
@@ -3766,13 +3766,13 @@ scirichon-acl-checker@1.0.1-beta.5:
     redis "^2.8.0"
     scirichon-common "1.0.1-beta.7"
 
-scirichon-cache@1.0.4-beta.6:
-  version "1.0.4-beta.6"
-  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.4-beta.6.tgz#10b4728ea88a4b06a82e7c83f48d4d56c7f40879"
+scirichon-cache@1.0.4-beta.7:
+  version "1.0.4-beta.7"
+  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.4-beta.7.tgz#39563a7a1a3ddcdfdc079fe2c431af35cddeb830"
   dependencies:
     lodash "^4.17.4"
     node-cache-redis-fork "2.2.0-beta.3"
-    redis-json-schema "1.0.1-beta.7"
+    redis-json-schema "1.0.1-beta.8"
     request "^2.81.0"
     request-promise "^4.1.1"
     scirichon-common "1.0.1-beta.7"

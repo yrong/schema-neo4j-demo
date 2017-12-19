@@ -9,6 +9,7 @@ const logger = require('log4js_wrapper').getLogger()
 const ref_converter = require('../helper/converter')
 const cypherBuilder = require('../cypher/cypherBuilder')
 const scirichon_cache = require('scirichon-cache')
+const cypherInvoker = require('../helper/cypherInvoker')
 
 const getCategoryFromUrl = function (ctx) {
     let category,val,routeSchemas = schema.getApiRouteSchemas()
@@ -94,29 +95,29 @@ const logCypher = (params)=>{
 }
 
 const checkReferenced = (uuid,items)=>{
-    let referenced = false
-    for(let item of items){
-        if(!referenced){
-            let objectFields=schema.getSchemaObjectProperties(item.category)
-            for(let key of objectFields){
-                if(_.isString(item[key])){
-                    try{
-                        item[key] = JSON.parse(item[key])
-                    }catch(error){
-                        //same field with different type in different categories(e.g:'status in 'ConfigurationItem' and 'ProcessFlow'),ignore error and just for protection here
-                    }
-                }
-            }
-            let refProperties = schema.getSchemaRefProperties(item.category)
-            for(let refProperty of refProperties){
-                let key = refProperty.attr
-                let val = jp.query(item, `$.${key}`)[0]
-                if(uuid==val||(_.isArray(val)&&_.includes(val,uuid))){
-                    referenced = true
-                    break
+    let referenced = false,item,index=0
+    while(!referenced&&index<items.length){
+        item = items[index]
+        let objectFields=schema.getSchemaObjectProperties(item.category)
+        for(let key of objectFields){
+            if(_.isString(item[key])){
+                try{
+                    item[key] = JSON.parse(item[key])
+                }catch(error){
+                    //same field with different type in different categories(e.g:'status in 'ConfigurationItem' and 'ProcessFlow'),ignore error and just for protection here
                 }
             }
         }
+        let refProperties = schema.getSchemaRefProperties(item.category)
+        for(let refProperty of refProperties){
+            let key = refProperty.attr
+            let val = jp.query(item, `$.${key}`)[0]
+            if(uuid==val||(_.isArray(val)&&_.includes(val,uuid))){
+                referenced = true
+                break
+            }
+        }
+        index++
     }
     return referenced
 }
@@ -145,7 +146,7 @@ const handleCudRequest = async (params, ctx)=>{
         params.fields.created = Date.now()
         dynamic_field = schema.getDynamicSeqField(params.category)
         if(dynamic_field){
-            result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateSequence(params.category), params, true)
+            result =  await cypherInvoker.executeCypher(ctx,cypherBuilder.generateSequence(params.category), params)
             params.fields[dynamic_field] = String(result[0])
         }
         root_schema = schema.getAncestorSchema(params.category)
@@ -170,7 +171,7 @@ const handleCudRequest = async (params, ctx)=>{
     }
     else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {
         if(params.uuid){
-            result =  await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeCypher(params), params, true)
+            result =  await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodeCypher(params), params)
             if (result && result[0]) {
                 params.fields_old = _.omit(result[0],'id')
                 params.fields = _.assign({}, params.fields_old,params.data.fields)
@@ -185,7 +186,7 @@ const handleCudRequest = async (params, ctx)=>{
         }
     } else if (ctx.method === 'DELETE') {
         if(params.uuid){
-            result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQueryNodeWithRelationCypher(params), params, true)
+            result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodeWithRelationCypher(params), params)
             if(result&&result[0]&&result[0].self&&result[0].self.category){
                 params.category = result[0].self.category
                 params.name = result[0].self.name

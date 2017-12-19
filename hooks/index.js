@@ -13,6 +13,7 @@ const search = require('../search')
 const requestHandler = require('./requestHandler')
 const responseHandler = require('./responseHandler')
 const logger = require('log4js_wrapper').getLogger()
+const cypherInvoker = require('../helper/cypherInvoker')
 
 const needNotify = (params,ctx)=>{
     if(ctx.deleteAll || ctx.headers[common.TokenName] === common.InternalTokenId)
@@ -119,27 +120,30 @@ module.exports = {
         requestHandler.logCypher(params)
         return params
     },
-    getSchemaHierarchy:async function (params,ctx) {
-        let cmdbConfigurationItemInheritanceRelationship = schema.getSchemaHierarchy(params.category),result
+    getCategoryInheritanceHierarchy:async function (params,ctx) {
+        let schemaInheritanceRelationship = schema.getSchemaHierarchy(params.category),result
         let addSubTypeRelationship = async (relationship)=>{
-            if(schema.isSubTypeAllowed(relationship.name)){
-                result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,{category:relationship.name}, true)
+            result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryInheritHierarchyCypher,{category:relationship.name})
+            if(result&&result.length){
                 relationship.children = _.map(result,(subtype)=>{
                     return {name:subtype.category}
                 })
-            }else if(relationship.children){
-                if(relationship.children){
-                    for(let child of relationship.children){
-                        await addSubTypeRelationship(child)
-                    }
+            }
+            if(relationship.children){
+                for(let child of relationship.children){
+                    await addSubTypeRelationship(child)
                 }
             }
         }
-        await addSubTypeRelationship(cmdbConfigurationItemInheritanceRelationship)
-        return cmdbConfigurationItemInheritanceRelationship
+        await addSubTypeRelationship(schemaInheritanceRelationship)
+        return schemaInheritanceRelationship
     },
-    configurationItemCategoryProcess:async function(params,ctx) {
-        let result = await ctx.app.executeCypher.bind(ctx.app.neo4jConnection)(cypherBuilder.generateQuerySubTypeCypher,params, true)
+    addCategoryInheritanceHierarchy: async function (params,ctx) {
+        let result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateInheritRelCypher,params)
+        return result
+    },
+    getCategorySchema:async function(params,ctx) {
+        let result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryInheritHierarchyCypher,params)
         return {
             properties:schema.getSchemaProperties(params.category),
             parents:schema.getParentCategories(params.category),
