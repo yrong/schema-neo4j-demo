@@ -11,6 +11,7 @@ const cypherBuilder = require('../cypher/cypherBuilder')
 const scirichon_cache = require('scirichon-cache')
 const cypherInvoker = require('../helper/cypherInvoker')
 
+
 const getCategoryFromUrl = function (ctx) {
     let category,val,routeSchemas = schema.getApiRouteSchemas()
     for (val of routeSchemas){
@@ -44,9 +45,9 @@ const queryParamsCypherGenerator = function (params) {
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
-    let member = schema.getMemberType(params.category)
-    if(member){
-        params.cypher = cypherBuilder.generateQueryItemWithMembersCypher(params.category,member.member,member.attr,params)
+    let schema_obj = schema.getSchema(params.category)
+    if(schema_obj&&schema_obj.getMember){
+        params.cypher = cypherBuilder.generateQueryItemWithMembersCypher(params.category,params)
     }else if(params.subcategory){
         params.subcategory = params.subcategory.split(",");
         params.cypher = cypherBuilder.generateQueryItemByCategoryCypher(params);
@@ -72,7 +73,6 @@ const cudItem_params_stringify = async (params) => {
         }
     }
 }
-
 
 const cudItem_referenced_params_convert = async (params)=>{
     var convert = async (ref,val)=>{
@@ -118,6 +118,7 @@ const checkReferenced = (uuid,items)=>{
             }
         }
         index++
+
     }
     return referenced
 }
@@ -135,7 +136,7 @@ const internalUsedFieldsChecker = (params)=>{
 }
 
 const handleCudRequest = async (params, ctx)=>{
-    let item_uuid,result,dynamic_field,root_schema,key,keyNames
+    let item_uuid,result,schema_obj,root_schema,key,keyNames
     params = common.pruneEmpty(params)
     params.category = params.data?params.data.category:getCategoryFromUrl(ctx)
     if (ctx.method === 'POST') {
@@ -144,14 +145,14 @@ const handleCudRequest = async (params, ctx)=>{
         params.fields = _.assign({}, params.data.fields)
         params.fields.category = params.data.category
         params.fields.created = Date.now()
-        dynamic_field = schema.getDynamicSeqField(params.category)
-        if(dynamic_field){
-            result =  await cypherInvoker.executeCypher(ctx,cypherBuilder.generateSequence(params.category), params)
+        schema_obj = schema.getSchema(params.category)
+        if(schema_obj&&schema_obj.dynamic_field){
+            result =  await cypherInvoker.executeCypher(cypherBuilder.generateSequence(params.category), params)
             params.fields[dynamic_field] = String(result[0])
         }
         root_schema = schema.getAncestorSchema(params.category)
         if(root_schema.uniqueKeys){
-            params.fields['unique_name']=params.fields[root_schema.uniqueKeys[0]]
+            params.unique_name = params.fields.unique_name = params.fields[root_schema.uniqueKeys[0]]
         }
         if(root_schema.compoundKeys){
             for(key of root_schema.compoundKeys){

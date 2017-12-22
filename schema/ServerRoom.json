@@ -11,6 +11,6 @@
   },
   "required": ["name"],
   "route":"/serverRooms",
-  "member":"Cabinet",
-  "uniqueKeys":["name"]
+  "uniqueKeys":["name"],
+  "getMember":true
 }

@@ -50,21 +50,37 @@ const aggsReferencedMapper =  async (val,category) => {
     return val
 }
 
-const propertiesCombine = (results)=>{
-    if(_.isArray(results)&&results.length){
-        return _.map(results,(result)=>{
-            if(result.self&&result.members){
+const pullBucketField =  (val) => {
+    let keys = _.keys(val)
+    for(let key of keys){
+        if(val[key]['buckets']&&_.isArray(val[key]['buckets'])){
+            val[key] = val[key]['buckets']
+            for(let internal_val of val[key]){
+                pullBucketField(internal_val)
+            }
+        }
+    }
+    return val
+}
+
+
+const memberCombine = (result,params)=>{
+    let schema_obj = schema.getSchema(params.category)
+    if(schema_obj.getMember){
+        if(result.self){
+            if(result.members){
                 result = _.merge(result.self,{members:result.members})
-                return result
+            }else{
+                result = result.self
             }
             return result
-        })
+        }
     }
-    return results
+    return result
 }
 
 const referencedObjectMapper = async (val,props)=>{
-    if(props.properties){
+    if(_.isObject(val)&&props.properties){
         for(let key in props.properties){
             if(val[key]&&props.properties[key].schema){
                 if(uuid_validator(val[key])){
@@ -76,72 +92,89 @@ const referencedObjectMapper = async (val,props)=>{
     return val
 }
 
-const referencedMapper = async (val,origional) => {
-    let properties,results = []
-    if (_.isArray(val)) {
-        for(let single of val){
-            results.push(await referencedMapper(single,origional))
-        }
-        val = results
-    } else if(val.category){
-        properties = schema.getSchemaProperties(val.category)
-        if(properties){
-            for (let key in val) {
-                if(val[key]&&properties[key]){
-                    if(properties[key].type==='object'||(properties[key].type==='array'&&properties[key].items.type==='object')){
-                        if(_.isString(val[key])){
-                            val[key] = JSON.parse(val[key])
-                        }
-                    }
-                    if(!origional){
-                        if(properties[key].schema){
-                            val[key] = await scirichon_cache.getItemByCategoryAndID(properties[key].schema,val[key]) || val[key]
-                        }
-                        else if(val[key].length&&properties[key].type==='array'&&properties[key].items.schema){
-
-                            let objs = [],obj,id
-                            for(id of val[key]){
-                                obj = await scirichon_cache.getItemByCategoryAndID(properties[key].items.schema,id)||id
-                                objs.push(obj)
-                            }
-                            val[key] = objs
-                        }else if(properties[key].type==='object') {
-                            val[key] = await referencedObjectMapper(val[key], properties[key])
-                        }else if (properties[key].type === 'array' && properties[key].items.type === 'object') {
-                            for (let entry of val[key]) {
-                                entry = await referencedObjectMapper(entry, properties[key].items)
-                            }
-                        }
+const parse2JsonObject = async (val,params)=>{
+    let properties = schema.getSchemaProperties(val.category||params.category)
+    for (let key in val) {
+        if (val[key] && properties[key]) {
+            if (properties[key].type === 'object' || (properties[key].type === 'array' && properties[key].items.type === 'object')) {
+                if (_.isString(val[key])) {
+                    try{
+                        val[key] = JSON.parse(val[key])
+                    }catch(err){
+                        //ignore
                     }
                 }
             }
         }
     }
-    return val;
+    return val
 }
 
-const resultMapper = async (result, params,ctx) => {
-    if(schema.getMemberType(params.category)&&!params.origional)
-        result = propertiesCombine(result)
-    result = await referencedMapper(result,params.origional?true:false)
-    return result
+const uuid2ReferencedObject = async (val,params)=>{
+    let properties = schema.getSchemaProperties(val.category||params.category),objs,obj
+    for (let key in val) {
+        if (val[key] && properties[key]) {
+            if(properties[key].schema&&_.isString(val[key])){
+                val[key] = await scirichon_cache.getItemByCategoryAndID(properties[key].schema,val[key]) || val[key]
+            }
+            else if(val[key].length&&_.isString(val[key][0])&&properties[key].type==='array'&&properties[key].items.schema){
+                objs = []
+                for(let id of val[key]){
+                    obj = await scirichon_cache.getItemByCategoryAndID(properties[key].items.schema,id)||id
+                    objs.push(obj)
+                }
+                val[key] = objs
+            }else if(properties[key].type==='object') {
+                val[key] = await referencedObjectMapper(val[key], properties[key])
+            }else if (properties[key].type === 'array' && properties[key].items.type === 'object') {
+                for (let entry of val[key]) {
+                    entry = await referencedObjectMapper(entry, properties[key].items)
+                }
+            }
+        }
+    }
+    return val
 }
 
-const esResultMapper = async function(result,params,ctx){
+
+const resultMapper = async (val,params) => {
+    if(!params.origional){
+        val = await memberCombine(val,params)
+    }
+    val = await parse2JsonObject(val,params)
+    if(!params.origional){
+        val = await uuid2ReferencedObject(val,params)
+    }
+    return val
+}
+
+const cypherResponseMapper = async (val, params,ctx) => {
+    let results = []
+    if (_.isArray(val)) {
+        for(let single of val){
+            results.push(await resultMapper(single,params))
+        }
+        val = results
+    }else{
+        val = await resultMapper(val,params)
+    }
+    return val
+}
+
+const esResponseMapper = async function(result,params,ctx){
     if(params.aggs){
         result = result.aggregations
         result = await aggsReferencedMapper(result,params.category)
         result = removeAndRenameInternalProperties(result)
-
     }else{
         result =  {count:result.hits.total,results:_.map(result.hits.hits,(result)=>result._source)}
         if(result.count>0&&_.isArray(result.results)){
-            result.results = await resultMapper(result.results, params)
+            result.results = await cypherResponseMapper(result.results, params)
         }
     }
     return result
 }
 
 module.exports = {
-    resultMapper,esResultMapper
+    cypherResponseMapper,esResponseMapper
 }

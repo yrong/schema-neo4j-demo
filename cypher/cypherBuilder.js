@@ -72,14 +72,13 @@ const generateSequence=(name)=>
 /**
  * query item with members
  */
-const generateQueryItemWithMembersCypher = (label, member_label, reference_field, params) => {
+const generateQueryItemWithMembersCypher = (label,params) => {
     return `MATCH
         (n:${label})
     OPTIONAL MATCH
-        (m:${member_label})
-    WHERE m.${reference_field}=n.uuid
-    WITH { self: n, members:collect(m) } as item_with_members
-    RETURN collect(item_with_members)`
+        (n)<-[:MemberOf*]-(m)      
+    WITH { self: n, members:collect(m) } as items
+    RETURN collect(items)`
 }
 
 /**

@@ -11,7 +11,7 @@
     "warehouse_id":{
       "type":"string",
       "schema":"WareHouse",
-      "relationship":{"name":"LocatedAt"}
+      "relationship":{"name":"MemberOf"}
     }
   },
   "required": ["name","warehouse_id"],

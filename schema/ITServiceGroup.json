@@ -11,6 +11,6 @@
   },
   "required": ["name"],
   "route":"/it_services/group",
-  "member":"ITService",
+  "getMember":"true",
   "uniqueKeys":["name"]
 }

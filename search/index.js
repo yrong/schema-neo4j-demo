@@ -81,7 +81,7 @@ const searchItem = (params, ctx)=> {
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
     return es_client.search(searchObj).then(async function (response) {
-        response = await responseHandler.esResultMapper(response,params,ctx)
+        response = await responseHandler.esResponseMapper(response,params,ctx)
         return response
     });
 }

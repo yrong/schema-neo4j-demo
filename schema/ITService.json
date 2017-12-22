@@ -11,7 +11,7 @@
     "group":{
       "type": "string",
       "schema":"ITServiceGroup",
-      "relationship":{"name":"BelongsTo"}
+      "relationship":{"name":"MemberOf"}
     },
     "dependendents": {
       "type": "array",

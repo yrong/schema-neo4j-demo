@@ -11,7 +11,7 @@
     "server_room_id":{
       "type":"string",
       "schema":"ServerRoom",
-      "relationship":{"name":"LocatedAt"}
+      "relationship":{"name":"MemberOf"}
     }
   },
   "required": ["name","server_room_id"],

@@ -25,21 +25,35 @@ const needNotify = (params,ctx)=>{
         return true
 }
 
+const stringify2Object = (params) => {
+    let objectFields=schema.getSchemaObjectProperties(params.category)
+    for(let key of objectFields){
+        if(_.isString(params[key])){
+            try{
+                params[key] = JSON.parse(params[key])
+            }catch(error){
+                //same field with different type in different categories(e.g:'status in 'ConfigurationItem' and 'ProcessFlow'),ignore error and just for protection here
+            }
+        }
+    }
+    return params
+}
+
 const addNotification = async (params,ctx)=>{
     if(needNotify(params,ctx)){
         let notification_obj = {type:params.category,user:ctx[common.TokenUserName],source:process.env['NODE_NAME']}
         if(ctx.method === 'POST'){
             notification_obj.action = 'CREATE'
-            notification_obj.new = params.fields
+            notification_obj.new = stringify2Object(params.fields)
         }
         else if(ctx.method === 'PUT' || ctx.method === 'PATCH'){
             notification_obj.action = 'UPDATE'
-            notification_obj.new = params.fields
-            notification_obj.old = params.fields_old
+            notification_obj.new = stringify2Object(params.fields)
+            notification_obj.old = stringify2Object(params.fields_old)
             notification_obj.update = params.change
         }else if(ctx.method === 'DELETE'){
             notification_obj.action = 'DELETE'
-            notification_obj.old = params.fields_old
+            notification_obj.old = stringify2Object(params.fields_old)
         }
         await common.apiInvoker('POST',`http://${config.get('privateIP')||'localhost'}:${config.get('notifier.port')}`,'/api/notifications','',notification_obj)
     }
@@ -81,7 +95,8 @@ const generateQR = async (params,ctx)=>{
 
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
-        return requestHandler.handleCudRequest(params,ctx)
+        params = await requestHandler.handleCudRequest(params,ctx)
+        return params
     },
     cudItem_postProcess:async function (result,params,ctx) {
         if(ctx.method==='POST'||ctx.method==='PUT'||ctx.method==='PATCH'){
@@ -107,9 +122,9 @@ module.exports = {
     queryItems_postProcess:async function (result,params,ctx) {
         result = _.isArray(result)&&result.length>0?result[0]:result
         if(result.count>0&&_.isArray(result.results)){
-            result.results = await responseHandler.resultMapper(result.results,params,ctx);
+            result.results = await responseHandler.cypherResponseMapper(result.results,params,ctx);
         }else{
-            result = await responseHandler.resultMapper(result,params,ctx)
+            result = await responseHandler.cypherResponseMapper(result,params,ctx)
         }
         return result
     },
@@ -122,7 +137,7 @@ module.exports = {
     },
     getCategoryInheritanceHierarchy:async function (params,ctx) {
         let schemaInheritanceRelationship = schema.getSchemaHierarchy(params.category),result
-        let addSubTypeRelationship = async (relationship)=>{
+        let addSubTypeRelationship = async(relationship)=>{
             result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryInheritHierarchyCypher,{category:relationship.name})
             if(result&&result.length){
                 relationship.children = _.map(result,(subtype)=>{
@@ -142,7 +157,7 @@ module.exports = {
         let result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateInheritRelCypher,params)
         return result
     },
-    getCategorySchema:async function(params,ctx) {
+    getCategorySchema:async function(params, ctx) {
         let result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryInheritHierarchyCypher,params)
         return {
             properties:schema.getSchemaProperties(params.category),

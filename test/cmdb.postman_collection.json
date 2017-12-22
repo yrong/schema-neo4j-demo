@@ -1248,8 +1248,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "555cc021-27a0-4768-91e6-52947f4d3ba7",
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1262,7 +1260,9 @@
 									"}",
 									"",
 									""
-								]
+								],
+								"id": "555cc021-27a0-4768-91e6-52947f4d3ba7",
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1438,7 +1438,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1446,7 +1445,8 @@
 									"   postman.setEnvironmentVariable(\"virtual_server_id\", jsonData.uuid); ",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1460,7 +1460,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver1\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.107\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.107\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.102\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.107\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1914,7 +1914,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1922,7 +1921,8 @@
 									"   postman.setEnvironmentVariable(\"virtual_server_1_id\", jsonData.uuid); ",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1936,7 +1936,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver2\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.103\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.109\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver1\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.103\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.109\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -2370,52 +2370,6 @@
 					"description": "",
 					"item": [
 						{
-							"name": "cql as parameter",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"type": "text/javascript",
-										"exec": [
-											"var jsonData = JSON.parse(responseBody);",
-											"tests[\"it service instance found\"] = jsonData.length >= 1||jsonData.data.length>=1;"
-										]
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "token",
-										"value": "{{token}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"category\":\"ITService\",\n  \"search\":[\"email\",\"pop3\"],\n  \"cypher\":\"OPTIONAL MATCH (s1:ITService) WHERE s1.uuid IN {search} or s1.group IN {search} WITH COLLECT(distinct(s1.uuid)) as services_byIds UNWIND {search} as keyword OPTIONAL MATCH (s1:ITService)-[:BelongsTo]->(sg:ITServiceGroup) WHERE s1.name = keyword or sg.name = keyword WITH services_byIds+collect(distinct(s1.uuid)) as services UNWIND services AS service RETURN COLLECT(distinct service)\"\n}"
-								},
-								"url": {
-									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
-									"protocol": "http",
-									"host": [
-										"{{cmdb_api_host}}"
-									],
-									"port": "{{cmdb_api_port}}",
-									"path": [
-										"api",
-										"searchByCypher"
-									]
-								},
-								"description": ""
-							},
-							"response": []
-						},
-						{
 							"name": "query ConfigurationItem mounted advanced",
 							"event": [
 								{
@@ -2513,11 +2467,11 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"2 it service instances found\"] = jsonData.length >= 1||jsonData.data.length>=1;"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2554,16 +2508,16 @@
 							"response": []
 						},
 						{
-							"name": "query it service groups related cmdb servers advanced",
+							"name": "query  cmdb servers by service name/id or service group name/id",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"server found\"] = jsonData.length >=1||jsonData.data.length>=1"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
