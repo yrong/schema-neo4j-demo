@@ -55,6 +55,15 @@ const addNotification = async (params,ctx)=>{
             notification_obj.action = 'DELETE'
             notification_obj.old = stringify2Object(params.fields_old)
         }
+        if(params.data&&params.data.notification){
+            if(params.data.notification.subscribe_user||params.data.notification.subscribe_role){
+                notification_obj.subscribe_user = params.data.notification.subscribe_user||[ctx[common.TokenUserName].uuid]
+                notification_obj.subscribe_role = params.data.notification.subscribe_role||ctx[common.TokenUserName].roles
+            }
+            if(params.data.notification.additional){
+                notification_obj.additional = params.data.notification.additional
+            }
+        }
         await common.apiInvoker('POST',`http://${config.get('privateIP')||'localhost'}:${config.get('notifier.port')}`,'/api/notifications','',notification_obj)
     }
 }

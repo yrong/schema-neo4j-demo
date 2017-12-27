@@ -11,7 +11,7 @@ const base_url=`http://${config.get('privateIP')||'localhost'}:${port}`
 
 
 const wrapRequest = (category,item) => {
-    return {data:{category:category,fields:item},batchImport:true}
+    return {data:{category:category,fields:item},batchImport:true,jsonImport:true}
 }
 
 const isSchemaCrossed = (category1, category2)=>{
