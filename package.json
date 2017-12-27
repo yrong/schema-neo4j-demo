@@ -11,6 +11,7 @@
     "test": "mocha",
     "start": "node server.js",
     "init": "initSchema",
+    "initES": "INIT_ES=1 initSchema",
     "dockerInit": "docker exec cmdb initSchema",
     "exportToJson": "node exportJSON.js",
     "importFromJson": "IMPORT_FOLDER=./export_data/20170927095432 node ./importJSON.js",
