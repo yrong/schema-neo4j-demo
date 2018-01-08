@@ -20,7 +20,8 @@
     "dockerStartDB":"docker-compose -f ../config/deploy/db.yml up -d",
     "dockerStopDB":"docker-compose -f ../config/deploy/db.yml stop",
     "dockerStartApp": "docker-compose -f ../config/deploy/app.yml up -d cmdb",
-    "dockerStopApp": "docker-compose -f ../config/deploy/app.yml stop cmdb"
+    "dockerStopApp": "docker-compose -f ../config/deploy/app.yml stop cmdb",
+    "upgradeMemberOfRel": "cat ./cypher/buildMemberOfRel.cyp | $NEO4J_HOME/bin/cypher-shell -u neo4j -p admin --format plain"
   },
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
