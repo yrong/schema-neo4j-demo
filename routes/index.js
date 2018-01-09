@@ -79,24 +79,11 @@ module.exports = (app)=>{
 
     /*deprecated*/
     app.defineAPI({
-        method: 'GET',
-        route: '/api/cfgItems/categories/:category',
-        procedure: hook.getSchemaHierarchy
-    })
-
-    /*deprecated*/
-    app.defineAPI({
         method: 'POST',
         route: '/api/search/cfgItems',
         procedure:search.searchItem
     })
 
-    /*deprecated*/
-    app.defineAPI({
-        method: 'POST',
-        route: '/api/search/processFlows',
-        procedure:search.searchItem
-    })
 
     /* Delete all Items(for test purpose) */
     if(process.env.NODE_ENV === 'development'){
