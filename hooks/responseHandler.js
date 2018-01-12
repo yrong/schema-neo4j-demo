@@ -35,11 +35,11 @@ const aggsReferencedMapper =  async (val,category) => {
     let keys = _.keys(val)
     for(let key of keys){
         if(!_.includes(aggsMetaFields,key)){
-            let ref_category = findRefCategory(category,key),cached_obj
             if(_.isArray(val[key]['buckets'])){
                 for(let internal_val of val[key]['buckets']){
+                    let ref_category = findRefCategory(category,key),cached_obj
                     if(ref_category){
-                        cached_obj = await scirichon_cache.getItemByCategoryAndID(key,internal_val.key)
+                        cached_obj = await scirichon_cache.getItemByCategoryAndID(ref_category,internal_val.key)
                         internal_val.ref_obj = cached_obj
                     }
                     await aggsReferencedMapper(internal_val,category)

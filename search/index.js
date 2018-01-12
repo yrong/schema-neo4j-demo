@@ -91,13 +91,26 @@ const checkStatus = ()=> {
 
 const batchUpdate = async (category,uuids,body)=>{
     let bulks = [],schemas = schema.getSchemas()
-    if(schemas[category].search){
-        for(let uuid of uuids){
-            bulks.push({update:{_index: schemas[category].search.index, _type: category, _id: uuid}})
-            bulks.push(_.omit(body, hidden_fields))
+    category = schema.getAncestorCategory(category)
+    if(schemas[category]&&schemas[category].search) {
+        for (let uuid of uuids) {
+            bulks.push({update: {_index: schemas[category].search.index, _type: category, _id: uuid}})
+            bulks.push(body)
         }
-        await es_client.bulk({body:bulks,refresh:true})
+        await es_client.bulk({body: bulks, refresh: true})
     }
 }
 
-module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus,batchUpdate}
+const batchCreate = async (category,items)=>{
+    let bulks = [],schemas = schema.getSchemas()
+    category = schema.getAncestorCategory(category)
+    if(schemas[category]&&schemas[category].search) {
+        for (let item of items) {
+            bulks.push({index: {_index: schemas[category].search.index, _type: category, _id: item.uuid}})
+            bulks.push(item)
+        }
+    }
+    await es_client.bulk({body:bulks,refresh:true})
+}
+
+module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus,batchUpdate,batchCreate}

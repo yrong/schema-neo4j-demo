@@ -1,5 +1,4 @@
 const config = require('config')
-const schema = require('redis-json-schema')
 /**
  * init logger
  */
@@ -61,6 +60,9 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
 app.neo4jConnection.initialized.then(() => {
     scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']}).then(()=>{
         initAppRoutes(app)
+        if(process.env['INIT_CACHE']){
+            scirichon_cache.loadAll()
+        }
         app.listen(port, function () {
             logger.info(`App started`);
         })
@@ -69,11 +71,6 @@ app.neo4jConnection.initialized.then(() => {
     logger.fatal('neo4j is not reachable,' + String(error))
     process.exit(-1)
 })
-
-if(process.env['INIT_CACHE']){
-    scirichon_cache.loadAll()
-}
-
 
 app.on('restart', function() {
     logger.warn('restart signal received,will restart app in 2 seconds')

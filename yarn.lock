@@ -3790,9 +3790,9 @@ scirichon-acl-checker@1.0.1-beta.5:
     redis "^2.8.0"
     scirichon-common "1.0.1-beta.7"
 
-scirichon-cache@1.0.4-beta.8:
-  version "1.0.4-beta.8"
-  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.4-beta.8.tgz#74e935e8ef91f92911bd0ad93ae89b0873dd3146"
+scirichon-cache@1.0.4-beta.9:
+  version "1.0.4-beta.9"
+  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.4-beta.9.tgz#e0bdce3cf04b72c667d1a8753fd43428f259a89c"
   dependencies:
     lodash "^4.17.4"
     node-cache-redis-fork "2.2.0-beta.3"

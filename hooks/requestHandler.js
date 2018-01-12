@@ -46,7 +46,7 @@ const queryParamsCypherGenerator = function (params) {
         params.cypher = cypherBuilder.generateQueryNodesCypher(params);
     }
     let schema_obj = schema.getSchema(params.category)
-    if(schema_obj&&schema_obj.getMember){
+    if(schema_obj&&schema_obj.getMember&&!params.origional){
         params.cypher = cypherBuilder.generateQueryItemWithMembersCypher(params.category,params)
     }else if(params.subcategory){
         params.subcategory = params.subcategory.split(",");
@@ -73,6 +73,7 @@ const cudItem_params_stringify = async (params) => {
         }
     }
 }
+
 
 const cudItem_referenced_params_convert = async (params)=>{
     var convert = async (ref,val)=>{
@@ -144,7 +145,7 @@ const handleCudRequest = async (params, ctx)=>{
         params.data.fields.uuid = item_uuid
         params.fields = _.assign({}, params.data.fields)
         params.fields.category = params.data.category
-        params.fields.created = Date.now()
+        params.fields.created = params.fields.created||Date.now()
         schema_obj = schema.getSchema(params.category)
         if(schema_obj&&schema_obj.dynamic_field){
             result =  await cypherInvoker.executeCypher(cypherBuilder.generateSequence(params.category), params)
@@ -176,7 +177,7 @@ const handleCudRequest = async (params, ctx)=>{
             if (result && result[0]) {
                 params.fields_old = _.omit(result[0],'id')
                 params.fields = _.assign({}, params.fields_old,params.data.fields)
-                params.fields.lastUpdated = Date.now()
+                params.fields.lastUpdated = params.fields.lastUpdated||Date.now()
                 params.change = params.data.fields
             }else {
                 throw new ScirichonError("no record found")
