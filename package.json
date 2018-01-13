@@ -43,6 +43,7 @@
     "scirichon-acl-checker": "1.0.1-beta.5",
     "scirichon-cache": "1.0.4-beta.9",
     "scirichon-common": "1.0.1-beta.7",
+    "scirichon-response-mapper": "1.0.0-beta.1",
     "scirichon-response-wrapper": "1.0.0-beta.6",
     "scirichon-token-checker": "1.0.0-beta.9",
     "uuid": "^3.0.0",

@@ -1,7 +1,7 @@
 const _ = require('lodash')
-const uuid_validator = require('uuid-validate')
 const scirichon_cache = require('scirichon-cache')
 const schema = require('redis-json-schema')
+const mapper = require('scirichon-response-mapper')
 
 const removeAndRenameInternalProperties =  (val) => {
     if(_.isArray(val)) {
@@ -40,7 +40,9 @@ const aggsReferencedMapper =  async (val,category) => {
                     let ref_category = findRefCategory(category,key),cached_obj
                     if(ref_category){
                         cached_obj = await scirichon_cache.getItemByCategoryAndID(ref_category,internal_val.key)
-                        internal_val.ref_obj = cached_obj
+                        if(!_.isEmpty(cached_obj)){
+                            internal_val.ref_obj = cached_obj
+                        }
                     }
                     await aggsReferencedMapper(internal_val,category)
                 }
@@ -49,20 +51,6 @@ const aggsReferencedMapper =  async (val,category) => {
     }
     return val
 }
-
-const pullBucketField =  (val) => {
-    let keys = _.keys(val)
-    for(let key of keys){
-        if(val[key]['buckets']&&_.isArray(val[key]['buckets'])){
-            val[key] = val[key]['buckets']
-            for(let internal_val of val[key]){
-                pullBucketField(internal_val)
-            }
-        }
-    }
-    return val
-}
-
 
 const memberCombine = (result,params)=>{
     let schema_obj = schema.getSchema(params.category)
@@ -77,19 +65,6 @@ const memberCombine = (result,params)=>{
         }
     }
     return result
-}
-
-const referencedObjectMapper = async (val,props)=>{
-    if(_.isObject(val)&&props.properties){
-        for(let key in props.properties){
-            if(val[key]&&props.properties[key].schema){
-                if(uuid_validator(val[key])){
-                    val[key]= await scirichon_cache.getItemByCategoryAndID(props.properties[key].schema,val[key])||val[key]
-                }
-            }
-        }
-    }
-    return val
 }
 
 const parse2JsonObject = async (val,params)=>{
@@ -110,32 +85,6 @@ const parse2JsonObject = async (val,params)=>{
     return val
 }
 
-const uuid2ReferencedObject = async (val,params)=>{
-    let properties = schema.getSchemaProperties(val.category||params.category),objs,obj
-    for (let key in val) {
-        if (val[key] && properties[key]) {
-            if(properties[key].schema&&_.isString(val[key])){
-                val[key] = await scirichon_cache.getItemByCategoryAndID(properties[key].schema,val[key]) || val[key]
-            }
-            else if(val[key].length&&_.isString(val[key][0])&&properties[key].type==='array'&&properties[key].items.schema){
-                objs = []
-                for(let id of val[key]){
-                    obj = await scirichon_cache.getItemByCategoryAndID(properties[key].items.schema,id)||id
-                    objs.push(obj)
-                }
-                val[key] = objs
-            }else if(properties[key].type==='object') {
-                val[key] = await referencedObjectMapper(val[key], properties[key])
-            }else if (properties[key].type === 'array' && properties[key].items.type === 'object') {
-                for (let entry of val[key]) {
-                    entry = await referencedObjectMapper(entry, properties[key].items)
-                }
-            }
-        }
-    }
-    return val
-}
-
 
 const resultMapper = async (val,params) => {
     if(!params.origional){
@@ -143,7 +92,7 @@ const resultMapper = async (val,params) => {
     }
     val = await parse2JsonObject(val,params)
     if(!params.origional){
-        val = await uuid2ReferencedObject(val,params)
+        val = await mapper.referencedObjectMapper(val,params)
     }
     return val
 }

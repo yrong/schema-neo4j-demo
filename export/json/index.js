@@ -6,12 +6,13 @@ const _ = require('lodash')
 const mkdirp = require('mkdirp')
 const schema = require('redis-json-schema')
 const common = require('scirichon-common')
-const base_url=`http://${config.get('privateIP')||'localhost'}:${config.get('cmdb.port')}`
+const port = config.get(`${process.env['NODE_NAME']}.port`)
+const base_url=`http://${config.get('privateIP')||'localhost'}:${port}`
+
 
 const exportItems = async ()=>{
     const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
-    const additionalPropertyCheck = config.get('additionalPropertyCheck')
-    await schema.loadSchemas({redisOption,additionalPropertyCheck})
+    await schema.loadSchemas({redisOption})
     let categories = process.env.EXPORT_CATEGORIES
     if(categories){
         categories = categories.split(',')
@@ -20,7 +21,8 @@ const exportItems = async ()=>{
         categories = _.map(schema.getApiRouteSchemas(),(schema)=>schema.id)
     }
     let timestamp = moment().format('YYYYMMDDHHmmss')
-    let storeDir = (process.env['RUNTIME_PATH']||'../runtime') + config.get('runtime_data.cmdb.json_export_dir')
+    let exportPath = `runtime_data.${process.env['NODE_NAME']}.json_export_dir`
+    let storeDir = (process.env['RUNTIME_PATH']||'../runtime') + config.get(exportPath)
     mkdirp.sync(storeDir)
     let store_time_dir = path.join(storeDir, timestamp)
     mkdirp.sync(store_time_dir)
