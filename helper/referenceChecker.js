@@ -4,7 +4,7 @@ const uuid_validator = require('uuid-validate')
 const common = require('scirichon-common')
 const ScirichonError = common.ScirichonError
 
-const single_converter = async (key,value)=>{
+const checkReferenceId = async (key,value)=>{
     let uuid,cached_val
     if(uuid_validator(value)||common.isLegacyUserId(key,value)){
         cached_val = await scirichon_cache.getItemByCategoryAndID(key,value)
@@ -17,21 +17,21 @@ const single_converter = async (key,value)=>{
         throw new ScirichonError(`can not find category ${key} as ${value} in scirichon cache`)
     return uuid
 }
-const array_converter = async (key,values)=>{
+const checkReferenceIds = async (key,values)=>{
     let uuids = []
     for(let value of values){
-        uuids.push(await single_converter(key,value))
+        uuids.push(await checkReferenceId(key,value))
     }
     return uuids
 }
 
-const refConverter = async (key,value)=>{
+const checkReference = async (key,value)=>{
     if(_.isArray(value))
-        return await array_converter(key,value)
+        return await checkReferenceIds(key,value)
     else
-        return await single_converter(key,value)
+        return await checkReferenceId(key,value)
 }
 
 
-module.exports = refConverter
+module.exports = checkReference
 

@@ -50,5 +50,6 @@
   "required": ["it_service"],
   "route": "/processFlows",
   "search":{"index":"processflow"},
-  "notification":true
+  "notification":true,
+  "dynamicSeqField":"pfid"
 }

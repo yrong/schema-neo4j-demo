@@ -6,7 +6,7 @@ const schema = require('redis-json-schema')
 const common = require('scirichon-common')
 const ScirichonError = common.ScirichonError
 const logger = require('log4js_wrapper').getLogger()
-const ref_converter = require('../helper/converter')
+const referenceChecker = require('../helper/referenceChecker')
 const cypherBuilder = require('../cypher/cypherBuilder')
 const scirichon_cache = require('scirichon-cache')
 const cypherInvoker = require('../helper/cypherInvoker')
@@ -38,7 +38,7 @@ const paginationParamsGenerator = function (params) {
     return _.assign(params,params_pagination);
 }
 
-const queryParamsCypherGenerator = function (params) {
+const queryCypherGenerator = function (params) {
     if(params.uuid){
         params.cypher = cypherBuilder.generateQueryNodeCypher(params);
     }
@@ -52,10 +52,11 @@ const queryParamsCypherGenerator = function (params) {
         params.subcategory = params.subcategory.split(",");
         params.cypher = cypherBuilder.generateQueryItemByCategoryCypher(params);
     }
+    logCypher(params)
     return params;
 }
 
-const cudItem_params_stringify = async (params) => {
+const stringifyObjectFields = async (params) => {
     let objectFields=schema.getSchemaObjectProperties(params.category)
     for (let key of objectFields) {
         if (_.isObject(params.fields[key])) {
@@ -75,16 +76,16 @@ const cudItem_params_stringify = async (params) => {
 }
 
 
-const cudItem_referenced_params_convert = async (params)=>{
-    var convert = async (ref,val)=>{
-        await ref_converter(ref.schema||ref.items.schema,val)
+const checkIfReferencedObjectExist = async (params)=>{
+    let check = async (ref,val)=>{
+        await referenceChecker(ref.schema||ref.items.schema,val)
     }
-    var refs = schema.getSchemaRefProperties(params.category)
+    let refs = schema.getSchemaRefProperties(params.category)
     if(refs){
         for(let ref of refs){
             let val = jp.query(params, `$.${ref.attr}`)[0]
             if(val){
-                await convert(ref,val)
+                await check(ref,val)
             }
         }
     }
@@ -95,7 +96,7 @@ const logCypher = (params)=>{
     logger.debug(`cypher to executed:${JSON.stringify({cypher:params.cyphers||params.cypher,params:_.omit(params,['cypher','cyphers','data','fields_old','method','url','token'])},null,'\t')}`)
 }
 
-const checkReferenced = (uuid,items)=>{
+const checkIfUidReferencedByOthers = (uuid,items)=>{
     let referenced = false,item,index=0
     while(!referenced&&index<items.length){
         item = items[index]
@@ -119,7 +120,6 @@ const checkReferenced = (uuid,items)=>{
             }
         }
         index++
-
     }
     return referenced
 }
@@ -136,79 +136,99 @@ const internalUsedFieldsChecker = (params)=>{
     }
 }
 
-const handleCudRequest = async (params, ctx)=>{
-    let item_uuid,result,schema_obj,root_schema,key,keyNames
-    params = common.pruneEmpty(params)
-    params.category = params.data?params.data.category:getCategoryFromUrl(ctx)
-    if (ctx.method === 'POST') {
-        item_uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
-        params.data.fields.uuid = item_uuid
-        params.fields = _.assign({}, params.data.fields)
-        params.fields.category = params.data.category
-        params.fields.created = params.fields.created||Date.now()
-        schema_obj = schema.getSchema(params.category)
-        if(schema_obj&&schema_obj.dynamic_field){
-            result =  await cypherInvoker.executeCypher(cypherBuilder.generateSequence(params.category), params)
-            params.fields[dynamic_field] = String(result[0])
-        }
-        root_schema = schema.getAncestorSchema(params.category)
-        if(root_schema.uniqueKeys){
-            params.unique_name = params.fields.unique_name = params.fields[root_schema.uniqueKeys[0]]
-        }
-        if(root_schema.compoundKeys){
-            for(key of root_schema.compoundKeys){
-                if(key!=='name'){
-                    result = await scirichon_cache.getItemByCategoryAndID(_.capitalize(key),params.fields[key])
+const generateUniqueNameField = async (params, ctx) => {
+    let schema_obj = schema.getAncestorSchema(params.category)
+    if (schema_obj.uniqueKeys && schema_obj.uniqueKeys.length) {
+        params.unique_name = params.fields.unique_name = params.fields[schema_obj.uniqueKeys[0]]
+    } else if (schema_obj.compoundKeys && schema_obj.compoundKeys.length) {
+        for (let key of schema_obj.compoundKeys) {
+            if (key !== 'name') {
+                let category = _.capitalize(key)
+                let result = await scirichon_cache.getItemByCategoryAndID(category, params.fields[key])
+                if (!_.isEmpty(result)) {
                     key = key + "_name"
                     params[key] = params.fields[key] = result.name
                 }
             }
-            keyNames = _.map(root_schema.compoundKeys,(key)=>{
-                if(key!=='name')
-                    key = key + "_name"
-                return key
-            })
-            params.unique_name = params.fields.unique_name = common.buildCompoundKey(keyNames,params.fields)
+        }
+        let keyNames = _.map(schema_obj.compoundKeys, (key) => key !== 'name' ? key + "_name" : key)
+        params.unique_name = params.fields.unique_name = common.buildCompoundKey(keyNames, params.fields)
+    }
+}
+
+const generateDynamicSeqField = async (params,ctx)=>{
+    let schema_obj = schema.getAncestorSchema(params.category)
+    if(schema_obj&&schema_obj.dynamicSeqField){
+        let result =  await cypherInvoker.executeCypher(ctx,cypherBuilder.generateSequence(params.category), params)
+        if(result&&result.length){
+            params.fields[schema_obj.dynamicSeqField] = String(result[0])
         }
     }
-    else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {
-        if(params.uuid){
-            result =  await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodeCypher(params), params)
+}
+
+const assignFields4CreateOrUpdate = async (params,ctx)=>{
+    if (ctx.method === 'POST') {
+        params.data.fields.uuid = params.data.fields.uuid || params.data.uuid || params.uuid || uuid.v1()
+        params.fields = _.assign({}, params.data.fields)
+        params.fields.category = params.data.category
+        params.fields.created = params.fields.created || Date.now()
+        await generateUniqueNameField(params, ctx)
+        await generateDynamicSeqField(params, ctx)
+    } else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {
+        if (params.uuid) {
+            let result = await cypherInvoker.executeCypher(ctx, cypherBuilder.generateQueryNodeCypher(params), params)
             if (result && result[0]) {
-                params.fields_old = _.omit(result[0],'id')
-                params.fields = _.assign({}, params.fields_old,params.data.fields)
-                params.fields.lastUpdated = params.fields.lastUpdated||Date.now()
                 params.change = params.data.fields
-            }else {
+                params.fields_old = _.omit(result[0], 'id')
+                params.fields = _.assign({}, params.fields_old, params.data.fields)
+                params.fields.lastUpdated = params.data.fields.lastUpdated || Date.now()
+            } else {
                 throw new ScirichonError("no record found")
             }
         }
         else {
             throw new ScirichonError("missing uuid")
         }
-    } else if (ctx.method === 'DELETE') {
-        if(params.uuid){
-            result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodeWithRelationCypher(params), params)
-            if(result&&result[0]&&result[0].self&&result[0].self.category){
+    }
+    params = _.assign(params, params.fields)
+    await checkIfReferencedObjectExist(params)
+    await stringifyObjectFields(params)
+}
+
+const assignFields4Delete = async (params,ctx)=>{
+    if(params.uuid){
+        let result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodeWithRelationCypher(params), params)
+        if(result&&result[0]){
+            if(result[0].self&&result[0].self.category){
                 params.category = result[0].self.category
                 params.name = result[0].self.name
                 params.fields_old = _.omit(result[0].self,'id')
                 if(result[0].items&&result[0].items.length){
-                    if(checkReferenced(params.uuid,result[0].items)){
+                    if(checkIfUidReferencedByOthers(params.uuid,result[0].items)){
                         throw new ScirichonError("node already used")
                     }
                 }
-            }else{
-                throw new ScirichonError("no record found")
             }
-        }else if(!ctx.deleteAll){
-            throw new ScirichonError("missing uuid")
+        }else{
+            throw new ScirichonError("no record found")
         }
+    }else if(!ctx.deleteAll){
+        throw new ScirichonError("missing uuid")
     }
+}
+
+const assignFields = async (params,ctx)=>{
+    params.category = params.data?params.data.category:getCategoryFromUrl(ctx)
+    if (ctx.method === 'POST'||ctx.method === 'PUT' || ctx.method === 'PATCH') {
+        await assignFields4CreateOrUpdate(params,ctx)
+    }
+    else if (ctx.method === 'DELETE') {
+        await assignFields4Delete(params,ctx)
+    }
+}
+
+const generateCypher = async(params,ctx)=>{
     if(ctx.method === 'POST'||ctx.method === 'PUT' || ctx.method === 'PATCH'){
-        params = _.assign(params, params.fields)
-        await cudItem_referenced_params_convert(params)
-        await cudItem_params_stringify(params)
         params.cypher = cypherBuilder.generateAddOrUpdateCyphers(params);
     }else if(ctx.method === 'DELETE'){
         params.cypher = cypherBuilder.generateDelNodeCypher(params)
@@ -217,14 +237,19 @@ const handleCudRequest = async (params, ctx)=>{
         }
     }
     logCypher(params)
+}
+
+const handleCudRequest = async (params, ctx)=>{
+    params = common.pruneEmpty(params)
+    await assignFields(params,ctx)
+    await generateCypher(params,ctx)
     return params
 }
 
 const handleQueryRequest = (params,ctx)=>{
     params.category = getCategoryFromUrl(ctx)
     params = paginationParamsGenerator(params)
-    params = queryParamsCypherGenerator(params)
-    logCypher(params)
+    params = queryCypherGenerator(params)
     return params;
 }
 
