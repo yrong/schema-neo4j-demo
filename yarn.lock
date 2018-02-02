@@ -4367,9 +4367,9 @@ watchpack@^1.4.0:
     chokidar "^1.7.0"
     graceful-fs "^4.1.2"
 
-webpack-builder-advanced@1.0.0-beta.1:
-  version "1.0.0-beta.1"
-  resolved "https://registry.npmjs.org/webpack-builder-advanced/-/webpack-builder-advanced-1.0.0-beta.1.tgz#37f04d0977ebd9afe2cb9c18a5f1cd36b3700cc4"
+webpack-builder-advanced@1.0.0-beta.2:
+  version "1.0.0-beta.2"
+  resolved "https://registry.npmjs.org/webpack-builder-advanced/-/webpack-builder-advanced-1.0.0-beta.2.tgz#bfe5175af4330c13915bc2191f1ffece1b225d66"
   dependencies:
     babel-core "^6.26.0"
     babel-loader "^7.1.2"

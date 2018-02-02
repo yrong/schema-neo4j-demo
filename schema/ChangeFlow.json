@@ -1,0 +1,20 @@
+{
+  "id": "ChangeFlow",
+  "allOf": [
+    {"$ref": "ProcessFlow"},
+    {"properties":
+      {
+        "priority":{
+          "type": "string"
+        },
+        "risk":{
+          "type": "string"
+        },
+        "cfgItems":{
+          "type": "array",
+          "items": { "type": "string"}
+        }
+      }
+    }
+  ]
+}
