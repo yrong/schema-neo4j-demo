@@ -1,14 +1,13 @@
 {
 	"info": {
 		"name": "cmdb",
-		"_postman_id": "47b13c4e-0294-1f24-c87e-683ab864ed8f",
+		"_postman_id": "7d31b9d7-ef76-489e-c1c7-d8ec1b8b16a8",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "0-prepare",
-			"description": "",
 			"item": [
 				{
 					"name": "login",
@@ -53,8 +52,7 @@
 								"auth",
 								"login"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -82,7 +80,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items",
 							"protocol": "http",
@@ -121,7 +122,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license",
 							"protocol": "http",
@@ -133,8 +137,7 @@
 								"api",
 								"license"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -142,7 +145,6 @@
 		},
 		{
 			"name": "1-auxiliary",
-			"description": "",
 			"item": [
 				{
 					"name": "add server_room",
@@ -185,8 +187,7 @@
 								"api",
 								"serverRooms"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -231,8 +232,7 @@
 								"api",
 								"cabinets"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -259,7 +259,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/serverRooms",
 							"protocol": "http",
@@ -271,8 +274,7 @@
 								"api",
 								"serverRooms"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -298,7 +300,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets",
 							"protocol": "http",
@@ -310,8 +315,7 @@
 								"api",
 								"cabinets"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -356,8 +360,7 @@
 								"api",
 								"wareHouses"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -403,8 +406,7 @@
 								"api",
 								"shelves"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -431,7 +433,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/wareHouses",
 							"protocol": "http",
@@ -443,8 +448,7 @@
 								"api",
 								"wareHouses"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -452,7 +456,6 @@
 		},
 		{
 			"name": "2-itservice",
-			"description": "",
 			"item": [
 				{
 					"name": "add ServiceGroup Messaging",
@@ -496,8 +499,7 @@
 								"it_services",
 								"group"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -542,8 +544,7 @@
 								"it_services",
 								"group"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -588,8 +589,7 @@
 								"it_services",
 								"service"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -631,8 +631,7 @@
 								"it_services",
 								"service"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -677,8 +676,7 @@
 								"it_services",
 								"service"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -723,8 +721,7 @@
 								"it_services",
 								"service"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -768,8 +765,7 @@
 								"service",
 								"{{service_dns_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -795,7 +791,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/group",
 							"protocol": "http",
@@ -808,8 +807,7 @@
 								"it_services",
 								"group"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -835,7 +833,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service",
 							"protocol": "http",
@@ -848,8 +849,7 @@
 								"it_services",
 								"service"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -895,8 +895,7 @@
 								"it_services",
 								"group"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -939,8 +938,7 @@
 								"group",
 								"{{group_test_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -986,8 +984,7 @@
 								"group",
 								"{{group_messaging_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -995,7 +992,6 @@
 		},
 		{
 			"name": "3-configurationItem",
-			"description": "",
 			"item": [
 				{
 					"name": "add operating system",
@@ -1042,8 +1038,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1092,8 +1087,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1143,8 +1137,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1171,7 +1164,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software",
 							"protocol": "http",
@@ -1190,8 +1186,7 @@
 									"value": "Software"
 								}
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1218,7 +1213,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=OperatingSystem",
 							"protocol": "http",
@@ -1237,8 +1235,7 @@
 									"equals": true
 								}
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1289,8 +1286,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1335,8 +1331,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1381,8 +1376,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1427,8 +1421,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1460,7 +1453,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.102\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.107\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.107\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"management_ip\":[\"192.168.0.107\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1473,8 +1466,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1516,8 +1508,7 @@
 								"cfgItems",
 								"{{router_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1560,8 +1551,7 @@
 								"cfgItems",
 								"{{physical_server_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1587,7 +1577,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
 							"protocol": "http",
@@ -1600,8 +1593,7 @@
 								"cfgItems",
 								"{{router_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1627,7 +1619,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
 							"protocol": "http",
@@ -1640,8 +1635,7 @@
 								"cfgItems",
 								"{{physical_server_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1667,7 +1661,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
 							"protocol": "http",
@@ -1679,8 +1676,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1706,7 +1702,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Hardware,Software,NetworkDevice",
 							"protocol": "http",
@@ -1725,8 +1724,7 @@
 									"value": "Hardware,Software,NetworkDevice"
 								}
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1752,7 +1750,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?page=1&per_page=2",
 							"protocol": "http",
@@ -1776,8 +1777,7 @@
 									"equals": true
 								}
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1805,7 +1805,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_email_id}}",
 							"protocol": "http",
@@ -1848,7 +1851,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cabinets/{{cabinet_id}}",
 							"protocol": "http",
@@ -1890,7 +1896,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
 							"protocol": "http",
@@ -1949,8 +1958,7 @@
 								"api",
 								"cfgItems"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1976,7 +1984,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
 							"protocol": "http",
@@ -1989,8 +2000,7 @@
 								"cfgItems",
 								"{{virtual_server_1_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2019,7 +2029,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
 							"protocol": "http",
@@ -2041,7 +2054,6 @@
 		},
 		{
 			"name": "4-processFlow",
-			"description": "",
 			"item": [
 				{
 					"name": "add incident flow 1",
@@ -2083,8 +2095,7 @@
 								"api",
 								"processFlows"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2128,8 +2139,7 @@
 								"api",
 								"processFlows"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2173,8 +2183,7 @@
 								"api",
 								"processFlows"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2217,8 +2226,7 @@
 								"processFlows",
 								"{{incident_flow_1_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2261,8 +2269,7 @@
 								"processFlows",
 								"{{incident_flow_1_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2299,7 +2306,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_1_id}}",
 							"protocol": "http",
@@ -2312,8 +2322,7 @@
 								"processFlows",
 								"{{incident_flow_1_id}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2341,7 +2350,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows/{{incident_flow_3_id}}",
 							"protocol": "http",
@@ -2358,16 +2370,102 @@
 						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
 					},
 					"response": []
+				},
+				{
+					"name": "add problem flow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ProblemFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add change flow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ChangeFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"processFlows"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "5-advancedSearch",
-			"description": "",
 			"item": [
 				{
 					"name": "5-1-cql",
-					"description": "",
 					"item": [
 						{
 							"name": "query ConfigurationItem mounted advanced",
@@ -2410,8 +2508,7 @@
 										"api",
 										"searchByCypher"
 									]
-								},
-								"description": ""
+								}
 							},
 							"response": []
 						},
@@ -2456,8 +2553,7 @@
 										"api",
 										"searchByCypher"
 									]
-								},
-								"description": ""
+								}
 							},
 							"response": []
 						},
@@ -2502,8 +2598,7 @@
 										"api",
 										"searchByCypher"
 									]
-								},
-								"description": ""
+								}
 							},
 							"response": []
 						},
@@ -2548,8 +2643,7 @@
 										"api",
 										"searchByCypher"
 									]
-								},
-								"description": ""
+								}
 							},
 							"response": []
 						}
@@ -2558,7 +2652,6 @@
 				},
 				{
 					"name": "5-2-eql",
-					"description": "",
 					"item": [
 						{
 							"name": "search configurationItem with eql as parameter",
@@ -2631,8 +2724,7 @@
 											"equals": true
 										}
 									]
-								},
-								"description": ""
+								}
 							},
 							"response": []
 						},
@@ -2708,8 +2800,7 @@
 											"value": "10"
 										}
 									]
-								},
-								"description": ""
+								}
 							},
 							"response": []
 						}
@@ -2720,7 +2811,6 @@
 		},
 		{
 			"name": "6-schema",
-			"description": "",
 			"item": [
 				{
 					"name": "query properties of router",
@@ -2745,7 +2835,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/Router",
 							"protocol": "http",
@@ -2758,8 +2851,7 @@
 								"schema",
 								"Router"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2807,8 +2899,7 @@
 								"Software",
 								""
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2836,7 +2927,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/schema/hierarchy/Software",
 							"protocol": "http",
@@ -2850,8 +2944,7 @@
 								"hierarchy",
 								"Software"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
