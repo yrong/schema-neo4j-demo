@@ -89,18 +89,6 @@ module.exports = {
             subtypes:_.map(result,(subtype)=>subtype.category)
         }
 
-    },
-    loadSchemas:async function(params, ctx) {
-        let schemas = params.data,restart=false
-        for(let val of schemas){
-            await schema.loadSchema(val,true,true)
-            if(val.route)
-                restart = true
-        }
-        if(restart){
-            ctx.app.emit('restart')
-        }
-        return {}
     }
 }
 

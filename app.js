@@ -13,7 +13,8 @@ const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
 const KoaNeo4jApp = require('koa-neo4j-fork')
 const neo4jConfig = config.get('neo4j')
-const initAppRoutes = require("./routes")
+const initCommonRoutes = require("./routes/common")
+const initCmdbRoutes = require("./routes/cmdb")
 const scirichon_cache = require('scirichon-cache')
 
 /**
@@ -59,7 +60,8 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
 
 app.neo4jConnection.initialized.then(() => {
     scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']}).then(()=>{
-        initAppRoutes(app)
+        initCommonRoutes(app)
+        initCmdbRoutes(app)
         if(process.env['INIT_CACHE']){
             scirichon_cache.loadAll()
         }

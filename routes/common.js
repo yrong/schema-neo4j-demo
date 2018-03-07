@@ -77,14 +77,6 @@ module.exports = (app)=>{
     })
 
 
-    /*deprecated*/
-    app.defineAPI({
-        method: 'POST',
-        route: '/api/search/cfgItems',
-        procedure:search.searchItem
-    })
-
-
     /* Delete all Items(for test purpose) */
     if(process.env.NODE_ENV === 'development'){
         app.defineAPI({
@@ -99,12 +91,6 @@ module.exports = (app)=>{
     app.router.get('/api/license', function (ctx, next) {
         ctx.body = ctx.state.license
     })
-
-    app.defineAPI({
-        method: 'POST',
-        route: '/api/schema/',
-        procedure: hook.loadSchemas
-    })
-
+    
     return app
 }
