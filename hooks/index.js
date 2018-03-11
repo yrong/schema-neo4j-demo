@@ -1,15 +1,10 @@
 const _ = require('lodash')
-const config = require('config')
-const qr = require('qr-image')
 const fs = require('fs')
 const path = require('path')
-const mkdirp = require('mkdirp')
 const common = require('scirichon-common')
 const schema = require('redis-json-schema')
-const scirichon_cache = require('scirichon-cache')
 const cypherBuilder = require('../cypher/cypherBuilder')
 const ScirichonWarning = common.ScirichonWarning
-const search = require('../search')
 const requestHandler = require('./requestHandler')
 const responseHandler = require('./responseHandler')
 const logger = require('log4js_wrapper').getLogger()
@@ -88,7 +83,45 @@ module.exports = {
             references:_.uniq(_.map(schema.getSchemaRefProperties(params.category),(attr)=>attr.schema)),
             subtypes:_.map(result,(subtype)=>subtype.category)
         }
-
+    },
+    getItemWithMembers: async function(params,ctx){
+        let addItemMembers = async(item)=>{
+            let result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryItemWithMembersCypher(item.category),{uuid:item.uuid})
+            if(result&&result.length) {
+                result = result[0]
+                if (result.members&&result.members.length) {
+                    let members = []
+                    for (let member of result.members) {
+                        member = await addItemMembers(member)
+                        members.push(member)
+                    }
+                    item = _.merge(result.self, {members})
+                }
+            }
+            return item
+        }
+        let result
+        if(params.uuid){
+            result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodeCypher(params),{uuid:params.uuid})
+            if(result&&result.length){
+                result = result[0]
+                result = await addItemMembers(result)
+            }
+        }else{
+            result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodesCypher(params))
+            let results = []
+            if(result&&result.length){
+                result = result[0]
+                if(result&&result.length){
+                    for(let item of result){
+                        item = await addItemMembers(item)
+                        results.push(item)
+                    }
+                    result = results
+                }
+            }
+        }
+        return result
     }
 }
 

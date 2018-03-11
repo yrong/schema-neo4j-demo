@@ -1,13 +1,13 @@
 {
 	"info": {
 		"name": "cmdb",
-		"_postman_id": "7d31b9d7-ef76-489e-c1c7-d8ec1b8b16a8",
+		"_postman_id": "2d85f3d3-810a-e108-be56-f4e3245080a0",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "0-prepare",
+			"name": "prepare",
 			"item": [
 				{
 					"name": "login",
@@ -15,13 +15,19 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "1743ae0f-48d3-4c33-9e47-5611dfa62da4",
 								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"var token = jsonData.data?jsonData.data.token:jsonData.token;",
+									"var data = jsonData.data?jsonData.data:jsonData",
+									"var token = data.token",
 									"tests[\"token found\"] = token;",
 									"if(token){",
 									"    postman.setEnvironmentVariable(\"token\", token);",
+									"}",
+									"var userid = data.local.uuid",
+									"if(userid){",
+									"    postman.setEnvironmentVariable(\"auth_user_id\", userid);",
 									"}",
 									"",
 									""
@@ -144,7 +150,7 @@
 			]
 		},
 		{
-			"name": "1-auxiliary",
+			"name": "auxiliary",
 			"item": [
 				{
 					"name": "add server_room",
@@ -273,6 +279,52 @@
 							"path": [
 								"api",
 								"serverRooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query server room with members",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one room found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"category\":\"ServerRoom\"\n}\n"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/members",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"members"
 							]
 						}
 					},
@@ -455,7 +507,7 @@
 			]
 		},
 		{
-			"name": "2-itservice",
+			"name": "itservice",
 			"item": [
 				{
 					"name": "add ServiceGroup Messaging",
@@ -991,10 +1043,10 @@
 			]
 		},
 		{
-			"name": "3-configurationItem",
+			"name": "configurationItem",
 			"item": [
 				{
-					"name": "add operating system",
+					"name": "add operating system windows",
 					"event": [
 						{
 							"listen": "test",
@@ -1124,7 +1176,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"tags\":[\"AntispamGateway\"],\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
+							"raw": "{\n  \"data\":{\n    \"category\":\"Software\",\n    \"fields\":{\n      \"tags\":[\"AntispamGateway\"],\n      \"name\":\"反垃圾邮件网关\",\n      \"provider\":\"网际思安\",\n      \"version\":\"1234\",\n      \"key\":\"1234\",\n      \"quantity\":1,\n      \"contact_id\":\"1234\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1273,7 +1325,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n          },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router1\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n          },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1318,7 +1370,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"AS-2285-BAK-1\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{ubuntu_os_id}}\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"asset_id\":\"test\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n       \"name\":\"AS-2285-BAK\",\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"ip_address\":[\"192.168.0.108\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{ubuntu_os_id}}\",\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"retirement_date\":\"2017-02-11\",\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"},\n      \"management_ip\":[\"192.168.0.108\"],\n      \"monitored\":true,\n      \"asset_id\":\"test\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1702,12 +1754,9 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Hardware,Software,NetworkDevice",
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software",
 							"protocol": "http",
 							"host": [
 								"{{cmdb_api_host}}"
@@ -1719,9 +1768,9 @@
 							],
 							"query": [
 								{
-									"equals": true,
 									"key": "subcategory",
-									"value": "Hardware,Software,NetworkDevice"
+									"value": "Software",
+									"equals": true
 								}
 							]
 						}
@@ -2053,7 +2102,7 @@
 			]
 		},
 		{
-			"name": "4-processFlow",
+			"name": "processFlow",
 			"item": [
 				{
 					"name": "add incident flow 1",
@@ -2462,10 +2511,10 @@
 			]
 		},
 		{
-			"name": "5-advancedSearch",
+			"name": "advancedSearch",
 			"item": [
 				{
-					"name": "5-1-cql",
+					"name": "cql",
 					"item": [
 						{
 							"name": "query ConfigurationItem mounted advanced",
@@ -2651,7 +2700,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "5-2-eql",
+					"name": "eql",
 					"item": [
 						{
 							"name": "search configurationItem with eql as parameter",
@@ -2810,7 +2859,7 @@
 			]
 		},
 		{
-			"name": "6-schema",
+			"name": "schema",
 			"item": [
 				{
 					"name": "query properties of router",

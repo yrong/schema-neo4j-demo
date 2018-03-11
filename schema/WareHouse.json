@@ -11,6 +11,5 @@
   },
   "required": ["name"],
   "route": "/wareHouses",
-  "uniqueKeys":["name"],
-  "getMember":true
+  "uniqueKeys":["name"]
 }

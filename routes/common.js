@@ -91,6 +91,12 @@ module.exports = (app)=>{
     app.router.get('/api/license', function (ctx, next) {
         ctx.body = ctx.state.license
     })
+
+    app.defineAPI({
+        method: 'POST',
+        route: '/api/members',
+        procedure: hook.getItemWithMembers
+    })
     
     return app
 }

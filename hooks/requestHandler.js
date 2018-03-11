@@ -40,17 +40,14 @@ const paginationParamsGenerator = function (params) {
 
 const queryCypherGenerator = function (params) {
     if(params.uuid){
-        params.cypher = cypherBuilder.generateQueryNodeCypher(params);
+        params.cypher = cypherBuilder.generateQueryNodeCypher(params)
     }
     else{
-        params.cypher = cypherBuilder.generateQueryNodesCypher(params);
-    }
-    let schema_obj = schema.getSchema(params.category)
-    if(schema_obj&&schema_obj.getMember&&!params.origional){
-        params.cypher = cypherBuilder.generateQueryItemWithMembersCypher(params.category,params)
-    }else if(params.subcategory){
-        params.subcategory = params.subcategory.split(",");
-        params.cypher = cypherBuilder.generateQueryItemByCategoryCypher(params);
+        params.cypher = cypherBuilder.generateQueryNodesCypher(params)
+        if(params.subcategory){
+            params.subcategory = params.subcategory.split(",");
+            params.cypher = cypherBuilder.generateQueryItemByCategoryCypher(params);
+        }
     }
     logCypher(params)
     return params;
@@ -137,22 +134,32 @@ const internalUsedFieldsChecker = (params)=>{
 }
 
 const generateUniqueNameField = async (params, ctx) => {
-    let schema_obj = schema.getAncestorSchema(params.category)
+    let schema_obj = schema.getAncestorSchema(params.category),compound_obj={}
     if (schema_obj.uniqueKeys && schema_obj.uniqueKeys.length) {
         params.unique_name = params.fields.unique_name = params.fields[schema_obj.uniqueKeys[0]]
     } else if (schema_obj.compoundKeys && schema_obj.compoundKeys.length) {
+        if(!params.fields['name']){
+            throw new ScirichonError('compoundKey object missing name field!')
+        }
+        compound_obj['name'] = params.fields['name']
         for (let key of schema_obj.compoundKeys) {
             if (key !== 'name') {
                 let category = _.capitalize(key)
                 let result = await scirichon_cache.getItemByCategoryAndID(category, params.fields[key])
                 if (!_.isEmpty(result)) {
                     key = key + "_name"
-                    params[key] = params.fields[key] = result.name
+                    compound_obj[key] = result.name
                 }
             }
         }
         let keyNames = _.map(schema_obj.compoundKeys, (key) => key !== 'name' ? key + "_name" : key)
-        params.unique_name = params.fields.unique_name = common.buildCompoundKey(keyNames, params.fields)
+        params.unique_name = params.fields.unique_name = common.buildCompoundKey(keyNames, compound_obj)
+    }
+    if(params.unique_name){
+        let obj = await scirichon_cache.getItemByCategoryAndUniqueName(params.category,params.unique_name)
+        if(!_.isEmpty(obj)){
+            throw new ScirichonError(`${params.category}存在名为"${params.unique_name}"的同名对象`)
+        }
     }
 }
 

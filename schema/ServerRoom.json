@@ -11,6 +11,5 @@
   },
   "required": ["name"],
   "route":"/serverRooms",
-  "uniqueKeys":["name"],
-  "getMember":true
+  "uniqueKeys":["name"]
 }

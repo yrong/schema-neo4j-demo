@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const schema = require('redis-json-schema')
-const config = require('config')
 const jp = require('jsonpath')
 
 
@@ -72,13 +71,12 @@ const generateSequence=(name)=>
 /**
  * query item with members
  */
-const generateQueryItemWithMembersCypher = (label,params) => {
-    return `MATCH
-        (n:${label})
+const generateQueryItemWithMembersCypher = (label) => {
+    return `MATCH (n:${label} {uuid:{uuid}})
     OPTIONAL MATCH
-        (n)<-[:MemberOf*]-(m)      
-    WITH { self: n, members:collect(m) } as items
-    RETURN collect(items)`
+        (n)<-[:MemberOf]-(m)      
+    WITH { self: n, members:collect(distinct m) } as item
+    RETURN item`
 }
 
 /**

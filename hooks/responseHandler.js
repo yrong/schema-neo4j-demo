@@ -52,21 +52,6 @@ const aggsReferencedMapper =  async (val,category) => {
     return val
 }
 
-const memberCombine = (result,params)=>{
-    let schema_obj = schema.getSchema(params.category)
-    if(schema_obj.getMember){
-        if(result.self){
-            if(result.members){
-                result = _.merge(result.self,{members:result.members})
-            }else{
-                result = result.self
-            }
-            return result
-        }
-    }
-    return result
-}
-
 const parse2JsonObject = async (val,params)=>{
     let properties = schema.getSchemaProperties(val.category||params.category)
     for (let key in val) {
@@ -87,9 +72,6 @@ const parse2JsonObject = async (val,params)=>{
 
 
 const resultMapper = async (val,params) => {
-    if(!params.origional){
-        val = await memberCombine(val,params)
-    }
     val = await parse2JsonObject(val,params)
     if(!params.origional){
         val = await mapper.referencedObjectMapper(val,params)
