@@ -68,13 +68,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"",
 									"",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -112,11 +112,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"expiration find\"] = jsonData.expiration||jsonData.data.expiration"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -158,7 +158,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -166,7 +165,8 @@
 									"    postman.setEnvironmentVariable(\"server_room_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -203,7 +203,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -211,7 +210,8 @@
 									"    postman.setEnvironmentVariable(\"cabinet_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -248,12 +248,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"at least one room found\"] = jsonData.length >=1||jsonData.data.length >=1",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -290,12 +290,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"at least one room found\"] = jsonData.length >=1||jsonData.data.length >=1",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -336,11 +336,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"1 cabinet found\"] = jsonData.length === 1||jsonData.data.length >=1"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -377,7 +377,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -385,7 +384,8 @@
 									"    postman.setEnvironmentVariable(\"warehouse_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -422,7 +422,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid",
@@ -431,7 +430,8 @@
 									"}",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -468,12 +468,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"at least one warehouse found\"] = jsonData.length >=1||jsonData.data.length >=1",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -515,7 +515,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -523,7 +522,8 @@
 									"    postman.setEnvironmentVariable(\"group_messaging_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -561,14 +561,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"    postman.setEnvironmentVariable(\"group_infrastructure_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -606,14 +606,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"    postman.setEnvironmentVariable(\"service_email_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -651,11 +651,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"console.log(responseCode);",
 									"tests[\"add ITService Email With same name conflict\"] = responseCode.code > 400"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -693,14 +693,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"    postman.setEnvironmentVariable(\"service_pop3_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -738,14 +738,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"    postman.setEnvironmentVariable(\"service_dns_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -783,12 +783,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -827,11 +827,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"2 it service groups found\"] = jsonData.length === 2||jsonData.data.length >=2"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -869,11 +869,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"it services found\"] = jsonData.length >=3||jsonData.data.length >=3"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -911,7 +911,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -919,7 +918,8 @@
 									"    postman.setEnvironmentVariable(\"group_test_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -957,11 +957,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1000,14 +1000,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"node already referenced\"] = responseCode.code != 200",
 									"",
 									"",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1051,7 +1051,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1059,7 +1058,8 @@
 									"postman.setEnvironmentVariable(\"winxp_os_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1100,7 +1100,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1108,7 +1107,8 @@
 									"postman.setEnvironmentVariable(\"ubuntu_os_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1149,8 +1149,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "908f5135-9d60-457b-b28b-3d61e930f95f",
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1158,7 +1156,9 @@
 									"postman.setEnvironmentVariable(\"application_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"id": "908f5135-9d60-457b-b28b-3d61e930f95f",
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1199,12 +1199,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"at least one software found\"] = jsonData.length >=1||jsonData.data.length >=1",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1248,12 +1248,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"at least one software found\"] = jsonData.length >=1||jsonData.data.length >=1",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1282,9 +1282,9 @@
 							],
 							"query": [
 								{
+									"equals": true,
 									"key": "subcategory",
-									"value": "OperatingSystem",
-									"equals": true
+									"value": "OperatingSystem"
 								}
 							]
 						}
@@ -1348,7 +1348,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1356,7 +1355,8 @@
 									"postman.setEnvironmentVariable(\"physical_server_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1393,7 +1393,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1401,7 +1400,8 @@
 									"postman.setEnvironmentVariable(\"switch_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1438,7 +1438,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
@@ -1446,7 +1445,8 @@
 									"postman.setEnvironmentVariable(\"firewall_id\", jsonData.uuid);",
 									"}",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1528,11 +1528,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1570,12 +1570,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1613,11 +1613,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"1 Configuration Item found\"] = jsonData.uuid === environment['router_id']"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1655,11 +1655,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"1 Configuration Item found\"] = jsonData.uuid === environment['physical_server_id']"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1697,11 +1697,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"1 Configuration Item found\"] = jsonData.length >= 1||jsonData.data.length >=1"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1738,11 +1738,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"1 Configuration Item found\"] = jsonData.length >= 1||jsonData.data.length >=1"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1768,9 +1768,9 @@
 							],
 							"query": [
 								{
+									"equals": true,
 									"key": "subcategory",
-									"value": "Software",
-									"equals": true
+									"value": "Software"
 								}
 							]
 						}
@@ -1783,11 +1783,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"2 Configuration Item found\"] = (jsonData.results&&jsonData.results.length === 2)||jsonData.data.results.length ==2"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1816,14 +1816,14 @@
 							],
 							"query": [
 								{
+									"equals": true,
 									"key": "page",
-									"value": "1",
-									"equals": true
+									"value": "1"
 								},
 								{
+									"equals": true,
 									"key": "per_page",
-									"value": "2",
-									"equals": true
+									"value": "2"
 								}
 							]
 						}
@@ -1836,13 +1836,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"node already referenced\"] = responseCode.code > 400",
 									"",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1882,13 +1882,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"node already referenced\"] = responseCode.code > 400",
 									"",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -1927,13 +1927,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"node already referenced\"] = responseCode.code > 400",
 									"",
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2017,11 +2017,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"empty field already removed\"] = (jsonData.it_service&&jsonData.it_service.length == 1 && jsonData.warranty_expiration_date === undefined)||jsonData.data.it_service.length == 1"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2059,14 +2059,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b4418be1-be68-475b-9ec9-b54deae8a265",
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"deleted\"] = responseCode.code == 200",
 									"",
 									"",
 									""
-								]
+								],
+								"id": "b4418be1-be68-475b-9ec9-b54deae8a265",
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2110,14 +2110,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"postman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2154,14 +2154,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"postman.setEnvironmentVariable(\"incident_flow_2_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2198,14 +2198,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"postman.setEnvironmentVariable(\"incident_flow_3_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2242,12 +2242,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2285,12 +2285,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2328,22 +2328,22 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"process flow by uuid found\"] = jsonData.uuid;",
 									""
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2381,13 +2381,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "650dc8ec-56f8-466d-af78-3c5cf0565f8f",
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"deleted\"] = responseCode.code == 200",
 									"",
 									""
-								]
+								],
+								"id": "650dc8ec-56f8-466d-af78-3c5cf0565f8f",
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2426,14 +2426,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"postman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2447,7 +2447,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ProblemFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ProblemFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"流程标题部分内容\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2470,14 +2470,14 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"uuid found\"] = jsonData.uuid;",
 									"if(jsonData.uuid){",
 									"postman.setEnvironmentVariable(\"incident_flow_1_id\", jsonData.uuid);",
 									"}"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2491,7 +2491,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ChangeFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ChangeFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"change\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2522,11 +2522,11 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"mount configurationItems\"] = jsonData.length ||jsonData.data.length>=1"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2567,11 +2567,11 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"it service instance found\"] = jsonData.length >= 1||jsonData.data.length>=1;"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2703,12 +2703,11 @@
 					"name": "eql",
 					"item": [
 						{
-							"name": "search configurationItem with eql as parameter",
+							"name": "search configurationItem by it service",
 							"event": [
 								{
 									"listen": "prerequest",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"function pausecomp(millis)",
 											" {",
@@ -2720,17 +2719,18 @@
 											"",
 											"//pausecomp(environment['es-refresh-interval']);",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								},
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1; "
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2763,14 +2763,14 @@
 									],
 									"query": [
 										{
+											"equals": true,
 											"key": "page",
-											"value": "1",
-											"equals": true
+											"value": "1"
 										},
 										{
+											"equals": true,
 											"key": "per_page",
-											"value": "10",
-											"equals": true
+											"value": "10"
 										}
 									]
 								}
@@ -2778,12 +2778,11 @@
 							"response": []
 						},
 						{
-							"name": "search configurationItem by keyword in all fields",
+							"name": "search configurationItem by keyword",
 							"event": [
 								{
 									"listen": "prerequest",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"function pausecomp(millis)",
 											" {",
@@ -2795,18 +2794,19 @@
 											"",
 											"//pausecomp(environment['es-refresh-interval']);",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								},
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2852,6 +2852,81 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "search processflow by title",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function pausecomp(millis)",
+											" {",
+											"  var date = new Date();",
+											"  var curDate = null;",
+											"  do { curDate = new Date(); }",
+											"  while(curDate-date < millis);",
+											"}",
+											"",
+											"//pausecomp(environment['es-refresh-interval']);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1; "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "token",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"category\":\"ProcessFlow\",\n  \"body\":\n  {\n      \"query\": {\n        \"bool\":{\n          \"must\":[\n            {\"match\":{\"title\":\"流程标题\"}}\n          ]\n        }\n      }\n  }\n}\n\n\n\n\n\n"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByEql"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"equals": true
+										},
+										{
+											"key": "per_page",
+											"value": "10",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
@@ -2867,12 +2942,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody)",
 									"jsonData = jsonData.data||jsonData",
 									"tests[\"Router schema found\"] = jsonData.properties"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2910,11 +2985,11 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e92f6436-c8f4-4820-81c2-f0260d2a5a09",
-								"type": "text/javascript",
 								"exec": [
 									"tests[\"added\"] = responseCode.code == 200"
-								]
+								],
+								"id": "e92f6436-c8f4-4820-81c2-f0260d2a5a09",
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -2958,13 +3033,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9d4df51a-784b-4fec-8f4d-cd4cb15a466f",
-								"type": "text/javascript",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"jsonData = jsonData.data || jsonData",
 									"tests[\"ConfigurationItem as root\"] = jsonData.name === 'Software'"
-								]
+								],
+								"id": "9d4df51a-784b-4fec-8f4d-cd4cb15a466f",
+								"type": "text/javascript"
 							}
 						}
 					],

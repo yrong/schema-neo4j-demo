@@ -155,7 +155,7 @@ const generateUniqueNameField = async (params, ctx) => {
         let keyNames = _.map(schema_obj.compoundKeys, (key) => key !== 'name' ? key + "_name" : key)
         params.unique_name = params.fields.unique_name = common.buildCompoundKey(keyNames, compound_obj)
     }
-    if(params.unique_name){
+    if(params.unique_name&&ctx.method==='POST'){
         let obj = await scirichon_cache.getItemByCategoryAndUniqueName(params.category,params.unique_name)
         if(!_.isEmpty(obj)){
             throw new ScirichonError(`${params.category}存在名为"${params.unique_name}"的同名对象`)
@@ -179,8 +179,8 @@ const assignFields4CreateOrUpdate = async (params,ctx)=>{
         params.fields = _.assign({}, params.data.fields)
         params.fields.category = params.data.category
         params.fields.created = params.fields.created || Date.now()
-        await generateUniqueNameField(params, ctx)
         await generateDynamicSeqField(params, ctx)
+        await generateUniqueNameField(params, ctx)
     } else if (ctx.method === 'PUT' || ctx.method === 'PATCH') {
         if (params.uuid) {
             let result = await cypherInvoker.executeCypher(ctx, cypherBuilder.generateQueryNodeCypher(params), params)
@@ -191,6 +191,9 @@ const assignFields4CreateOrUpdate = async (params,ctx)=>{
                 params.fields.lastUpdated = params.data.fields.lastUpdated || Date.now()
             } else {
                 throw new ScirichonError("no record found")
+            }
+            if(params.change.name){
+                await generateUniqueNameField(params, ctx)
             }
         }
         else {
