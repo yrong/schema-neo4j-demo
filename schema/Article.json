@@ -1,0 +1,6 @@
+{
+  "id": "Article",
+  "type": "object",
+  "properties": {},
+  "cache":{"fields":["uuid","title","category"]}
+}

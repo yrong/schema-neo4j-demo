@@ -40,9 +40,9 @@ module.exports = {
     queryItems_postProcess:async function (result,params,ctx) {
         result = _.isArray(result)&&result.length>0?result[0]:result
         if(result.count>0&&_.isArray(result.results)){
-            result.results = await responseHandler.cypherResponseMapper(result.results,params,ctx);
+            result.results = await responseHandler.responseMapper(result.results,params,ctx);
         }else{
-            result = await responseHandler.cypherResponseMapper(result,params,ctx)
+            result = await responseHandler.responseMapper(result,params,ctx)
         }
         return result
     },

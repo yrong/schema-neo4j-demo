@@ -14,7 +14,7 @@
     },
     "reference_kb":{
       "type": "array",
-      "items": { "type": "string"},
+      "items": { "type": "string","schema":"Article"},
       "uniqueItems": true
     },
     "committer":{

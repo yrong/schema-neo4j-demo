@@ -79,7 +79,7 @@ const resultMapper = async (val,params) => {
     return val
 }
 
-const cypherResponseMapper = async (val, params,ctx) => {
+const responseMapper = async (val, params, ctx) => {
     let results = []
     if (_.isArray(val)) {
         for(let single of val){
@@ -100,12 +100,12 @@ const esResponseMapper = async function(result,params,ctx){
     }else{
         result =  {count:result.hits.total,results:_.map(result.hits.hits,(result)=>result._source)}
         if(result.count>0&&_.isArray(result.results)){
-            result.results = await cypherResponseMapper(result.results, params)
+            result.results = await responseMapper(result.results, params)
         }
     }
     return result
 }
 
 module.exports = {
-    cypherResponseMapper,esResponseMapper
+    responseMapper,esResponseMapper
 }
