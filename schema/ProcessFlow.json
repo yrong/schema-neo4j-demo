@@ -47,9 +47,10 @@
       "type": "string"
     }
   },
-  "required": ["it_service"],
+  "required": ["it_service","title"],
   "route": "/processFlows",
   "search":{"index":"processflow"},
   "notification":true,
-  "dynamicSeqField":"pfid"
+  "dynamicSeqField":"pfid",
+  "cache":{"fields":["uuid","title","category"]}
 }
