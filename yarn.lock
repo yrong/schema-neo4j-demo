@@ -3551,29 +3551,20 @@ redis-crud-fork@1.0.0-beta.8:
   version "1.0.0-beta.8"
   resolved "https://registry.npmjs.org/redis-crud-fork/-/redis-crud-fork-1.0.0-beta.8.tgz#6ff803b251f092bb7a5d108c75d24f43b30fd057"
 
-redis-json-schema-init@1.0.1-beta.5:
-  version "1.0.1-beta.5"
-  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.1-beta.5.tgz#feafe110cbfe6b00ccd796a6d6ed72451712cf77"
+redis-json-schema-init@1.0.1-beta.6:
+  version "1.0.1-beta.6"
+  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.1-beta.6.tgz#fd5284d6c892317b5b4bce31303a8057a777955d"
   dependencies:
     config "^1.25.1"
     elasticsearch "^12.1.3"
     lodash "^4.17.4"
     neo4j-driver "^1.5.0"
     parse-neo4j-fork "^0.6.10"
-    redis-json-schema "1.0.2-beta.1"
+    redis-json-schema "1.0.2-beta.3"
 
-redis-json-schema@1.0.2-beta.1:
-  version "1.0.2-beta.1"
-  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.2-beta.1.tgz#4a9c7c8b8a58903b1079c3625158d1f8473aa7ee"
-  dependencies:
-    ajv "^5.3.0"
-    lodash "^4.17.4"
-    redis "^2.8.0"
-    redis-crud-fork "1.0.0-beta.8"
-
-redis-json-schema@1.0.2-beta.2:
-  version "1.0.2-beta.2"
-  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.2-beta.2.tgz#f989c27eacd5d8eb8712b51fcb5c128e040d7b97"
+redis-json-schema@1.0.2-beta.3:
+  version "1.0.2-beta.3"
+  resolved "https://registry.npmjs.org/redis-json-schema/-/redis-json-schema-1.0.2-beta.3.tgz#c0205142b9a049e630f376e9cbfaff6a52653c77"
   dependencies:
     ajv "^5.3.0"
     lodash "^4.17.4"
@@ -3799,16 +3790,17 @@ scirichon-acl-checker@1.0.1-beta.5:
     redis "^2.8.0"
     scirichon-common "1.0.1-beta.7"
 
-scirichon-cache@1.0.5-beta.2:
-  version "1.0.5-beta.2"
-  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.5-beta.2.tgz#d0cdf727eddec7e42572f4d5aaaab4e1d7b2e2c7"
+scirichon-cache@1.0.5-beta.7:
+  version "1.0.5-beta.7"
+  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.5-beta.7.tgz#70099b4466bdb571da68a806f1c888c451555120"
   dependencies:
+    config "^1.25.1"
     lodash "^4.17.4"
     node-cache-redis-fork "2.2.0-beta.3"
-    redis-json-schema "1.0.2-beta.2"
+    redis-json-schema "1.0.2-beta.3"
     request "^2.81.0"
     request-promise "^4.1.1"
-    scirichon-common "1.0.1-beta.7"
+    scirichon-common "1.0.2-beta.2"
     uuid-validate "0.0.2"
 
 scirichon-common@1.0.1-beta.7:
@@ -3819,24 +3811,24 @@ scirichon-common@1.0.1-beta.7:
     request "^2.81.0"
     request-promise "^4.1.1"
 
-scirichon-common@1.0.1-beta.8:
-  version "1.0.1-beta.8"
-  resolved "https://registry.npmjs.org/scirichon-common/-/scirichon-common-1.0.1-beta.8.tgz#bd146d30d554e2cc0ce160b28e35ac6049ee4c89"
+scirichon-common@1.0.2-beta.2:
+  version "1.0.2-beta.2"
+  resolved "https://registry.npmjs.org/scirichon-common/-/scirichon-common-1.0.2-beta.2.tgz#165c1a6d94b394feaebd58ecf5213fdf2dcf9a8a"
   dependencies:
     lodash "^4.17.4"
     request "^2.81.0"
     request-promise "^4.1.1"
 
-scirichon-response-mapper@1.0.0-beta.2:
-  version "1.0.0-beta.2"
-  resolved "https://registry.npmjs.org/scirichon-response-mapper/-/scirichon-response-mapper-1.0.0-beta.2.tgz#cb415e364f5ec901bc3748b9333dc145a468b44d"
+scirichon-response-mapper@1.0.0-beta.6:
+  version "1.0.0-beta.6"
+  resolved "https://registry.npmjs.org/scirichon-response-mapper/-/scirichon-response-mapper-1.0.0-beta.6.tgz#9eb5be5bff03daa1f19952de1872af02ae2664aa"
   dependencies:
     lodash "^4.17.4"
-    scirichon-cache "1.0.5-beta.2"
+    scirichon-cache "1.0.5-beta.7"
 
-scirichon-response-wrapper@1.0.0-beta.8:
-  version "1.0.0-beta.8"
-  resolved "https://registry.npmjs.org/scirichon-response-wrapper/-/scirichon-response-wrapper-1.0.0-beta.8.tgz#d930346b79423e43fe372bbe7f22de934c1dec4a"
+scirichon-response-wrapper@1.0.0-beta.9:
+  version "1.0.0-beta.9"
+  resolved "https://registry.npmjs.org/scirichon-response-wrapper/-/scirichon-response-wrapper-1.0.0-beta.9.tgz#74fff82dff87f37781b8db3050d3123fa7293e94"
   dependencies:
     lodash "^4.17.4"
     log4js_wrapper "1.0.3-beta.5"

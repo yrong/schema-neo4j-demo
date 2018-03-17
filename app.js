@@ -13,8 +13,7 @@ const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
 const KoaNeo4jApp = require('koa-neo4j-fork')
 const neo4jConfig = config.get('neo4j')
-const initCommonRoutes = require("./routes/common")
-const initCmdbRoutes = require("./routes/cmdb")
+const initRoutes = require("./routes/index")
 const scirichon_cache = require('scirichon-cache')
 
 /**
@@ -28,12 +27,9 @@ logger.info('license:' + JSON.stringify(license))
 /**
  * config options
  */
-const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
+const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')}
 const additionalPropertyCheck = config.get('additionalPropertyCheck')
-const cache_url_key = `${process.env['NODE_NAME']}_url`
-const port = config.get(`${process.env['NODE_NAME']}.port`)
-const cache_loadUrl = {}
-cache_loadUrl[cache_url_key]=`http://${config.get('privateIP') || 'localhost'}:${port}/api`
+
 
 /**
  * int koa app and load scrichon middlewares
@@ -59,14 +55,13 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
  */
 
 app.neo4jConnection.initialized.then(() => {
-    scirichon_cache.initialize({loadUrl: cache_loadUrl,redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']}).then(()=>{
-        initCommonRoutes(app)
-        initCmdbRoutes(app)
-        if(process.env['INIT_CACHE']){
-            scirichon_cache.loadAll()
-        }
-        app.listen(port, function () {
+    scirichon_cache.initialize({redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']}).then(()=>{
+        initRoutes(app)
+        app.listen(config.get(`${process.env['NODE_NAME']}.port`), function () {
             logger.info(`App started`);
+            if(parseInt(process.env['INIT_CACHE'])){
+                scirichon_cache.loadAll()
+            }
         })
     })
 }).catch((error) => {

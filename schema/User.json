@@ -1,5 +1,6 @@
 {
   "id": "User",
-  "type": "object",
-  "properties": {}
+  "cache":{"fields":["uuid","category","name","alias","roles"]},
+  "service":"auth",
+  "loadUrl":"/auth/userinfo"
 }
