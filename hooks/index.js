@@ -117,6 +117,11 @@ module.exports = {
                         item = await addItemMembers(item)
                         results.push(item)
                     }
+                    if(params.root){
+                        results = _.filter(results,(result)=>{
+                            return result.root===true
+                        })
+                    }
                     result = results
                 }
             }
