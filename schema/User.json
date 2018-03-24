@@ -1,6 +1,6 @@
 {
   "id": "User",
-  "cache":{"fields":["uuid","category","name","alias","roles"]},
+  "cache":{"exclude_fields":["passwd"]},
   "service":"auth",
   "loadUrl":"/auth/userinfo"
 }
