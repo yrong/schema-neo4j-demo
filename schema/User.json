@@ -1,6 +1,7 @@
 {
   "id": "User",
-  "cache":{"exclude_fields":["passwd"]},
   "service":"auth",
-  "loadUrl":"/auth/userinfo"
+  "loadUrl":"/auth/userinfo",
+  "cache":{"exclude_fields":["passwd"]},
+  "search":{"index":"user"}
 }

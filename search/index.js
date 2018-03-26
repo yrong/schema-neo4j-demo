@@ -18,7 +18,7 @@ const addOrUpdateItem = async function(params, ctx) {
         index = schemas[category].search.index
         index_obj = {
             index: index,
-            type: category,
+            type: 'doc',
             refresh:true
         }
         if(!schemas[category].search.upsert){
@@ -74,7 +74,6 @@ const searchItem = async (params, ctx)=> {
     }
     let searchObj = _.assign({
         index: index,
-        type: category,
         _source:_source
     },queryObj,params_pagination)
     logger.debug(`search in es:${JSON.stringify(searchObj,null,'\t')}`)
@@ -94,7 +93,7 @@ const batchUpdate = async (category,uuids,body)=>{
     category = schema.getAncestorCategory(category)
     if(schemas[category]&&schemas[category].search) {
         for (let uuid of uuids) {
-            bulks.push({update: {_index: schemas[category].search.index, _type: category, _id: uuid}})
+            bulks.push({update: {_index: schemas[category].search.index, _type: 'doc', _id: uuid}})
             bulks.push(body)
         }
         await es_client.bulk({body: bulks, refresh: true})
@@ -106,7 +105,7 @@ const batchCreate = async (category,items)=>{
     category = schema.getAncestorCategory(category)
     if(schemas[category]&&schemas[category].search) {
         for (let item of items) {
-            bulks.push({index: {_index: schemas[category].search.index, _type: category, _id: item.uuid}})
+            bulks.push({index: {_index: schemas[category].search.index, _type: 'doc', _id: item.uuid}})
             bulks.push(item)
         }
     }

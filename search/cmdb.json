@@ -1,6 +1,6 @@
 {
   "mappings": {
-    "ConfigurationItem": {
+    "doc": {
       "properties": {
         "uuid": {
           "type": "keyword"
