@@ -3551,9 +3551,9 @@ redis-crud-fork@1.0.0-beta.8:
   version "1.0.0-beta.8"
   resolved "https://registry.npmjs.org/redis-crud-fork/-/redis-crud-fork-1.0.0-beta.8.tgz#6ff803b251f092bb7a5d108c75d24f43b30fd057"
 
-redis-json-schema-init@1.0.1-beta.6:
-  version "1.0.1-beta.6"
-  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.1-beta.6.tgz#fd5284d6c892317b5b4bce31303a8057a777955d"
+redis-json-schema-init@1.0.1-beta.8:
+  version "1.0.1-beta.8"
+  resolved "https://registry.npmjs.org/redis-json-schema-init/-/redis-json-schema-init-1.0.1-beta.8.tgz#01b360525e08798d2d34dd2b2fa10e0ea425d3de"
   dependencies:
     config "^1.25.1"
     elasticsearch "^12.1.3"

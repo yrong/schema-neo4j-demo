@@ -37,7 +37,7 @@
     "moment": "^2.13.0",
     "qr-image": "^3.2.0",
     "redis-json-schema": "1.0.2-beta.3",
-    "redis-json-schema-init": "1.0.1-beta.6",
+    "redis-json-schema-init": "1.0.1-beta.8",
     "request": "^2.81.0",
     "request-promise": "^4.1.1",
     "scirichon-acl-checker": "1.0.1-beta.7",
