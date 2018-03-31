@@ -6,9 +6,7 @@ const schema = require('redis-json-schema')
 const search = require('../../search')
 const common = require('scirichon-common')
 const config = require('config')
-const port = config.get(`${process.env['NODE_NAME']}.port`)
-const base_url=`http://${config.get('privateIP')||'localhost'}:${port}`
-
+const base_url= common.getServiceApiUrl(process.env['NODE_NAME'])
 
 const wrapRequest = (category,item) => {
     return {data:{category:category,fields:item},batchImport:true,jsonImport:true}
@@ -55,8 +53,9 @@ const itemPreprocess = (item)=>{
     return common.pruneEmpty(item)
 }
 
-const addItem = async(category,item,update) =>{
-    let route = schema.getAncestorSchema(category).route,method='POST',uri
+const addItem = async (category,item,update)=>{
+    let category_schema = schema.getAncestorSchema(category),method='POST',uri,
+        route = category_schema&&category_schema.route
     if(!route)
         throw new Error(`${category} api route not found`)
     uri = base_url  + '/api' + route
@@ -68,22 +67,25 @@ const addItem = async(category,item,update) =>{
 }
 
 const importItems = async ()=>{
-    const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port'),dbname:process.env['NODE_NAME']||'schema'}
-    const additionalPropertyCheck = config.get('additionalPropertyCheck')
-    await schema.loadSchemas({redisOption,additionalPropertyCheck})
-    let data_dir = process.env.IMPORT_FOLDER
+    let redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')},cypher,additionalPropertyCheck = config.get('additionalPropertyCheck')
+    await schema.loadSchemas({redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']})
+    let data_dir = process.env.IMPORT_FOLDER,importStrategy = process.env.IMPORT_STRATEGY||'api',
+        categories = [],result = {},filePath,errorFolder,errorFilePath,errorItems,items
     if(!data_dir)
         throw new Error(`env 'IMPORT_FOLDER' not defined`)
-    let importStrategy = process.env.IMPORT_STRATEGY||'api'
-    let categories = schema.getSortedCategories()
-    let result = {}
+    categories.push('Role')
+    categories.push('User')
+    categories = categories.concat(schema.getSortedCategories())
+    if(process.env['NODE_NAME']==='vehicle'){
+        categories.push('OrderHistory')
+    }
     for(let category of categories){
-        let filePath = path.join(data_dir,category + '.json')
-        let errorFolder = path.join(data_dir,'exception')
-        let errorFilePath = path.join(errorFolder,category + '.json')
-        let errorItems = []
+        filePath = path.join(data_dir,category + '.json')
+        errorFolder = path.join(data_dir,'exception')
+        errorFilePath = path.join(errorFolder,category + '.json')
+        errorItems = []
         if(fs.existsSync(filePath)){
-            let items = jsonfile.readFileSync(filePath)
+            items = jsonfile.readFileSync(filePath)
             items = sortItemsDependentFirst(items)
             for (let item of items) {
                 if(!item.category)
@@ -91,7 +93,16 @@ const importItems = async ()=>{
                 try {
                     item = itemPreprocess(item)
                     if(importStrategy === 'api')
-                        await addItem(item.category, item)
+                        if(category==='OrderHistory'||category==='User'||category==='Role'){
+                            await search.addOrUpdateItem(item)
+                            if(category==='OrderHistory'&&item.entries){
+                                item.entries = JSON.stringify(item.entries)
+                            }
+                            cypher = `CREATE (n:${category}) SET n = {item}`
+                            await common.apiInvoker('POST',base_url,'/api/searchByCypher',{origional:true},{category:category,item,cypher})
+                        }else{
+                            await addItem(category, item)
+                        }
                     else if(importStrategy === 'search')
                         await search.addOrUpdateItem(item)
                     else

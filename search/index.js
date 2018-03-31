@@ -13,7 +13,7 @@ const responseHandler = require('../hooks/responseHandler')
 const hidden_fields = requestHandler.internalUsedFields
 
 const addOrUpdateItem = async function(params, ctx) {
-    let schemas = schema.getSchemas(),category = schema.getAncestorCategory(params.category),index,index_obj
+    let schemas = schema.getSchemas(),category = schema.getAncestorCategory(params.category),index,index_obj,result
     if(schemas[category]&&schemas[category].search){
         index = schemas[category].search.index
         index_obj = {
@@ -26,18 +26,18 @@ const addOrUpdateItem = async function(params, ctx) {
         }
         if(!ctx||ctx.method === 'POST'||schemas[category].search.upsert){
             index_obj.body = _.omit(params,hidden_fields)
-            await es_client.index(index_obj)
+            result = await es_client.index(index_obj)
         }else if(ctx.method === 'PUT'||ctx.method === 'PATCH') {
             index_obj.body = {doc: _.omit(params, hidden_fields)}
-            await es_client.update(index_obj)
+            result = await es_client.update(index_obj)
         }
-        logger.debug(`add index in es:${JSON.stringify(index_obj,null,'\t')}`)
+        logger.debug(`add index in es:${JSON.stringify({body:index_obj,result},null,'\t')}`)
     }
 }
 
 const deleteItem = async function(params, ctx) {
-    let queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}}
-    let schemas = schema.getSchemas(),category = requestHandler.getCategoryFromUrl(ctx),index
+    let queryObj = params.uuid?{term:{uuid:params.uuid}}:{match_all:{}},schemas = schema.getSchemas(),
+        category = requestHandler.getCategoryFromUrl(ctx),index,result
     if(ctx.deleteAll){
         index = '*'
     }else if((schemas[category]&&schemas[category].search)){
@@ -51,8 +51,8 @@ const deleteItem = async function(params, ctx) {
             },
             refresh:true
         }
-        await es_client.deleteByQuery(delObj)
-        logger.debug(`delete index in es:${JSON.stringify(delObj,null,'\t')}`)
+        result  = await es_client.deleteByQuery(delObj)
+        logger.debug(`delete index in es:${JSON.stringify({body:delObj,result},null,'\t')}`)
     }
 }
 
@@ -89,27 +89,29 @@ const checkStatus = ()=> {
 }
 
 const batchUpdate = async (category,uuids,body)=>{
-    let bulks = [],schemas = schema.getSchemas()
+    let bulks = [],schemas = schema.getSchemas(),result
     category = schema.getAncestorCategory(category)
     if(schemas[category]&&schemas[category].search) {
         for (let uuid of uuids) {
             bulks.push({update: {_index: schemas[category].search.index, _type: 'doc', _id: uuid}})
             bulks.push(body)
         }
-        await es_client.bulk({body: bulks, refresh: true})
+        result = await es_client.bulk({body: bulks, refresh: true})
+        logger.debug(`batch update index in es:${JSON.stringify({body:bulks,result},null,'\t')}`)
     }
 }
 
 const batchCreate = async (category,items)=>{
-    let bulks = [],schemas = schema.getSchemas()
+    let bulks = [],schemas = schema.getSchemas(),result
     category = schema.getAncestorCategory(category)
     if(schemas[category]&&schemas[category].search) {
         for (let item of items) {
             bulks.push({index: {_index: schemas[category].search.index, _type: 'doc', _id: item.uuid}})
             bulks.push(item)
         }
+        result = await es_client.bulk({body:bulks,refresh:true})
+        logger.debug(`batch add index in es:${JSON.stringify({body:bulks,result},null,'\t')}`)
     }
-    await es_client.bulk({body:bulks,refresh:true})
 }
 
 module.exports = {searchItem,deleteItem,addOrUpdateItem,checkStatus,batchUpdate,batchCreate}
