@@ -99,9 +99,9 @@ const importItems = async ()=>{
                                 item.entries = JSON.stringify(item.entries)
                             }
                             cypher = `CREATE (n:${category}) SET n = {item}`
-                            await common.apiInvoker('POST',base_url,'/api/searchByCypher',{origional:true},{category:category,item,cypher})
+                            await common.apiInvoker('POST',base_url,'/api/searchByCypher',{original:true},{category:item.category||category,item,cypher})
                         }else{
-                            await addItem(category, item)
+                            await addItem(item.category||category, item)
                         }
                     else if(importStrategy === 'search')
                         await search.addOrUpdateItem(item)

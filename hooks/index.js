@@ -11,6 +11,7 @@ const logger = require('log4js_wrapper').getLogger()
 const cypherInvoker = require('../helper/cypherInvoker')
 const requestPostHandler = require('./requestPostHandler')
 
+
 module.exports = {
     cudItem_preProcess: async function (params, ctx) {
         params = await requestHandler.handleCudRequest(params,ctx)
@@ -38,12 +39,13 @@ module.exports = {
         return requestHandler.handleQueryRequest(params,ctx);
     },
     queryItems_postProcess:async function (result,params,ctx) {
-        result = _.isArray(result)&&result.length>0?result[0]:result
-        if(result.count>0&&_.isArray(result.results)){
+        if(params.pagination){
+            result = result[0]
             result.results = await responseHandler.responseMapper(result.results,params,ctx);
-        }else{
-            result = await responseHandler.responseMapper(result,params,ctx)
+        }else if(params.uuid){
+            result = result[0]
         }
+        result = await responseHandler.responseMapper(result,params,ctx)
         return result
     },
     customizedQueryItems_preProcess:(params,ctx)=>{
@@ -111,19 +113,16 @@ module.exports = {
             result = await cypherInvoker.executeCypher(ctx,cypherBuilder.generateQueryNodesCypher(params))
             let results = []
             if(result&&result.length){
-                result = result[0]
-                if(result&&result.length){
-                    for(let item of result){
-                        item = await addItemMembers(item)
-                        results.push(item)
-                    }
-                    if(params.root){
-                        results = _.filter(results,(result)=>{
-                            return result.root===true
-                        })
-                    }
-                    result = results
+                for(let item of result){
+                    item = await addItemMembers(item)
+                    results.push(item)
                 }
+                if(params.root){
+                    results = _.filter(results,(result)=>{
+                        return result.root===true
+                    })
+                }
+                result = results
             }
         }
         return result

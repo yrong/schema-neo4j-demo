@@ -43,7 +43,7 @@ const generateQueryNodeCypher = (params) =>
 const cmdb_findNodes_Cypher_template = (label,condition) =>
     `MATCH (n:${label}) 
     ${condition}
-    RETURN collect(n)`
+    RETURN n`
 
 
 const cmdb_findNodesPaginated_Cypher_template = (label,condition) =>
