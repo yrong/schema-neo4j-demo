@@ -44,8 +44,8 @@ const queryCypherGenerator = function (params) {
     }
     else{
         params.cypher = cypherBuilder.generateQueryNodesCypher(params)
-        if(params.subcategory){
-            params.subcategory = params.subcategory.split(",");
+        if(params.tags||params.subcategory){
+            params.tags = (params.tags||params.subcategory).split(",");
             params.cypher = cypherBuilder.generateQueryItemByCategoryCypher(params);
         }
     }

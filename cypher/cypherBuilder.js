@@ -8,7 +8,7 @@ const jp = require('jsonpath')
 /**
  * common template
  */
-const cmdb_addNode_Cypher_template = (labels) => `MERGE (n:${labels} {uuid: {uuid}})
+const addNodeCypher = (labels) => `MERGE (n:${labels} {uuid: {uuid}})
                                     ON CREATE SET n = {fields}
                                     ON MATCH SET n = {fields}`
 
@@ -17,7 +17,7 @@ const generateAddNodeCypher=(params)=>{
     if(params.fields.tags)
         labels = [...labels,params.fields.tags]
     labels = _.isArray(labels)?labels.join(":"):params.category;
-    return cmdb_addNode_Cypher_template(labels);
+    return addNodeCypher(labels);
 }
 
 const generateDelNodeCypher = (params)=> `
@@ -40,13 +40,13 @@ const generateQueryNodeCypher = (params) =>
     RETURN n`
 
 
-const cmdb_findNodes_Cypher_template = (label,condition) =>
+const findNodesCypher = (label,condition) =>
     `MATCH (n:${label}) 
     ${condition}
     RETURN n`
 
 
-const cmdb_findNodesPaginated_Cypher_template = (label,condition) =>
+const findPaginatedNodesCypher = (label,condition) =>
     `MATCH (n:${label})
     ${condition}
     WITH
@@ -90,8 +90,8 @@ const generateQueryNodeWithRelationCypher = (params)=> {
 }
 
 const generateQueryItemByCategoryCypher = (params) => {
-    let condition = _.map(params.subcategory, (subcategory) => {
-        return `n:${subcategory}`
+    let condition = _.map(params.tags, (tag) => {
+        return `n:${tag}`
     }).join(' OR ')
     return `MATCH (n) WHERE (${condition})
     return n
@@ -149,9 +149,9 @@ module.exports = {
     generateQueryNodesCypher:(params)=>{
         let condition = '',cypher,label=params.category
         if(params.pagination){
-            cypher = cmdb_findNodesPaginated_Cypher_template(label,condition)
+            cypher = findPaginatedNodesCypher(label,condition)
         }else{
-            cypher = cmdb_findNodes_Cypher_template(label,condition);
+            cypher = findNodesCypher(label,condition);
         }
         return cypher;
     },

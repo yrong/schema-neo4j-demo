@@ -1039,6 +1039,51 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "query all it service groups with members",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"2 it service groups found\"] = jsonData.length === 2||jsonData.data.length >=2"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"category\":\"ITServiceGroup\"\n}\n"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/members",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"members"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1216,12 +1261,9 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software",
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?tags=Software",
 							"protocol": "http",
 							"host": [
 								"{{cmdb_api_host}}"
@@ -1233,9 +1275,9 @@
 							],
 							"query": [
 								{
-									"equals": true,
-									"key": "subcategory",
-									"value": "Software"
+									"key": "tags",
+									"value": "Software",
+									"equals": true
 								}
 							]
 						}
@@ -1265,12 +1307,9 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=OperatingSystem",
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?tags=OperatingSystem",
 							"protocol": "http",
 							"host": [
 								"{{cmdb_api_host}}"
@@ -1282,9 +1321,9 @@
 							],
 							"query": [
 								{
-									"equals": true,
-									"key": "subcategory",
-									"value": "OperatingSystem"
+									"key": "tags",
+									"value": "OperatingSystem",
+									"equals": true
 								}
 							]
 						}
@@ -2105,6 +2144,52 @@
 			"name": "processFlow",
 			"item": [
 				{
+					"name": "add article 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"jsonData = jsonData.data||jsonData;",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"postman.setEnvironmentVariable(\"article_1_id\", jsonData.uuid);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\":\"{{token}}\",\n    \"title\": \"水电费\",\n    \"it_service\": [\"{{service_email_id}}\"],\n    \"tag\": [\"测试\",\"随机\"],\n  \"author\": \"{{auth_user_id}}\",\n  \"ref_links\": [\"https://www.baidu.com/\"],\n  \"tasks\": \"测试插入\",\n  \"type\":\"Troubleshooting\",\n  \"content\":{\"description\": \"水电费\", \"analysis\": \"水电费\", \"solution\":\"前几天，我的邻居小伙伴突然在QQ上问我突然在不，她比我大几岁，平日里交集不算太多，这么冷不丁的来一句“在吗？”，让我误以为是骗子又来实施诈骗了\",\"workaround\": \"水电费\"}\n }\n\n"
+						},
+						"url": {
+							"raw": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles",
+							"protocol": "http",
+							"host": [
+								"{{kb_api_host}}"
+							],
+							"port": "{{kb_api_port}}",
+							"path": [
+								"KB",
+								"API",
+								"v1",
+								"articles"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "add incident flow 1",
 					"event": [
 						{
@@ -2219,7 +2304,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[],\n      \"status\": \"open\",\n      \"test\":1\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[],\n      \"status\": \"open\",\n      \"test\":1,\n      \"title\": \"test\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2899,7 +2984,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"category\":\"ProcessFlow\",\n  \"body\":\n  {\n      \"query\": {\n        \"bool\":{\n          \"must\":[\n            {\"match\":{\"title\":\"流程标题\"}}\n          ]\n        }\n      }\n  }\n}\n\n\n\n\n\n"
+									"raw": "{\n  \"category\":\"ProcessFlow\",\n  \"body\":\n  {\n      \"query\": {\n        \"bool\":{\n          \"must\":[\n            {\"match\":{\"title\":\"title\"}}\n          ]\n        }\n      }\n  }\n}\n\n\n\n\n\n"
 								},
 								"url": {
 									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
