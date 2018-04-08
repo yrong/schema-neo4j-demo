@@ -94,7 +94,7 @@ const generateQueryItemByCategoryCypher = (params) => {
         return `n:${subcategory}`
     }).join(' OR ')
     return `MATCH (n) WHERE (${condition})
-    return collect(distinct n)
+    return n
     `
 }
 
