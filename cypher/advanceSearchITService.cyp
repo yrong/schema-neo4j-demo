@@ -6,4 +6,4 @@ OPTIONAL MATCH (s1:ITService)-[:MemberOf]->(sg:ITServiceGroup)
   WHERE s1.name = keyword or sg.name = keyword
 WITH services_byIds+collect(distinct(s1.uuid)) as services
 UNWIND services AS service
-RETURN COLLECT(distinct service)
+RETURN distinct service
