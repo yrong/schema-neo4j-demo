@@ -131,6 +131,7 @@ const internalUsedFieldsChecker = (params)=>{
             }
         }
     }
+    return params
 }
 
 const generateUniqueNameField = async (params, ctx) => {

@@ -1,6 +1,0 @@
-{
-  "id": "Article",
-  "cache":{"fields":["uuid","title","category"]},
-  "service":"kb",
-  "loadUrl":"/KB/API/v1/articles"
-}

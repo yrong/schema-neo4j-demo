@@ -15,6 +15,7 @@ const KoaNeo4jApp = require('koa-neo4j-fork')
 const neo4jConfig = config.get('neo4j')
 const initRoutes = require("./routes/index")
 const scirichon_cache = require('scirichon-cache')
+const scirichon_common = require('scirichon-common')
 
 /**
  * check license
@@ -27,6 +28,7 @@ logger.info('license:' + JSON.stringify(license))
 /**
  * config options
  */
+const auth_url = scirichon_common.getServiceApiUrl('auth')
 const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')}
 const additionalPropertyCheck = config.get('additionalPropertyCheck')
 
@@ -42,7 +44,7 @@ let koaNeo4jOptions = {
     },
     middleware:[
         getLicense,
-        check_token({check_token_url:`http://${config.get('privateIP')||'localhost'}:${config.get('auth.port')}/auth/check`}),
+        check_token({check_token_url:`${auth_url}/auth/check`}),
         acl_checker({redisOption})
     ]
 }
@@ -53,19 +55,21 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
 /**
  * init routes from schema and start server
  */
-
-app.neo4jConnection.initialized.then(() => {
-    scirichon_cache.initialize({redisOption,additionalPropertyCheck,prefix:process.env['NODE_NAME']}).then(()=>{
-        initRoutes(app)
-        app.listen(config.get(`${process.env['NODE_NAME']}.port`), function () {
-            logger.info(`App started`);
-            if(parseInt(process.env['INIT_CACHE'])){
-                scirichon_cache.loadAll()
-            }
-        })
+const NODE_NAME = process.env['NODE_NAME']
+const initializeApp = async (app)=>{
+    await app.neo4jConnection.initialized
+    await scirichon_cache.initialize({redisOption,additionalPropertyCheck,prefix:NODE_NAME})
+    initRoutes(app)
+    app.listen(config.get(`${NODE_NAME}.port`), async function () {
+        if(parseInt(process.env['INIT_CACHE'])){
+            await scirichon_cache.loadAll()
+        }
     })
+}
+initializeApp(app).then(()=>{
+    logger.info(`App started`)
 }).catch((error) => {
-    logger.fatal('neo4j is not reachable,' + String(error))
+    logger.fatal('app start error,' + error.stack||error)
     process.exit(-1)
 })
 
