@@ -44,6 +44,9 @@ module.exports = {
             result.results = await responseHandler.responseMapper(result.results,params,ctx);
         }else if(params.uuid){
             result = result[0]
+            if(!result){
+                throw new ScirichonWarning(`${params.uuid} not found`)
+            }
         }
         result = await responseHandler.responseMapper(result,params,ctx)
         return result

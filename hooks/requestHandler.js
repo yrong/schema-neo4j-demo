@@ -123,12 +123,13 @@ const checkIfUidReferencedByOthers = (uuid,items)=>{
 
 const internalUsedFields = ['fields', 'cyphers', 'cypher', 'data', 'token', 'fields_old', 'change', '_id', '_index', '_type','user','id']
 
-const internalUsedFieldsChecker = (params)=>{
-    if(params.data&&params.data.fields){
-        for (let prop in params.data.fields) {
-            if(_.includes(internalUsedFields,prop)){
-                throw new ScirichonError(`${prop} not allowed`)
-            }
+const fieldsChecker = (params)=>{
+    if(!params.data||!params.data.category||!params.data.fields){
+        throw new ScirichonError(`params not valid:${JSON.stringify(params)}`)
+    }
+    for (let prop in params.data.fields) {
+        if(_.includes(internalUsedFields,prop)){
+            throw new ScirichonError(`${prop} not allowed`)
         }
     }
     return params
@@ -264,4 +265,4 @@ const handleQueryRequest = (params,ctx)=>{
     return params;
 }
 
-module.exports = {getCategoryFromUrl,handleQueryRequest,handleCudRequest,internalUsedFields,internalUsedFieldsChecker,logCypher}
+module.exports = {getCategoryFromUrl,handleQueryRequest,handleCudRequest,internalUsedFields,fieldsChecker,logCypher}
