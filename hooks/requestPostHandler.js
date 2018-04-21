@@ -68,10 +68,18 @@ const updateCache = async (params,ctx)=>{
         await scirichon_cache.flushAll()
         return
     }
-    if (ctx.method === 'POST' || ctx.method === 'PUT' || ctx.method === 'PATCH') {
-        await scirichon_cache.addItem(params.fields)
+    if (ctx.method === 'POST') {
+        if(needCache(params.fields)){
+            await scirichon_cache.addItem(params.fields)
+        }
     }
-    if (ctx.method === 'DELETE') {
+    else if(ctx.method === 'PUT' || ctx.method === 'PATCH'){
+        if(needCache(params.fields)){
+            await scirichon_cache.delItem(params.fields_old)
+            await scirichon_cache.addItem(params.fields)
+        }
+    }
+    else if (ctx.method === 'DELETE') {
         await scirichon_cache.delItem(params.fields_old)
     }
 }
