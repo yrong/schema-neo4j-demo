@@ -48,6 +48,7 @@
     }
   },
   "required": ["it_service","title"],
+  "service":"cmdb",
   "route": "/processFlows",
   "search":{"index":"processflow"},
   "notification":true,

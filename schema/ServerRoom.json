@@ -10,6 +10,7 @@
     }
   },
   "required": ["name"],
+  "service":"cmdb",
   "route":"/serverRooms",
   "uniqueKeys":["name"]
 }

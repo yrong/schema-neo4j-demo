@@ -13,6 +13,9 @@
         },
         "status":{
           "type": "keyword"
+        },
+        "reference_kb":{
+          "type": "keyword"
         }
       }
     }

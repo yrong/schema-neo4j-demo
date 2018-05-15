@@ -15,6 +15,7 @@
     }
   },
   "required": ["name","warehouse_id"],
+  "service":"cmdb",
   "route": "/shelves",
   "uniqueKeys":["name"]
 }

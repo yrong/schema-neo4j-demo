@@ -10,6 +10,7 @@
     }
   },
   "required": ["name"],
+  "service":"cmdb",
   "route":"/it_services/group",
   "getMember":"true",
   "uniqueKeys":["name"]
