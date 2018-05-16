@@ -6,20 +6,23 @@ const LOGGER = require('log4js_wrapper')
 LOGGER.initialize(config.get('logger'))
 const logger = LOGGER.getLogger()
 
-const license_helper = require('license-helper')
-const getLicense = require('./middleware/getLicense')
 const responseWrapper = require('scirichon-response-wrapper')
 const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
 const KoaNeo4jApp = require('koa-neo4j-fork')
 const neo4jConfig = config.get('neo4j')
-const initRoutes = require("./routes/index")
-const scirichon_cache = require('scirichon-cache')
-const scirichon_common = require('scirichon-common')
+const initRoutes = require("./routes")
+const scirichonCache = require('scirichon-cache')
+const scirichonCommon = require('scirichon-common')
+const scirichonSchema = require('scirichon-json-schema')
+const scirichonCrudHandler = require('scirichon-crud-handler')
+const scirichonSearch = require('scirichon-search')
 
 /**
  * check license
  */
+const license_helper = require('license-helper')
+const license_middleware = license_helper.license_middleware
 const lincense_file = `${process.env['LICENSE_PATH']}/${process.env['NODE_NAME']}.lic`
 const license = license_helper.load(lincense_file)
 logger.info('license:' + JSON.stringify(license))
@@ -28,10 +31,10 @@ logger.info('license:' + JSON.stringify(license))
 /**
  * config options
  */
-const auth_url = scirichon_common.getServiceApiUrl('auth')
+const auth_url = scirichonCommon.getServiceApiUrl('auth')
 const redisOption = {host:`${process.env['REDIS_HOST']||config.get('redis.host')}`,port:config.get('redis.port')}
 const additionalPropertyCheck = config.get('additionalPropertyCheck')
-
+const NODE_NAME = process.env['NODE_NAME']
 
 /**
  * int koa app and load scrichon middlewares
@@ -43,7 +46,7 @@ let koaNeo4jOptions = {
         password: process.env['NEO4J_PASSWD']||neo4jConfig.password
     },
     middleware:[
-        getLicense,
+        license_middleware,
         check_token({check_token_url:`${auth_url}/auth/check`}),
         acl_checker({redisOption})
     ]
@@ -55,14 +58,21 @@ const app = new KoaNeo4jApp(koaNeo4jOptions)
 /**
  * init routes from schema and start server
  */
-const NODE_NAME = process.env['NODE_NAME']
+const initializeComponents = async ()=>{
+    let schema_option = {redisOption,additionalPropertyCheck,prefix:NODE_NAME}
+    await scirichonSchema.initialize(schema_option)
+    await scirichonCache.initialize(schema_option)
+    await scirichonSearch.initialize(schema_option)
+    await scirichonCrudHandler.initialize(schema_option)
+}
+
 const initializeApp = async (app)=>{
     await app.neo4jConnection.initialized
-    await scirichon_cache.initialize({redisOption,additionalPropertyCheck,prefix:NODE_NAME})
+    await initializeComponents()
     initRoutes(app)
     app.listen(config.get(`${NODE_NAME}.port`), async function () {
         if(parseInt(process.env['INIT_CACHE'])){
-            await scirichon_cache.loadAll()
+            await scirichonCache.loadAll()
         }
     })
 }

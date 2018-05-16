@@ -1,5 +1,5 @@
-const search = require('../search')
-const common_route = require('./common')
+const search = require('scirichon-search')
+const routes = require('scirichon-crud-handler').routes
 
 module.exports = (app)=> {
 
@@ -10,6 +10,6 @@ module.exports = (app)=> {
         procedure: search.searchItem
     })
 
-    common_route(app)
+    routes(app)
 
 }
