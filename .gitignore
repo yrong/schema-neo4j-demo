@@ -36,3 +36,5 @@ runtime
 config
 release
 Dockerfile
+license
+license.json

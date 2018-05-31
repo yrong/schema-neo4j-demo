@@ -14,7 +14,7 @@
         "geo_location": {
           "properties": {
             "name": {
-              "type": "string"
+              "type": "text"
             },
             "location":{
               "type": "geo_point"

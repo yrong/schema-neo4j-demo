@@ -9,7 +9,7 @@ const logger = LOGGER.getLogger()
 const responseWrapper = require('scirichon-response-wrapper')
 const check_token = require('scirichon-token-checker')
 const acl_checker = require('scirichon-acl-checker')
-const KoaNeo4jApp = require('koa-neo4j-fork')
+const KoaNeo4jApp = require('koa-neo4j-monitor')
 const neo4jConfig = config.get('neo4j')
 const initRoutes = require("./routes")
 const scirichonCache = require('scirichon-cache')
@@ -76,6 +76,7 @@ const initializeApp = async (app)=>{
         }
     })
 }
+
 initializeApp(app).then(()=>{
     logger.info(`App started`)
 }).catch((error) => {
