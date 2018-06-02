@@ -30,6 +30,9 @@
         },
         "it_service":{
           "type": "keyword"
+        },
+        "ip_address": {
+          "type": "ip"
         }
       },
       "dynamic_templates": [

@@ -1,13 +1,13 @@
 {
 	"info": {
+		"_postman_id": "1aacdc62-aaa7-474c-a488-85c2e116baaa",
 		"name": "cmdb",
-		"_postman_id": "2d85f3d3-810a-e108-be56-f4e3245080a0",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "prepare",
+			"description": null,
 			"item": [
 				{
 					"name": "login",
@@ -91,15 +91,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/items",
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/hidden/clean",
 							"protocol": "http",
 							"host": [
 								"{{cmdb_api_host}}"
 							],
 							"port": "{{cmdb_api_port}}",
 							"path": [
-								"api",
-								"items"
+								"hidden",
+								"clean"
 							]
 						},
 						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
@@ -151,6 +151,7 @@
 		},
 		{
 			"name": "auxiliary",
+			"description": null,
 			"item": [
 				{
 					"name": "add server_room",
@@ -508,6 +509,7 @@
 		},
 		{
 			"name": "itservice",
+			"description": null,
 			"item": [
 				{
 					"name": "add ServiceGroup Messaging",
@@ -1089,6 +1091,7 @@
 		},
 		{
 			"name": "configurationItem",
+			"description": null,
 			"item": [
 				{
 					"name": "add operating system windows",
@@ -1261,7 +1264,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?tags=Software",
 							"protocol": "http",
@@ -1276,8 +1282,7 @@
 							"query": [
 								{
 									"key": "tags",
-									"value": "Software",
-									"equals": true
+									"value": "Software"
 								}
 							]
 						}
@@ -1307,7 +1312,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?tags=OperatingSystem",
 							"protocol": "http",
@@ -1322,8 +1330,7 @@
 							"query": [
 								{
 									"key": "tags",
-									"value": "OperatingSystem",
-									"equals": true
+									"value": "OperatingSystem"
 								}
 							]
 						}
@@ -1793,7 +1800,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?subcategory=Software",
 							"protocol": "http",
@@ -1807,7 +1817,6 @@
 							],
 							"query": [
 								{
-									"equals": true,
 									"key": "subcategory",
 									"value": "Software"
 								}
@@ -1855,12 +1864,10 @@
 							],
 							"query": [
 								{
-									"equals": true,
 									"key": "page",
 									"value": "1"
 								},
 								{
-									"equals": true,
 									"key": "per_page",
 									"value": "2"
 								}
@@ -2004,144 +2011,12 @@
 						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
 					},
 					"response": []
-				},
-				{
-					"name": "add virtual server 1 with empty fields",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"uuid found\"] = jsonData.uuid;",
-									"if(jsonData.uuid){",
-									"   postman.setEnvironmentVariable(\"virtual_server_1_id\", jsonData.uuid); ",
-									"}",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"VirtualServer\",\n    \"fields\":{\n       \"name\":\"virtualserver1\",\n      \"it_service\":[\"{{service_email_id}}\",\"\"],\n      \"ip_address\":[\"192.168.0.103\"],\n      \"technical_support_info\":\"010-123456\",\n      \"operating_system\": \"{{winxp_os_id}}\",\n      \"applications\":[\"{{application_id}}\"],\n      \"storage_info\": \"hp-disk1\",\n      \"model\":\"b10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"\",\n      \"management_ip\":[\"192.168.0.109\"],\n      \"monitored\":true,\n      \"host_server\":\"{{physical_server_id}}\"\n    }\n  }\n}"
-						},
-						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
-							"protocol": "http",
-							"host": [
-								"{{cmdb_api_host}}"
-							],
-							"port": "{{cmdb_api_port}}",
-							"path": [
-								"api",
-								"cfgItems"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "query virtual server 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"empty field already removed\"] = (jsonData.it_service&&jsonData.it_service.length == 1 && jsonData.warranty_expiration_date === undefined)||jsonData.data.it_service.length == 1"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "token",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
-							"protocol": "http",
-							"host": [
-								"{{cmdb_api_host}}"
-							],
-							"port": "{{cmdb_api_port}}",
-							"path": [
-								"api",
-								"cfgItems",
-								"{{virtual_server_1_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete virtual server 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"tests[\"deleted\"] = responseCode.code == 200",
-									"",
-									"",
-									""
-								],
-								"id": "b4418be1-be68-475b-9ec9-b54deae8a265",
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "token",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{virtual_server_1_id}}",
-							"protocol": "http",
-							"host": [
-								"{{cmdb_api_host}}"
-							],
-							"port": "{{cmdb_api_port}}",
-							"path": [
-								"api",
-								"cfgItems",
-								"{{virtual_server_1_id}}"
-							]
-						},
-						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "processFlow",
+			"description": null,
 			"item": [
 				{
 					"name": "add article 1",
@@ -2184,8 +2059,7 @@
 								"v1",
 								"articles"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2597,9 +2471,11 @@
 		},
 		{
 			"name": "advancedSearch",
+			"description": null,
 			"item": [
 				{
 					"name": "cql",
+					"description": null,
 					"item": [
 						{
 							"name": "query ConfigurationItem mounted advanced",
@@ -2786,6 +2662,7 @@
 				},
 				{
 					"name": "eql",
+					"description": null,
 					"item": [
 						{
 							"name": "search configurationItem by it service",
@@ -2848,12 +2725,10 @@
 									],
 									"query": [
 										{
-											"equals": true,
 											"key": "page",
 											"value": "1"
 										},
 										{
-											"equals": true,
 											"key": "per_page",
 											"value": "10"
 										}
@@ -2924,12 +2799,84 @@
 									],
 									"query": [
 										{
-											"equals": true,
 											"key": "page",
 											"value": "1"
 										},
 										{
-											"equals": true,
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search configurationItem by ip_address",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function pausecomp(millis)",
+											" {",
+											"  var date = new Date();",
+											"  var curDate = null;",
+											"  do { curDate = new Date(); }",
+											"  while(curDate-date < millis);",
+											"}",
+											"",
+											"//pausecomp(environment['es-refresh-interval']);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "token",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n           \"term\": {\n\t\t      \"ip_address\": \"192.168.0.0/24\"\n\t\t    }\n      }\n  }\n}\n\n\n\n\n\n"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByEql"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
 											"key": "per_page",
 											"value": "10"
 										}
@@ -3000,13 +2947,11 @@
 									"query": [
 										{
 											"key": "page",
-											"value": "1",
-											"equals": true
+											"value": "1"
 										},
 										{
 											"key": "per_page",
-											"value": "10",
-											"equals": true
+											"value": "10"
 										}
 									]
 								}
@@ -3020,6 +2965,7 @@
 		},
 		{
 			"name": "schema",
+			"description": null,
 			"item": [
 				{
 					"name": "query properties of router",
