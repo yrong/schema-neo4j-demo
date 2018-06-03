@@ -1,9 +1,7 @@
-const scirichon_handler = require('scirichon-crud-handler')
+const middlewares = require('scirichon-crud-handler').middlewares
 
 module.exports = {
-    middleware:()=>{
-        return scirichon_handler.middlewares()
-    },
-    appMiddleware:(app)=>{
+    load:(app)=>{
+        middlewares(app)
     }
 }
