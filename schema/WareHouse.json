@@ -11,6 +11,6 @@
   },
   "required": ["name"],
   "service":"cmdb",
-  "route": "/wareHouses",
+  "route": "/api/wareHouses",
   "uniqueKeys":["name"]
 }

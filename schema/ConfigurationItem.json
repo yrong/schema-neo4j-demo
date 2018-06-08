@@ -49,7 +49,7 @@
   },
   "required": ["name"],
   "service":"cmdb",
-  "route": "/cfgItems",
+  "route": "/api/cfgItems",
   "search":{"index":"cmdb"},
   "uniqueKeys":["name","ip_address"],
   "notification":true,

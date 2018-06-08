@@ -45,6 +45,6 @@
   },
   "required": ["name"],
   "service":"cmdb",
-  "route":"/it_services/service",
+  "route":"/api/it_services/service",
   "uniqueKeys":["name"]
 }

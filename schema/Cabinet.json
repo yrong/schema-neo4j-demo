@@ -16,6 +16,6 @@
   },
   "required": ["name","server_room_id"],
   "service":"cmdb",
-  "route":"/cabinets",
+  "route":"/api/cabinets",
   "uniqueKeys":["name"]
 }

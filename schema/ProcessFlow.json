@@ -49,7 +49,7 @@
   },
   "required": ["it_service","title"],
   "service":"cmdb",
-  "route": "/processFlows",
+  "route": "/api/processFlows",
   "search":{"index":"processflow"},
   "notification":true,
   "dynamicSeqField":"pfid",
