@@ -8,6 +8,9 @@
         "category": {
           "type": "keyword"
         },
+        "name":{
+          "type": "keyword"
+        },
         "model": {
           "type": "keyword"
         },
@@ -32,7 +35,7 @@
           "type": "keyword"
         },
         "ip_address": {
-          "type": "ip"
+          "type": "keyword"
         }
       },
       "dynamic_templates": [

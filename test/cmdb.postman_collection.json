@@ -63,6 +63,47 @@
 					"response": []
 				},
 				{
+					"name": "get license",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"expiration find\"] = jsonData.expiration||jsonData.data.expiration"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"license"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "clear all items in db",
 					"event": [
 						{
@@ -103,47 +144,6 @@
 							]
 						},
 						"description": "A `GET` request to this endpoint returns the list of all request headers as part of the response JSON.\nIn Postman, sending your own set of headers through the [Headers tab](https://www.getpostman.com/docs/requests#headers?source=echo-collection-app-onboarding) will reveal the headers as part of the response."
-					},
-					"response": []
-				},
-				{
-					"name": "get license",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"expiration find\"] = jsonData.expiration||jsonData.data.expiration"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "token",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/license",
-							"protocol": "http",
-							"host": [
-								"{{cmdb_api_host}}"
-							],
-							"port": "{{cmdb_api_port}}",
-							"path": [
-								"api",
-								"license"
-							]
-						}
 					},
 					"response": []
 				}
@@ -2784,7 +2784,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"keyword\":\"test\"\n}\n\n\n\n\n\n"
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"keyword\":\"AS-2285\"\n}\n\n\n\n\n\n"
 								},
 								"url": {
 									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
@@ -2812,7 +2812,7 @@
 							"response": []
 						},
 						{
-							"name": "search configurationItem by ip_address",
+							"name": "wildcard search configurationItem",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2858,7 +2858,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n           \"term\": {\n\t\t      \"ip_address\": \"192.168.0.0/24\"\n\t\t    }\n      }\n  }\n}\n\n\n\n\n\n"
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n   \"body\":\n  {\n      \"query\": {\n        \"bool\":{\n          \"should\":[\n            {\"wildcard\":{\"name\":\"AS-2285*\"}},\n            {\"wildcard\":{\"ip_address\":\"192.168*\"}}\n          ]\n        }\n      }\n  }\n}\n\n\n\n\n\n"
 								},
 								"url": {
 									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
