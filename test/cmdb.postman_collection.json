@@ -2932,7 +2932,81 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n           \"query_string\" : {\n\t            \"query\" : \"AS-22*\",\n\t            \"fields\" : [\"ip_address\", \"name\"],\n\t            \"analyze_wildcard\":true\n\t        }\n      }\n  }\n}\n\n\n\n\n"
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n           \"query_string\" : {\n\t            \"query\" : \"AS-2285*\",\n\t            \"fields\" : [\"ip_address\", \"name\"],\n\t            \"analyze_wildcard\":true\n\t        }\n      }\n  }\n}\n\n\n\n\n"
+								},
+								"url": {
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+									"protocol": "http",
+									"host": [
+										"{{cmdb_api_host}}"
+									],
+									"port": "{{cmdb_api_port}}",
+									"path": [
+										"api",
+										"searchByEql"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "per_page",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "wildcard search configurationItem 3",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function pausecomp(millis)",
+											" {",
+											"  var date = new Date();",
+											"  var curDate = null;",
+											"  do { curDate = new Date(); }",
+											"  while(curDate-date < millis);",
+											"}",
+											"",
+											"//pausecomp(environment['es-refresh-interval']);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"configuration items found\"] = jsonData.count >= 1||jsonData.data.count>=1",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "token",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n           \"query_string\" : {\n\t            \"query\" : \"AS-2285*\",\n\t            \"analyze_wildcard\":true\n\t        }\n      }\n  }\n}\n\n\n\n\n"
 								},
 								"url": {
 									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",

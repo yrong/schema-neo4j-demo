@@ -2,43 +2,23 @@
   "mappings": {
     "doc": {
       "properties": {
-        "uuid": {
-          "type": "keyword"
-        },
-        "category": {
-          "type": "keyword"
-        },
-        "name":{
-          "type": "keyword"
-        },
-        "model": {
-          "type": "keyword"
-        },
         "geo_location": {
           "properties": {
-            "name": {
-              "type": "text"
-            },
             "location":{
               "type": "geo_point"
             }
           }
-        },
-        "status": {
-          "properties": {
-            "status": {
+        }
+      },
+      "dynamic_templates": [
+        {
+          "string_as_keyword": {
+            "match_mapping_type": "string",
+            "mapping": {
               "type": "keyword"
             }
           }
         },
-        "it_service":{
-          "type": "keyword"
-        },
-        "ip_address": {
-          "type": "keyword"
-        }
-      },
-      "dynamic_templates": [
         {
           "string_as_date": {
             "match_mapping_type": "string",

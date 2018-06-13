@@ -52,6 +52,5 @@
   "route": "/api/cfgItems",
   "search":{"index":"cmdb"},
   "uniqueKeys":["name","ip_address"],
-  "notification":true,
-  "cache":{"fields":["uuid","name","category"]}
+  "notification":true
 }
