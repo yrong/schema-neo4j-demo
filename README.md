@@ -1,88 +1,141 @@
-An easy to use framework to build rest api service with [koa-neo4j](https://github.com/assister-ai/koa-neo4j-starter-kit),data models are fully declarative by [json-schema](http://json-schema.org/)
+An easy to use framework to build rest api service based on [neo4j](https://neo4j.com/docs/developer-manual/current/introduction/),[elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html),[redis](https://redis.io/documentation)
 
 ## features
 
-* fully declarative koa routes,relationship in neo4j　by json schema
+fully declarative crud-api provider described with [json-schema](http://json-schema.org/)
 
-## data modeling based on json schema extension attributes
+## data modeling for demonstration
 
-### basic model
+* `user` data model
 
-```
-{
-  "id": "User",
-  "type": "object",
-  "properties": {
-    "alias": {
-      "type": "string"
-    },
-    "name": {
-      "type": "string"
-    },
-    "lang": {
-      "type": "string"
-    },
-    "userid":{
-      "type":"integer"
-    },
-    "passwd":{
-      "type":"string"
+    ```
+    {
+      "id": "User",
+      "service":"auth",
+      "route":"/api/users",
+      "type": "object",
+      "properties": {
+        "name":{
+          "type": "string"
+        },
+        "phone":{
+          "type": "string",
+          "pattern":"^[0-9]{11}$"
+        },
+        "type":{
+          "type": "string"
+        },
+        "ldapId":{
+          "type": "string"
+        }
+      },
+      "required": ["name"],
+      "uniqueKeys":["name"],
+      "cache":{"exclude_fields":["passwd","id"]},
+      "search":{"index":"user"},
+      "notification":true
     }
-  },
-  "route":"/users"
-}
-```
 
-* first each data model is a valid json schema,so model 'User' will be validated with [ajv](https://github.com/epoberezkin/ajv) as json object with fields and related data types as above
+    ```
 
-* data model with attribute `"route":"/users"`  will generate restful api interface with route `/users`
+* each data model is a valid json schema,so user object can be validated with [ajv](https://github.com/epoberezkin/ajv)
 
-```
-POST /users
+* with `"route":"/api/users"`  will generate restful api interface
 
-PUT  /users/:uuid
+    ```
+    POST /api/users
 
-DELETE /users/:uuid
+    PUT  /api/users/:uuid
 
-GET /users/:uuid
+    DELETE /api/users/:uuid
 
-GET /users
-```
+    GET /api/users/:uuid
 
-* `"id":"User"` is not only the id of the json schema but also the label of the node stored in neo4j
+    GET /api/users
+    ```
 
-### model reference others
+* `"id":"User"` is the label of the node stored in neo4j
 
-```
-{
-  "id": "ConfigurationItem",
-  "type": "object",
-  "properties": {
-    "name": {
-      "type": "string"
-    },
-    "responsibility":{
-        "type": "integer",
-        "schema":"User",
-        "relationship":{"name":"RESPONSIBLE_FOR","reverse":true}
-    },
-    ...
-  },
-  "required": ["name"],
-  "route": "/cfgItems",
-  "search":{"index":"cmdb"}
-}
-```
+    ```
+    MERGE (n:User {uuid: {uuid}})
+    ON CREATE SET n = {fields}
+    ON MATCH SET n = {fields}
+    ```
 
-* `schema` means field `responsibility` in model `ConfigurationItem` reference model `User` and will generate relationship in neo4j as following
+* `"uniqueKeys":["name"]` means `name` is the unique key of label `User` in neo4j
 
-    (:ConfigurationItem)<-[:RESPONSIBLE_FOR]-(:User)
+    ```
+    CREATE CONSTRAINT ON (n:User) ASSERT n.name IS UNIQUE
+    ```
 
-* `search` means instance of `ConfigurationItem` will also stored in elasticsearch with `cmdb` as index name
+* `"search":{"index":"user"}` means user object will be stored in elasticsearch with `user` as name of the index and with mapping as following by default(could be overrided)
 
-## Search
+    ```
+    {
+        "mappings": {
+            "_doc": {
+                "dynamic_templates": [
+                    {
+                        "string_as_keyword": {
+                            "match_mapping_type": "string",
+                            "mapping": {
+                                "type": "keyword"
+                            }
+                        }
+                    },
+                    {
+                        "string_as_date": {
+                            "match_pattern": "regex",
+                            "match":   ".*date|.*time|created|lastUpdated",
+                            "mapping": {
+                                "type": "date"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+    ```
 
-* query interfaces which use cypher and elasticsearch dsl(will I called eql) directly
+* `demo` model reference `user` model
+
+    ```
+    {
+      "id": "Demo",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "responsibility": {
+          "type": "string",
+          "schema":"User",
+          "relationship":{"name":"Customer"}
+        }
+      },
+      "required": ["name"],
+      "service":"vehicle",
+      "route": "/api/demos",
+      "cache":{"ignore":true},
+      "search":{"index":"demo"}
+    }
+    ```
+
+* `schema` means field `responsibility` in model `Demo` will reference model `User` and generate relationship in neo4j as following
+
+    ```
+    (:Demo)<-[:RESPONSIBLE_FOR]-(:User)
+    ```
+
+* by default demo object will be stored in redis, with `"cache":{"ignore":true}` will not do it
+
+## search api
+
+query interfaces which use cypher and elasticsearch dsl(which I called eql) directly
 
 ```cypher
 api/searchByCypher
@@ -124,15 +177,15 @@ api/searchByEql
 
 1. install db server
 
- [neo4j](http://neo4j.com/docs/operations-manual/current/installation/)
+     [neo4j](http://neo4j.com/docs/operations-manual/current/installation/)
 
- [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/_installation.html)
+     [elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/master/_installation.html)
 
- [redis](https://redis.io/topics/quickstart)
+     [redis](https://redis.io/topics/quickstart)
 
 2. install npm dependencies
 
-    npm install
+    yarn install
 
 3. configuration
 

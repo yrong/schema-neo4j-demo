@@ -1,0 +1,34 @@
+{
+  "id": "User",
+  "service":"auth",
+  "route":"/api/users",
+  "type": "object",
+  "properties": {
+    "name":{
+      "type": "string"
+    },
+    "phone":{
+      "type": "string",
+      "pattern":"^[0-9]{11}$"
+    },
+    "department":{
+      "type": "string",
+      "schema":"Department"
+    },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string", "schema":"Role"}
+    },
+    "type":{
+      "type": "string"
+    },
+    "ldapId":{
+      "type": "string"
+    }
+  },
+  "required": ["name"],
+  "uniqueKeys":["name"],
+  "cache":{"exclude_fields":["passwd","id"]},
+  "search":{"index":"user"},
+  "notification":true
+}

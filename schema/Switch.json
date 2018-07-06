@@ -1,6 +1,0 @@
-{
-  "id": "Switch",
-  "allOf": [
-    {"$ref": "NetworkDevice"}
-  ]
-}
