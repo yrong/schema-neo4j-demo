@@ -3975,6 +3975,15 @@ scirichon-acl-checker@^1.0.3:
     redis "^2.8.0"
     scirichon-common "^1.0.4"
 
+scirichon-acl-checker@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/scirichon-acl-checker/-/scirichon-acl-checker-1.0.4.tgz#bc52ce99445c3c111d50aa238348b98872c25152"
+  dependencies:
+    acl-fork "^0.4.11"
+    lodash "^4.17.4"
+    redis "^2.8.0"
+    scirichon-common "^1.0.4"
+
 scirichon-cache@^1.0.8:
   version "1.0.8"
   resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.8.tgz#7a997afb607825479b51b46742def0cab984d0c1"
@@ -3997,9 +4006,9 @@ scirichon-common@^1.0.4:
     request "^2.81.0"
     request-promise "^4.1.1"
 
-scirichon-crud-handler@1.0.5-beta.3:
-  version "1.0.5-beta.3"
-  resolved "https://registry.npmjs.org/scirichon-crud-handler/-/scirichon-crud-handler-1.0.5-beta.3.tgz#d46991ad7b77b52837e668f04cca564d03f95f0e"
+scirichon-crud-handler@1.0.5-beta.6:
+  version "1.0.5-beta.6"
+  resolved "https://registry.npmjs.org/scirichon-crud-handler/-/scirichon-crud-handler-1.0.5-beta.6.tgz#04a945fe6e1d4b88a2da66507699107149c06482"
   dependencies:
     config "^1.25.1"
     jsonpath "^1.0"
@@ -4013,14 +4022,14 @@ scirichon-crud-handler@1.0.5-beta.3:
     parse-neo4j-fork "0.6.10"
     request "^2.81.0"
     request-promise "^4.1.1"
-    scirichon-acl-checker "^1.0.3"
+    scirichon-acl-checker "^1.0.4"
     scirichon-cache "^1.0.8"
     scirichon-common "^1.0.4"
     scirichon-json-schema "^1.0.3"
     scirichon-response-mapper "^1.0.4"
     scirichon-response-wrapper "^1.0.1"
     scirichon-search "^1.0.2"
-    scirichon-token-checker "^1.0.2"
+    scirichon-token-checker "^1.0.3"
     uuid "^3.0.0"
     uuid-validate "^0.0.2"
 
@@ -4094,6 +4103,16 @@ scirichon-search@^1.0.2:
 scirichon-token-checker@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/scirichon-token-checker/-/scirichon-token-checker-1.0.2.tgz#95f835dd58cd4cb070829c07308aa62f236b5065"
+  dependencies:
+    config "^1.25.1"
+    lodash "^4.17.4"
+    request "^2.81.0"
+    request-promise "^4.1.1"
+    scirichon-common "^1.0.4"
+
+scirichon-token-checker@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/scirichon-token-checker/-/scirichon-token-checker-1.0.3.tgz#565ec296452b0514f7a6c7005ba1a0a5e77341c1"
   dependencies:
     config "^1.25.1"
     lodash "^4.17.4"
