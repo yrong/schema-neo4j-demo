@@ -3325,7 +3325,7 @@ parse-ms@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/parse-ms/-/parse-ms-1.0.1.tgz#56346d4749d78f23430ca0c713850aef91aa361d"
 
-parse-neo4j-fork@0.6.10:
+parse-neo4j-fork@0.6.10, parse-neo4j-fork@^0.6.10:
   version "0.6.10"
   resolved "https://registry.npmjs.org/parse-neo4j-fork/-/parse-neo4j-fork-0.6.10.tgz#aa6eae62cbb0301a3d7509ce61ddfcac3c5d7abc"
 
@@ -4017,6 +4017,17 @@ scirichon-crud-handler@1.0.5-beta.10:
     scirichon-token-checker "^1.0.6"
     uuid "^3.0.0"
     uuid-validate "^0.0.2"
+
+scirichon-json-schema-init@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/scirichon-json-schema-init/-/scirichon-json-schema-init-1.0.3.tgz#4bacf426985a27314f74be3805165abdea379c9b"
+  dependencies:
+    config "^1.25.1"
+    elasticsearch "^15.0.0"
+    lodash "^4.17.4"
+    neo4j-driver "^1.5.0"
+    parse-neo4j-fork "^0.6.10"
+    scirichon-json-schema "^1.0.3"
 
 scirichon-json-schema@^1.0.3:
   version "1.0.3"
