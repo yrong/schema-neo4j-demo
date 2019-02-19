@@ -2454,6 +2454,12 @@ json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.npmjs.org/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
+jsonfile@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.npmjs.org/jsonfile/-/jsonfile-2.4.0.tgz#3736a2b428b87bbda0cc83b53fa3d633a35c2ae8"
+  optionalDependencies:
+    graceful-fs "^4.1.6"
+
 jsonfile@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
@@ -2574,9 +2580,9 @@ koa-monitor-forked@0.3.0:
     pidusage "^1.0.5"
     socket.io "^1.5.0"
 
-koa-neo4j-monitor@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.npmjs.org/koa-neo4j-monitor/-/koa-neo4j-monitor-1.2.9.tgz#6b69a974a795f80a3966b9a9adfdb5b2a0d8284a"
+koa-neo4j-monitor@^1.2.11:
+  version "1.2.11"
+  resolved "https://registry.npmjs.org/koa-neo4j-monitor/-/koa-neo4j-monitor-1.2.11.tgz#559a5ec161ceddea26c96a266e41c508f54fec26"
   dependencies:
     chai "^3.5.0"
     chalk "^1.1.3"
@@ -2594,8 +2600,6 @@ koa-neo4j-monitor@^1.2.9:
     parse-neo4j-fork "0.6.10"
     passport-jwt "^2.1.0"
     passport-local "^1.0.0"
-    pythonic "0.0.4"
-    query-string "^4.2.3"
 
 koa-passport@^2.2.2:
   version "2.2.2"
@@ -3051,9 +3055,9 @@ newman@^3.8.3:
     word-wrap "1.2.3"
     xmlbuilder "9.0.4"
 
-node-cache-redis-fork@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/node-cache-redis-fork/-/node-cache-redis-fork-2.2.1.tgz#810cdfb14efe59cc4b617740ce2fde61c5c0f343"
+node-cache-redis-fork@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/node-cache-redis-fork/-/node-cache-redis-fork-2.2.2.tgz#e95c25d9bec0b43a7ae01123d5379f65f9d85cca"
   dependencies:
     debug "^2.6.6"
     es6-promisify "^5.0.0"
@@ -3622,10 +3626,6 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-pythonic@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/pythonic/-/pythonic-0.0.4.tgz#742ff93dcf039bf1cee3d118cdf6e80833573bda"
-
 qs@~4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/qs/-/qs-4.0.0.tgz#c31d9b74ec27df75e543a86c78728ed8d4623607"
@@ -3637,13 +3637,6 @@ qs@~6.4.0:
 qs@~6.5.1:
   version "6.5.1"
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
-
-query-string@^4.2.3:
-  version "4.3.4"
-  resolved "https://registry.npmjs.org/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
-  dependencies:
-    object-assign "^4.1.0"
-    strict-uri-encode "^1.0.0"
 
 querystring-es3@^0.2.0:
   version "0.2.1"
@@ -3960,44 +3953,53 @@ schema-utils@^0.3.0:
   dependencies:
     ajv "^5.0.0"
 
-scirichon-acl-checker@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/scirichon-acl-checker/-/scirichon-acl-checker-1.0.8.tgz#086a607b2615a8ef1cdefd1046ec0ef2016ca055"
+scirichon-acl-checker@1.0.9-beta.2:
+  version "1.0.9-beta.2"
+  resolved "https://registry.npmjs.org/scirichon-acl-checker/-/scirichon-acl-checker-1.0.9-beta.2.tgz#33c89488fd1408f443b282f368ac378fdc46c0c0"
   dependencies:
     acl-fork "^0.4.11"
     lodash "^4.17.4"
     redis "^2.8.0"
-    scirichon-common "^1.0.7"
+    scirichon-common "1.0.7-beta.2"
 
-scirichon-cache@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.11.tgz#accd0c386c84558a533f73d32e53e298a5629de1"
+scirichon-cache@1.0.11-beta.3:
+  version "1.0.11-beta.3"
+  resolved "https://registry.npmjs.org/scirichon-cache/-/scirichon-cache-1.0.11-beta.3.tgz#d17ae7fe97b5a6d223a095d34cb474d562096209"
   dependencies:
     config "^1.25.1"
     lodash "^4.17.4"
-    node-cache-redis-fork "^2.2.1"
+    node-cache-redis-fork "^2.2.2"
     request "^2.81.0"
     request-promise "^4.1.1"
-    scirichon-common "^1.0.7"
-    scirichon-json-schema "^1.0.3"
+    scirichon-common "1.0.7-beta.1"
+    scirichon-json-schema "1.0.3-beta.1"
     uuid-validate "^0.0.2"
 
-scirichon-common@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/scirichon-common/-/scirichon-common-1.0.7.tgz#c3584339c934d9b6bc8aa2bcfc1469c6f5c726c4"
+scirichon-common@1.0.7-beta.1:
+  version "1.0.7-beta.1"
+  resolved "https://registry.npmjs.org/scirichon-common/-/scirichon-common-1.0.7-beta.1.tgz#0138fbc56e4092bed308e904d7ad4320ad58b82a"
   dependencies:
     config "^1.25.1"
     lodash "^4.17.4"
     request "^2.81.0"
     request-promise "^4.1.1"
 
-scirichon-crud-handler@1.0.5-beta.10:
-  version "1.0.5-beta.10"
-  resolved "https://registry.npmjs.org/scirichon-crud-handler/-/scirichon-crud-handler-1.0.5-beta.10.tgz#be98163d8e895e3c11f10f35b08eb8c149d7e0fc"
+scirichon-common@1.0.7-beta.2:
+  version "1.0.7-beta.2"
+  resolved "https://registry.npmjs.org/scirichon-common/-/scirichon-common-1.0.7-beta.2.tgz#9798d228ece22d9d8ee22495e5828c5c0341453c"
+  dependencies:
+    config "^1.25.1"
+    lodash "^4.17.4"
+    request "^2.81.0"
+    request-promise "^4.1.1"
+
+scirichon-crud-handler@1.0.5-beta.39:
+  version "1.0.5-beta.39"
+  resolved "https://registry.npmjs.org/scirichon-crud-handler/-/scirichon-crud-handler-1.0.5-beta.39.tgz#1ddda03bc5bea3504f1ca0d9388ff746c70cae48"
   dependencies:
     config "^1.25.1"
     jsonpath "^1.0"
-    koa-neo4j-monitor "^1.2.9"
+    koa-neo4j-monitor "^1.2.11"
     license-helper "^1.0.5"
     lodash "^4.17.4"
     log4js-wrapper-advanced "^1.0.4"
@@ -4007,74 +4009,92 @@ scirichon-crud-handler@1.0.5-beta.10:
     parse-neo4j-fork "0.6.10"
     request "^2.81.0"
     request-promise "^4.1.1"
-    scirichon-acl-checker "^1.0.8"
-    scirichon-cache "^1.0.11"
-    scirichon-common "^1.0.7"
-    scirichon-json-schema "^1.0.3"
-    scirichon-response-mapper "^1.0.7"
-    scirichon-response-wrapper "^1.0.2"
-    scirichon-search "^1.0.5"
-    scirichon-token-checker "^1.0.6"
+    scirichon-acl-checker "1.0.9-beta.2"
+    scirichon-cache "1.0.11-beta.3"
+    scirichon-common "1.0.7-beta.2"
+    scirichon-json-exp-imp "1.0.5-beta.7"
+    scirichon-json-schema "1.0.3-beta.1"
+    scirichon-json-schema-init "1.0.5-beta.1"
+    scirichon-response-mapper "1.0.7-beta.4"
+    scirichon-response-wrapper "1.0.2-beta.1"
+    scirichon-search "1.0.6-beta.6"
+    scirichon-token-checker "1.0.7-beta.2"
     uuid "^3.0.0"
     uuid-validate "^0.0.2"
 
-scirichon-json-schema-init@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/scirichon-json-schema-init/-/scirichon-json-schema-init-1.0.3.tgz#4bacf426985a27314f74be3805165abdea379c9b"
+scirichon-json-exp-imp@1.0.5-beta.7:
+  version "1.0.5-beta.7"
+  resolved "https://registry.npmjs.org/scirichon-json-exp-imp/-/scirichon-json-exp-imp-1.0.5-beta.7.tgz#8420ea147edefdda22c73818ce36d9c3a602017a"
+  dependencies:
+    config "^1.25.1"
+    jsonfile "^2.4.0"
+    jsonpath "^1.0"
+    lodash "^4.17.4"
+    mkdirp "^0.5.1"
+    moment "^2.13.0"
+    request "^2.81.0"
+    request-promise "^4.1.1"
+    scirichon-cache "1.0.11-beta.3"
+    scirichon-common "1.0.7-beta.2"
+    scirichon-json-schema "1.0.3-beta.1"
+    scirichon-search "1.0.6-beta.6"
+    uuid "^3.0.0"
+    uuid-validate "^0.0.2"
+
+scirichon-json-schema-init@1.0.5-beta.1:
+  version "1.0.5-beta.1"
+  resolved "https://registry.npmjs.org/scirichon-json-schema-init/-/scirichon-json-schema-init-1.0.5-beta.1.tgz#f1b1430331a8a702ba8ee675439c3e8c6a558f4c"
   dependencies:
     config "^1.25.1"
     elasticsearch "^15.0.0"
     lodash "^4.17.4"
     neo4j-driver "^1.5.0"
     parse-neo4j-fork "^0.6.10"
-    scirichon-json-schema "^1.0.3"
+    scirichon-json-schema "1.0.3-beta.1"
 
-scirichon-json-schema@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/scirichon-json-schema/-/scirichon-json-schema-1.0.3.tgz#ecadcab06a7e45329fec93f0fb36e2b80f739198"
+scirichon-json-schema@1.0.3-beta.1:
+  version "1.0.3-beta.1"
+  resolved "https://registry.npmjs.org/scirichon-json-schema/-/scirichon-json-schema-1.0.3-beta.1.tgz#0dbc0784238d3cde1eb1c2563da8539f3bff0848"
   dependencies:
     ajv "^5.3.0"
     lodash "^4.17.4"
     redis "^2.8.0"
     redis-crud-fork "^1.0.1"
 
-scirichon-response-mapper@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/scirichon-response-mapper/-/scirichon-response-mapper-1.0.7.tgz#4c0a2cb54361a42f750309c0fd39efb3b56d31d0"
+scirichon-response-mapper@1.0.7-beta.4:
+  version "1.0.7-beta.4"
+  resolved "https://registry.npmjs.org/scirichon-response-mapper/-/scirichon-response-mapper-1.0.7-beta.4.tgz#9779cfd23ee1a76391347da40ecb238606f06362"
   dependencies:
     lodash "^4.17.4"
-    scirichon-cache "^1.0.11"
-    scirichon-common "^1.0.7"
-    scirichon-json-schema "^1.0.3"
+    scirichon-cache "1.0.11-beta.3"
+    scirichon-common "1.0.7-beta.2"
+    scirichon-json-schema "1.0.3-beta.1"
 
-scirichon-response-wrapper@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/scirichon-response-wrapper/-/scirichon-response-wrapper-1.0.2.tgz#21b4587e191ef9f7916c395af78fb72c10661c5b"
+scirichon-response-wrapper@1.0.2-beta.1:
+  version "1.0.2-beta.1"
+  resolved "https://registry.npmjs.org/scirichon-response-wrapper/-/scirichon-response-wrapper-1.0.2-beta.1.tgz#68ba323627d22b9e331034d84212a7e5d87bfdb8"
   dependencies:
     lodash "^4.17.4"
     log4js-wrapper-advanced "^1.0.4"
 
-scirichon-search@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/scirichon-search/-/scirichon-search-1.0.5.tgz#cb680db264c67644ebcbcfd3b30e1909db388ac9"
+scirichon-search@1.0.6-beta.6:
+  version "1.0.6-beta.6"
+  resolved "https://registry.npmjs.org/scirichon-search/-/scirichon-search-1.0.6-beta.6.tgz#a0000b87ff8f248cf5fda80c68c634cf05162ea7"
   dependencies:
     config "^1.25.1"
     elasticsearch "^15.0.0"
     lodash "^4.17.4"
-    scirichon-cache "^1.0.11"
-    scirichon-common "^1.0.7"
-    scirichon-json-schema "^1.0.3"
-    scirichon-response-mapper "^1.0.7"
+    scirichon-cache "1.0.11-beta.3"
+    scirichon-common "1.0.7-beta.2"
+    scirichon-json-schema "1.0.3-beta.1"
+    scirichon-response-mapper "1.0.7-beta.4"
 
-scirichon-token-checker@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/scirichon-token-checker/-/scirichon-token-checker-1.0.6.tgz#06d3ea7a314cb7ebb9445d7413c7a1a9786b93b6"
+scirichon-token-checker@1.0.7-beta.2:
+  version "1.0.7-beta.2"
+  resolved "https://registry.npmjs.org/scirichon-token-checker/-/scirichon-token-checker-1.0.7-beta.2.tgz#307364fc1c231bef4ff64790c95eff3b0123d31f"
   dependencies:
-    config "^1.25.1"
     lodash "^4.17.4"
-    request "^2.81.0"
-    request-promise "^4.1.1"
-    scirichon-common "^1.0.7"
+    scirichon-common "1.0.7-beta.2"
 
 "semver@2 || 3 || 4 || 5", semver@5.4.1, semver@^5.3.0:
   version "5.4.1"
@@ -4323,10 +4343,6 @@ streamroller@^0.4.0:
 strftime@~0.10.0:
   version "0.10.0"
   resolved "https://registry.npmjs.org/strftime/-/strftime-0.10.0.tgz#b3f0fa419295202a5a289f6d6be9f4909a617193"
-
-strict-uri-encode@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
 
 string-width@^1.0.1, string-width@^1.0.2:
   version "1.0.2"
