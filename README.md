@@ -1,3 +1,7 @@
+[![Badge](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg)](https://996.icu/#/en_US)
+
+## introduction
+
 An easy to use framework to build rest api service based on [neo4j](https://neo4j.com/docs/developer-manual/current/introduction/),[elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html),[redis](https://redis.io/documentation)
 
 ## features
