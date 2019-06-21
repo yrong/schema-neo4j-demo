@@ -10,7 +10,6 @@
     "test": "mocha",
     "start": "scirichon-crud-api",
     "init": "initSchema",
-    "initES": "INIT_ES=1 initSchema",
     "exportToJson": "json-export",
     "importFromJson": "IMPORT_FOLDER=./export_data/20170927095432 json-import",
     "importToESFromJson": "IMPORT_FOLDER=./export_data/20170927095432 IMPORT_STRATEGY=search json-import",
@@ -24,7 +23,7 @@
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "scirichon-crud-handler": "1.0.5-beta.40"
+    "scirichon-crud-handler": "^1.0.8"
   },
   "devDependencies": {
     "webpack-builder-advanced": "^1.0.1"
