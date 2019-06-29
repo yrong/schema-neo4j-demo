@@ -2455,9 +2455,9 @@ koa-is-json@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/koa-is-json/-/koa-is-json-1.0.0.tgz#273c07edcdcb8df6a2c1ab7d59ee76491451ec14"
 
-koa-neo4j@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/koa-neo4j/-/koa-neo4j-1.4.2.tgz#54b6f5d78631a3a46d41178493a701e8ac5d7515"
+koa-neo4j@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.npmjs.org/koa-neo4j/-/koa-neo4j-1.5.1.tgz#962bd5035b1e9848fb61a76322ca9bfac2a3186c"
   dependencies:
     chai "^3.5.0"
     chalk "^2.4.2"
@@ -3819,13 +3819,13 @@ scirichon-common@1.0.7-beta.6:
     config "^3.1.0"
     lodash "^4.17.11"
 
-scirichon-crud-handler@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/scirichon-crud-handler/-/scirichon-crud-handler-1.0.8.tgz#a1d1767be287a1202a0ecf0c102ca8d649a13728"
+scirichon-crud-handler@1.1.0-beta.1:
+  version "1.1.0-beta.1"
+  resolved "https://registry.npmjs.org/scirichon-crud-handler/-/scirichon-crud-handler-1.1.0-beta.1.tgz#c30c9f06dc2a7f7fdc852aafd00a4463bfed86c4"
   dependencies:
     config "^3.1.0"
     jsonpath "^1.0.2"
-    koa-neo4j "^1.4.2"
+    koa-neo4j "^1.5.1"
     license-helper "^1.0.7"
     lodash "^4.17.11"
     log4js-wrapper-advanced "^1.0.5"

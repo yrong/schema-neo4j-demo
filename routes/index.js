@@ -1,13 +1,20 @@
+const compose = require('koa-compose')
 const search = require('scirichon-search')
-const routes = require('scirichon-crud-handler').routes
+const route = require('scirichon-crud-handler').route
 
 module.exports = {
     load: (app)=>{
-        routes(app)
+        route(app)
         app.defineAPI({
             method: 'POST',
             route: '/api/search/cfgItems',
             procedure: search.searchItem
         })
+
+        app.use(compose(
+            [
+                app.router.routes(),
+                app.router.allowedMethods()
+            ]))
     }
 }

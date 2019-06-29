@@ -23,7 +23,7 @@
   "author": "Ronyang <yrong1997@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "scirichon-crud-handler": "^1.0.8"
+    "scirichon-crud-handler": "1.1.0-beta.1"
   },
   "devDependencies": {
     "webpack-builder-advanced": "^1.0.1"
