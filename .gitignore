@@ -38,3 +38,5 @@ release
 Dockerfile
 license
 license.json
+/test/index.js
+/test/postman_globals.json

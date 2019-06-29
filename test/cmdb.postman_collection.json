@@ -1094,6 +1094,202 @@
 			"description": null,
 			"item": [
 				{
+					"name": "add spare part 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "010923e9-d672-4562-b81b-a84ff993c831",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"spare_part_1_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r  \"data\":{\r    \"category\":\"SparePart\",\r    \"fields\":{\r      \"name\":\"WirelessMicrophoneSystem-1\",\r      \"model\":\"aew-5233ad\",\r      \"tags\": [\"WirelessMicrophoneSystem\"]\r    }\r  }\r}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add spare part 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f6604379-2c8f-4aa2-b1cc-ab6cc34b934c",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;",
+									"if(jsonData.uuid){",
+									"postman.setEnvironmentVariable(\"spare_part_2_id\", jsonData.uuid);",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r  \"data\":{\r    \"category\":\"SparePart\",\r    \"fields\":{\r      \"name\":\"LaptopBag-1\",\r      \"model\":\"lenova\",\r      \"tags\": [\"LaptopBag\"]\r    }\r  }\r}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query all spare part",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one software found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?tags=SparePart",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "SparePart"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "query only lagtop bag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"at least one software found\"] = jsonData.length >=1||jsonData.data.length >=1",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems?tags=LaptopBag",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems"
+							],
+							"query": [
+								{
+									"key": "tags",
+									"value": "LaptopBag"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "add operating system windows",
 					"event": [
 						{
@@ -1371,7 +1567,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router1\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n          },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"name\":\"router\",\n      \"status\":{\"status\":\"In_Use\",\"fields\":{\"a\":1}},\n      \"it_service\":[\"{{service_email_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-08-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"},\n      \"geo_location\": {\"name\":\"beijing\",\"location\":{\"lat\":39.98,\"lon\":116.30}},\n      \"used_by_user\": {\n            \"dn\": \"cn=ron yang,ou=users,dc=test,dc=com\",\n            \"uidNumber\": \"1000\",\n            \"uid\": \"ryang\"\n          },\n      \"used_by_dept\": {\n        \"dn\": \"ou=groups,dc=test,dc=com\",\n        \"ou\": \"groups\"\n      }\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1434,6 +1630,50 @@
 					"response": []
 				},
 				{
+					"name": "delete  used service failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4651a1e6-bfd0-4912-a085-da02971d6aad",
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"tests[\"node already referenced\"] = responseCode.code != 200"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/it_services/service/{{service_pop3_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"it_services",
+								"service",
+								"{{service_pop3_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "add switch",
 					"event": [
 						{
@@ -1461,7 +1701,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Switch\",\n    \"fields\":{\n      \"name\":\"switch\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"}\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Switch\",\n    \"fields\":{\n      \"name\":\"switch\",\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"sn\":\"123456\",\n      \"model\":\"a10\",\n      \"product_date\":\"2016-10-11\",\n      \"warranty_expiration_date\":\"2016-11-11\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\"},\n      \"status\":{\"status\":\"free\"},\n      \"hardware_cpu_core\":1\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems",
@@ -1611,6 +1851,48 @@
 					"response": []
 				},
 				{
+					"name": "patch router with asset location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"uuid found\"] = jsonData.uuid;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"Router\",\n    \"fields\":{\n      \"asset_location\": {\"status\":\"on_shelf\",\"shelf\":\"{{shelf_id}}\",\"label\":\"label\",\"other\":\"other\"}\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{router_id}}",
+							"protocol": "http",
+							"host": [
+								"{{cmdb_api_host}}"
+							],
+							"port": "{{cmdb_api_port}}",
+							"path": [
+								"api",
+								"cfgItems",
+								"{{router_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "patch physical server with os",
 					"event": [
 						{
@@ -1635,7 +1917,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"operating_system\": \"{{ubuntu_os_id}}\",\n      \"asset_location\": {\"status\":\"mounted\",\"u\":42,\"date_mounted\":\"2016-06-28\",\"cabinet\":\"{{cabinet_id}}\",\"test\":\"test\"}\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"PhysicalServer\",\n    \"fields\":{\n      \"it_service\":[\"{{service_pop3_id}}\",\"{{service_dns_id}}\"],\n      \"sn\":\"12345678\",\n      \"responsibility\":\"{{auth_user_id}}\",\n      \"operating_system\": \"{{ubuntu_os_id}}\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/cfgItems/{{physical_server_id}}",
@@ -2019,51 +2301,6 @@
 			"description": null,
 			"item": [
 				{
-					"name": "add article 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"jsonData = jsonData.data||jsonData;",
-									"tests[\"uuid found\"] = jsonData.uuid;",
-									"postman.setEnvironmentVariable(\"article_1_id\", jsonData.uuid);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"token\":\"{{token}}\",\n    \"title\": \"水电费\",\n    \"it_service\": [\"{{service_email_id}}\"],\n    \"tag\": [\"测试\",\"随机\"],\n  \"author\": \"{{auth_user_id}}\",\n  \"ref_links\": [\"https://www.baidu.com/\"],\n  \"tasks\": \"测试插入\",\n  \"type\":\"Troubleshooting\",\n  \"content\":{\"description\": \"水电费\", \"analysis\": \"水电费\", \"solution\":\"前几天，我的邻居小伙伴突然在QQ上问我突然在不，她比我大几岁，平日里交集不算太多，这么冷不丁的来一句“在吗？”，让我误以为是骗子又来实施诈骗了\",\"workaround\": \"水电费\"}\n }\n\n"
-						},
-						"url": {
-							"raw": "http://{{kb_api_host}}:{{kb_api_port}}/KB/API/v1/articles",
-							"protocol": "http",
-							"host": [
-								"{{kb_api_host}}"
-							],
-							"port": "{{kb_api_port}}",
-							"path": [
-								"KB",
-								"API",
-								"v1",
-								"articles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "add incident flow 1",
 					"event": [
 						{
@@ -2090,7 +2327,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2134,7 +2371,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n       \"reference_kb\":[\"{{article_1_id}}\"],\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"IncidentFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_dns_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_process_flow\":[\"{{incident_flow_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"title\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2406,7 +2643,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ProblemFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"流程标题部分内容\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ProblemFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"status\": \"open\",\n      \"title\":\"流程标题部分内容\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2450,7 +2687,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ChangeFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"reference_kb\":[\"{{article_1_id}}\"],\n      \"status\": \"open\",\n      \"title\":\"change\"\n    }\n  }\n}"
+							"raw": "{\n  \"token\": \"{{token}}\",\n  \"data\":{\n    \"category\":\"ChangeFlow\",\n    \"fields\":{\n      \"it_service\":[\"{{service_email_id}}\",\"{{service_pop3_id}}\"],\n      \"committer\":\"{{auth_user_id}}\",\n      \"executor\":\"{{auth_user_id}}\",\n      \"status\": \"open\",\n      \"title\":\"change\"\n    }\n  }\n}"
 						},
 						"url": {
 							"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/processFlows",
@@ -2640,7 +2877,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"cypherQueryFile\":\"queryHostsByITService\",\n  \"uuid\":[\"{{group_messaging_id}}\"]\n}"
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"cypherQueryFile\":\"queryHostsByITService\",\n  \"uuid\":[\"{{service_email_id}}\"]\n}"
 								},
 								"url": {
 									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByCypher",
@@ -2710,10 +2947,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n        \"bool\":{\n          \"must\":[\n            {\"match\":{\"status.status\":\"In_Use\"}},\n            {\"bool\":{\"should\":[{\"match\":{\"it_service\":\"{{service_email_id}}\"}},{\"match\":{\"it_service\":\"{{service_pop3_id}}\"}}]}}\n          ]\n        }\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  }\n}\n\n\n\n\n\n"
+									"raw": "{\n  \"category\":\"ConfigurationItem\",\n  \"body\":\n  {\n      \"query\": {\n        \"bool\":{\n          \"must\":[\n            {\"match\":{\"status.status\":\"In_Use\"}},\n            {\"bool\":{\"should\":[{\"match\":{\"it_service\":\"{{service_email_id}}\"}},{\"match\":{\"it_service\":\"{{service_pop3_id}}\"}}]}}\n          ]\n        }\n          \n      },\n      \"sort\" : [\n          { \"product_date\" : {\"order\" : \"desc\"}}]\n  },\n  \"page\":1,\n  \"per_page\":1\n}\n\n\n\n\n\n"
 								},
 								"url": {
-									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql?page=1&per_page=10",
+									"raw": "http://{{cmdb_api_host}}:{{cmdb_api_port}}/api/searchByEql",
 									"protocol": "http",
 									"host": [
 										"{{cmdb_api_host}}"
@@ -2722,16 +2959,6 @@
 									"path": [
 										"api",
 										"searchByEql"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "per_page",
-											"value": "10"
-										}
 									]
 								}
 							},

@@ -9,6 +9,8 @@
     "buildDockerImage": "rm -rf Dockerfile&&ln ../config/deploy/Dockerfile .&&npm run prebuild&&EDITION=docker webpack",
     "test": "mocha",
     "start": "scirichon-crud-api",
+    "dev": "node_modules/.bin/nodemon -r @babel/register node_modules/.bin/scirichon-crud-api",
+    "test": "cp -rf ../config/test .&&mocha",
     "init": "initSchema",
     "exportToJson": "json-export",
     "importFromJson": "IMPORT_FOLDER=./export_data/20170927095432 json-import",
