@@ -14,7 +14,7 @@
       "relationship":{"name":"RESPONSIBLE_FOR","reverse":true}
     }
   },
-  "service":"vehicle",
+  "service":"cmdb",
   "route": "/api/demos",
   "cache":{"ignore":true}
 }
